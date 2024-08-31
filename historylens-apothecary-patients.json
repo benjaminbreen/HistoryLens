@@ -1,0 +1,567 @@
+{
+  "patients": [
+    {
+      "name": "Francisco Dias de Araujo",
+      "age": 45,
+      "birthplace": "Puebla",
+      "currentResidence": "Mexico City, Bica de Duarte Bello",
+      "background": {
+        "ethnicity": "Criollo",
+        "class": "Merchant class",
+        "occupation": "Textile trader"
+      },
+      "symptoms": [
+        "Ardent fever for 40 days",
+        "Inability to sleep",
+        "Burning tenesmus",
+        "Continuous diarrhea",
+        "Severe abdominal pain",
+        "Pain in both legs"
+      ],
+      "actualDiagnosis": "Severe gastrointestinal infection with systemic complications",
+      "contemporaryTheory": "Malignant fever caused by corrupted humors, exacerbated by a venereal taint",
+      "possibleTreatments": [
+        "Bloodletting",
+        "Cooling emollients",
+        "Opiates to induce sleep",
+        "Purgatives to expel corrupted humors",
+        "Mercury preparations to address venereal taint"
+      ],
+      "socialContext": "His prolonged illness has caused significant disruption to his business affairs and local textile trade",
+      "urgency": "High"
+    },
+    {
+      "name": "Visconde Pedro Jaques de Magalhaens",
+      "age": 60,
+      "birthplace": "Lisbon, Portugal",
+      "currentResidence": "Mexico City, near the Zócalo",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Upper class",
+        "occupation": "Military General and Colonial Administrator"
+      },
+      "symptoms": [
+        "Violent abdominal pain",
+        "Continuous vomiting",
+        "Numbness in right leg",
+        "Heart palpitations",
+        "Cold sweats"
+      ],
+      "actualDiagnosis": "Severe biliary colic",
+      "contemporaryTheory": "Colic caused by an imbalance of cold and hot humors, with possible obstruction of the biliary passages",
+      "possibleTreatments": [
+        "Emollient enemas",
+        "Carminative preparations",
+        "Application of warm compresses",
+        "Purgatives to expel excess humors",
+        "Opiates to alleviate pain"
+      ],
+      "socialContext": "His sudden illness has caused concern among colonial officials and military leadership",
+      "urgency": "High"
+    },
+    {
+      "name": "Padre Fr. Paulo da Silva",
+      "age": 50,
+      "birthplace": "Coimbra, Portugal",
+      "currentResidence": "Mexico City, Carmelite Monastery in San Ángel",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Clergy",
+        "occupation": "Carmelite Friar"
+      },
+      "symptoms": [
+        "Severe abdominal pain",
+        "Continuous vomiting",
+        "Numbness in right leg",
+        "Heart palpitations",
+        "Cold sweats"
+      ],
+      "actualDiagnosis": "Renal colic",
+      "contemporaryTheory": "Nephritick colic caused by stones or gravel in the kidneys, with associated vapors affecting the heart and extremities",
+      "possibleTreatments": [
+        "Emetic preparations to induce vomiting",
+        "Warm baths to relax the passages",
+        "Diuretic decoctions to expel stones",
+        "Application of leeches to the affected areas",
+        "Cordial preparations to strengthen the heart"
+      ],
+      "socialContext": "His illness has disrupted the monastery's daily routines and caused concern among the religious community",
+      "urgency": "High"
+    },
+    {
+      "name": "Xochitl",
+      "age": 25,
+      "birthplace": "Xochimilco",
+      "currentResidence": "Mexico City, Barrio de San Juan",
+      "background": {
+        "ethnicity": "Nahua",
+        "class": "Lower class",
+        "occupation": "Market vendor"
+      },
+      "symptoms": [
+        "Severe abdominal pain",
+        "Bloody stools",
+        "High fever",
+        "Loss of appetite"
+      ],
+      "actualDiagnosis": "Dysentery",
+      "contemporaryTheory": "Imbalance of humors in the lower belly, possibly caused by miasmas from contaminated water",
+      "possibleTreatments": [
+        "Decoctions of local herbs to cool the bowels",
+        "Bloodletting to balance humors",
+        "Purgatives to expel corrupt matter",
+        "Rice water to restore strength"
+      ],
+      "socialContext": "Her illness has left her unable to work, affecting her family's livelihood",
+      "urgency": "High"
+    },
+    {
+      "name": "Isabella Rodriguez",
+      "age": 32,
+      "birthplace": "Veracruz",
+      "currentResidence": "Mexico City",
+      "background": {
+        "ethnicity": "Criolla",
+        "class": "Upper middle class",
+        "occupation": "Wife of a textile merchant"
+      },
+      "symptoms": [
+        "Excessive itching all over the body",
+        "Skin rashes",
+        "Fatigue",
+        "Loss of appetite"
+      ],
+      "actualDiagnosis": "Bastard leprosy (likely psoriasis or eczema)",
+      "contemporaryTheory": "Imbalance of humors due to melancholic temperament and excessive penitence",
+      "possibleTreatments": [
+        "Bloodletting",
+        "Purgatives",
+        "Herbal decoctions",
+        "Dietary changes",
+        "Alkaline pills"
+      ],
+      "socialContext": "A devout widow who has dedicated herself to religious pursuits, causing concern among her family about her health",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Fray Esteban",
+      "age": 50,
+      "birthplace": "Dublin, Ireland",
+      "currentResidence": "Mexico City",
+      "background": {
+        "ethnicity": "European immigrant",
+        "class": "Clergy",
+        "occupation": "Dominican friar"
+      },
+      "symptoms": [
+        "Excessive and continuous hemorrhoidal bleeding",
+        "Extreme weakness",
+        "Paleness",
+        "Swelling throughout the body"
+      ],
+      "actualDiagnosis": "Severe hemorrhoids leading to anemia and edema",
+      "contemporaryTheory": "Excessive heat and thinness of blood causing continuous hemorrhoidal flux, leading to weakness of the sanguifying faculty and accumulation of serous humors",
+      "possibleTreatments": [
+        "Purging with mirobalans and rhubarb to remove sharp humors",
+        "Cordial made with tormentil root and plantain to strengthen and cool the blood",
+        "Induced vomiting to divert humors from the lower parts",
+        "Powder made of red coral, dragon's blood, and knotgrass to thicken the blood",
+        "Application of cool, astringent herbs like houseleek to the liver region and feet"
+      ],
+      "socialContext": "His illness has prevented him from performing his religious duties, causing concern in the Dominican community",
+      "urgency": "High"
+    },
+    {
+      "name": "Isabel de la Cruz",
+      "age": 28,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, Templo Mayor area",
+      "background": {
+        "ethnicity": "Mestiza",
+        "class": "Lower middle class",
+        "occupation": "Wife of a stonemason"
+      },
+      "symptoms": [
+        "Severe migraines",
+        "Blurred vision",
+        "Nausea",
+        "Sensitivity to light and sound"
+      ],
+      "actualDiagnosis": "Migraine headaches",
+      "contemporaryTheory": "Excess of black bile affecting the brain and nervous system, exacerbated by exposure to strong odors and loud noises",
+      "possibleTreatments": [
+        "Cold compresses to the head",
+        "Infusions of feverfew and butterbur",
+        "Bloodletting from the arm",
+        "Quiet, dark room rest",
+        "Application of poultices made from willow bark"
+      ],
+      "socialContext": "Her condition has caused strain in her household, as she is often unable to perform her domestic duties",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Don Alejandro Cortez",
+      "age": 70,
+      "birthplace": "Madrid, Spain",
+      "currentResidence": "Mexico City, Plaza Mayor area",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Upper class",
+        "occupation": "Retired judge"
+      },
+      "symptoms": [
+        "Severe gout attacks in the feet and hands",
+        "Swelling and redness",
+        "Difficulty walking",
+        "Chronic pain"
+      ],
+      "actualDiagnosis": "Gout",
+      "contemporaryTheory": "Excess of uric acid (referred to as a cold, wet humor) in the blood, causing the formation of painful crystals in the joints",
+      "possibleTreatments": [
+        "Purging with colocynth and rhubarb",
+        "Cupping and leeches to the affected joints",
+        "Dietary restrictions to avoid rich foods",
+        "Infusions of nettle and juniper berries",
+        "Topical application of mustard plasters"
+      ],
+      "socialContext": "His gout has rendered him immobile, affecting his ability to engage in social and religious activities, leading to a decline in his social standing",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Ana María de Soto",
+      "age": 22,
+      "birthplace": "Oaxaca",
+      "currentResidence": "Mexico City, La Merced",
+      "background": {
+        "ethnicity": "Mestiza",
+        "class": "Lower class",
+        "occupation": "Textile worker"
+      },
+      "symptoms": [
+        "Severe cough",
+        "Blood-streaked sputum",
+        "Night sweats",
+        "Weight loss"
+      ],
+      "actualDiagnosis": "Tuberculosis (referred to as consumption)",
+      "contemporaryTheory": "Imbalance of humors in the lungs, possibly aggravated by poor air quality and malnutrition",
+      "possibleTreatments": [
+        "Herbal decoctions to strengthen the lungs",
+        "Bloodletting to reduce excess humors",
+        "Rest in a clean, dry environment",
+        "Dietary improvements with fresh milk and eggs",
+        "Fumigations with myrrh and frankincense"
+      ],
+      "socialContext": "Her illness has caused fear among her coworkers, leading to social isolation and financial hardship due to her inability to work",
+      "urgency": "High"
+    },
+    {
+      "name": "Carlos Enriquez",
+      "age": 50,
+      "birthplace": "Seville, Spain",
+      "currentResidence": "Mexico City, near the Royal Palace",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Upper middle class",
+        "occupation": "Lawyer"
+      },
+      "symptoms": [
+        "Shortness of breath",
+        "Chest pain",
+        "Fatigue",
+        "Edema in the legs"
+      ],
+      "actualDiagnosis": "Congestive heart failure",
+      "contemporaryTheory": "Weakness of the heart muscle due to imbalanced humors, leading to accumulation of fluids in the lungs and extremities",
+      "possibleTreatments": [
+        "Bloodletting to reduce fluid overload",
+        "Diuretic herbs like dandelion and juniper",
+        "Strengthening decoctions with hawthorn and motherwort",
+        "Light exercise and dietary moderation",
+        "Avoidance of excessive emotional stress"
+      ],
+      "socialContext": "His declining health has caused concern among his clients and colleagues, affecting his legal practice and social standing",
+      "urgency": "High"
+    },
+    {
+      "name": "Rosa Maria Perez",
+      "age": 30,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, Barrio de Tepito",
+      "background": {
+        "ethnicity": "Criolla",
+        "class": "Lower middle class",
+        "occupation": "Housewife"
+      },
+      "symptoms": [
+        "Chronic headaches",
+        "Dizziness",
+        "Fatigue",
+        "Irritability"
+      ],
+      "actualDiagnosis": "Chronic anemia",
+      "contemporaryTheory": "Weakness of the blood due to poor diet and chronic blood loss, possibly exacerbated by heavy menstruation",
+      "possibleTreatments": [
+        "Iron-rich herbal decoctions with nettle and yellow dock",
+        "Bloodletting to balance humors",
+        "Dietary improvements with red meat and dark leafy greens",
+        "Rest and avoidance of strenuous activities",
+        "Application of leeches to reduce excess humors"
+      ],
+      "socialContext": "Her condition has made it difficult for her to care for her children and manage household duties, causing strain on her family",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Don Manuel Sanchez",
+      "age": 55,
+      "birthplace": "Madrid, Spain",
+      "currentResidence": "Mexico City, near the Zócalo",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Upper class",
+        "occupation": "Merchant"
+      },
+      "symptoms": [
+        "Severe back pain",
+        "Numbness in the legs",
+        "Difficulty walking",
+        "Loss of bladder control"
+      ],
+      "actualDiagnosis": "Spinal stenosis",
+      "contemporaryTheory": "Obstruction of the spinal channels by cold, phlegmatic humors, leading to compression of the nerves and loss of function",
+      "possibleTreatments": [
+        "Cupping and leeches along the spine",
+        "Hot compresses to the lower back",
+        "Herbal decoctions to reduce inflammation",
+        "Gentle exercise and stretching",
+        "Dietary adjustments to reduce phlegm"
+      ],
+      "socialContext": "His condition has significantly impacted his mobility, making it difficult for him to manage his business and attend social functions",
+      "urgency": "Medium"
+    },
+    {
+      "name": "María Dolores Herrera",
+      "age": 35,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, La Lagunilla",
+      "background": {
+        "ethnicity": "Mestiza",
+        "class": "Lower class",
+        "occupation": "Street vendor"
+      },
+      "symptoms": [
+        "Chronic cough",
+        "Shortness of breath",
+        "Fatigue",
+        "Wheezing"
+      ],
+      "actualDiagnosis": "Chronic bronchitis",
+      "contemporaryTheory": "Imbalance of humors in the lungs, possibly aggravated by exposure to cold, damp conditions",
+      "possibleTreatments": [
+        "Herbal infusions with thyme and eucalyptus",
+        "Bloodletting to reduce congestion",
+        "Warm poultices applied to the chest",
+        "Dietary adjustments to avoid phlegm-producing foods",
+        "Rest in a warm, dry environment"
+      ],
+      "socialContext": "Her illness has affected her ability to work, leading to financial difficulties and reliance on charity",
+      "urgency": "Medium"
+    },
+    {
+      "name": "José Ignacio Ruiz",
+      "age": 65,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, Plaza de Santo Domingo",
+      "background": {
+        "ethnicity": "Criollo",
+        "class": "Upper class",
+        "occupation": "Retired scholar"
+      },
+      "symptoms": [
+        "Memory loss",
+        "Confusion",
+        "Difficulty concentrating",
+        "Mood swings"
+      ],
+      "actualDiagnosis": "Dementia",
+      "contemporaryTheory": "Weakness of the brain due to depletion of vital spirits, possibly aggravated by melancholic temperament",
+      "possibleTreatments": [
+        "Bloodletting to balance humors",
+        "Herbal decoctions with sage and rosemary to strengthen the brain",
+        "Dietary adjustments to include more fresh fruits and vegetables",
+        "Regular mental exercises to stimulate the brain",
+        "Avoidance of stress and emotional disturbances"
+      ],
+      "socialContext": "His declining mental state has caused concern among his family and former students, leading to social isolation",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Antonia Garcia",
+      "age": 27,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, Colonia Doctores",
+      "background": {
+        "ethnicity": "Mestiza",
+        "class": "Lower class",
+        "occupation": "Maid"
+      },
+      "symptoms": [
+        "Severe abdominal pain",
+        "Vomiting",
+        "Diarrhea",
+        "Fever"
+      ],
+      "actualDiagnosis": "Acute gastroenteritis",
+      "contemporaryTheory": "Imbalance of humors in the stomach and intestines, possibly caused by consumption of spoiled food or contaminated water",
+      "possibleTreatments": [
+        "Herbal decoctions with ginger and peppermint",
+        "Bloodletting to reduce fever",
+        "Dietary adjustments to avoid rich, greasy foods",
+        "Rest and hydration with clear broths",
+        "Application of warm compresses to the abdomen"
+      ],
+      "socialContext": "Her illness has prevented her from working, leading to financial difficulties and reliance on her employer's charity",
+      "urgency": "High"
+    },
+    {
+      "name": "Diego Martinez",
+      "age": 42,
+      "birthplace": "Seville, Spain",
+      "currentResidence": "Mexico City, near the Cathedral",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Middle class",
+        "occupation": "Blacksmith"
+      },
+      "symptoms": [
+        "Chronic joint pain",
+        "Swelling in the hands and knees",
+        "Stiffness in the morning",
+        "Difficulty gripping tools"
+      ],
+      "actualDiagnosis": "Rheumatoid arthritis",
+      "contemporaryTheory": "Excess of cold, wet humors in the joints, leading to chronic inflammation and deformity",
+      "possibleTreatments": [
+        "Bloodletting to reduce excess humors",
+        "Herbal poultices with comfrey and arnica",
+        "Warm baths to soothe joints",
+        "Dietary adjustments to reduce dampness",
+        "Gentle exercise to maintain joint mobility"
+      ],
+      "socialContext": "His condition has significantly impacted his ability to work, leading to financial strain and reliance on his family",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Catalina de los Santos",
+      "age": 31,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, near the Royal Palace",
+      "background": {
+        "ethnicity": "Criolla",
+        "class": "Upper class",
+        "occupation": "Wife of a nobleman"
+      },
+      "symptoms": [
+        "Severe headaches",
+        "Nausea",
+        "Sensitivity to light",
+        "Fatigue"
+      ],
+      "actualDiagnosis": "Migraine",
+      "contemporaryTheory": "Imbalance of humors in the brain, possibly caused by excessive heat or stress",
+      "possibleTreatments": [
+        "Bloodletting to reduce excess heat",
+        "Herbal infusions with feverfew and peppermint",
+        "Rest in a dark, quiet room",
+        "Dietary adjustments to avoid triggers",
+        "Application of cold compresses to the forehead"
+      ],
+      "socialContext": "Her condition has caused concern among her family and friends, as it has significantly impacted her ability to participate in social activities",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Juan Carlos Mendoza",
+      "age": 50,
+      "birthplace": "Madrid, Spain",
+      "currentResidence": "Mexico City, Plaza Mayor area",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Upper class",
+        "occupation": "Colonial official"
+      },
+      "symptoms": [
+        "Chest pain",
+        "Shortness of breath",
+        "Dizziness",
+        "Fatigue"
+      ],
+      "actualDiagnosis": "Angina",
+      "contemporaryTheory": "Weakness of the heart due to depletion of vital spirits, possibly caused by stress or emotional distress",
+      "possibleTreatments": [
+        "Bloodletting to balance humors",
+        "Herbal infusions with hawthorn and motherwort",
+        "Rest and avoidance of stress",
+        "Dietary adjustments to include more fresh fruits and vegetables",
+        "Regular, gentle exercise"
+      ],
+      "socialContext": "His condition has caused concern among his colleagues and subordinates, leading to a temporary leave of absence from his duties",
+      "urgency": "High"
+    },
+    {
+      "name": "Miguel Ángel López",
+      "age": 45,
+      "birthplace": "Mexico City",
+      "currentResidence": "Mexico City, Barrio de San Juan",
+      "background": {
+        "ethnicity": "Mestizo",
+        "class": "Lower middle class",
+        "occupation": "Carpenter"
+      },
+      "symptoms": [
+        "Severe back pain",
+        "Difficulty walking",
+        "Numbness in the legs",
+        "Loss of bladder control"
+      ],
+      "actualDiagnosis": "Herniated disc",
+      "contemporaryTheory": "Obstruction of the spinal channels by cold, phlegmatic humors, leading to compression of the nerves and loss of function",
+      "possibleTreatments": [
+        "Cupping and leeches along the spine",
+        "Hot compresses to the lower back",
+        "Herbal decoctions to reduce inflammation",
+        "Gentle exercise and stretching",
+        "Dietary adjustments to reduce phlegm"
+      ],
+      "socialContext": "His condition has significantly impacted his ability to work, leading to financial strain and reliance on his family",
+      "urgency": "Medium"
+    },
+    {
+      "name": "Don Luis de Alvarado",
+      "age": 70,
+      "birthplace": "Toledo, Spain",
+      "currentResidence": "Mexico City, near the Cathedral",
+      "background": {
+        "ethnicity": "Peninsular",
+        "class": "Upper class",
+        "occupation": "Retired military officer"
+      },
+      "symptoms": [
+        "Severe joint pain",
+        "Swelling in the hands and knees",
+        "Stiffness in the morning",
+        "Difficulty walking"
+      ],
+      "actualDiagnosis": "Osteoarthritis",
+      "contemporaryTheory": "Excess of cold, wet humors in the joints, leading to chronic inflammation and deformity",
+      "possibleTreatments": [
+        "Bloodletting to reduce excess humors",
+        "Herbal poultices with comfrey and arnica",
+        "Warm baths to soothe joints",
+        "Dietary adjustments to reduce dampness",
+        "Gentle exercise to maintain joint mobility"
+      ],
+      "socialContext": "His condition has significantly impacted his mobility, leading to social isolation and reliance on his family",
+      "urgency": "Medium"
+    }
+  ]
+}

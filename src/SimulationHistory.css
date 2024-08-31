@@ -1,0 +1,41 @@
+/* Simulation history styling */
+.simulation-history {
+  position: fixed !important;
+  left: -300px; /* Start off-screen to the left */
+  top: 0;
+  width: 300px; /* Adjusted width to match your needs */
+  height: 100%;
+  background-color: #f7fafc; /* Light gray background */
+  border-right: 1px solid #e2e8f0; /* Gray border on the right */
+  transition: left 0.4s ease-in-out; /* Smooth transition for sliding in and out */
+  z-index: 1000; /* Ensure it appears above other content */
+  padding: 20px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  font-size: 0.8rem; /* Smaller font size */
+  color: #2d3748; /* Darker text color */
+}
+
+.simulation-history.open {
+  left: 0; /* Slide in from the left when open */
+}
+
+/* Style for the user input container */
+.user-input {
+  background-color: #edf7f6; /* A soft blue-green background */
+  border-left: 4px solid #38a1db; /* Blue border on the left */
+  padding: 10px 15px; /* Padding for the content */
+  margin: 20px 0; /* Margin to separate from other content */
+  font-family: 'IM Fell English', serif; /* Different font for a distinct look */
+  font-style: italic; /* Italic to add a bit of elegance */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Optional: Add an icon before the user input */
+.user-input::before {
+  content: "✍️ "; /* Pen icon or any other symbol */
+  font-size: 1.2rem;
+  margin-right: 8px; /* Space between the icon and text */
+  vertical-align: middle; /* Align icon with text */
+}

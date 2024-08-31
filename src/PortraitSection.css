@@ -1,0 +1,37 @@
+.npc-portrait-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+
+.npc-portrait-container,
+.pc-portrait-container {
+  width: 300px;
+  cursor: pointer;
+
+}
+
+.pc-wealth-container {
+  display: flex;
+  align-items: center;
+  }
+
+.pc-portrait-container {
+  margin-right: 200px;
+}
+
+
+/* Keep the existing styling, but add the following to float the wealth tracker */
+
+
+
+.portrait-section {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1px;
+   margin-top: 12px;
+}
+
+

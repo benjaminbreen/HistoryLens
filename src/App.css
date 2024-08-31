@@ -1,38 +1,962 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Germania+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap'); /* New font for buttons */
+
+/* General body styling */
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f7fafc; /* Light gray background */
+  color: #2d3748; /* Darker text color */
+  height: 100vh;
+  overflow-y: auto !important; /* Main scrolling happens here */
+
+ 
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html {
+  height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 12px;
+  min-height: 100vh;
+  overflow-y: auto; /* Main scrolling happens here */
+  width: 100%; /* Ensure the container takes full width */
+}
+
+/* Main content and interaction section */
+.main-content, .interaction-section {
+    flex: 1;
+    overflow-y: auto; /* Main scrolling happens here */
+}
+
+/* Title and Subtitle Styling */
+.title-container {
+  margin-bottom: 0.3rem;
+  text-align: center;
+ 
+}
+
+.title {
+  display: inline-block; /* Make the title an inline block element */
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin: 0;
+  background: linear-gradient(blue, #4A90E2, #4A90E2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  letter-spacing: 0.02rem;
+   margin-bottom: -0.4rem;
+
+  vertical-align: top; /* Align vertically with the subtitle */
+}
+
+.subtitle {
+  display: inline-block; /* Make the subtitle an inline block element */
+  font-size: 1.7rem;
+  color: #4A5568; /* Tailwind gray-700 */
+  margin: 0 0 0 12px; /* Add some space between the title and subtitle */
+  font-family: 'MedievalSharp', cursive;
+  letter-spacing: 0.02rem;
+  vertical-align: bottom; /* Align vertically with the title */
+    margin-bottom: -0.4rem;
+}
+
+.description-container {
+  margin-bottom: 0.2rem;
+  margin-top: 0.01rem;
+  text-align: right;
+}
+
+.description {
+  font-size: 1rem;
+  font-style: italic;
+  color: #718096; /* Tailwind gray-600 */
+  margin: 0;
+
+  margin-bottom: px;
+}
+
+/* Main content layout */
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+
+}
+
+.history-agent {
+  width: 66%;
+  padding: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
+  margin-bottom: 20px;
+  height: auto; /* Allow the container to adjust its height based on contents */
+
+}
+
+.interaction-section {
+  width: 32%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 13px;
+  padding: 22px;
+  margin-top: -24px;
+
+}
+
+/* Output Box Styling */
+.output-box {
+  background-color: #edf2f7; /* Light gray */
+  padding: 18px;
+  border-radius: 8px;
+  margin-top: 2px;
+  margin-bottom: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+ 
+  font-size: 1.05rem;
+}
+
+.bottom-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+
+ overflow: visible;
+margin-left: 5px;
+}
+
+/* Command Button Styling */
+
+.command-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 45%;
+ overflow: auto;
+
+
+}
+
+.command-button {
+  padding: 8px 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(45deg, #00c6ff, #0072ff); /* Example gradient */
   color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  margin: 2px 5px; /* Ensure there's space between the buttons */
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+   margin-top: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+/* General Hover Effect */
+.command-button:hover {
+  transform: scale(1.02); /* Slight lift and scale on hover */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Prescribe Button */
+.command-button.prescribe-button {
+  background: linear-gradient(30deg, #e57272, #005bb5); /* Original gradient */
+}
+
+.command-button.prescribe-button:hover {
+  background: linear-gradient(30deg, #d94f5f, #0066cc); /* Slightly lighter ruby and more vibrant sapphire */
+  box-shadow: 0 3px 3px rgba(217, 79, 95, 0.5), 0 0 8px rgba(0, 102, 204, 0.6), 0 0 6px rgba(255, 105, 180, 0.3) inset; /* Iridescent Ruby and Sapphire glow */
+}
+
+/* Symptoms Button */
+.command-button.symptoms-button {
+  background: linear-gradient(200deg, #d94f5f, #d98b8b); /* Original gradient */
+}
+
+.command-button.symptoms-button:hover {
+  background: linear-gradient(45deg, #d94f5f, #c67c7c); /* Shift to brighter, more iridescent tones */
+  box-shadow: 0 3px 3px rgba(217, 79, 95, 0.7), 0 0 8px rgba(198, 124, 124, 0.9), 0 0 6px rgba(255, 140, 140, 0.3) inset; /* Ruby glow with internal light */
+}
+
+/* Diagnose Button */
+.command-button.diagnose-button {
+  background: linear-gradient(90deg, #e6b800, #cc8400); /* Original gradient */
+}
+
+.command-button.diagnose-button:hover {
+  background: linear-gradient(45deg, #d6a500, #b37a00); /* More golden with a hint of iridescent depth */
+  box-shadow: 0 3px 5px rgba(198, 165, 0, 0.5), 0 0 8px rgba(179, 122, 0, 0.8), 0 2px 10px rgba(255, 223, 0, 0.3) inset; /* Golden amber glow with internal shimmer */
+
+}
+
+/* Buy Button */
+.command-button.buy-button {
+  background: linear-gradient(30deg, #cc9400, #d98b8b); /* Original gradient */
+}
+
+.command-button.buy-button:hover {
+  background: linear-gradient(30deg, #c17a00, #cc7474); /* More intense golden and ruby with a reflective quality */
+  box-shadow: 0 3px 3px rgba(193, 122, 0, 0.5), 0 0 8px rgba(204, 116, 116, 0.7), 0 0 10px rgba(255, 165, 0, 0.3) inset; /* Iridescent gold and ruby glow */
+}
+
+/* Map Button */
+.command-button.map-button {
+  background: linear-gradient(145deg, #20b2aa, #0066cc); /* Turquoise to dark cyan gradient */
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(32, 178, 170, 0.5) inset,
+    0 0 20px rgba(0, 139, 139, 0.3) inset;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.command-button.map-button:hover {
+  background: linear-gradient(145deg, #5f9ea0, #20b2aa); /* Slightly lighter gradient on hover */
+  box-shadow: 
+    0 6px 8px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(32, 178, 170, 0.7) inset,
+    0 0 30px rgba(0, 139, 139, 0.5) inset;
+  transform: translateY(-.9px);
+}
+
+.command-button.map-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(32, 178, 170, 0.6) inset,
+    0 0 16px rgba(0, 139, 139, 0.4) inset;
+}
+
+
+/* Portrait Section styling */
+.portrait-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0.1rem ;
+  margin-top: 0.7rem;
+}
+
+.npc-portrait-container,
+.pc-portrait-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 8px;
+}
+
+.npc-portrait-container {
+  justify-content: flex-start;
+}
+
+.pc-portrait-container {
+  justify-content: flex-end;
+}
+
+.npc-portrait-image,
+.pc-portrait-image {
+  width: 300px; /* Increase width to make the image wider */
+  height: 165px; /* Keep the height the same or adjust as needed */
+  border-radius: 10%; /* Adjust border-radius if needed for the desired look */
+  object-fit: cover;
+  margin: 0 10px; /* Space between image and container edges */
+  transition: transform 0.6s ease, box-shadow 0.3s ease;
+}
+
+.npc-portrait-image:hover,
+.pc-portrait-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.portrait-caption {
+  font-size: 0.8rem;
+  color: #718096; /* Gray-600 */
+  font-style: italic;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* Popup Box Styling */
+.journal-entry-box,
+.portrait-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+  text-align: center;
+}
+
+.journal-entry-box {
+  width: 400px;
+}
+
+
+
+.portrait-popup {
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh; /* Limit height to viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+.popup-portrait-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 30px auto 10px;
+}
+
+.popup-info {
+  font-size: 0.9rem;
+  color: #2d3748; /* Darker text color */
+  text-align: left;
+  margin-top: 10px;
+}
+
+/* Close Button Styling */
+.close-button {
+  background-color: #e53e3e; /* Red */
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  position: absolute; /* Position at the top-right corner of the popup */
+  top: 10px;
+  right: 10px;
+}
+
+.close-button:hover {
+  background-color: #c53030;
+}
+
+
+/* General Button Styling */
+button {
+  padding: 6px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif; /* New button font */
+  color: white;
+  background-color: #2d3748; /* Default dark gray background */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  background-color: rgba(26, 32, 44, 0.85); /* Darker gray with slight transparency on hover */
+  transform: scale(1.01); /* Slight scale-up on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+}
+
+/* End Game Button Styling */
+.end-game-button {
+  background-color: #e53e3e; /* Red background */
+  box-shadow: 0 0 15px rgba(229, 62, 62, 0.75); /* Red glow effect */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.end-game-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+  transform: scale(1.05); /* Slight scale-up on hover */
+  box-shadow: 0 0 30px rgba(255, 99, 71, 0.85); /* Enhanced glow on hover */
+}
+
+/* Open Commonplace Book Button Styling */
+.open-commonplace-book-button {
+  background-image: url('./assets/book.jpeg');
+  background-position: center; /* Center the image */
+  color: white; /* Ensure text is visible */
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif; /* New button font */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add a slight text shadow for better readability */
+  background-repeat: no-repeat; /* Prevent the background from repeating */
+}
+
+.open-commonplace-book-button:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
+}
+
+
+.view-counter-button {
+  background-color: #3b82f6; /* Blue */
+  float: right; /* Move the button to the right */
+  margin-right: 5px; /* Add some space from the right edge */
+  padding: 8px;
+}
+
+.view-counter-button:hover {
+  background-color: rgba(37, 99, 235, 0.85); /* Darker blue with transparency on hover */
+}
+
+.counter-narrative-pane {
+  position: fixed;
+  right: -300px; /* Hidden off-screen to the right initially */
+  top: 0;
+  width: 300px;
+  height: 100%; /* Full height of the viewport */
+  background-color: #f7fafc; /* Light gray background */
+  border-left: 1px solid #e2e8f0; /* Gray border on the left */
+  transition: right 0.4s ease-in-out; /* Smooth transition for opening and closing */
+  z-index: 2000; /* Ensure it appears above other content */
+  padding: 20px;
+  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+.counter-narrative-pane.open {
+  right: 0; /* Slide in from the right when open */
+}
+
+.open-commonplace-book-button:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
+}
+
+/* Special Styling for Mix Drugs Button */
+.mix-drugs-button {
+  background-color: #d97706; /* Amber color */
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.75); /* Amber glow effect */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.mix-drugs-button:hover {
+  background-color: rgba(201, 91, 0, 0.85); /* Darker amber on hover */
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 0 30px rgba(255, 138, 0, 0.85); /* Enhanced glow on hover */
+}
+
+/* Green Glow Animation for Submit Field */
+@keyframes greenGlow {
+  0% {
+    box-shadow: 0 0 2px rgba(0, 255, 0, 0.1);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    box-shadow: 0 0 6px rgba(0, 255, 0, 1);
+  }
+  100% {
+    box-shadow: 0 0 3px rgba(0, 255, 0, 0.9);
   }
 }
+
+input[type="text"]:focus {
+  outline: none; /* Remove default outline */
+  animation: greenGlow 2.5s infinite; /* Apply green glow animation */
+}
+
+/* Add Journal Entry Button Styling */
+.add-entry-button {
+  background-color: #2d3748; /* Dark gray */
+}
+
+.add-entry-button:hover {
+  background-color: rgba(26, 32, 44, 0.85); /* Darker gray with transparency on hover */
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
+}
+
+/* CritiqueAgent container styling */
+.critique-agent-container {
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 8px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+}
+
+.critique-agent-container h2 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.critique-agent-container .output-box {
+  background-color: seashell;
+  padding: 20px;
+  font-size: 1.15rem;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Journal and Inventory Pane Styling */
+.journal-pane,
+.inventory-pane,
+.simulation-history-pane {
+  position: fixed;
+  right: -300px;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #FAF9F6; /* Light gray background */
+  border-left: 1px solid #e2e8f0; /* Gray-200 */
+  transition: right 0.4s ease-in-out;
+  z-index: 100;
+  padding: 20px;
+  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.journal-pane.open,
+.inventory-pane.open,
+.simulation-history-pane.open {
+  right: 0;
+  transition: right 0.4s ease-in-out;
+}
+
+.inventory-pane {
+  /* ... existing styles ... */
+  z-index: 1001; /* Ensure it's above the prescribe popup */
+}
+
+.journal-entry,
+.inventory-item {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0; /* Gray-200 */
+}
+
+/* Italicize auto-generated journal entries */
+.auto-entry {
+  font-style: italic;
+  font-family: 'Lora', serif; /* Example font for italics, you can change this to your preferred italic font */
+  font-size: .9rem;
+}
+
+/* Regular font style for human-created journal entries */
+.human-entry {
+  font-style: normal;
+  font-family: 'Inter', sans-serif; /* Default or human-created font, you can change this as needed */
+}
+
+/* Loading Indicator */
+.loading-dots span {
+  display: inline-block;
+  font-size: 3rem;
+  animation: blink 1s infinite both;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+/* Date/Time/Location and Map Counter information */
+.counter-and-map {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.counter {
+  flex-grow: 1;
+  margin-bottom: 0px;
+  font-size: 12px;
+  color: #4A5568;
+  font-weight: 600;
+  letter-spacing: 0.03rem;
+  text-transform: uppercase;
+  padding-left: 5px;
+  padding-bottom: -5px;
+  padding-top: 10px;
+}
+
+.counter-and-map .map-button {
+  margin-left: 10px;
+  padding: 4px 10px;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .counter-and-map {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .counter-and-map .map-button {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+  .portrait-section {
+    flex-direction: column; /* Stack portraits vertically */
+    align-items: center; /* Center-align on mobile */
+    text-align: center; /* Center-align text on mobile */
+  }
+
+ .npc-portrait-image,
+  .pc-portrait-image {
+    width: 100px; /* Smaller image size on mobile */
+    height: 100px;
+  }
+
+  .popup-info {
+    font-size: 0.85rem; /* Slightly smaller text for better readability on small screens */
+  }
+
+  .close-button {
+    font-size: 0.7rem; /* Adjust close button size on smaller screens */
+  }
+
+  .history-entry {
+    margin-bottom: 10px;
+    
+  }
+
+  .user-input {
+    font-weight: bold;
+    color: #2d3748; /* Darker text color */
+    font-size: 1.2rem;
+  }
+
+  .bottom-buttons {
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+    align-items: stretch; /* Ensure the buttons take the full width */
+     width: 80%;
+  }
+
+  .command-buttons {
+    flex-direction: column; /* Stack command buttons vertically */
+    align-items: stretch; /* Ensure the buttons take the full width */
+  }
+
+  .command-button {
+    
+    margin-bottom: 10px; /* Add space between stacked buttons */
+  }
+
+  .simulation-history.open {
+    left: 0; /* Slide in from the left when open */
+
+  }
+}
+
+/* Hamburger Icon */
+.hamburger-icon {
+    cursor: pointer;
+    position: fixed;
+    top: 10px; /* Adjust this value to create more space between the header and the icon */
+    left: 20px; /* Keep some space from the left edge */
+    z-index: 2000; /* Ensure it appears above other elements */
+    width: 30px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px; /* Add padding around the icon */
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a background color with transparency */
+    border-radius: 5px; /* Optional: Add some border-radius to match the design aesthetic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+    .hamburger-icon {
+        top: 15px; /* Increase this value to ensure the icon doesn't overlap with the header */
+        left: 20px; /* Adjust this value to ensure proper spacing on smaller screens */
+        padding: 10px; /* Keep enough padding to prevent overlap */
+    }
+
+    .header {
+        padding-top: 60px; /* Increase the top padding of the header to avoid overlap */
+    }
+}
+
+.hamburger-icon.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-icon.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-icon.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Menu Pane */
+.menu-pane {
+    position: fixed;
+    top: 60px;
+    left: -300px; /* Initially hidden off-screen */
+    width: 250px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    z-index: 2000;
+    transition: left 0.3s ease;
+}
+
+.menu-pane.open {
+    left: 20px; /* Slide into view */
+}
+
+.menu-pane ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-pane ul li {
+    margin: 15px 0;
+}
+
+.menu-pane ul li a,
+.menu-pane ul li button {
+    color: #fff;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.menu-pane ul li a:hover,
+.menu-pane ul li button:hover {
+    color: #ffbf00; /* Stylish hover color */
+}
+
+/* Dark Mode Styling */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Adjustments for the dark mode toggle in dark mode */
+body.dark-mode .hamburger-icon span {
+    background-color: #e0e0e0;
+}
+
+body.dark-mode .menu-pane {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .menu-pane ul li a,
+body.dark-mode .menu-pane ul li button {
+    color: #e0e0e0;
+}
+
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #1a202c; /* Tailwind's Gray-900 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+
+
+body.dark-mode .main-content, 
+body.dark-mode .interaction-section {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .title, 
+body.dark-mode .subtitle {
+  background: linear-gradient(45deg, #4A90E2, #00c6ff); /* Adjusted gradient for better contrast */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode .description {
+  color: #a0aec0; /* Tailwind's Gray-500 */
+}
+
+body.dark-mode .history-agent {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .output-box {
+  background-color: #4a5568; /* Tailwind's Gray-700 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .command-button {
+  background: linear-gradient(45deg, #0072ff, #00c6ff); /* Invert the colors for dark mode */
+  color: #1a202c; /* Tailwind's Gray-900 */
+}
+
+body.dark-mode .command-button:hover {
+  background: linear-gradient(45deg, #005bb5, #00c6ff); /* Adjust hover effect */
+}
+
+body.dark-mode .command-button.prescribe-button {
+  background: linear-gradient(30deg, #005bb5, #e57272); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.symptoms-button {
+  background: linear-gradient(200deg, #b794f4, #805ad5); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.diagnose-button {
+  background: linear-gradient(90deg, #ecc94b, #d69e2e); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.buy-button {
+  background: linear-gradient(30deg, #68d391, #48bb78); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.map-button {
+  background: linear-gradient(80deg, #9f7aea, #6b46c1); /* Adjusted gradient */
+}
+
+body.dark-mode .portrait-section {
+
+}
+
+body.dark-mode .npc-portrait-image, 
+body.dark-mode .pc-portrait-image {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5); /* Darker shadow for images */
+}
+
+body.dark-mode .portrait-caption {
+  color: #a0aec0; /* Tailwind's Gray-500 */
+}
+
+body.dark-mode .portrait-popup, 
+body.dark-mode .journal-entry-box {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .popup-info {
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .close-button {
+  background-color: #f56565; /* Adjusted to a lighter red */
+}
+
+body.dark-mode .close-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+}
+
+body.dark-mode .end-game-button {
+  background-color: #f56565; /* Adjusted to a lighter red */
+  box-shadow: 0 0 15px rgba(229, 62, 62, 0.75); /* Adjusted glow effect */
+}
+
+body.dark-mode .end-game-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+}
+
+body.dark-mode .view-counter-button {
+  background-color: #3b82f6; /* Adjusted blue */
+}
+
+body.dark-mode .view-counter-button:hover {
+  background-color: #2c5282; /* Darker blue on hover */
+}
+
+body.dark-mode .mix-drugs-button {
+  background-color: #f6ad55; /* Lighter amber */
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.75); /* Adjusted glow effect */
+}
+
+body.dark-mode .mix-drugs-button:hover {
+  background-color: #dd6b20; /* Darker amber on hover */
+}
+
+body.dark-mode .journal-pane, 
+body.dark-mode .inventory-pane, 
+body.dark-mode .simulation-history-pane {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+  border-left: 1px solid #4a5568; /* Darker gray border */
+  z-index:100;
+}
+
+body.dark-mode .journal-entry, 
+body.dark-mode .inventory-item {
+  border-bottom: 1px solid #4a5568; /* Darker border for entries */
+}
+
+body.dark-mode .auto-entry {
+  color: #cbd5e0; /* Tailwind's Gray-400 */
+}
+
+body.dark-mode .human-entry {
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .critique-agent-container {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+}
+
+body.dark-mode .critique-agent-container .output-box {
+  background-color: #4a5568; /* Tailwind's Gray-700 */
+}
+
+body.dark-mode .counter {
+  color: #cbd5e0; /* Tailwind's Gray-400 */
+}
+
+body.dark-mode .loading-dots span {
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .simulation-history.open {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+

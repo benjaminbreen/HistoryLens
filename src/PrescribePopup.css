@@ -1,0 +1,51 @@
+.prescribe-popup {
+  position: fixed;
+  top: 50%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(240, 230, 210, 0.95);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 52px rgba(0, 0, 0, 0.8);
+  width: 30%; /* Adjust the popup to take up 40% of the screen width */
+  max-width: 600px; /* Limit the maximum width to 600px for larger screens */
+  max-height: 600px; /* Limit the maximum width to 600px for larger screens */
+  pointer-events: auto; /* Allow interaction with elements behind */
+}
+
+.prescribe-content {
+  background-color: #f0e6d2;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%; /* Ensure content takes up the full width of the popup */
+  pointer-events: auto; /* Re-enable interactions for the popup content */
+}
+
+.prescription-area.drag-over {
+  background-color: rgba(139, 126, 109, 0.3);
+}
+
+.selected-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prescription-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.medieval-header {
+    font-size: 1.3em;
+    color: #2d3748;
+    margin-bottom: 20px;
+    padding-left: 150px;
+}
+
+.medieval-header span {
+    font-family: 'MedievalSharp', cursive;
+    color: #2d3748;
+    letter-spacing: 0.02rem;}

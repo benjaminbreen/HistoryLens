@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap'); /* Font for inventory items */
+
+/* General Styles */
+.mixing-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px); /* Background blur for depth */
+}
+
+.mixing-popup-content {
+  background-color: rgba(45, 45, 45, 0.8);
+  padding: 20px;
+  border-radius: 12px;
+  width: 65%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 160px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
+  max-width: 1200px;
+}
+
+.mixing-header {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 2px solid #8b8b8b;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  color: #e1cfa5;
+  text-align: center;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.23);
+}
+
+.close-mixing-button {
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  top: 3.5%;
+  right: 23.5%;
+  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.close-mixing-button:hover {
+  background-color: #ff1c1c;
+  box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.9);
+}
+
+.mixing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 95%;
+}
+
+.mix-button-container {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.mix-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  font-family: "MedievalSharp", cursive;
+}
+
+.mix-button.enabled:hover {
+  background-color: #1d5a92;
+  transform: scale(1.05);
+  box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.7);
+}
+
+.mix-button.disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Method Grid and Squares */
+.method-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+  padding: 10px;
+  background-color: rgba(58, 58, 58, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
+  max-width: 100%; /* Ensure the grid stays within the container */
+  box-sizing: border-box;
+}
+
+.method-square-container {
+  flex: 1 1 23%; /* Allow squares to take up 23% of the container width */
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+
+  
+}
+
+.method-title {
+  font-family: 'IM Fell English', serif;
+  font-size: 1.2rem;
+  color: #e1cfa5;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+  margin-bottom: 5px; /* Adjust spacing between title and square */
+  text-align: center; /* Center the title */
+}
+
+.method-square {
+  width: 220px;
+  height: 220px;
+  background-size: cover;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.method-square:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* Hover/Click Caption Box */
+.method-hover-box {
+  display: none;
+  position: fixed;
+  bottom: 58%; /* Position the box at top of square */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px; /* Adjust the width as needed */
+  background-color: rgba(45, 45, 45, 0.9);
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  font-family: 'IM Fell English', serif;
+  font-size: 1.3rem;
+  color: #eaeaea;
+  text-align: center;
+  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
+  line-height: 1.1rem;
+  z-index: 1001; /* Ensure it appears above other elements */
+  pointer-events: none; /* Prevent the box from interfering with mouse events */
+}
+
+.method-square:hover .method-hover-box,
+.method-square:focus .method-hover-box {
+  display: block; /* Show the hover box on hover or focus */
+}
+
+/* Inventory Grid */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: rgba(68, 68, 68, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+   height: 300px; /* Set a fixed height for the grid */
+  overflow-y: auto; /* Enable vertical scrollbar */
+}
+
+.mixing-inventory-item {
+  background-color: #555;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  font-family: 'Nunito Sans', sans-serif;
+  text-transform: uppercase;
+}
+
+.mixing-inventory-item:hover {
+  background-color: #666;
+  transform: scale(1.05);
+  box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Hover Popup for Inventory Items */
+
+.mixing-hover-popup {
+  position: fixed;
+  top: 60%;
+  left: 42%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(45, 45, 45, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  font-family: 'IM Fell English', serif;
+  font-size: 1rem;
+  color: #eaeaea;
+  text-align: left;
+  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  max-width: 600px;
+  pointer-events: none;
+}
+
+
+/* Compound Result */
+.compound-result {
+  text-align: center;
+  margin-bottom: 5px;
+  padding:12px;
+  background-color: rgba(58, 58, 58, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+  color: floralwhite;
+  max-width: 70%;
+  margin-top: -65px;
+  margin-left: 160px;
+}
+
+.compound-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.compound-item .emoji {
+  font-size: 5rem;
+  margin-right: 10px;
+  margin-left: 10px;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+/* Adjustments for Small Screens */
+@media (max-width: 768px) {
+  .inventory-grid {
+    grid-template-columns: repeat(4, 1fr); /* Adjust columns on smaller screens */
+  }
+
+  .method-square {
+    width: 180px;
+    height: 170px;
+  }
+
+  .method-square-container {
+    width: 230px;
+  }
+
+  .compound-result {
+    max-width: 100%;
+  }
+}
+
+.mixing-container.loading {
+  animation: glow 2s infinite ease-in-out;
+  background-color: rgba(45, 45, 45, 0.9); /* Adjust as needed */
+}
+
+/* Loading Animation */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); /* Lighter orange */
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(255, 140, 0, 0.7),  /* Darker orange */
+      0 0 40px rgba(255, 215, 0, 0.5),  /* Yellow-gold */
+      0 0 60px rgba(255, 69, 0, 0.3);   /* Redder orange-amber */
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); /* Lighter orange */
+  }
+}
+
+.mixing-container.loading {
+  animation: glow 3s infinite ease-in-out;
+}

@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap'); /* New font for optional use */
+
+/* Main inventory pane */
+.inventory-pane {
+  position: fixed;
+  right: -350px; /* Hidden by default */
+  top: 0;
+  width: 350px;
+  height: 100%;
+  background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
+  border-left: 1px solid #8b8b8b;
+  box-shadow: -4px 0px 15px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  color: #f5f5f5;
+  overflow-x: visible;
+
+  transition: right 0.4s ease-in-out; /* Slide-in transition */
+}
+
+.inventory-pane.open {
+  right: 0; /* Slide in when open */
+}
+
+/* Adjustments for mobile and smaller screens */
+@media (max-width: 768px) {
+  .inventory-pane {
+    width: 100%;
+    height: 60%;
+    top: auto;
+    bottom: -60%; /* Keep it hidden by default */
+    right: 0;
+    border-left: none;
+    border-top: 1px solid #8b8b8b;
+    padding-bottom: 10px;
+    transition: bottom 0.4s ease-in-out; /* Slide-in transition */
+  }
+
+  .inventory-pane.open {
+    bottom: 0; /* Slide up when open */
+  }
+
+  .item-meta {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+
+
+/* Humoral element */
+.humoral-circle {
+  position: absolute;
+  top: 14px;
+  right: 8px;
+  width: 42px;
+  height: 42px;
+  background-color: rgba(170, 150,165, 0.5); /* Off-white circle with transparency */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  color: #white; 
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ensure the circle is on top */
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 240px;
+  font-size: 1 rem;
+  border: none;
+  color: #white;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #f5e6dc;
+}
+
+/* Header for inventory sections */
+.inventory-pane h2 {
+  font-family: "MedievalSharp", cursive; 
+  font-size: 1.8rem; /* Increased font size */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #8b8b8b;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+   margin-top: 60px;
+  color: #d1bfa5; /* Warm, muted tone for headers */
+  text-align: center; /* Centered header */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
+
+/* Main inventory pane */
+.inventory-pane {
+  position: fixed;
+  right: -350px;
+  top: 0;
+  width: 350px;
+  height: 100%;
+  background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
+  border-left: 1px solid #8b8b8b;
+  box-shadow: -4px 0px 15px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  color: #f5f5f5;
+  transition: right 0.4s ease-in-out;
+}
+
+.inventory-pane.open {
+  right: 0;
+}
+
+/* Inventory list */
+.inventory-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Inventory items */
+.inventory-item {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  border: 3px solid #3d3d3d;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+
+.inventory-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.inventory-item.dragging {
+  opacity: 0.9;
+  transform: scale(1.00);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: grabbing;
+  background-color: #444; /* Set a dark background color for the dragging item */
+}
+
+.inventory-item .emoji {
+  font-size: 3.8em;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.item-details {
+  margin-left: 70px;
+}
+
+.item-name {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1.5rem;
+    text-transform: capitalize;
+  color: #f5f5f5;
+  margin-bottom: 5px;
+}
+
+.item-meta {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+.meta-label {
+  font-size: 0.7rem;
+  color: #a8a8a8;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  margin-bottom: 2px;
+}
+
+.meta-value {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1rem;
+  color: #f5f5f5;
+}
+
+.item-description {
+  font-family: 'IM Fell English', serif;
+
+  color: #cfcfcf;
+  font-size: 1.1rem;
+  margin-top: 6px;
+}
+
+/* Humoral element */
+.humoral-circle {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(170, 150, 165, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Item popup */
+.item-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2c2c2c;
+  color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  max-width: 400px;
+  width: 90%;
+}
+
+.item-popup .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #f5f5f5;
+  cursor: pointer;
+}
+
+.item-popup h2 {
+  font-family: "MedievalSharp", cursive;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.item-popup p {
+  margin-bottom: 10px;
+}
+
+/* Adjustments for mobile and smaller screens */
+@media (max-width: 768px) {
+  .inventory-pane {
+    width: 100%;
+    height: 60%;
+    top: auto;
+    bottom: -60%;
+    right: 0;
+    border-left: none;
+    border-top: 1px solid #8b8b8b;
+    transition: bottom 0.4s ease-in-out;
+  }
+
+  .inventory-pane.open {
+    bottom: 0;
+  }
+
+  .item-popup {
+    width: 95%;
+  }
+}
+
+/* Scroll bar customization */
+.inventory-pane::-webkit-scrollbar {
+  width: 12px;
+}
+
+.inventory-pane::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.inventory-pane::-webkit-scrollbar-thumb {
+  background-color: #3d3d3d;
+  border-radius: 5px;
+  border: 2px solid #1a1a1a;
+}
