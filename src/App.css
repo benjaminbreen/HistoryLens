@@ -604,6 +604,7 @@ input[type="text"]:focus {
   padding-left: 5px;
   padding-bottom: -5px;
   padding-top: 10px;
+
 }
 
 .counter-and-map .map-button {
@@ -612,23 +613,45 @@ input[type="text"]:focus {
   font-size: 1rem;
 }
 
+
+
+/* Media Query for smaller screens */
 @media (max-width: 768px) {
   .counter-and-map {
     flex-direction: column;
     align-items: flex-start;
+
   }
+
+   .container {
+    padding: 2px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .counter {
+  flex-grow: 1;
+  margin-bottom: 0px;
+  font-size: 8px;
+
+}
 
   .counter-and-map .map-button {
     margin-left: 0;
     margin-top: 5px;
   }
 }
-/* Media Query for smaller screens */
+
 @media (max-width: 768px) {
   .portrait-section {
     flex-direction: column; /* Stack portraits vertically */
     align-items: center; /* Center-align on mobile */
     text-align: center; /* Center-align text on mobile */
+
+  }
+  .portrait-caption {
+        font-size: 0.4rem;
   }
 
  .npc-portrait-image,
@@ -649,6 +672,19 @@ input[type="text"]:focus {
     margin-bottom: 10px;
     
   }
+
+  .output-box {
+    font-size: 0.9rem;
+    padding: 10px;
+    margin-bottom: 8px;
+    max-height: 400px;
+  }
+
+   .main-content, .interaction-section {
+    width: 100%;
+    padding: 8px;
+  }
+
 
   .user-input {
     font-weight: bold;
@@ -675,6 +711,75 @@ input[type="text"]:focus {
   .simulation-history.open {
     left: 0; /* Slide in from the left when open */
 
+  } }
+
+  @media only screen and (max-width: 768px) {
+  /* Main Page Adjustments */
+  .title-container {
+    display: none; /* Hide the top box */
+  }
+
+  .portrait-section {
+    flex-direction: row; /* Ensure the portraits are in a row */
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Center align the portraits */
+  }
+
+  .npc-portrait-image,
+  .pc-portrait-image {
+    width: 80px; /* Adjust portrait size for mobile */
+    height: 80px;
+    margin: 5px;
+  }
+
+  .title, .subtitle {
+    font-size: 1.2rem; /* Make the title and subtitle smaller */
+  }
+
+  .description {
+    font-size: 0.9rem; /* Make the description font smaller */
+  }
+
+  /* Adjusting the Mix Panel */
+  .mix-panel-container {
+    width: 100%; /* Make sure the mix panel takes full width */
+    padding: 10px; /* Adjust padding for better fit */
+  }
+
+  .mix-panel .mix-options {
+    display: flex;
+    flex-wrap: wrap; /* Make the options wrap to fit smaller screens */
+    justify-content: center;
+  }
+
+  .mix-panel button {
+    font-size: 0.8rem; /* Make buttons slightly smaller */
+    padding: 5px; /* Adjust padding for buttons */
+  }
+
+  .mix-drugs-button {
+    font-size: 1rem; /* Slightly reduce the size of the Mix Drug button */
+  }
+
+  .commonplace-book-container {
+    width: 100%; /* Ensure full width */
+    height: auto; /* Allow height to adjust */
+  }
+
+  .commonplace-book-controls {
+    display: flex;
+    flex-direction: column; /* Stack controls vertically */
+    align-items: center; /* Center align controls */
+  }
+
+  .commonplace-book-controls button {
+    margin: 5px 0; /* Space buttons out vertically */
+  }
+
+  /* Smaller Font Overall */
+  body {
+    font-size: 0.9rem; /* Reduce the base font size slightly for mobile */
   }
 }
 
@@ -683,7 +788,7 @@ input[type="text"]:focus {
     cursor: pointer;
     position: fixed;
     top: 10px; /* Adjust this value to create more space between the header and the icon */
-    left: 20px; /* Keep some space from the left edge */
+    left: 10px; /* Keep some space from the left edge */
     z-index: 2000; /* Ensure it appears above other elements */
     width: 30px;
     height: 25px;
@@ -710,10 +815,12 @@ input[type="text"]:focus {
         top: 15px; /* Increase this value to ensure the icon doesn't overlap with the header */
         left: 20px; /* Adjust this value to ensure proper spacing on smaller screens */
         padding: 10px; /* Keep enough padding to prevent overlap */
+        width: 10px;
+    height: 1px;
     }
 
     .header {
-        padding-top: 60px; /* Increase the top padding of the header to avoid overlap */
+        padding-top: 40px; /* Increase the top padding of the header to avoid overlap */
     }
 }
 

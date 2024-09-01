@@ -271,27 +271,98 @@
 
 /* Adjustments for Small Screens */
 @media (max-width: 768px) {
-  .inventory-grid {
-    grid-template-columns: repeat(4, 1fr); /* Adjust columns on smaller screens */
+  .mixing-popup-content {
+    width: 95%;
+    height: 88%;
+    margin-right: 0;
+    padding: 10px;
   }
 
-  .method-square {
-    width: 180px;
-    height: 170px;
+  .close-mixing-button {
+    top: 10px;
+    right: 10px;
+  }
+
+  .method-grid {
+    flex-direction: column;
+    align-items: center;
+    height: 30%;
   }
 
   .method-square-container {
-    width: 230px;
+    flex: 1 1 100%;
+    margin-bottom: 2px;
+  }
+
+  .method-square {
+    width: 120px;
+    height: 120px;
+  }
+
+  .inventory-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    height: 250px;
+  }
+
+  .mixing-inventory-item {
+    height: 80px;
+    font-size: 0.8rem;
+    padding: 5px;
   }
 
   .compound-result {
+    margin-left: 0;
     max-width: 100%;
+  }
+
+  .compound-item .emoji {
+    font-size: 3rem;
+  }
+
+  .mixing-hover-popup {
+    left: 50%;
+    max-width: 90%;
+  }
+
+  .method-hover-box {
+    width: 180px;
+    font-size: 1rem;
   }
 }
 
-.mixing-container.loading {
-  animation: glow 2s infinite ease-in-out;
-  background-color: rgba(45, 45, 45, 0.9); /* Adjust as needed */
+/* Additional adjustments for very small screens */
+@media (max-width: 480px) {
+  .mixing-popup-content {
+    padding: 5px;
+  }
+
+  .mixing-header {
+    font-size: 1.4rem;
+  }
+
+  .method-square {
+    width: 120px;
+    height: 120px;
+  }
+
+  .inventory-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mixing-inventory-item {
+    height: 70px;
+    font-size: 0.7rem;
+  }
+
+  .compound-item .emoji {
+    font-size: 2.5rem;
+  }
+
+  .mix-button {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
 }
 
 /* Loading Animation */
