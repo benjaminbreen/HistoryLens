@@ -34,8 +34,9 @@ function TipBox({ currentTurn }) {
 
   return (
     <div
-      className="w-full max-w-2xl bg-yellow-100 shadow-md rounded p-4 mb-2 cursor-pointer relative" // Changed mb-4 to mb-2
+      className="tip-box w-full max-w-2xl bg-yellow-100 shadow-md rounded p-4 mb-2 cursor-pointer relative"
       onClick={() => setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length)}
+    
     >
       <button
         onClick={(e) => {

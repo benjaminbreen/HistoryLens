@@ -125,15 +125,63 @@
     }
 }
 
-/* Counter information */
-.counter {
-    margin-bottom: 3px;
-    font-size: 12px;
-    color: #4A5568; /* Tailwind gray */
-    font-weight: 600; /* Bold the text to make it stand out */
-    letter-spacing: 0.02rem; /* Add some letter spacing for a cleaner look */
-    text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
-    border-bottom: 0px solid #e2e8f0; /* Add a subtle bottom border (Gray-200) */
-    padding-left: 5px;
-    padding-bottom: 0px; /* Add some space between the text and the border */
+/* Smaller screen */
+
+
+@media (max-width: 768px) {
+    /* Stack Right Pane Above Left Pane */
+    .counter-narrative-container {
+        flex-direction: column-reverse; /* Display right pane above left pane */
+        gap: 10px; /* Adjust gap between stacked panes */
+        width: 100%; /* Use full width for mobile */
+    }
+
+    .pane {
+        width: 100%; /* Each pane takes full width */
+    }
+
+    /* Reduce Text Size and Padding */
+    .left-pane .output-box,
+    .right-pane .output-box {
+        font-size: 0.95rem; /* Smaller font size for mobile */
+        padding: 10px; /* Reduce padding */
+        max-height: 50vh; /* Reduce max height for better fit */
+    }
+
+    .incorporate-button-container {
+        display: flex;
+        justify-content: flex-end; /* Ensure the button stays to the right */
+        margin-top: -20px; /* Adjust margin for mobile */
+        padding: 5px; /* Reduce padding */
+    }
+
+    .incorporate-button {
+        font-size: 14px; /* Smaller button text */
+        padding: 8px 16px; /* Reduce padding */
+    }
+
+    .critique-agent-container {
+        padding: 15px; /* Reduce padding for mobile */
+    }
+
+    .right-pane .header {
+        font-size: 1rem; /* Reduce header size */
+        margin-bottom: 8px; /* Adjust margin */
+    }
+
+    .dropdown-container select {
+        font-size: 0.9rem; /* Smaller dropdown font size */
+        padding: 8px; /* Reduce padding */
+    }
+
+    .loading-dots span {
+        font-size: 1.5rem; /* Smaller loading dots */
+    }
+
+    .counter {
+        font-size: 10px; /* Reduce counter text size */
+        padding-left: 2px; /* Adjust padding */
+        padding-bottom: 2px; /* Adjust padding */
+    }
 }
+

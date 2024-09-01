@@ -17,7 +17,7 @@ const NavMobile = ({ setIsDarkMode, setIsAboutOpen }) => {
 
   return (
     <div ref={ref} className="nav-mobile">
-      <Hamburger toggled={isOpen} size={20} toggle={setOpen} />
+      <Hamburger toggled={isOpen} size={25} toggle={setOpen} />
       <AnimatePresence>
         {isOpen && (
           <motion.div

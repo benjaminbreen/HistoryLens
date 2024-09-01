@@ -40,15 +40,29 @@
   font-family: 'MedievalSharp', cursive;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .wealth-box {
-    max-width: 400px; /* Increase max-width for larger screens */
+    flex-direction: column; /* Stack wealth and status sections vertically */
+    padding: 8px 8px; /* Reduce padding */
+    border-radius: 12px; /* Slightly smaller border radius */
+  }
+
+  .wealth-item {
+    align-items: flex-start; /* Keep items aligned to the left */
+    margin-bottom: 0px; /* Add some spacing between wealth and status sections */
+  }
+
+  .wealth-tracker .wealth-label {
+    font-size: 11px; /* Reduce font size */
+    margin-bottom: 2px; /* Reduce margin below the label */
+  }
+
+  .wealth-tracker .wealth-value {
+    font-size: 11.5px; /* Reduce font size */
+  }
+
+  .wealth-tracker {
+    margin-bottom: 8px; /* Add a little more spacing below the tracker */
   }
 }
 
-@media (max-width: 768px) {
-  .wealth-box {
-    width: 100%; /* Adjust to full width on smaller screens */
-    flex-direction: column; /* Stack wealth and status sections vertically on smaller screens */
-  }
-}

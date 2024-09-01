@@ -228,7 +228,78 @@
 }
 
 .symptoms-root .symptoms-popup .astrology-image-popup img {
-  width: 10% !important;
-  height: auto !important;  /* Ensure the image scales properly */
-  border-radius: 10px !important;
+  width: 100vh ;
+  height: auto ;  /* Ensure the image scales properly */
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .symptoms-root .symptoms-popup {
+    padding: 20px;
+    width: 95%;
+    max-width: 100%;
+    top: 5%;
+    transform: translateX(-50%);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .symptoms-root .symptoms-popup-content {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .symptoms-root .symptoms-popup .npc-info {
+    flex: 0.6; /* Smaller portion of space for portrait and metadata */
+    margin-right: 10px; /* Space between the portrait and symptoms chart */
+    text-align: left;
+  }
+
+  .symptoms-root .symptoms-popup .npc-info img {
+    width: 100px; /* Smaller portrait size */
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .symptoms-root .symptoms-popup .npc-info ul {
+    font-size: 14px; /* Smaller metadata text */
+  }
+
+  .symptoms-root .symptoms-popup .symptoms-chart {
+    flex: 1.4;
+    width: 100%;
+  }
+
+  .symptoms-root .symptoms-popup .body-chart {
+
+    height: auto; /* Maintain aspect ratio */
+   
+    margin-left: 10px; /* Space between the chart and the portrait/metadata */
+    background-size: contain; /* Ensure the image fits within the div without distortion */
+  }
+
+  .symptoms-root .symptoms-popup .symptom-list {
+    font-size: 14px; /* Smaller text for symptom list */
+    padding-left: 10px;
+    padding-top: 5px;
+  }
+
+  .symptoms-root .symptoms-popup .symptom-list ul {
+    padding: 0;
+  }
+
+  .symptoms-root .symptoms-popup .symptom-list li {
+    margin-bottom: 8px;
+  }
+
+  .close-button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .astrology-symbol {
+    top: 10px;
+    right: 10px;
+    font-size: 24px; /* Smaller astrology symbol */
+  }
 }

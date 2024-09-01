@@ -13,26 +13,17 @@
   resize: vertical; /* Allow the user to resize the textarea vertically */
   overflow: auto; /* Display scrollbars if the content overflows */
   box-sizing: border-box;
+  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for box-shadow */
 }
 
 /* Green glow effect on focus */
 .input-box-textarea:focus {
   outline: none; /* Remove default outline */
-  animation: greenGlow 3.5s infinite; /* Apply green glow animation */
+  box-shadow: 0 0px 12px #00ff00, 0 10px 30px #00ff00, 0 0 50px #00ff00;
+  animation: greenGlow 2.5s ease-in-out infinite alternate; /* Apply green glow animation */
 }
 
-/* Green glow animation */
-@keyframes greenGlow {
-  0% {
-    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
-  }
-  50% {
-    box-shadow: 0 0 40px #00ff00, 0 0 60px #00ff00, 0 0 80px #00ff00, 0 0 100px #00ff00;
-  }
-  100% {
-    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
-  }
-}
+
 
 .input-box-button {
   margin-top: 8px;
@@ -43,12 +34,12 @@
   border-radius: 8px;
   font-weight: bold; /* Bold text for emphasis */
   cursor: pointer;
-width: 97%;
-align: center;
-margin-left: auto;
-margin-right: auto;
+  width: 97%;
+  align: center;
+  margin-left: auto;
+  margin-right: auto;
   font-size: 17px;
-text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for text */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for text */
   box-shadow: 0 4px 6px rgba(39, 174, 96, 0.4), 0 0 5px rgba(39, 174, 96, 0.9) inset; /* Outer and inner glow in green tones */
   transition: background-color 0.5s ease; /* Smooth transition */
 }
@@ -56,6 +47,4 @@ text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for text */
 /* Button hover effect */
 .input-box-button:hover {
   background-color: #218838; /* Darker green on hover */
-
-
 }

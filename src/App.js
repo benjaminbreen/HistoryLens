@@ -468,10 +468,8 @@ const contextSummary = `
               - Patients sometimes complain about the foreignness or noxiousness of a medicine Maria prescribes. 
 
               **Commands:**
-              - Certain key words are commands: #symptoms, #map, #prescribe, #diagnose, and #buy. Suggest one or two when contextually appropriate (start with suggesting #symptoms and #diagnose, then suggest #prescribe with NPCs seeking medical treatment). #buy is suggested whenever items for sale may be nearby. 
+              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. Suggest one or two when contextually appropriate (when NPCs seek medical care, start with suggesting #symptoms and #diagnose, then suggest #prescribe). #buy is suggested whenever items for sale may be nearby. 
               - if a player asks a patient about their #symptoms in their input, the player will see a popup displaying them. You can go into more detail if prompted but need not. 
-              - #map: using ASCII and labelled emojis and other textual elements available to you, create a LARGE AND DETAILED visual map of the area being described and display it in a markdown table.
-              - #diagnose: show Maria's thought process as she utilizes 17th century understandings of humoral theory to develop a diagnosis. Portray her thoughts in italics, with materia medica she considers using in **bold italic**.
               - #buy: ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby.
 
               **Contextual Awareness:**

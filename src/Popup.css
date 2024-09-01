@@ -566,3 +566,31 @@ h2 {
     color: #2d3748;
     letter-spacing: 0.02rem;
 }
+
+@media (max-width: 768px) {
+  .map-popup {
+    padding: 15px; /* Reduce padding for smaller screens */
+    max-width: 90%; /* Ensure the popup doesn't exceed the screen width */
+    max-height: 80vh; /* Reduce the height for smaller screens */
+    margin: 0 auto; /* Center the popup horizontally */
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
+  }
+
+  .map-popup h2, .map-popup h3 {
+    font-size: 1.4rem; /* Slightly smaller font size for headers */
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .map-popup p, .map-popup pre {
+    font-size: 0.9rem; /* Reduce font size for better readability on small screens */
+    margin-left: 10px; /* Adjust margins */
+    margin-right: 10px;
+  }
+
+  .close-map-button {
+    padding: 8px 15px; /* Adjust button padding */
+    top: 10px; /* Adjust button position */
+    right: 10px;
+  }
+}

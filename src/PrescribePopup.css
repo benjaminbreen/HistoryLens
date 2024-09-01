@@ -49,3 +49,55 @@
     font-family: 'MedievalSharp', cursive;
     color: #2d3748;
     letter-spacing: 0.02rem;}
+
+    @media (max-width: 768px) {
+  .prescribe-popup {
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(240, 230, 210, 0.95);
+    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+    width: 50%; /* Adjust the popup to take up 90% of the screen width */
+    max-width: 400px; /* Limit the maximum width for mobile screens */
+    max-height: 70vh; /* Ensure the popup fits within the viewport */
+    overflow-y: auto; /* Add scroll for content overflow */
+  }
+
+  .prescribe-content {
+    background-color: #f0e6d2;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%; /* Ensure content takes up the full width of the popup */
+  }
+
+  .selected-item {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Smaller gap for mobile view */
+    font-size: 1rem; /* Adjust the font size */
+  }
+
+  .prescription-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Smaller gap between controls */
+    margin-bottom: 15px;
+  }
+
+  .medieval-header {
+    font-size: 1.1em; /* Slightly smaller header font size */
+    color: #2d3748;
+    margin-bottom: 15px;
+    padding-left: 0; /* Remove padding for mobile view */
+    text-align: center; /* Center the header on mobile */
+  }
+
+  .medieval-header span {
+    font-family: 'MedievalSharp', cursive;
+    color: #2d3748;
+    letter-spacing: 0.02rem;
+  }
+}
+

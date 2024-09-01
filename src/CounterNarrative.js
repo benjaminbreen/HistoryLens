@@ -29,7 +29,7 @@ const CounterNarrative = ({ historyOutput, handleIncorporate }) => {
                 } else {
                     // Fallback: Write from the POV of a character in the current scenario
                     systemPrompt = `
-                        From the perspective of a character involved in the current scenario described in the history agent output, write a subjective, stream-of-consciousness narrative reflecting their thoughts and emotions during the encounter. Use first-person perspective and incorporate the context and events provided in the output.
+                        From the perspective of a character involved in the current scenario described in the history agent output, write a subjective, stream-of-consciousness narrative reflecting their thoughts and emotions during the encounter. Use first-person perspective and incorporate the context and events provided in the output. Limit three paragraphs.
                     `;
                 }
             }

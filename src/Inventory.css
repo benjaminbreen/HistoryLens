@@ -23,29 +23,7 @@
   right: 0; /* Slide in when open */
 }
 
-/* Adjustments for mobile and smaller screens */
-@media (max-width: 768px) {
-  .inventory-pane {
-    width: 100%;
-    height: 60%;
-    top: auto;
-    bottom: -60%; /* Keep it hidden by default */
-    right: 0;
-    border-left: none;
-    border-top: 1px solid #8b8b8b;
-    padding-bottom: 10px;
-    transition: bottom 0.4s ease-in-out; /* Slide-in transition */
-  }
 
-  .inventory-pane.open {
-    bottom: 0; /* Slide up when open */
-  }
-
-  .item-meta {
-    justify-content: center;
-    text-align: center;
-  }
-}
 
 
 
@@ -148,7 +126,7 @@
 }
 
 .inventory-item.dragging {
-  opacity: 0.9;
+  opacity: 1;
   transform: scale(1.00);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   cursor: grabbing;
@@ -258,27 +236,7 @@
   margin-bottom: 10px;
 }
 
-/* Adjustments for mobile and smaller screens */
-@media (max-width: 768px) {
-  .inventory-pane {
-    width: 100%;
-    height: 60%;
-    top: auto;
-    bottom: -60%;
-    right: 0;
-    border-left: none;
-    border-top: 1px solid #8b8b8b;
-    transition: bottom 0.4s ease-in-out;
-  }
-
-  .inventory-pane.open {
-    bottom: 0;
-  }
-
-  .item-popup {
-    width: 95%;
-  }
-}
+/
 
 /* Scroll bar customization */
 .inventory-pane::-webkit-scrollbar {
@@ -452,49 +410,86 @@
 
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
+  /* Adjusting the Inventory Pane */
   .inventory-pane {
-    width: 100%;
-    height: 20%; /* Reduced height */
-    top: auto;
-    bottom: -50%;
-    right: 0;
-    border-left: none;
-    border-top: 1px solid #8b8b8b;
-    transition: bottom 0.4s ease-in-out;
-    padding: 10px;
+    right: -200px; /* Hidden by default, adjusted for smaller width */
+    width: 200px; /* Reduce the width */
+    padding: 10px; /* Reduce padding */
+    transition: right 0.3s ease-in-out; /* Adjusted slide-in speed */
   }
+
 
   .inventory-pane.open {
-    bottom: 0;
+    right: 0; /* Slide in when open */
   }
 
+  /* Header for Inventory Sections */
   .inventory-pane h2 {
-    font-size: 1.4rem;
-    margin-top: 30px;
-    margin-bottom: 10px;
+    font-size: 1.2rem; /* Slightly smaller font size */
+    padding-bottom: 5px; /* Reduce padding */
+    margin-bottom: 10px; /* Reduce margin */
+    margin-top: 20px; /* Adjust top margin */
+  }
+
+  /* Inventory List and Items */
+  .inventory-list {
+    padding: 0;
+    margin: 0;
   }
 
   .inventory-item {
-    padding: 8px;
-    margin-bottom: 8px;
+    padding: 8px; /* Reduce padding */
+    margin-bottom: 8px; /* Reduce margin between items */
+    border-radius: 6px; /* Smaller border radius */
+    border: 2px solid #3d3d3d; /* Adjusted border size */
   }
 
   .inventory-item .emoji {
-    font-size: 2em;
+    font-size: 2.2em; /* Slightly smaller emoji size */
+    top: 5px;
+    left: 5px;
   }
 
   .item-details {
-    margin-left: 40px;
+    margin-left: 40px; /* Reduce margin to fit smaller width */
   }
 
   .item-name {
-    font-size: 1rem;
+    font-size: 1rem; /* Smaller font size */
+  }
+
+  .item-meta {
+    margin-bottom: 2px;
+  }
+
+  .meta-label {
+    font-size: 0.6rem; /* Smaller font size */
+  }
+
+  .meta-value {
+    font-size: 0.8rem; /* Smaller font size */
   }
 
   .item-description {
-    font-size: 0.8rem;
+    font-size: 0.8rem; /* Smaller font size */
+    margin-top: 4px;
   }
 
+  /* Humoral Element */
+  .humoral-circle {
+    width: 25px; /* Smaller size */
+    height: 25px; /* Smaller size */
+    font-size: 0.7rem; /* Smaller font size */
+  }
+
+  /* Scroll bar customization */
+  .inventory-pane::-webkit-scrollbar {
+    width: 6px; /* Smaller scrollbar */
+  }
+
+  .inventory-pane::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+  }
   /* Enable touch scrolling for mobile */
   .inventory-list {
     -webkit-overflow-scrolling: touch;
