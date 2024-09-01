@@ -79,7 +79,6 @@ html {
   color: #718096; /* Tailwind gray-600 */
   margin: 0;
 
-  margin-bottom: px;
 }
 
 /* Main content layout */
@@ -133,6 +132,13 @@ html {
  overflow: visible;
 margin-left: 5px;
 }
+
+/* Tip Box */
+
+  .tip-box {
+    padding-bottom: 0px;
+  }
+
 
 /* Command Button Styling */
 
@@ -596,9 +602,39 @@ input[type="text"]:focus {
 }
 
 
+/* Hamburger Icon */
+.hamburger-icon {
+    cursor: pointer;
+    position: fixed;
+    top: 10px; /* Adjust this value to create more space between the header and the icon */
+    left: 10px; /* Keep some space from the left edge */
+    z-index: 2000; /* Ensure it appears above other elements */
+    width: 30px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px; /* Add padding around the icon */
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a background color with transparency */
+    border-radius: 5px; /* Optional: Add some border-radius to match the design aesthetic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
+}
 
-/* Media Query for smaller screens */
+.hamburger-icon span {
+    display: block;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
 @media (max-width: 768px) {
+
+  
+
+  .tip-box {
+    display: none; /* Hide the TipBox on mobile screens */
+  }
 
 .title-container {
   margin-top: 1rem;
@@ -697,9 +733,7 @@ input[type="text"]:focus {
         padding: 2px;
         font-size: 0.8rem;
   }
-}
 
-@media (max-width: 768px) {
   .portrait-section {
     flex-direction: column; /* Stack portraits vertically */
     align-items: center; /* Center-align on mobile */
@@ -769,10 +803,7 @@ input[type="text"]:focus {
   .simulation-history.open {
     left: 0; /* Slide in from the left when open */
 
-  } }
-
-  @media only screen and (max-width: 768px) {
-  /* Main Page Adjustments */
+  } 
   
 
   .portrait-section {
@@ -839,36 +870,8 @@ input[type="text"]:focus {
   body {
     font-size: 0.9rem; /* Reduce the base font size slightly for mobile */
   }
-}
 
-/* Hamburger Icon */
-.hamburger-icon {
-    cursor: pointer;
-    position: fixed;
-    top: 10px; /* Adjust this value to create more space between the header and the icon */
-    left: 10px; /* Keep some space from the left edge */
-    z-index: 2000; /* Ensure it appears above other elements */
-    width: 30px;
-    height: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px; /* Add padding around the icon */
-    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a background color with transparency */
-    border-radius: 5px; /* Optional: Add some border-radius to match the design aesthetic */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
-}
 
-.hamburger-icon span {
-    display: block;
-    height: 3px;
-    background-color: #333;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-}
-
-/* Media Query for smaller screens */
-@media (max-width: 768px) {
     .hamburger-icon {
         top: 15px; /* Increase this value to ensure the icon doesn't overlap with the header */
         left: 20px; /* Adjust this value to ensure proper spacing on smaller screens */
@@ -943,6 +946,12 @@ body.dark-mode {
     color: #e0e0e0;
 }
 
+.user-input.dark-mode {
+    font-weight: bold;
+    color: black; /* Darker text color */
+    font-size: 1.2rem;
+  }
+
 /* Adjustments for the dark mode toggle in dark mode */
 body.dark-mode .hamburger-icon span {
     background-color: #e0e0e0;
@@ -957,11 +966,6 @@ body.dark-mode .menu-pane ul li button {
     color: #e0e0e0;
 }
 
-@media only screen and (max-width: 768px) {
-  .tip-box {
-    display: none; /* Hide the TipBox on mobile screens */
-  }
-}
 
 /* Dark Mode */
 body.dark-mode {

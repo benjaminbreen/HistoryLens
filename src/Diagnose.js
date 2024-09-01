@@ -36,7 +36,7 @@ const Diagnose = ({ isOpen, onClose, previousOutput, npcCaption }) => {
         - Symptoms: ${patient.symptoms.map(s => `${s.name} (${s.location}): "${s.quote}"`).join('; ')}
         **Recent Observations:**
         ${previousOutput}
-        Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently, with materia medica she considers using in italic. Limit your response to three paragraphs.
+        Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently, with materia medica she considers using in italic. Limit your response to three paragraphs. She is an eclectic apothecary and uses both New World and traditional drugs - i.e. she might prescribe guiacum, quina, or mumia. 
       `;
 
       const response = await fetch(

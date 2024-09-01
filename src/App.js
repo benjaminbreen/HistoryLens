@@ -351,15 +351,18 @@ const handleSubmit = useCallback(async (e) => {
 
   setIsLoading(true);
   let narrativeText = userInput.trim().toLowerCase(); // Convert to lowercase for easier matching
- 
-  if (narrativeText === '#diagnose' || narrativeText === '#buy' || narrativeText === '#map') {
+
+  // Normalize the command by removing the hashtag if present
+  const command = narrativeText.startsWith('#') ? narrativeText.substring(1) : narrativeText;
+
+  if (command === 'diagnose' || command === 'buy' || command === 'map') {
     // These commands should trigger the LLM for response
     // No need to set the output manually here
   }
 
-  // Detect #symptoms command
-  if (narrativeText.startsWith('#symptoms')) {
-    const npcName = narrativeText.split(' ')[1] || npcCaption.split(',')[0];
+  // Detect symptoms command
+  if (command.startsWith('symptoms')) {
+    const npcName = command.split(' ')[1] || npcCaption.split(',')[0];
     if (npcName) {
       setSelectedNpcName(npcName);
       setShowSymptomsPopup(true);
@@ -374,9 +377,9 @@ const handleSubmit = useCallback(async (e) => {
     }
   }
 
-  // Detect #prescribe command
-  if (narrativeText.startsWith('#prescribe')) {
-    const npcName = narrativeText.split(' ')[1] || npcCaption.split(',')[0];
+  // Detect prescribe command
+  if (command.startsWith('prescribe')) {
+    const npcName = command.split(' ')[1] || npcCaption.split(',')[0];
     const patient = EntityList.find(entity => 
       entity.type === 'patient' && entity.name.toLowerCase().includes(npcName.toLowerCase())
     );
@@ -397,11 +400,11 @@ const handleSubmit = useCallback(async (e) => {
     } 
   }
 
-
   const selectedEntity = selectEntity();
   if (selectedEntity) {
     narrativeText += `\n\nA new character has entered the scene: ${selectedEntity.name}, ${selectedEntity.age} years old, ${selectedEntity.occupation}. ${selectedEntity.description}`;
   }
+
 
 
 

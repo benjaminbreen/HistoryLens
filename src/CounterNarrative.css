@@ -80,8 +80,11 @@
 /* Header in Right Pane */
 .right-pane .header {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-bottom: 10px;
+    margin-top: 8px; /* Ensure there's enough space between the header and the button */
+    flex-wrap: wrap;
+    margin-right: 150px;
 }
 
 /* Dropdown Styles */
