@@ -62,7 +62,7 @@
   }
 
   .wealth-tracker {
-    margin-bottom: 8px; /* Add a little more spacing below the tracker */
+    margin-bottom: -2px; /* Add a little more spacing below the tracker */
   }
 }
 

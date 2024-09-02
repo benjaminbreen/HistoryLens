@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap'); /* New font for optional use */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
 
 /* Main inventory pane */
 .inventory-pane {
@@ -74,26 +76,6 @@
   text-align: center; /* Centered header */
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
-
-/* Main inventory pane */
-.inventory-pane {
-  position: fixed;
-  right: -350px;
-  top: 0;
-  width: 350px;
-  height: 100%;
-  background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
-  border-left: 1px solid #8b8b8b;
-  box-shadow: -4px 0px 15px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-  padding: 20px;
-  overflow-y: auto;
-  color: #f5f5f5;
-  transition: right 0.4s ease-in-out;
-}
 
 .inventory-pane.open {
   right: 0;
@@ -117,7 +99,7 @@
   border: 3px solid #3d3d3d;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   cursor: pointer;
-  margin-bottom: 14px;
+ 
 }
 
 .inventory-item:hover {
@@ -175,9 +157,8 @@
 
 .item-description {
   font-family: 'IM Fell English', serif;
-
   color: #cfcfcf;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   margin-top: 6px;
 }
 
@@ -252,26 +233,6 @@
   border: 2px solid #1a1a1a;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
-
-/* Main inventory pane */
-.inventory-pane {
-  position: fixed;
-  right: -350px;
-  top: 0;
-  width: 350px;
-  height: 100%;
-  background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
-  border-left: 1px solid #8b8b8b;
-  box-shadow: -4px 0px 15px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-  padding: 20px;
-  overflow-y: auto;
-  color: #f5f5f5;
-  transition: right 0.4s ease-in-out;
-}
 
 .inventory-pane.open {
   right: 0;
@@ -280,8 +241,7 @@
 /* Inventory list */
 .inventory-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
+ 
 }
 
 /* Inventory items */
@@ -317,7 +277,7 @@
 
 .item-name {
   font-family: "MedievalSharp", cursive;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   text-transform: capitalize;
   color: #f5f5f5;
   margin-bottom: 3px;
@@ -346,8 +306,9 @@
 .item-description {
   font-family: 'IM Fell English', serif;
   color: #cfcfcf;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   margin-top: 4px;
+  margin-bottom: -2px;
 }
 
 /* Humoral element */
@@ -412,8 +373,8 @@
   /* Adjusting the Inventory Pane */
   .inventory-pane {
     right: -200px; /* Hidden by default, adjusted for smaller width */
-    width: 200px; /* Reduce the width */
-    padding: 10px; /* Reduce padding */
+    width: 160px; /* Reduce the width */
+    padding: 5px; /* Reduce padding */
     transition: right 0.3s ease-in-out; /* Adjusted slide-in speed */
   }
 
@@ -424,10 +385,10 @@
 
   /* Header for Inventory Sections */
   .inventory-pane h2 {
-    font-size: 1.2rem; /* Slightly smaller font size */
+    font-size: 1.1rem; /* Slightly smaller font size */
     padding-bottom: 5px; /* Reduce padding */
-    margin-bottom: 10px; /* Reduce margin */
-    margin-top: 20px; /* Adjust top margin */
+    margin-bottom: 5px; /* Reduce margin */
+    margin-top: 56px; /* Adjust top margin */
   }
 
   /* Inventory List and Items */
@@ -437,24 +398,24 @@
   }
 
   .inventory-item {
-    padding: 8px; /* Reduce padding */
-    margin-bottom: 8px; /* Reduce margin between items */
+    padding: 4px; /* Reduce padding */
+    margin-bottom: 4px; /* Reduce margin between items */
     border-radius: 6px; /* Smaller border radius */
     border: 2px solid #3d3d3d; /* Adjusted border size */
   }
 
   .inventory-item .emoji {
-    font-size: 2.2em; /* Slightly smaller emoji size */
+    font-size: 2em; /* Slightly smaller emoji size */
     top: 5px;
-    left: 5px;
+    left: 1px;
   }
 
   .item-details {
-    margin-left: 40px; /* Reduce margin to fit smaller width */
+    margin-left: 30px; /* Reduce margin to fit smaller width */
   }
 
   .item-name {
-    font-size: 1rem; /* Smaller font size */
+    font-size: .8rem; /* Smaller font size */
   }
 
   .item-meta {
@@ -462,23 +423,26 @@
   }
 
   .meta-label {
-    font-size: 0.6rem; /* Smaller font size */
+    font-size: 0.5rem; /* Smaller font size */
+  letter-spacing: -.01rem;
   }
 
   .meta-value {
-    font-size: 0.8rem; /* Smaller font size */
+    font-size: 0.6rem; /* Smaller font size */
+    letter-spacing: -.01rem;
   }
 
   .item-description {
     font-size: 0.8rem; /* Smaller font size */
     margin-top: 4px;
-  }
+    margin-bottom: -4px;
+     }
 
   /* Humoral Element */
   .humoral-circle {
-    width: 25px; /* Smaller size */
-    height: 25px; /* Smaller size */
-    font-size: 0.7rem; /* Smaller font size */
+    width: 20px; /* Smaller size */
+    height: 20px; /* Smaller size */
+    font-size: 0.5rem; /* Smaller font size */
   }
 
   /* Scroll bar customization */

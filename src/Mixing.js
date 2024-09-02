@@ -56,8 +56,7 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
 
                 IMPORTANT: There is a ~50% chance that a combination of ingredients and methods become Unusable Sludge. The system should reason based on the historical plausibility of the combination and method to determine whether the result is a successful compound drug or Unusable Sludge. 
 
-                TIPS: Fermenting saffron, chamomile, and other plants work well. Mumia is a wildcard: compounds with it can be extremely valuable or almost worthless. Quicksilver works with calcination and distillation only. Sugar works with everything. Millipedes ferment well. It is possible to make food items with fermentation - fermenting flour makes sourdough for instance. 
-                
+                Here is a list of real compound drugs from 1680s Mexico to use as insipration: Cuerno de Ciervo Cinamomo Aqua Preparado Emplastrum Diaphoreticum Minsicht Emplastrum Antipodragicum Aqua Reginae Hungariae Camphorata Liquido Succinato Oleum Lumbricorum Pulvis Coralli Preparado Extractus Aqua Meliz Patriz Spiritus Rosarum Laudanum Liquido Aqua Vita Mulierum Laudanum Liquido Spiritus Volatil Aqua de la Reina de España Aqua de Chicoria Syrupus Florum Tunicae.
                 Here is an example of the expected JSON format:
 
                 {

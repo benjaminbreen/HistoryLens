@@ -7,6 +7,7 @@
 .input-box-textarea {
   width: 100%;
   padding: 8px;
+  height: 60px;
   font-size: 16px;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -83,4 +84,22 @@ body.dark-mode .input-box-button {
 body.dark-mode .input-box-button:hover {
   background-color: #005bb5; /* Darker blue on hover */
   box-shadow: 0 0 2px #00aaff, 0 0 2px #00aaff, 0 0 2px #00aaff inset; /* Stronger blue glow on hover */
+}
+
+@media (max-width: 768px) {
+  .input-box-textarea {
+  width: 100%;
+  padding: 6px;
+  font-size: 12px;
+  height: 70px;
+
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical; /* Allow the user to resize the textarea vertically */
+  overflow: auto; /* Display scrollbars if the content overflows */
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for box-shadow */
+  margin-bottom: 0px;
+  line-height: .9rem;
+}
 }
