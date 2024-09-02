@@ -1142,6 +1142,7 @@ body.dark-mode .simulation-history.open {
   /* Smaller Font Overall */
   body {
     font-size: 0.9rem; /* Reduce the base font size slightly for mobile */
+    overflow-anchor: none;
   }
 
   .footer {

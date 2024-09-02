@@ -5,12 +5,14 @@ import './Mixing.css';
 // Importing images
 import distillImage from './assets/distill.jpg';
 import distillActiveImage from './assets/distill-active.jpg';
-import fermentImage from './assets/ferment.jpg';
-import fermentActiveImage from './assets/ferment-active.jpg';
+import sublimateImage from './assets/sublimate.jpg';
+import sublimateActiveImage from './assets/sublimate-active.jpg';
 import decoctImage from './assets/decoct.jpg';
 import decoctActiveImage from './assets/decoct-active.jpg';
 import calcinateImage from './assets/calcinate.jpg';
 import calcinateActiveImage from './assets/calcinate-active.jpg';
+import confectionImage from './assets/confection.jpg';
+import confectionActiveImage from './assets/confection-active.jpg';
 
 const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJournalEntry }) => {
     const [selectedSimples, setSelectedSimples] = useState({});
@@ -19,13 +21,27 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [hoveredSimple, setHoveredSimple] = useState(null); // State for tracking hovered item
+    const [unlockedMethods, setUnlockedMethods] = useState([]); // State to track unlocked methods
 
+    // Initial methods available
     const methods = [
         { name: 'Distill', image: distillImage, activeImage: distillActiveImage, caption: "Distillation separates components by heating. It concentrates the active principles, often producing strong, warming compounds." },
-        { name: 'Ferment', image: fermentImage, activeImage: fermentActiveImage, caption: "Fermentation uses natural yeasts to transform ingredients. It creates potent mixtures, sometimes altering humoral properties." },
         { name: 'Decoct', image: decoctImage, activeImage: decoctActiveImage, caption: "Decoction is boiling to extract essences. Useful for creating strong remedies from tough substances like roots or barks." },
         { name: 'Calcinate', image: calcinateImage, activeImage: calcinateActiveImage, caption: "Calcination burns ingredients into ashes to purify and concentrate their properties. Often used to produce powders." },
+        { name: 'Confection', image: confectionImage, activeImage: confectionActiveImage, caption: "Confectioning involves mixing powders with honey or syrup to create palatable pastes, pills, or lozenges." }
     ];
+
+    // Unlock a new method
+    const unlockMethod = (methodName) => {
+        if (!unlockedMethods.includes(methodName)) {
+            setUnlockedMethods(prev => [...prev, methodName]);
+        }
+    };
+
+    // Filter methods to include only those that are unlocked
+    //const availableMethods = methods.filter(method => method.name === 'Confection' || unlockedMethods.includes(method.name));
+
+const availableMethods = methods;
 
     const handleDrop = (item, method) => {
         setSelectedSimples((prev) => ({
@@ -47,16 +63,16 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
                 You are a 1680s iatrochemist (e.g., Thomas Sydenham) tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug.  
 
                 Your output must be a **valid JSON object** with the following fields:
-                - **name**: A string representing the name of the compound, drawn from real early modern drug names. Use reasoning (i.e., distilled opium makes laudanum). If the combination or method is even somewhat implausible, the result should be "Unusable Sludge" and the name should be "Unusable Sludge."  
+                - **name**: A string representing the name of the compound, drawn from real early modern drug names. Use reasoning (i.e., distilled opium makes laudanum). If the combination or method is highly implausible, the result should be "Unusable Sludge" and the name should be "Unusable Sludge."  
                 - **humoralQualities**: A string describing the humoral qualities of the compound, e.g. Warm & Dry, Warm & Cold, Cold & Moist, or Cold & Dry.  
                 - **effects**: A string describing the effects of the compound, e.g., "resolutive" or "emetic" etc. SINGLE WORD ONLY.  
                 - **description**: A string that briefly (short sentence) describes the origin of the ingredients, the compounding method, and the potential effects, using early modern medical terminology. If the result is Unusable Sludge, describe how the process failed.
                 - **price**: An integer or float representing the estimated selling price in silver coins, based on the value of the components. If the result is Unusable Sludge, the price should be 0.
                 - **emoji**: A single emoji from the following list: [🧪, 🥀, 🍵, 💧, 🔮, 🌼, 🍃, 🩸, 🍭, 🍯, 🫙, 🧉, ☠️]. Use ☠️ for Unusable Sludge. 
 
-                IMPORTANT: There is a ~50% chance that a combination of ingredients and methods become Unusable Sludge. The system should reason based on the historical plausibility of the combination and method to determine whether the result is a successful compound drug or Unusable Sludge. 
-
-                Here is a list of real compound drugs from 1680s Mexico to use as insipration: Cuerno de Ciervo Cinamomo Aqua Preparado Emplastrum Diaphoreticum Minsicht Emplastrum Antipodragicum Aqua Reginae Hungariae Camphorata Liquido Succinato Oleum Lumbricorum Pulvis Coralli Preparado Extractus Aqua Meliz Patriz Spiritus Rosarum Laudanum Liquido Aqua Vita Mulierum Laudanum Liquido Spiritus Volatil Aqua de la Reina de España Aqua de Chicoria Syrupus Florum Tunicae.
+                IMPORTANT: There is a significant chance that a combination of ingredients and methods become Unusable Sludge. The system should reason based on the historical plausibility of the combination and method to determine whether the result is a successful compound drug or Unusable Sludge. 
+                TIPS: Calcinating herbs and roots generally works well, yielding "calcined" varieties. Mumia is a wildcard: compounds with it can be extremely valuable or almost worthless. Quicksilver works with calcination and distillation only and has a random element - can be surprising. Sugar works with everything. Millipedes and mumia calcine and confect well. 
+                Here is a list of real compound drugs from 1680s Mexico to use as inspiration: Cuerno de Ciervo Cinamomo Aqua Preparado Emplastrum Diaphoreticum Minsicht Emplastrum Antipodragicum Aqua Reginae Hungariae Camphorata Liquido Succinato Oleum Lumbricorum Pulvis Coralli Preparado Extractus Aqua Meliz Patriz Spiritus Rosarum Laudanum Liquido Aqua Vita Mulierum Laudanum Liquido Spiritus Volatil Aqua de la Reina de España Aqua de Chicoria Syrupus Florum Tunicae.
                 Here is an example of the expected JSON format:
 
                 {
@@ -171,7 +187,7 @@ The JSON must be formatted with double quotes around keys and string values. NEV
             )}
 
             <div className="method-grid">
-                {methods.map((method, index) => (
+                {availableMethods.map((method, index) => (
                     <MethodSquare 
                         key={index} 
                         method={method} 
@@ -237,35 +253,33 @@ const MethodSquare = ({ method, onDrop, ingredients }) => {
         accept: 'simple',
         drop: (item) => onDrop(item),
         collect: monitor => ({
-            isOver: monitor.isOver(),
+            isOver: !!monitor.isOver(),
         }),
     }));
 
     const image = ingredients.length > 0 ? method.activeImage : method.image;
 
-    return (
-        <div className="method-square-container">
-            <div className="method-title">{method.name}</div>
-
-            <div 
-                ref={drop} 
-                className="method-square" 
-                style={{ backgroundImage: `url(${image})`, boxShadow: isOver ? '0px 0px 10px 2px rgba(255, 255, 255, 0.7)' : 'none' }}
-            >
-                {ingredients.length > 0 && (
-                    <div className="ingredient-list">
-                        {ingredients.map((ing, index) => (
-                            <span key={index}>{ing.emoji}</span>
-                        ))}
-                    </div>
-                )}
-                
+  return (
+    <div className="method-square-container">
+        <div className="method-title">{method.name}</div>
+        <div 
+            ref={drop} 
+            className={`method-square ${isOver ? 'glow-effect' : ''}`}
+            style={{ backgroundImage: `url(${image})` }}
+        >
+            {ingredients.length > 0 ? (
+                <div className="method-square-content">
+                    {ingredients.map((ing, index) => (
+                        <span key={index} className="emoji">{ing.emoji}</span>
+                    ))}
+                </div>
+            ) : (
                 <div className="method-hover-box">
                     <small><i>{method.caption}</i></small>
                 </div>
-            </div>
+            )}
         </div>
-    );
+    </div>
+);
 };
-
 export default Mixing;

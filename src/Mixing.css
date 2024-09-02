@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&family=MedievalSharp&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap'); /* Font for inventory items */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap');
 
-/* General Styles */
 .mixing-popup {
   position: fixed;
   top: 0;
@@ -13,34 +12,35 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(6px); /* Background blur for depth */
+  backdrop-filter: blur(6px);
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .mixing-popup-content {
-  background-color: rgba(45, 45, 45, 0.8);
+  background-color: rgba(45, 45, 45, 0.9);
   padding: 20px;
   border-radius: 12px;
-  width: 65%;
-  height: 95%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 160px;
+  width: 90%;
+  max-height: 90vh; /* Ensure the content doesn’t exceed the viewport height */
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
   max-width: 1200px;
+  overflow: hidden; /* Hide overflow content to manage scrolling better */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align items horizontally */
 }
 
 .mixing-header {
   font-family: "MedievalSharp", cursive;
-  font-size: 1.8rem;
+  font-size: 2rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   border-bottom: 2px solid #8b8b8b;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
   color: #e1cfa5;
   text-align: center;
-  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.23);
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
 }
 
 .close-mixing-button {
@@ -51,147 +51,115 @@
   border-radius: 4px;
   cursor: pointer;
   position: absolute;
-  top: 3.5%;
-  right: 23.5%;
-  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.6);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.close-mixing-button:hover {
-  background-color: #ff1c1c;
-  box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.9);
-}
-
-.mixing-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 95%;
+  top: 20px;
+  right: 20px;
+  font-size: 1rem;
+  z-index: 1002;
 }
 
 .mix-button-container {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
-  text-align: left;
+  margin-top: 10px; /* Add some top margin for spacing */
+  gap: 20px; /* Add some space between the button and the compound result */
 }
 
 .mix-button {
   background-color: #3b82f6;
   color: white;
   border: none;
-  padding: 10px 24px;
+  padding: 12px 24px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 1.3rem;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  font-size: 1.2rem;
   font-family: "MedievalSharp", cursive;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+
 }
 
-.mix-button.enabled:hover {
-  background-color: #1d5a92;
-  transform: scale(1.05);
-  box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.7);
+.mix-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
-.mix-button.disabled {
-  background-color: #555;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* Method Grid and Squares */
 .method-grid {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 20px 0;
+  flex-wrap: wrap; /* Allow grid items to wrap to the next line */
+  gap: 20px;
+  margin-bottom: 20px;
   padding: 10px;
-  background-color: rgba(58, 58, 58, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
-  max-width: 100%; /* Ensure the grid stays within the container */
-  box-sizing: border-box;
+
+  overflow-x: auto;
+  max-height: 400px; /* Adjust height based on available space */
 }
 
 .method-square-container {
-  flex: 1 1 23%; /* Allow squares to take up 23% of the container width */
+  flex: 0 0 260px;
   display: flex;
   flex-direction: column;
-  padding: 5px;
-
-  
+  align-items: center;
+  position: relative;
+    padding-bottom: 20px;
 }
 
 .method-title {
   font-family: 'IM Fell English', serif;
   font-size: 1.2rem;
   color: #e1cfa5;
-  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
-  margin-bottom: 5px; /* Adjust spacing between title and square */
-  text-align: center; /* Center the title */
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .method-square {
-  width: 220px;
-  height: 220px;
+  width: 240px;
+  height: 240px;
   background-size: cover;
   border-radius: 10px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
+
 .method-square:hover {
   transform: scale(1.02);
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
 }
 
-/* Hover/Click Caption Box */
 .method-hover-box {
-  display: none;
-  position: fixed;
-  bottom: 58%; /* Position the box at top of square */
+  position: absolute;
+  top: -2px; /* Adjust this value as needed */
   left: 50%;
   transform: translateX(-50%);
-  width: 220px; /* Adjust the width as needed */
-  background-color: rgba(45, 45, 45, 0.9);
-  padding: 8px;
+  width: 200px;
+  background-color: rgba(0, 0, 0, .9);
+  padding: 10px;
   border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
   font-family: 'IM Fell English', serif;
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   color: #eaeaea;
   text-align: center;
-  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
-  line-height: 1.1rem;
-  z-index: 1001; /* Ensure it appears above other elements */
-  pointer-events: none; /* Prevent the box from interfering with mouse events */
+  z-index: 1001;
+  opacity: 0;
+  line-height: 1.5rem;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
 }
 
-.method-square:hover .method-hover-box,
-.method-square:focus .method-hover-box {
-  display: block; /* Show the hover box on hover or focus */
+.method-square-container:hover .method-hover-box {
+  opacity: .8;
 }
 
-/* Inventory Grid */
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
   padding: 10px;
-  margin-top: 5px;
   background-color: rgba(68, 68, 68, 0.9);
   border-radius: 12px;
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-   height: 300px; /* Set a fixed height for the grid */
-  overflow-y: auto; /* Enable vertical scrollbar */
+  overflow-y: auto; /* Ensure the inventory grid can scroll vertically */
+  max-height: 300px; /* Adjust this based on available space */
 }
 
 .mixing-inventory-item {
@@ -203,184 +171,241 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100px;
+  height: 110px;
   text-align: center;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
-  transition: background-color 0.2s ease, transform 0.2s ease;
   font-family: 'Nunito Sans', sans-serif;
   text-transform: uppercase;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .mixing-inventory-item:hover {
   background-color: #666;
-  transform: scale(1.05);
-  box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
 }
-
-/* Hover Popup for Inventory Items */
 
 .mixing-hover-popup {
-  position: fixed;
-  top: 60%;
-  left: 42%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(45, 45, 45, 0.9);
-  padding: 20px;
+  position: absolute;
+  top: 60%; /* Position above the inventory item */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(10, 10, 0, 0.72);
+  padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
   font-family: 'IM Fell English', serif;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #eaeaea;
   text-align: left;
-  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  max-width: 600px;
+  z-index: 1003;
+  max-width: 380px;
   pointer-events: none;
+  transition: all 0.1s ease-out;
 }
 
+.mixing-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-grow: 1; /* Allow the container to grow and handle overflow */
+}
 
-/* Compound Result */
 .compound-result {
-  text-align: center;
-  margin-bottom: 5px;
-  padding:12px;
   background-color: rgba(58, 58, 58, 0.9);
+  padding: 15px;
   border-radius: 12px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-  color: floralwhite;
-  max-width: 70%;
-  margin-top: -65px;
-  margin-left: 160px;
+  color: #e1cfa5;
+  text-align: center;
+  max-width: 700px;
+  font-family: 'IM Fell English', serif;
+  font-size: 1.3rem;
+  margin-left: 20px; /* Add padding space between the button and the result */
+  margin-right: auto; /* Ensure the result box is pushed to the right of the button */
+  flex-shrink: 0;
 }
 
 .compound-item {
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  max-width: 600px;
 }
 
 .compound-item .emoji {
-  font-size: 5rem;
-  margin-right: 10px;
-  margin-left: 10px;
-  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
-  padding: 2px;
+  font-size: 6rem;
+  margin-right: 20px;
   flex-shrink: 0;
 }
 
-/* Adjustments for Small Screens */
+.compound-item-text {
+  text-align: left;
+}
+
+.method-grid,
+.inventory-grid {
+  overflow-y: auto;
+}
+
+.method-square.glow-effect {
+  box-shadow: 0 0 10px 7px rgba(255, 165, 0, 0.5);
+  animation: subtlePulse 2s infinite ease-in-out;
+}
+
+@keyframes subtlePulse {
+  0% {
+    box-shadow: 0 0 10px 7px rgba(255, 165, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px 9px rgba(255, 140, 0, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px 7px rgba(255, 165, 0, 0.5);
+  }
+}
+
+.mixing-container.loading {
+  animation: subtleGlow 3s infinite ease-in-out;
+}
+
+@keyframes subtleGlow {
+  0% {
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px rgba(255, 140, 0, 0.4),
+      0 0 15px rgba(255, 215, 0, 0.3),
+      0 0 20px rgba(255, 69, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.2);
+  }
+}
+
+
 @media (max-width: 768px) {
   .mixing-popup-content {
     width: 95%;
-    height: 88%;
-    margin-right: 0;
+    height: 95%;
     padding: 10px;
   }
 
-  .close-mixing-button {
-    top: 10px;
-    right: 10px;
-  }
-
-  .method-grid {
-    flex-direction: column;
-    align-items: center;
-    height: 30%;
+  .mixing-header {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
   }
 
   .method-square-container {
-    flex: 1 1 100%;
-    margin-bottom: 2px;
+    flex: 0 0 200px;
   }
 
   .method-square {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
   }
 
+  .method-title {
+    font-size: 1rem;
+  }
+
+  .method-hover-box {
+  position: absolute;
+  top: -2px; /* Adjust this value as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 170px;
+  background-color: rgba(0, 0, 0, .9);
+  padding: 10px;
+  border-radius: 5px;
+  font-family: 'IM Fell English', serif;
+  font-size: 1.1rem;
+  color: #eaeaea;
+  text-align: center;
+  z-index: 1001;
+  opacity: 0;
+  line-height: 1.1rem;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
   .inventory-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    height: 250px;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 
   .mixing-inventory-item {
     height: 80px;
-    font-size: 0.8rem;
-    padding: 5px;
+    font-size: 1rem;
   }
 
+  .mix-button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    z-index: 2000;
+  }
+
+  .mixing-hover-popup {
+    max-width: 80%;
+    font-size: 0.9rem;
+  }
+
+.method-square-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.method-square-content .emoji {
+  font-size: 8rem; /* Increase the size of the emoji */
+  text-align: center;
+}
+
   .compound-result {
-    margin-left: 0;
-    max-width: 100%;
+    padding: 20px;
+  }
+
+  .compound-item .emoji {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mixing-header {
+    font-size: 1.2rem;
+  }
+
+  .method-square-container {
+    flex: 0 0 150px;
+  }
+
+  .method-square {
+    width: 140px;
+    height: 140px;
+  }
+
+  .method-title {
+    font-size: 0.9rem;
+  }
+
+  .inventory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+
+  .mixing-inventory-item {
+    height: 50px;
+    font-size: 0.6rem;
+  }
+
+  .mix-button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  .mixing-hover-popup {
+    font-size: 0.8rem;
   }
 
   .compound-item .emoji {
     font-size: 3rem;
   }
-
-  .mixing-hover-popup {
-    left: 50%;
-    max-width: 90%;
-  }
-
-  .method-hover-box {
-    width: 180px;
-    font-size: 1rem;
-  }
-}
-
-/* Additional adjustments for very small screens */
-@media (max-width: 480px) {
-  .mixing-popup-content {
-    padding: 5px;
-  }
-
-  .mixing-header {
-    font-size: 1.4rem;
-  }
-
-  .method-square {
-    width: 120px;
-    height: 120px;
-  }
-
-  .inventory-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .mixing-inventory-item {
-    height: 70px;
-    font-size: 0.7rem;
-  }
-
-  .compound-item .emoji {
-    font-size: 2.5rem;
-  }
-
-  .mix-button {
-    font-size: 1rem;
-    padding: 8px 16px;
-  }
-}
-
-/* Loading Animation */
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); /* Lighter orange */
-  }
-  50% {
-    box-shadow: 
-      0 0 20px rgba(255, 140, 0, 0.7),  /* Darker orange */
-      0 0 40px rgba(255, 215, 0, 0.5),  /* Yellow-gold */
-      0 0 60px rgba(255, 69, 0, 0.3);   /* Redder orange-amber */
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); /* Lighter orange */
-  }
-}
-
-.mixing-container.loading {
-  animation: glow 3s infinite ease-in-out;
 }
