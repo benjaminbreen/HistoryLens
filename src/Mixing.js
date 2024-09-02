@@ -155,7 +155,7 @@ The JSON must be formatted with double quotes around keys and string values. NEV
         }
     };
 
-    return (
+   return (
         <div className={`mixing-container ${isLoading ? 'loading' : ''}`}>
             <h1 className="mixing-header">Mix a New Drug</h1>
 
@@ -187,7 +187,7 @@ The JSON must be formatted with double quotes around keys and string values. NEV
             )}
 
             <div className="method-grid">
-                {availableMethods.map((method, index) => (
+                {methods.map((method, index) => (
                     <MethodSquare 
                         key={index} 
                         method={method} 
@@ -253,33 +253,35 @@ const MethodSquare = ({ method, onDrop, ingredients }) => {
         accept: 'simple',
         drop: (item) => onDrop(item),
         collect: monitor => ({
-            isOver: !!monitor.isOver(),
+            isOver: monitor.isOver(),
         }),
     }));
 
     const image = ingredients.length > 0 ? method.activeImage : method.image;
 
-  return (
-    <div className="method-square-container">
-        <div className="method-title">{method.name}</div>
-        <div 
-            ref={drop} 
-            className={`method-square ${isOver ? 'glow-effect' : ''}`}
-            style={{ backgroundImage: `url(${image})` }}
-        >
-            {ingredients.length > 0 ? (
-                <div className="method-square-content">
-                    {ingredients.map((ing, index) => (
-                        <span key={index} className="emoji">{ing.emoji}</span>
-                    ))}
-                </div>
-            ) : (
+    return (
+        <div className="method-square-container">
+            <div className="method-title">{method.name}</div>
+
+            <div 
+                ref={drop} 
+                className="method-square" 
+                style={{ backgroundImage: `url(${image})`, boxShadow: isOver ? '0px 0px 10px 2px rgba(255, 255, 255, 0.7)' : 'none' }}
+            >
+                {ingredients.length > 0 && (
+                    <div className="ingredient-list">
+                        {ingredients.map((ing, index) => (
+                            <span key={index}>{ing.emoji}</span>
+                        ))}
+                    </div>
+                )}
+                
                 <div className="method-hover-box">
                     <small><i>{method.caption}</i></small>
                 </div>
-            )}
+            </div>
         </div>
-    </div>
-);
+    );
 };
+
 export default Mixing;
