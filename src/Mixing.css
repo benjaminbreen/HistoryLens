@@ -13,6 +13,8 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+    border-radius: 12px;
+    padding: 5px;
   backdrop-filter: blur(6px); /* Background blur for depth */
 }
 
@@ -43,18 +45,21 @@
   text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.23);
 }
 
+
+
 .close-mixing-button {
-  background-color: #ff4c4c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
   position: absolute;
-  top: 3.5%;
-  right: 23.5%;
-  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.6);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    top: 20px;
+    right: 40px;
+    padding: 10px 10px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .close-mixing-button:hover {
@@ -67,6 +72,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 95%;
+   border-radius: 12px;
 }
 
 .mix-button-container {
@@ -82,15 +88,15 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 1.3rem;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   font-family: "MedievalSharp", cursive;
 }
 
 .mix-button.enabled:hover {
   background-color: #1d5a92;
-  transform: scale(1.05);
-  box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.7);
+  transform: scale(1.01);
+  box-shadow: 0px 0px 15px rgba(0, 0, 255, 0.5);
 }
 
 .mix-button.disabled {
@@ -223,7 +229,7 @@
 .mixing-hover-popup {
   position: fixed;
   top: 60%;
-  left: 42%;
+  left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(45, 45, 45, 0.9);
   padding: 20px;
@@ -242,16 +248,18 @@
 
 /* Compound Result */
 .compound-result {
-  text-align: center;
-  margin-bottom: 5px;
-  padding:12px;
-  background-color: rgba(58, 58, 58, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-  color: floralwhite;
-  max-width: 70%;
-  margin-top: -65px;
-  margin-left: 160px;
+    text-align: center;
+    margin-top: 10px; /* Adjust the space from the header */
+    padding: 12px;
+    background-color: rgba(58, 58, 58, 0.9);
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+    color: floralwhite;
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+      font-family: 'IM Fell English', serif;
+      margin-bottom: 10px;
 }
 
 .compound-item {
@@ -268,6 +276,64 @@
   padding: 2px;
   flex-shrink: 0;
 }
+
+
+
+.mix-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-top: 0;  /* Adjusted margin to remove extra space */
+    margin-bottom: 0; /* Adjusted margin to remove extra space */
+    width: 100%;
+}
+
+.mix-button {
+    background-color: #007bff; /* Blue color */
+    color: white;
+    border: none;
+    padding: 12px 20px; /* Larger padding for glow effect */
+    cursor: pointer;
+    font-size: 18px; /* Larger font size */
+    border-radius: 5px;
+    flex: 1;  /* Allows this button to take more space */
+    text-align: center;
+    margin-right: 10px; /* Space between mix and reset button */
+}
+
+.mix-button.enabled {
+    box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6); /* Glow effect */
+}
+
+.reset-button {
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-right: 10px; /* Space between reset and close button */
+    flex: 0 0 auto; /* Prevents resizing, keeps its size fixed */
+}
+
+
+.reset-button:hover {
+    background-color: #218838;
+}
+
+
+.mix-button.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.mixing-popup-content {
+    padding-bottom: 0; /* Removed padding */
+}
+
+
 
 /* Adjustments for Small Screens */
 @media (max-width: 768px) {
@@ -294,26 +360,7 @@
     padding: 8px 16px;
   }
 
-  .mix-button-container {
-    display: flex;
-    flex-direction: column; /* Stack the button and result vertically */
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
 
-  .mix-button {
-    font-size: 1rem;
-    padding: 8px 16px;
-    width: 100%; /* Make the button take full width */
-  }
-
-  .compound-result {
-    max-width: 100%; /* Ensure the compound result takes full width */
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%; /* Ensure it takes up the available space */
-  }
 
   .method-grid {
     flex-wrap: nowrap; /* Prevent wrapping of method squares */
@@ -366,7 +413,7 @@
   color: floralwhite;
   max-width: 100%;
   
-  margin-left: -5px;
+    font-family: 'IM Fell English', serif;
 }
 }
 

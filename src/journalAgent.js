@@ -25,44 +25,49 @@ content: `
   \`\`\`
   3. Select the appropriate NPC image name based on PRIMARY NPC or location mentioned, from the NPC MAPPING list provided below. NPC MAPPING: 
 
-                   - anamariadesoto.jpeg corresponds to Ana María de Soto
-                   - araujo.jpeg corresponds to Francisco Dias de Araujo
-                   - carlosenriquez.jpeg corresponds to Carlos Enriquez
-                   - donalejandrocortez.jpeg corresponds to Don Alejandro Cortez
-                   - frayesteban.jpeg corresponds to Fray Esteban
-                   - isabel.jpeg corresponds to Isabel de la Cruz
-                   - joao.jpeg corresponds to João (Kitten)
-                   - diegoperez.jpeg corresponds to Diego Perez
-                   - marta.jpeg corresponds to Marta (Herb woman)
-                   - rosa.jpeg corresponds to Rosa Maria Perez
-                   - juan.jpeg corresponds to Juan Braga (rival apothecary)
-                   - donluis.jpeg corresponds to Don Luis (Moneylender)
-                   - inquisitorfernando.jpeg corresponds to Assistant Inquisitor Fernando
-                   - generichome.jpeg is used for any scene set inside a home in Mexico City.
-                   - market.jpeg is used for any description of the market in Mexico City.
-                   - street.jpeg is for any other scene in Mexico City. 
-                   - outsideday.jpeg is used any time a scene is set outside Maria's shop during the day.
-                   - outsidenight.jpeg is used any time a scene is set outside Maria's shop during the evening, dusk, or night.
-                   - shopmorning.jpeg is used any time there is a scene inside Maria's shop during the morning, such as in the first scene.
-                   - shopmorning.jpeg is used any time there is a scene inside Maria's shop during afternoon, such as in subsequent scenes in Maria's shop.
-                   - manual.jpeg is used when a book of any kind is consulted.
-                   - shopnight.jpeg is used any time there is a scene inside Maria's shop during the evening, dusk, or night.
-                   - country.jpeg is used any time Maria leaves Mexico City or visits a village or country setting.
-                   - genericwoman.jpg: placeholder image used for generic female characters not otherwise specified.
-                   - genericmalecommoner.jpeg: placeholder image used for generic male peasant or commoner characters not otherwise specified.
-                    - genericfemalecommoner.jpeg: placeholder image used for generic female peasant or commoner characters not otherwise specified.
-                    - genericmaleupper.jpeg: placeholder image used for generic male nobility or "middling sort" (merchant, professional) characters not otherwise specified.
-                    - genericfemaleupper.jpeg: placeholder image used for generic female nobility or "middling sort" (merchant, professional) characters not otherwise specified.
-                   - study.jpeg: any turn involving reading or studying
-                   - codex.jpeg: any book or when the #map command is used. 
-                   - herbs.jpeg: herbs, foods, or medicines are examined or bought. 
-                   - herbalist.jpeg: any herbalist other than Marta. 
-                   - farm.jpeg: any turn involving farms or agriculture.
-                   - mushroom.jpeg: when the curandera appears.
-                   - trippy.jpeg: anything involving altered conciousness, a drug experience, trance, or dream, even terror.
-                   - merchant.jpeg: any unnamed merchant character or other commercial scene. 
-                   -priest.jpeg: any church setting or priest character. 
-                   - default.jpeg: fallback image, used as last resort.
+                    - anamariadesoto corresponds to Ana María de Soto
+                   - franciscodiasdearaujo corresponds to Francisco Dias de Araujo
+                   - carlosenriquez corresponds to Carlos Enriquez
+                   - donalejandrocortez corresponds to Don Alejandro Cortez
+                   - frayesteban corresponds to Fray Esteban
+                   - isabeldelacruz corresponds to Isabel de la Cruz
+                   - joao corresponds to João (Kitten)
+                   - diegoperez corresponds to Diego Perez
+                   - marta corresponds to Marta (Herb woman)
+                   - rosamariaperez corresponds to Rosa Maria Perez
+                   - juanbraga corresponds to Juan Braga (rival apothecary)
+                   - donluis corresponds to Don Luis (Moneylender)
+                   - inquisitorfernando corresponds to Assistant Inquisitor Fernando
+                   - franciscohernandez or franciscoramirez corresponds to Licenciado Francisco Ramírez
+                   - donignaciodemendoza corresponds to Don Ignacio de Mendoza
+                   - generichome is used for any scene set inside a home in Mexico City.
+                   - market is used for any description of the market in Mexico City.
+                   - street is for any other scene in Mexico City during the day.
+                   - streetnight is for any other scene in Mexico City during the night.
+                   - outsideday is used any time a scene is set outside Maria's shop during the day.
+                   - outsidenight is used any time a scene is set outside Maria's shop during the evening, dusk, or night.
+                   - shopmorning is used any time there is a scene inside Maria's shop during the morning.
+                   - shopafternoon is used any time there is a scene inside Maria's shop during the afternoon.
+                   - manual is used when a book of any kind is consulted.
+                   - shopnight is used any time there is a scene inside Maria's shop during the evening, dusk, or night.
+                   - country is used any time Maria leaves Mexico City or visits a village or country setting.
+                   - genericwoman: placeholder image used for generic female characters not otherwise specified.
+                   - genericmalecommoner: used for any unnamed male peasant or commoner characters not otherwise specified.
+                   - genericfemalecommoner:  used for any unnamed female peasant or commoner characters not otherwise specified.
+                   - genericmaleupper: used for unnamed male nobility or "middling sort" (merchant, professional) characters not otherwise specified.
+                   - genericfemaleupper: used for unnamed female nobility or "middling sort" (merchant, professional) characters not otherwise specified.
+                   - study: any turn involving reading or studying
+                   - codex: any book or when the #map command is used. 
+                   - herbs: herbs, foods, or medicines are examined or bought. 
+                   - herbalist: any herbalist other than Marta. 
+                   - farm: any turn involving farms or agriculture.
+                   - mushroom: when the curandera appears.
+                   - trippy: anything involving altered conciousness, a drug experience, trance, or dream, even terror.
+                   - merchant: any unnamed merchant character or other commercial scene. 
+                   - priest: any church setting or priest character. 
+                   - cityday: any daytime city scene not covered by other categories.
+                   - tlacaelel: Tlacaelel, the Nahuatl man at the market who begins the Nahuatl codex quest if spoken to. 
+                   - default: fallback image, used as last resort.
 
                    ALWAYS return the selected image name as a separate string labeled "NPC image". For instance:
                    - If "Ana María de Soto" or or "Ana" or "Soto" appears, return "NPC image: anamariadesoto".

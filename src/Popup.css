@@ -205,139 +205,22 @@
 }
 /* Prescribe Popup Specific Styles */
 
-.prescribe-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
 
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-
-
-.prescribe-content {
-  background-color: #f0e6d2;
-  padding: 20px;
-  border-radius: 8px;
-  width: 60%;
-  max-width: 500px;
-
-}
-
-.prescribe-content h2 {
-     font-family: 'MedievalSharp', cursive;
-    color: black;
-    letter-spacing: 0.02rem;
-    font-size: 1.4rem;
-    padding: 20px;
-}
-
-.prescription-area {
-    border: 2px dashed #8b7355;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff9e6;
-    transition: background-color 0.3s ease;
- 
-}
-
-.prescription-area.drag-over {
-    background-color: #e6dfc8;
-    border-color: #5c4c38;
-}
-
-
-.selected-item {
-    font-size: 2.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.selected-item .emoji {
-    font-size: 2.5rem;
-    margin-right: 1rem;
-}
-
-.prescription-controls {
-    margin-bottom: 1rem;
-}
-
-.prescription-controls label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-.prescription-controls input {
-    width: 20%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #8b7355;
-    border-radius: 4px;
-    background-color: #fff9e6;
-}
-
-.prescription-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.prescription-buttons button {
-    flex: 1;
-    padding: 0.7rem 1rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.prescription-buttons button:first-child {
-    background-color: #4caf50;
-    color: white;
-}
-
-.prescription-buttons button:first-child:hover {
-    background-color: #45a049;
-}
-
-.prescription-buttons button:last-child {
-    background-color: #f44336;
-    color: white;
-}
-
-.prescription-buttons button:last-child:hover {
-    background-color: #d32f2f;
-}
 
 
 /* Portrait Popup Styles */
 
 .popup-overlay {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.55);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px); /* Optional: Adds a blur effect to the background */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Make sure it's below the prescribe-popup z-index */
 }
 
 .portrait-popup {

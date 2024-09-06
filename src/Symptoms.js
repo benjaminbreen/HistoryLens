@@ -79,7 +79,7 @@ function Symptoms({ npcName, onClose }) {
         <div className="symptoms-popup-content">
           <div className="npc-info">
             <div className="npc-portrait-container">
-              <img src={require(`./assets/${npc.image}.jpeg`)} alt={npc.name} />
+              <img src={require(`./assets/${npc.image}.jpg`)} alt={npc.name} />
               <span className="astrology-symbol">{astrologySymbols[npc.astrologicalSign]}</span>
             </div>
             <ul>

@@ -14,14 +14,13 @@ import calcinateActiveImage from './assets/calcinate-active.jpg';
 import confectionImage from './assets/confection.jpg';
 import confectionActiveImage from './assets/confection-active.jpg';
 
-const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJournalEntry }) => {
+const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJournalEntry, toggleMixingPopup }) => {
     const [selectedSimples, setSelectedSimples] = useState({});
     const [isMixButtonEnabled, setIsMixButtonEnabled] = useState(false);
     const [compoundResult, setCompoundResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [hoveredSimple, setHoveredSimple] = useState(null); // State for tracking hovered item
-    const [unlockedMethods, setUnlockedMethods] = useState([]); // State to track unlocked methods
+    const [hoveredSimple, setHoveredSimple] = useState(null);
 
     // Initial methods available
     const methods = [
@@ -30,18 +29,6 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
         { name: 'Calcinate', image: calcinateImage, activeImage: calcinateActiveImage, caption: "Calcination burns ingredients into ashes to purify and concentrate their properties. Often used to produce powders." },
         { name: 'Confection', image: confectionImage, activeImage: confectionActiveImage, caption: "Confectioning involves mixing powders with honey or syrup to create palatable pastes, pills, or lozenges." }
     ];
-
-    // Unlock a new method
-    const unlockMethod = (methodName) => {
-        if (!unlockedMethods.includes(methodName)) {
-            setUnlockedMethods(prev => [...prev, methodName]);
-        }
-    };
-
-    // Filter methods to include only those that are unlocked
-    //const availableMethods = methods.filter(method => method.name === 'Confection' || unlockedMethods.includes(method.name));
-
-const availableMethods = methods;
 
     const handleDrop = (item, method) => {
         setSelectedSimples((prev) => ({
@@ -60,114 +47,137 @@ const availableMethods = methods;
             setError(null);
 
             const systemPrompt = `
-                You are a 1680s iatrochemist (e.g., Thomas Sydenham) tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug.  
+                You are a 1680s iatrochemist tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." 
+                When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug.
+                Use reasoning to determine if the result is successful or becomes "Unusable Sludge." Return a JSON object with the following fields:
+                - **name**: Name of the compound or "Unusable Sludge".
+                - **humoralQualities**: Description of humoral qualities.
+                - **effects**: Single word description of the effects, like "soporific" or "stupefying" or "expectorant."
+                - **description**: Brief, pithy, witty description of the process and result, no more than single short sentence or phrase.
+                - **price**: Price in silver coins, or 0 if "Unusable Sludge".
+                - **emoji**: A single emoji to represent the result. Unusable Sludge is always ☠️.
 
-                Your output must be a **valid JSON object** with the following fields:
-                - **name**: A string representing the name of the compound, drawn from real early modern drug names. Use reasoning (i.e., distilled opium makes laudanum). If the combination or method is highly implausible, the result should be "Unusable Sludge" and the name should be "Unusable Sludge."  
-                - **humoralQualities**: A string describing the humoral qualities of the compound, e.g. Warm & Dry, Warm & Cold, Cold & Moist, or Cold & Dry.  
-                - **effects**: A string describing the effects of the compound, e.g., "resolutive" or "emetic" etc. SINGLE WORD ONLY.  
-                - **description**: A string that briefly (short sentence) describes the origin of the ingredients, the compounding method, and the potential effects, using early modern medical terminology. If the result is Unusable Sludge, describe how the process failed.
-                - **price**: An integer or float representing the estimated selling price in silver coins, based on the value of the components. If the result is Unusable Sludge, the price should be 0.
-                - **emoji**: A single emoji from the following list: [🧪, 🥀, 🍵, 💧, 🔮, 🌼, 🍃, 🩸, 🍭, 🍯, 🫙, 🧉, ☠️]. Use ☠️ for Unusable Sludge. 
-
-                IMPORTANT: There is a significant chance that a combination of ingredients and methods become Unusable Sludge. The system should reason based on the historical plausibility of the combination and method to determine whether the result is a successful compound drug or Unusable Sludge. 
-                TIPS: Calcinating herbs and roots generally works well, yielding "calcined" varieties. Mumia is a wildcard: compounds with it can be extremely valuable or almost worthless. Quicksilver works with calcination and distillation only and has a random element - can be surprising. Sugar works with everything. Millipedes and mumia calcine and confect well. 
-                Here is a list of real compound drugs from 1680s Mexico to use as inspiration: Cuerno de Ciervo Cinamomo Aqua Preparado Emplastrum Diaphoreticum Minsicht Emplastrum Antipodragicum Aqua Reginae Hungariae Camphorata Liquido Succinato Oleum Lumbricorum Pulvis Coralli Preparado Extractus Aqua Meliz Patriz Spiritus Rosarum Laudanum Liquido Aqua Vita Mulierum Laudanum Liquido Spiritus Volatil Aqua de la Reina de España Aqua de Chicoria Syrupus Florum Tunicae.
-                Here is an example of the expected JSON format:
-
+                Example:
                 {
                     "name": "Aqua Vitae",
                     "humoralQualities": "Warm & Dry",
                     "effects": "Soporific",
-                    "description": "Distilled from the roots of Angelica and Valerian, this seems useful in the treatment of cold phlegmatic humors.",
+                    "description": "Distilled from the roots of Angelica and Valerian.",
                     "price": 15,
                     "emoji": "🔥"
                 }
-                IMPORTANT: ALWAYS ensure that the JSON object is correctly formatted and that all keys are included in your response. Your response must be a valid JSON object.
-Double-check that the output is in correct JSON format before finalizing your response.
-Ensure all keys are included in the JSON object.
-If the JSON format is incorrect or missing a key, regenerate it correctly.
-The JSON must be formatted with double quotes around keys and string values. NEVER SINGLE QUOTES.
             `;
 
             const userInput = `
-                Ingredients: ${ingredients.map(i => i.name).join(' and ')}
-                Compounding Method: ${selectedMethod}
-            `;
+            Ingredients: ${ingredients.map(i => i.name).join(' and ')}
+            Compounding Method: ${selectedMethod}
+        `;
+
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userInput }
+                    ]
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            let compoundData;
 
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`,
-                    },
-                    body: JSON.stringify({
-                        model: 'gpt-4o-mini',
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: userInput }
-                        ]
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const compoundData = JSON.parse(data.choices[0].message.content);
-
-                const newCompound = {
-                    name: compoundData.name,
-                    emoji: compoundData.emoji,
-                    price: compoundData.price,
-                    humoralQualities: compoundData.humoralQualities,
-                    effects: compoundData.effects,
-                    description: compoundData.description,
-                    quantity: 1
-                };
-
-                // Add compound to inventory
-                addCompoundToInventory(newCompound);
-
-                // Generate a journal entry including custom message for Unusable Sludge
-                if (compoundData.name === "Unusable Sludge") {
-                    addJournalEntry("Maria created a worthless compound called **Unusable Sludge**. This was a failed experiment - better luck next time!");
-                } else {
-                    addJournalEntry(`Maria created a new compound named **${compoundData.name}** using the ${selectedMethod} method. The compound is ${compoundData.humoralQualities} with ${compoundData.effects} effects and is worth ${compoundData.price} silver coins.`);
-                }
-
-                // Deduct used ingredients from inventory
-                ingredients.forEach(ingredient => {
-                    updateInventory(ingredient.name, -1);
-                });
-
-                setCompoundResult(newCompound);
-                setSelectedSimples({});
-                setIsMixButtonEnabled(false);
+                compoundData = JSON.parse(data.choices[0].message.content);
             } catch (error) {
-                console.error('Error generating compound:', error);
-                setError(`Failed to create compound: ${error.message}`);
-            } finally {
-                setIsLoading(false);
+                // If there's a JSON error, default to "Unusable Sludge"
+                console.error('Error parsing JSON:', error);
+                throw new Error("Invalid JSON");
             }
+
+            const newCompound = {
+                id: new Date().getTime(), // Generate a unique ID for the new compound
+                name: compoundData.name || "Unusable Sludge",
+                emoji: compoundData.emoji || "☠️",
+                price: compoundData.price || 0,
+                humoralQualities: compoundData.humoralQualities || "N/A",
+                effects: compoundData.effects || "N/A",
+                description: compoundData.description || "The mixing process failed, resulting in an unusable sludge.",
+                quantity: 1
+            };
+
+            // Add compound to inventory
+            addCompoundToInventory(newCompound);
+
+            // Generate a journal entry
+            if (newCompound.name === "Unusable Sludge") {
+                addJournalEntry("Maria created a worthless compound called **Unusable Sludge**. This was a failed experiment - better luck next time!");
+            } else {
+                addJournalEntry(`Maria created a new compound named **${newCompound.name}** using the ${selectedMethod} method. The compound is ${newCompound.humoralQualities} with ${newCompound.effects} effects and is worth ${newCompound.price} silver coins.`);
+            }
+
+            // Deduct used ingredients from inventory
+            ingredients.forEach(ingredient => {
+                updateInventory(ingredient.name, -1);
+            });
+
+            setCompoundResult(newCompound);
+            setSelectedSimples({});
+            setIsMixButtonEnabled(false);
+        } catch (error) {
+            console.error('Error generating compound:', error);
+            // Fallback to "Unusable Sludge" in case of any error, including JSON errors
+            const unusableSludge = {
+                id: new Date().getTime(), // Generate a unique ID for the sludge
+                name: "Unusable Sludge",
+                emoji: "☠️",
+                price: 0,
+                humoralQualities: "N/A",
+                effects: "N/A",
+                description: "The mixing process failed, resulting in an unusable sludge.",
+                quantity: 1
+            };
+
+            // Add "Unusable Sludge" to inventory
+            addCompoundToInventory(unusableSludge);
+
+            // Generate a journal entry for the failed experiment
+            addJournalEntry("Maria's attempt to create a new compound failed, resulting in an unusable sludge. Better luck next time!");
+
+            // Deduct used ingredients from inventory
+            ingredients.forEach(ingredient => {
+                updateInventory(ingredient.name, -1);
+            });
+
+            setCompoundResult(unusableSludge);
+            setSelectedSimples({});
+            setIsMixButtonEnabled(false);
+        } finally {
+            setIsLoading(false);
         }
+    }
+};
+
+    const resetSelection = () => {
+        setSelectedSimples({});
+        setIsMixButtonEnabled(false);
+        setCompoundResult(null);
+        setError(null);
+        updateInventory(); // Trigger an inventory update
     };
 
-   return (
+    return (
         <div className={`mixing-container ${isLoading ? 'loading' : ''}`}>
             <h1 className="mixing-header">Mix a New Drug</h1>
-
-            <div className="mix-button-container">
-                <button 
-                    onClick={handleMixing} 
-                    className={`mix-button ${isMixButtonEnabled ? 'enabled' : 'disabled'}`}
-                    disabled={!isMixButtonEnabled || isLoading}
-                >
-                    {isLoading ? 'Mixing...' : 'Mix Drug'}
-                </button>
-            </div>
 
             {error && <div className="error-message">{error}</div>}
 
@@ -217,9 +227,19 @@ The JSON must be formatted with double quotes around keys and string values. NEV
                     <strong>Humoral Qualities:</strong> {hoveredSimple.humoralQualities}<br />
                     <strong>Medicinal Effects:</strong> {hoveredSimple.medicinalEffects}<br />
                     <small>{hoveredSimple.description}</small>
-                    <p>{hoveredSimple.popupText}</p>
                 </div>
             )}
+
+            <div className="mix-button-container">
+                <button 
+                    onClick={handleMixing} 
+                    className={`mix-button ${isMixButtonEnabled ? 'enabled' : 'disabled'}`}
+                    disabled={!isMixButtonEnabled || isLoading}
+                >
+                    {isLoading ? 'Mixing...' : 'Mix Drug'}
+                </button>
+                <button className="reset-button" onClick={resetSelection}>Reset</button>
+            </div>
         </div>
     );
 };
@@ -228,11 +248,11 @@ The JSON must be formatted with double quotes around keys and string values. NEV
 const InventoryItem = ({ simple, onHover, onLeave }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'simple',
-        item: simple,
+        item: { id: simple.id, name: simple.name }, // Include `id` if it's part of your data structure
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         }),
-    }));
+    }), [simple]);
 
     return (
         <div 
@@ -255,7 +275,7 @@ const MethodSquare = ({ method, onDrop, ingredients }) => {
         collect: monitor => ({
             isOver: monitor.isOver(),
         }),
-    }));
+    }), [onDrop]);
 
     const image = ingredients.length > 0 ? method.activeImage : method.image;
 

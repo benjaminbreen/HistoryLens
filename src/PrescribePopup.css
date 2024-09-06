@@ -1,59 +1,89 @@
+/* Prescribe Popup Base Styles */
 .prescribe-popup {
   position: fixed;
   top: 50%;
-  left: 35%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(240, 230, 210, 0.95);
+   background-color: #edd8b8 !important;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 52px rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 6px 52px rgba(0, 0, 0, 0.94);
   width: 45%;
   max-width: 700px;
   max-height: 80vh;
   overflow-y: auto;
   pointer-events: auto;
+  color: #4a4a4a;
+}
+
+.prescription-controls label {
+  color: #4a4a4a;
+}
+
+.prescription-controls input {
+
+  color: #4a4a4a;
+  border-color: #718096;
+  border-radius: 10px;
+  margin-left: 20px;
+}
+
+.prescribe-content {
+  background-color: #f9f4e7;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  pointer-events: auto;
+}
+
+.prescription-area p {
+  color: #4a4a4a; /* Dark gray */
 }
 
 
-.prescribe-content {
-  background-color: #f0e6d2;
+/* Drag and Drop Area */
+.prescription-area {
+  border: 2px dashed #8b7355;
+  border-radius: 12px;
   padding: 20px;
-  border-radius: 8px;
-  width: 100%; /* Ensure content takes up the full width of the popup */
-  pointer-events: auto; /* Re-enable interactions for the popup content */
+  margin-bottom: 20px;
+  text-align: center;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff9e6;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .prescription-area.drag-over {
-  background-color: rgba(139, 126, 109, 0.3);
+  background-color: rgba(255, 235, 204, 0.8);
+  border-color: #5c4c38;
 }
 
 .selected-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+  font-size: 1.8rem;
+  color: #4a4a4a;
+  font-weight: bold;
 }
 
+.selected-item .emoji {
+  font-size: 3rem;
+}
+
+/* Input Controls */
 .prescription-controls {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-.medieval-header {
-    font-size: 1.5em;
-    color: #2d3748;
-    margin-bottom: 20px;
-    padding-left: 150px;
-}
-
-.medieval-header span {
-    font-family: 'MedievalSharp', cursive;
-    color: #2d3748;
-    letter-spacing: 0.02rem;
-      font-size: 1.5em;}
-
-      .input-group {
+.input-group {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -61,16 +91,62 @@
 
 .input-group label {
   font-weight: bold;
+  color: #4a4a4a;
 }
 
 .input-group input {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
+  padding: 12px;
+  font-size: 18px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  color: #4a4a4a;
 }
 
+.input-group input:focus {
+  border-color: #8b7355;
+  background-color: #fff7e1;
+  box-shadow: 0 0 8px rgba(139, 115, 85, 0.6);
+}
+
+.prescription-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.prescription-buttons button {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.prescription-buttons button:first-child {
+    background-color: #4caf50;
+    color: white;
+}
+
+.prescription-buttons button:first-child:hover {
+    background-color: #45a049;
+}
+
+.prescription-buttons button:last-child {
+    background-color: #f44336;
+    color: white;
+}
+
+.prescription-buttons button:last-child:hover {
+    background-color: #d32f2f;
+}
+
+/* Action Buttons */
 .action-buttons {
   display: flex;
   justify-content: space-between;
@@ -78,87 +154,61 @@
 }
 
 .action-buttons button {
-  padding: 10px 20px;
+  padding: 12px 25px;
   font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .prescribe-button {
   background-color: #4CAF50;
   color: white;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.prescribe-button:hover {
+  background-color: #45a049;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
 }
 
 .cancel-button {
   background-color: #f44336;
   color: white;
+  box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
 }
 
-
-  @media (max-width: 768px) {
-  .prescribe-popup {
-    width: 67%;
-    padding: 10px;
-    max-height: 90vh;
-      left: 30%;
-  }
-
-  .prescribe-content {
-    padding: 10px;
-  }
-
-  .medieval-header {
-    font-size: 1.1em;
-    margin-bottom: 15px;
-  }
-
-  .selected-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
-
-  .prescription-controls {
-    gap: 5px;
-    font-size: .95rem;
-  }
-
-  .input-group input {
-    font-size: 18px;
-    padding: 12px;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 10px;
-
-  }
-
-  .action-buttons button {
-    width: 100%;
-    padding: 15px;
-    font-size: 15px;
-  }
+.cancel-button:hover {
+  background-color: #e53935;
+  box-shadow: 0 0 15px rgba(244, 67, 54, 0.8);
 }
 
-/* Dark mode styles */
+.prescribe-popup h2 {
+  font-family: 'MedievalSharp', cursive;
+  color: #4a4a4a; /* Dark gray */
+  font-size: 2rem; /* Adjust font size as necessary */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Dark Mode Styles */
 body.dark-mode .prescribe-popup {
   background-color: rgba(45, 55, 72, 0.95);
 }
 
+body.dark-mode .prescribe-popup h2 {
+  font-family: 'MedievalSharp', cursive;
+  color: white; 
+  font-size: 2rem; /* Adjust font size as necessary */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+
 body.dark-mode .prescribe-content {
   background-color: #2d3748;
-}
-
-body.dark-mode .prescribe-content h2 {
-  color: #e2e8f0; /* Off-white color for the header in dark mode */
-}
-
-body.dark-mode .prescription-controls input[type="number"] {
-  background-color: #4a5568;
-  color: #ffffff; /* White text for better visibility in dark mode */
-  border-color: #718096;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .prescription-area {
@@ -166,39 +216,80 @@ body.dark-mode .prescription-area {
   border-color: #718096;
 }
 
+body.dark-mode .prescription-area.drag-over {
+  background-color: rgba(64, 75, 97, 0.8);
+  border-color: #5c6b83;
+}
+
 body.dark-mode .selected-item,
 body.dark-mode .prescription-area p {
   color: #e2e8f0;
+}
+
+body.dark-mode .prescription-controls input {
+  background-color: #4a5568;
+  color: #ffffff;
+  border-color: #718096;
 }
 
 body.dark-mode .prescription-controls label {
   color: #e2e8f0;
 }
 
-/* Ensure text is visible in buttons */
-body.dark-mode .prescription-buttons button {
-  color: #ffffff;
-  background-color: #4a5568;
-  border: 1px solid #718096;
-}
-
-body.dark-mode .prescription-buttons button:first-child {
+body.dark-mode .prescribe-button {
   background-color: #68d391;
   color: #2d3748;
+  box-shadow: 0 0 10px rgba(104, 211, 145, 0.7);
 }
 
-body.dark-mode .prescription-buttons button:last-child {
+body.dark-mode .cancel-button {
   background-color: #fc8181;
   color: #2d3748;
+  box-shadow: 0 0 10px rgba(252, 129, 129, 0.7);
 }
 
-.prescribe-popup,
-.prescribe-content,
-.input-group input,
-.prescription-area,
-.selected-item,
-.amount-input,
-.price-input {
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .prescribe-popup {
+    width: 60%;
+    left: 30%;
+    padding: 15px;
+    max-height: 90vh;
+    transform: translate(-50%, -50%);
+  }
 
+  .prescribe-content {
+    padding: 15px;
+  }
+
+  .selected-item {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+  }
+
+  .selected-item .emoji {
+    font-size: 2.5rem;
+  }
+
+  .prescription-controls {
+    gap: 10px;
+  }
+
+  .input-group input {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+  }
+}

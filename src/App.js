@@ -9,7 +9,6 @@ import LoadingIndicator from './LoadingIndicator';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import SimulationHistory from './SimulationHistory';
-import { inventoryData } from './Inventory';
 import { generateJournalEntry } from './journalAgent';
 import PortraitSection from './PortraitSection';
 import Mixing from './Mixing';
@@ -27,25 +26,23 @@ import { assessPrescription, assessGameplay } from './AssessmentAgent';
 import About from './About';  
 import imageMap from './imageMap';
 import CounterNarrative from './CounterNarrative'; 
-import { useClickAway } from 'react-use';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Squash as Hamburger } from 'hamburger-react';
 import NavMobile from './NavMobile';
 import Diagnose from './Diagnose'; 
 import Map from './Map';
+import Quest, { quests } from './Quest';
+import { initialInventoryData, potentialInventoryItems } from './initialInventory';
 import './App.css';
 import './Inventory.css';
 import './Popup.css';
 
 
 function App() {
-const { gameState, updateInventory, addCompoundToInventory} = useGameState(inventoryData, 11);
+  const { gameState, updateInventory, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest } = useGameState();
 
   const [isPrescribeOpen, setIsPrescribeOpen] = useState(false);
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
   const [gameAssessment, setGameAssessment] = useState('');
-  const [simples, setSimples] = useState(inventoryData);
   const [npcImage, setNpcImage] = useState(imageMap.shopmorning);
   const [npcCaption, setNpcCaption] = useState("Maria's apothecary shop");
   const [currentPatient, setCurrentPatient] = useState(null);
@@ -87,6 +84,9 @@ const { gameState, updateInventory, addCompoundToInventory} = useGameState(inven
   const handleStatusChange = (newStatus) => {
     setMariaStatus(newStatus);
   };
+  const [userActions, setUserActions] = useState([]);
+  const [activeQuest, setActiveQuest] = useState(null);
+
 
 
 // Toggle functions
@@ -195,13 +195,13 @@ useEffect(() => {
   const initialDescription = `
     You are Maria de Lima, apothecary. You awaken to the first rays of dawn filtering through the window of your quarters above your shop on Calle de la Amargura in Mexico City.  
     &nbsp;   
-    Descending a rough-hewn ladder, you light a tallow candle which casts flickering shadows across your shop. Shelves line the walls, laden with jars of dried herbs, vials of tinctures, and small boxes of precious powders. As always, you begin your day by grinding cacao, cornmeal, and cinnamon in a well-worn *molcajete*, preparing a stimulating drink to clear your mind for the day ahead. your mind wanders to your mounting debts and your urgent need for new business.    
+    Descending a rough-hewn ladder, you light a tallow candle. Shelves line the walls of your shop, laden with jars of dried herbs and vials of tinctures. As always, you begin your day by grinding cacao, cornmeal, and cinnamon in a *molcajete*, making a drink to prepare you for the day ahead. Your mind wanders to your mounting debts, which now top 120 *reales*, and your urgent need for new business.    
     &nbsp;  
-    Next, you feed some scraps of dried fish to a friendly street cat—an orange fluff ball, little more than a kitten, who you've named João. [*João purrs contentedly.*]  
+    Next, you feed some scraps of fish to a friendly street cat—an orange fluff ball, little more than a kitten, who you've named João.  
     &nbsp;  
-    Meanwhile, the street outside comes to life. Servants hurry past with baskets of fresh produce, while a group of Dominican friars makes their way towards the nearby church, their white habits a stark contrast to the dusty street. A water-carrier with his earthen jug trudges by, followed by a group of boisterous students. A patrol of soldiers carrying pikes is a reminder of troubling rumors – whispers of the Inquisition's renewed fervor in the city and unsettling news of unrest in the northern provinces.  
+    Meanwhile, the street outside comes to life. Servants hurry past with baskets of fresh produce, while a group of Dominican friars makes their way towards the nearby church. A water-carrier with his earthen jug trudges by, followed by a group of boisterous students. A patrol of soldiers carrying pikes is a reminder of troubling rumors – whispers of unrest in the northern provinces.  
     &nbsp;  
-    **Just as you begin to sort through your supply of aloe leaves, a sharp *knock* at the door announces the day's first patient. Will you see who is there, or ignore them?**
+    **Just as you begin to sort through your supply of aloe leaves, a sharp *knock* at the door announces the day's first visitor. Will you see who is there, or ignore them?**
   `;
   setHistoryOutput(initialDescription.trim());
   setConversationHistory([{ role: 'system', content: initialDescription.trim() }]);
@@ -285,6 +285,21 @@ useEffect(() => {
   setCommandsDetected(newCommandsDetected);
 }, [historyOutput]);
 
+// quest start check 
+
+useEffect(() => {
+    const checkForQuestStart = (currentTime) => {
+      const availableQuests = quests.filter(quest => !quest.completed);
+      const questToStart = availableQuests.find(quest => quest.trigger(turnNumber, userActions, location, currentTime));
+      if (questToStart) {
+        startQuest(questToStart);
+      }
+    };
+
+    checkForQuestStart(time);
+  }, [turnNumber, userActions, location, startQuest, time]);
+
+
 
 // Entity Selection
 
@@ -340,17 +355,65 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
 
   setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
-  setLocation(summaryData.location || location);
-  setDate(summaryData.date || date);
-  setTime(summaryData.time || time);
-}, [location, date, time]);
+// handle quest progression
+const activeQuest = gameState.quests.find(quest => quest.currentStage !== undefined && !quest.completed);
+if (activeQuest) {
+  // Check if the quest should progress based on some condition
+  // This could be a property of the quest, or based on player actions
+  if (shouldAdvanceQuest(activeQuest, userActions)) {
+    advanceQuestStage(activeQuest.id);
+  }
+  
+  // Check if the quest is completed after advancing
+  if (activeQuest.currentStage >= activeQuest.stages.length - 1) {
+    completeQuest(activeQuest.id);
+  }
+}
+
+setLocation(summaryData.location || location);
+setDate(summaryData.date || date);
+setTime(summaryData.time || time);
+}, [location, date, time, gameState.quests, advanceQuestStage, completeQuest, userActions]);
+
+// Helper function to determine if a quest should advance
+const shouldAdvanceQuest = (quest, actions) => {
+  // This is a placeholder implementation
+  // You should replace this with your own logic based on your game's requirements
+  return actions.some(action => action.includes(`advanceQuest${quest.id}`));
+};
 
 // Handling Submission
 const handleSubmit = useCallback(async (e) => {
   e.preventDefault();
-
   setIsLoading(true);
+  
   let narrativeText = userInput.trim().toLowerCase(); // Convert to lowercase for easier matching
+
+  // Step 1: Prepare the inventory summary for the history agent
+  const inventorySummary = gameState.inventory.map(item => 
+    `${item.name} (Quantity: ${item.quantity}, Price: ${item.price} silver coins)`
+  ).join('\n');
+  
+  // Check for quest start commands
+ if (narrativeText.startsWith('quest')) {
+  const questNumber = parseInt(narrativeText.replace('quest', ''));
+  if (!isNaN(questNumber)) {
+    const questToStart = quests.find(quest => quest.id === questNumber);
+    if (questToStart) {
+      startQuest(questToStart);
+      setActiveQuest(questToStart);
+      setHistoryOutput(prev => `${prev}\n\nStarting Quest: ${questToStart.name}`);
+      setUserActions(prevActions => [...prevActions, `#startQuest${questNumber}`]); // Add this line
+      setUserInput('');
+      setIsLoading(false);
+      return;
+    }
+  }
+}
+  
+
+  // Add this line to track user actions
+  setUserActions(prevActions => [...prevActions, narrativeText]);
 
   // Normalize the command by removing the hashtag if present
   const command = narrativeText.startsWith('#') ? narrativeText.substring(1) : narrativeText;
@@ -409,12 +472,15 @@ const handleSubmit = useCallback(async (e) => {
 
 
 const contextSummary = `
-        Current Location: ${location}
-        Current Date: ${date}
-        Current Time: ${time}
-        Turn Number: ${turnNumber}
-        ${incorporatedContent ? `\nIncorporated Critique:\n${incorporatedContent}` : ''}
-    `;
+    Current Location: ${location}
+    Current Date: ${date}
+    Current Time: ${time}
+    Turn Number: ${turnNumber}
+    ${incorporatedContent ? `\nIncorporated Critique:\n${incorporatedContent}` : ''}
+    Inventory:
+    ${inventorySummary}  // Add the inventory summary here
+`;
+
 
 
   const newMessage = { role: 'user', content: narrativeText };
@@ -463,17 +529,23 @@ const contextSummary = `
               role: 'system',
               content: `You are HistoryLens, a historical simulation engine. Your goal is to maintain an immersive simulation set in Mexico City and environs on August 22, 1680, with brief MUD-like descriptions and commands but strict historical accuracy. 
               The user's playable character (PC) is Maria de Lima, a 45-year-old Lisbon-born apothecary who, ten years earlier, fled to Mexico City following her arrest by the Portuguese Inquisition. 
-              Remember, the simulation must remain true to the context of the 17th century: avoid anachronistic language, concepts, or behaviors, and ensure that all actions, objects, and references are historically plausible.
+              Remember, the simulation must remain true to the context of the 17th century: avoid anachronistic language and concepts, and ensure that all actions, objects, and references are historically plausible.
 
               **Gameplay Guidelines:**
               - The human user's inputs should never lead you to move outside the historical frame of Mexico in 1680. For instance, if they input "give the patient a vaccine," you would respond by saying "That is historically inaccurate. Please enter a new command that reflects the setting." Otherwise, player inputs have a wide latitude and should be accepted.
-              - Your responses should be concise, rarely exceeding three paragraphs, and always grounded in the historical realities of 1680s life. Use appropriate period-specific language and avoid modern concepts.
-              - Patients sometimes complain about the foreignness or noxiousness of a medicine Maria prescribes. 
+              - Your responses should be concise, rarely exceeding three paragraphs, and always grounded in the vivid, sensory historical realities of 1680s life. Use appropriate period-specific language and avoid modern concepts.
+              - Patients sometimes complain about the foreignness or noxiousness of a medicine Maria prescribes. They are often in a bad mood. Maria/the player needs to converse with them to draw out relevent details. 
 
               **Commands:**
-              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. Suggest one or two when contextually appropriate (when NPCs seek medical care, start with suggesting #symptoms and #diagnose, then suggest #prescribe). #buy is suggested whenever items for sale may be nearby. 
+              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the market" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest #symptoms,  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
               - if a player asks a patient about their #symptoms in their input, the player will see a popup displaying them. You can go into more detail if prompted but need not. 
-              - #buy: ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby.
+              - #buy: herbs are available at the market. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Approved items that Maria can buy are: "Peyote", "Peyotl", "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
+    "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
+    "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
+    "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", 
+    "Yarrow", "Valerian", "Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", 
+    "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
+    "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade"
 
               **Contextual Awareness:**
               - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in a desperate personal and financial state.
@@ -482,8 +554,9 @@ const contextSummary = `
 
               **Character and Narrative Control:**
               - The simulation should reflect Maria's struggles with limited resources, societal pressures, and the challenges of maintaining her business.
-              - The user has the option to click an "Incorporate counter-narrative" button which adds a critique of the previous turn output by an expert historian to your context for preparing the next turn. Integrate this knowledge subtly but actively to enhance realism. 
+              - The user has the option to click an "Incorporate counter-narrative" button which adds a critique of the previous turn output by an expert historian to your context for preparing the next turn. Integrate this knowledge subtly but actively to enhance realism.
               - Occasionally reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature.
+              - At the market, there is a quest available if you visit the corner of the market ("market corner") where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name.
               - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. 
               - Maria starts with 11 silver coins. If there are any changes to Maria's wealth OR her status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious) then note it at the END of your response. Update status every turn or two. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
                Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. Your final line should always be in this exact format:
@@ -501,35 +574,65 @@ const contextSummary = `
     );
 
     if (!historyAgentResponse.ok) {
-      throw new Error(`API Error: ${historyAgentResponse.statusText}`);
-    }
-
-    const historyAgentData = await historyAgentResponse.json();
-    const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
-
- //detect new item purchase
-
- const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|Maria bought|She purchased) ?#?([a-zA-Z\s]+)/i);
-if (purchaseMatch) {
-  const purchasedItemName = purchaseMatch[1].trim(); // Extract the item name
-  generateNewItemDetails(purchasedItemName);
+  throw new Error(`API Error: ${historyAgentResponse.statusText}`);
 }
 
+const historyAgentData = await historyAgentResponse.json();
+const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
 
-    await handleTurnEnd(simulatedHistoryOutput);
+// Detect new item purchase
+const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|Maria bought|She purchased|Maria has bought)\s+(\#?[A-Z][a-zA-Z\s]*)/i);
 
-    setHistoryOutput(simulatedHistoryOutput);
-    setConversationHistory([...newHistory, { role: 'assistant', content: simulatedHistoryOutput }]);
-    setTurnNumber(turnNumber + 1);
+if (purchaseMatch) {
+  const purchasedItemName = purchaseMatch[1].trim(); // Extract the item name
 
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    setHistoryOutput(`An error occurred: ${error.message}`);
-  } finally {
-    setIsLoading(false);
-  }
+ // Directly generate new item details without validation
+  generateNewItemDetails(purchasedItemName);
+}
+  // Validate and generate item details if valid
+  // if (isValidItemName(purchasedItemName)) {
+//    generateNewItemDetails(purchasedItemName);
+//  } else {
+//    console.error('Detected an invalid item name:', purchasedItemName);
+//  }
+//}
 
-  setUserInput('');
+// Fuzzy validation logic for recognized materia medica
+//const isValidItemName = (itemName) => {
+  // Normalize item names to lowercase for comparison
+//  const normalizeName = name => name.toLowerCase().replace(/\s+/g, ' ').trim();
+
+ // const validItems = [
+    // "Peyote", "Peyotl", "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
+   // "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
+  //  "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
+  //  "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", 
+  //  "Yarrow", "Valerian", "Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", 
+  //  "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
+  //  "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade"
+//  ].map(normalizeName);
+
+ // const normalizedItemName = normalizeName(itemName);
+
+  // Check if the normalized item name matches any valid item name, allowing for partial matches
+//  return validItems.some(validItem => normalizedItemName.includes(validItem) || validItem.includes(normalizedItemName));
+//};
+
+await handleTurnEnd(simulatedHistoryOutput);
+
+setHistoryOutput(simulatedHistoryOutput);
+setConversationHistory([...newHistory, { role: 'assistant', content: simulatedHistoryOutput }]);
+setTurnNumber(turnNumber + 1);
+
+} catch (error) {
+  console.error("Error fetching data:", error);
+  setHistoryOutput(`An error occurred: ${error.message}`);
+} finally {
+  setIsLoading(false);
+}
+
+setUserInput('');
+
 }, [
   conversationHistory, 
   date, 
@@ -540,131 +643,12 @@ if (purchaseMatch) {
   handleTurnEnd,
   selectEntity,
   npcCaption,
-  incorporatedContent
+  incorporatedContent,
+  setUserActions
 ]);
 
 
-// generate new item 
-const generateNewItemDetails = async (itemName) => {
-  const prompt = `Generate details for a new medicinal item named "${itemName}" in JSON format. Include the following fields exactly as specified:
-- name (string)
-- latinName (string)
-- spanishName (string)
-- price (integer between 1 and 20)
-- quantity (integer between 1 and 5)
-- humoralQualities (string)
-- medicinalEffects (string)
-- description (string)
-- emoji (single emoji character)
-Ensure the JSON is valid and uses double quotes for keys and string values.`;
 
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: `You are an assistant that generates JSON data for medicinal items purchased in an educational game set in 1680 Mexico City. Use your historical knowledge to create accurate entries. Always return a valid JSON object with the exact fields specified, using double quotes for keys and string values. Here's an example of the expected format:
-{
-  "name": "Saffron",
-  "latinName": "Crocus sativus",
-  "spanishName": "Azafrán",
-  "price": 15,
-  "quantity": 2,
-  "humoralQualities": "Warm & Dry",
-  "medicinalEffects": "Used to alleviate melancholy, improve digestion, and treat coughs.",
-  "description": "Highly valued spice derived from the stigmas of Crocus flowers, often mixed in compound drugs.",
-  "emoji": "🌸"
-}
-Ensure that the JSON is correctly formatted and includes all required fields.` },
-          { role: 'user', content: prompt }
-        ]
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    let newItemDetails;
-
-    try {
-      newItemDetails = JSON.parse(data.choices[0].message.content);
-      // Add the new item to the inventory
-      addCompoundToInventory({
-        ...newItemDetails,
-        name: itemName,
-      });
-    } catch (jsonError) {
-      console.error("Error parsing JSON:", jsonError);
-      // Handle counterfeit scenario
-      await handleCounterfeitItem(itemName);
-    }
-
-  } catch (error) {
-    console.error("Error generating new item details:", error);
-    // Handle counterfeit scenario
-    await handleCounterfeitItem(itemName);
-  }
-};
-
-const handleCounterfeitItem = async (itemName) => {
-  const counterfeitPrompt = `Add a sentence about how Maria realizes that ${itemName} is counterfeit and throws it away angrily. Drug counterfeiting is getting out of hand - this keeps happening!`;
-
-  try {
-    const historyAgentResponse = await fetch(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are HistoryLens, a historical simulation engine set in 1680 Mexico City.'
-            },
-            { role: 'user', content: counterfeitPrompt },
-          ],
-        }),
-      }
-    );
-
-    if (!historyAgentResponse.ok) {
-      throw new Error(`API Error: ${historyAgentResponse.statusText}`);
-    }
-
-    const historyAgentData = await historyAgentResponse.json();
-    const counterfeitScenario = historyAgentData.choices[0].message.content;
-
-    // Update the game state with the counterfeit scenario
-    setHistoryOutput(prevOutput => `${prevOutput}\n\n${counterfeitScenario}`);
-    setConversationHistory(prevHistory => [...prevHistory, 
-      { role: 'assistant', content: counterfeitScenario }
-    ]);
-
-    // Add a journal entry about this incident
-    addJournalEntry(`Maria encountered a counterfeit ${itemName} and disposed of it.`);
-
-  } catch (error) {
-    console.error("Error handling counterfeit item:", error);
-    // Fallback message if the API call fails
-    const fallbackMessage = `Maria realizes that the ${itemName} is counterfeit and angrily throws it away. Drug counterfeiting seems to be getting out of hand lately.`;
-    setHistoryOutput(prevOutput => `${prevOutput}\n\n${fallbackMessage}`);
-    setConversationHistory(prevHistory => [...prevHistory, 
-      { role: 'assistant', content: fallbackMessage }
-    ]);
-    addJournalEntry(`Maria encountered a counterfeit ${itemName} and disposed of it.`);
-  }
-};
 
 // Prescribe popup logic
 
@@ -684,7 +668,7 @@ const handleCounterfeitItem = async (itemName) => {
   const prescriptionPrompt = `
     Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${currentPatient.name}.
     The patient's reaction should be based on their background and the appropriateness of the prescription for their condition. 1-20 silver coins is fair for most remedies. Up to 50 for complex compounds.
-    Based on context, determine if the patient accepts the prescription (often) or balks and walks away (somewhat frequent). Describe the sensory characteristics of the prescribed medicine and patient reaction in 2-3 paragraphs. A bad cure or high price will prompt angry walkouts. 
+    Based on context, determine if the patient accepts the prescription (often) or balks and walks away (somewhat frequent). Describe the sensory characteristics of the prescribed medicine and patient reaction in 2-3 paragraphs. A bad bedside manner, noxious drug suggestion, or high price will prompt angry walkouts. 
     ALWAYS end by summarizing the transaction and ADDING the amount made to her current wealth. If Maria had 11 coins in previous turn and sold a drug for 2 coins, write "Maria has sold [drug name] for 2 silver coins. She now has 13 coins.""
   `;
 
@@ -707,6 +691,7 @@ const handleCounterfeitItem = async (itemName) => {
     if (!response.ok) {
       throw new Error(`API Error: ${response.statusText}`);
     }
+
 
     const data = await response.json();
     const simulatedOutput = data.choices[0].message.content;
@@ -736,6 +721,7 @@ const handleCounterfeitItem = async (itemName) => {
     setIsLoading(false);
   }
 }, [currentPatient, conversationHistory, updateInventory, addJournalEntry]);
+
 
  // JSX 
 
@@ -928,6 +914,16 @@ const handleCounterfeitItem = async (itemName) => {
   </button>
 
           </div>
+
+      <Quest
+          currentTurn={turnNumber}
+          userActions={userActions}
+          location={location}
+          activeQuest={activeQuest}
+          setActiveQuest={setActiveQuest}
+          time={time} 
+          startQuest={startQuest}
+        />
         </div>
 
         <footer className="footer">
@@ -996,11 +992,13 @@ const handleCounterfeitItem = async (itemName) => {
             isPrescribing={isPrescribing}
         />
         
-     <PrescribePopup 
-  isOpen={isPrescribePopupOpen}
-  onClose={handleClosePrescribePopup} // Use the new function here
-  onPrescribe={handlePrescribe}
-  inventory={gameState.inventory}
+<PrescribePopup 
+  gameState={gameState} 
+  updateInventory={updateInventory} 
+  addCompoundToInventory={addCompoundToInventory} 
+  isOpen={isPrescribePopupOpen} 
+  onClose={handleClosePrescribePopup} 
+  onPrescribe={handlePrescribe}  
 />
 
 {isAboutOpen && <About isOpen={isAboutOpen} toggleAbout={toggleAbout} />}

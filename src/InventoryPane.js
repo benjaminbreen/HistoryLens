@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDrag } from 'react-dnd';
 import './Inventory.css';
 
@@ -64,6 +64,12 @@ function ItemPopup({ item, onClose }) {
 
 function InventoryPane({ inventory, isOpen, toggleInventory, isPrescribing }) {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [currentInventory, setCurrentInventory] = useState(inventory);
+
+  // Update the currentInventory state whenever the inventory prop changes
+  useEffect(() => {
+    setCurrentInventory(inventory);
+  }, [inventory]);
 
   const getHumoralShorthand = (qualities) => {
     return qualities.split('&').map(q => q.trim().charAt(0)).join(' ');
@@ -82,7 +88,7 @@ function InventoryPane({ inventory, isOpen, toggleInventory, isPrescribing }) {
       <button className="close-button" onClick={toggleInventory}>Close</button>
       <h2>Inventory</h2>
       <ul className="inventory-list">
-        {inventory.map((item, index) => (
+        {currentInventory.map((item, index) => (
           <InventoryItem 
             key={index}
             item={item}

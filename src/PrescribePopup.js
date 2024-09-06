@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import './PrescribePopup.css';
 
-const PrescribePopup = ({ isOpen, onClose, onPrescribe }) => {
+function PrescribePopup({ gameState = {}, updateInventory, addCompoundToInventory, isOpen, onClose, onPrescribe }) {
+  const { inventory = [] } = gameState;
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [amount, setAmount] = useState(1);
   const [price, setPrice] = useState(0);
 
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'inventoryItem',
-    drop: (item) => setSelectedItem(item),
+  // Sync selected item with inventory
+  useEffect(() => {
+    if (selectedItem) {
+      const updatedItem = inventory.find(i => i.id === selectedItem.id);
+      setSelectedItem(updatedItem || null);
+    }
+  }, [inventory, selectedItem]);
+
+  // Drop target for inventory items
+  const [{ isOver }, drop] = useDrop({
+    accept: ['inventoryItem', 'compoundItem'], // Accept both types
+    drop: (item) => {
+      const updatedItem = inventory.find(i => i.id === item.id);
+      if (updatedItem) {
+        setSelectedItem(updatedItem);
+      } else {
+        console.warn('Dropped item not found in inventory:', item);
+      }
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
-  }));
+  });
 
-  const handlePrescribe = () => {
+  const handlePrescribeClick = () => {
     if (selectedItem) {
       onPrescribe(selectedItem, amount, price);
       setSelectedItem(null);
@@ -64,12 +82,12 @@ const PrescribePopup = ({ isOpen, onClose, onPrescribe }) => {
           </label>
         </div>
         <div className="prescription-buttons">
-          <button onClick={handlePrescribe} disabled={!selectedItem}>Prescribe</button>
-          <button onClick={onClose}>Cancel</button> {/* Ensure this calls onClose */}
+          <button onClick={handlePrescribeClick} disabled={!selectedItem}>Prescribe</button>
+          <button onClick={onClose}>Cancel</button>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default PrescribePopup;
