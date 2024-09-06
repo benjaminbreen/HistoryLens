@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&family=MedievalSharp&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap'); /* Font for inventory items */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap');
 
 /* General Styles */
 .mixing-popup {
@@ -157,7 +157,7 @@
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
 }
 
-/* Hover/Click Caption Box */
+/* Hover, Click Caption Box */
 .method-hover-box {
   display: none;
   position: fixed;

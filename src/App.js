@@ -581,42 +581,13 @@ const historyAgentData = await historyAgentResponse.json();
 const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
 
 // Detect new item purchase
-const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|Maria bought|She purchased|Maria has bought)\s+(\#?[A-Z][a-zA-Z\s]*)/i);
+const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
+
 
 if (purchaseMatch) {
-  const purchasedItemName = purchaseMatch[1].trim(); // Extract the item name
-
- // Directly generate new item details without validation
+  const purchasedItemName = purchaseMatch[1].trim(); 
   generateNewItemDetails(purchasedItemName);
 }
-  // Validate and generate item details if valid
-  // if (isValidItemName(purchasedItemName)) {
-//    generateNewItemDetails(purchasedItemName);
-//  } else {
-//    console.error('Detected an invalid item name:', purchasedItemName);
-//  }
-//}
-
-// Fuzzy validation logic for recognized materia medica
-//const isValidItemName = (itemName) => {
-  // Normalize item names to lowercase for comparison
-//  const normalizeName = name => name.toLowerCase().replace(/\s+/g, ' ').trim();
-
- // const validItems = [
-    // "Peyote", "Peyotl", "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
-   // "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
-  //  "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
-  //  "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", 
-  //  "Yarrow", "Valerian", "Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", 
-  //  "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
-  //  "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade"
-//  ].map(normalizeName);
-
- // const normalizedItemName = normalizeName(itemName);
-
-  // Check if the normalized item name matches any valid item name, allowing for partial matches
-//  return validItems.some(validItem => normalizedItemName.includes(validItem) || validItem.includes(normalizedItemName));
-//};
 
 await handleTurnEnd(simulatedHistoryOutput);
 
