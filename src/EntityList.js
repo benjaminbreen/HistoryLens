@@ -284,6 +284,76 @@ const EntityList = [
 },
 {
     type: "place",
+    name: "Outskirts",
+    image: "outskirts",
+    caption: "On the outskirts of Mexico City.",
+    description: "A barren landscape just outside Mexico City, with scattered farms and small homes dotting the horizon."
+},
+{
+    type: "place",
+    name: "Village",
+    image: "village",
+    caption: "A rural village near Mexico City.",
+    description: "A small village with adobe houses and dusty streets, where locals gather by a well and share the latest news."
+},
+{
+    type: "place",
+    name: "Dockside",
+    image: "dockside",
+    caption: "Dockside at a nearby river port.",
+    description: "Wooden docks stretch out into the river, where small boats are tied and fishermen sell their catch to passing travelers."
+},
+{
+    type: "place",
+    name: "Port",
+    image: "port",
+    caption: "A bustling port.",
+    description: "Ships docked at the port unload their cargo, while merchants haggle over prices and workers carry heavy crates along the shore."
+},
+{
+    type: "place",
+    name: "Hills",
+    image: "hills",
+    caption: "Rolling hills near Mexico City.",
+    description: "The gentle hills are covered in green grass and dotted with trees, providing a quiet retreat from the bustling city."
+},
+{
+    type: "place",
+    name: "Forest",
+    image: "forest",
+    caption: "A dense forest near the countryside.",
+    description: "Tall trees stretch towards the sky, their branches forming a thick canopy that blocks out most of the sunlight."
+},
+{
+    type: "place",
+    name: "Frontier",
+    image: "frontier",
+    caption: "The frontier near New Spain.",
+    description: "An arid and rugged landscape that marks the edge of Spanish-controlled territory, where the wilderness stretches out into the unknown."
+},
+{
+    type: "place",
+    name: "Abandoned Temple",
+    image: "abandonedtemple",
+    caption: "An abandoned temple deep in the forest.",
+    description: "The ruins of an ancient temple, overgrown with vines and partially buried by time, stand in eerie silence."
+},
+{
+    type: "place",
+    name: "Country Church",
+    image: "countrychurch",
+    caption: "A small country church.",
+    description: "A quaint stone church with a modest bell tower, nestled in the countryside and surrounded by wildflowers."
+},
+{
+    type: "place",
+    name: "Canyon",
+    image: "canyon",
+    caption: "A deep canyon near the outskirts.",
+    description: "A vast canyon carved by a river, with steep cliffs and narrow trails that wind down towards the valley floor."
+},
+{
+    type: "place",
     name: "Outside Maria's Shop (Night)",
     image: "outsidenight",
     caption: "Outside Maria's shop during the evening.",
@@ -313,15 +383,15 @@ const EntityList = [
 {
     type: "place",
     name: "Countryside",
-    image: "country",
-    caption: "The open countryside near Mexico City.",
+    image: "countryside",
+    caption: "The open countryside.",
     description: "Rolling fields and distant mountains stretch out as far as the eye can see. The air is fresh and the landscape is dotted with small farms and wildflowers."
 },
 {
     type: "place",
     name: "Study",
     image: "study",
-    caption: "Maria studies in her workshop.",
+    caption: "Maria studies a book.",
     description: "Maria sits at a wooden table with several open books and scrolls in front of her. The smell of old parchment mixes with the sharp scent of dried herbs."
 },
 {
@@ -335,22 +405,22 @@ const EntityList = [
     type: "place",
     name: "Herbs",
     image: "herbs",
-    caption: "Examining herbs in Maria's shop.",
-    description: "Bundles of dried herbs hang from the ceiling. Maria carefully examines them, considering their medicinal properties and uses in remedies."
+    caption: "Examining herbs at a market stall.",
+    description: "Bundles of dried herbs hang from an herb stall as a merchant woman sells them."
 },
 {
     type: "place",
     name: "Farm",
     image: "farm",
-    caption: "A farm outside Mexico City.",
-    description: "A small farm with rows of crops stretching towards the horizon. Chickens roam freely, and the smell of fresh earth fills the air."
+    caption: "Riverside farmlands outside Mexico City.",
+    description: "A plot of irrigated farmland with rows of crops stretching towards the horizon along with canals plyed by river boats."
 },
 {
     type: "place",
     name: "Mushroom",
     image: "mushroom",
     caption: "Encounter with the curandera.",
-    description: "The curandera presents a basket filled with strange, otherworldly mushrooms. Their colors seem to shift in the dim light, and the air feels thick with mystery."
+    description: "The curandera presents a basket filled with strange, otherworldly mushrooms."
 },
 {
     type: "place",

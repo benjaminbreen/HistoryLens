@@ -317,13 +317,13 @@ margin-left: 0px;
 .portrait-popup {
   width: 90%;
   max-width: 600px;
-  max-height: 80vh; /* Limit height to viewport height */
+  max-height: 90vh; /* Limit height to viewport height */
   overflow-y: auto; /* Enable vertical scrolling if needed */
 }
 
 .popup-portrait-image {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   height: auto;
   object-fit: cover;
   border-radius: 8px;
@@ -468,6 +468,8 @@ button:hover {
   position: relative; /* Allow positioning within the container */
   transition: transform 0.6s ease, box-shadow 0.3s ease;
   transform: scaleX(1.13);
+   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7); /* White glow effect */
+
 }
 
 .npc-portrait-image:hover,
@@ -919,9 +921,14 @@ body.dark-mode .simulation-history.open {
     justify-content: center;
     align-items: center;
     display: flex;
-    font-size: .80rem;
-    padding-left: 4px;
-    padding-right: 4px
+    font-size: .70rem;
+    padding-left: 2px;
+    padding-right: 2px
+  }
+
+  
+  input, textarea, select {
+    font-size: 16px; /* Ensure minimum font size of 16px to prevent zoom */
   }
 
   .tip-box {
@@ -1102,6 +1109,15 @@ body.dark-mode .simulation-history.open {
     width: 170px; /* Adjust portrait size for mobile */
     height: 80px;
     margin: 5px;
+  }
+
+   .emoji-image {
+    width: 170px;  /* Reduce width */
+    height: 80px; /* Reduce height */
+    font-size: 20vw;  /* Increase emoji size relative to smaller viewport */
+      margin: 5px;
+       box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7); /* White glow effect */
+
   }
 
   .title {

@@ -335,10 +335,13 @@
 
 
 
+
 /* Adjustments for Small Screens */
 @media (max-width: 768px) {
+  
+  /* Mixing Popup Content */
   .mixing-popup-content {
-    width: 90%;
+    width: 95%;
     height: 90%;
     padding: 10px;
     max-height: 90vh; /* Ensure the content doesn’t exceed the viewport height */
@@ -346,46 +349,50 @@
     overflow-x: hidden; /* Prevent horizontal scrolling */
   }
 
-
-
+  /* Header Styling */
   .mixing-header {
     font-size: 1.5rem;
     margin-bottom: 10px;
     text-align: center;
   }
 
+  /* Close Button Adjustments */
   .close-mixing-button {
     top: 10px;
     right: 10px;
-    padding: 8px 16px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 
-
-
+  /* Method Grid */
   .method-grid {
-    flex-wrap: nowrap; /* Prevent wrapping of method squares */
-    overflow-x: auto; /* Enable horizontal scrolling */
+    flex-wrap: wrap; /* Wrap the squares on smaller screens */
     gap: 10px;
-    margin-bottom: 10px;
     padding: 10px;
-    max-width: 100%; /* Ensure it stays within the container */
+    max-width: 100%;
     display: flex;
+    justify-content: space-between; /* Distribute the squares evenly */
   }
 
+  /* Method Square Containers */
   .method-square-container {
-    flex: 0 0 160px; /* Set a fixed width for method squares */
-    width: 160px;
+    flex: 0 0 48%; /* Set a smaller width for method squares */
+    width: 100%; /* Ensure it takes full width of container */
+    max-width: 160px; /* Adjust width for smaller screens */
   }
 
+  /* Method Title Adjustments */
   .method-title {
     font-size: 1rem;
   }
 
+  /* Method Squares Adjustments */
   .method-square {
-    width: 160px;
-    height: 160px;
+    width: 140px;
+    height: 140px;
   }
 
+  /* Inventory Grid Adjustments */
   .inventory-grid {
     grid-template-columns: repeat(3, 1fr); /* Adjust inventory grid columns */
     grid-template-rows: auto;
@@ -393,29 +400,32 @@
     overflow-y: auto;
   }
 
+  /* Inventory Item Adjustments */
   .mixing-inventory-item {
     height: 70px;
     font-size: 0.9rem;
   }
 
+  /* Hover Popups - Disable on Mobile */
+  .method-hover-box,
   .mixing-hover-popup {
-    font-size: 0.9rem;
-    padding: 15px;
+    display: none !important; /* Ensure hover popups are completely disabled on mobile */
   }
 
+  /* Compound Result Adjustments */
   .compound-result {
-  text-align: center;
-  margin-bottom: 5px;
-  padding:12px;
-  background-color: rgba(58, 58, 58, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-  color: floralwhite;
-  max-width: 100%;
-  
+    text-align: center;
+    margin-bottom: 5px;
+    padding: 12px;
+    background-color: rgba(58, 58, 58, 0.9);
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+    color: floralwhite;
+    max-width: 100%;
     font-family: 'IM Fell English', serif;
+  }
 }
-}
+
 
 
 

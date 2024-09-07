@@ -240,24 +240,30 @@ const handleCommandClick = (command) => {
       }
       break;
 
-    case '#prescribe':
-    case '#diagnose':
-      const patient = EntityList.find(entity => 
-        entity.type === 'patient' && entity.name.toLowerCase().includes(npcName.toLowerCase())
-      );
-      if (patient) {
-        setCurrentPatient(patient);
-        if (command === '#prescribe') {
-          setIsPrescribing(true);
-          setIsInventoryOpen(true);
-          setIsPrescribePopupOpen(true);
-        } else {
-          setIsDiagnoseOpen(true);
-        }
+// prescribe command
+  case '#prescribe':
+  case '#diagnose':
+    const entity = EntityList.find(entity => 
+      (entity.type === 'npc' || entity.type === 'patient') && entity.name.toLowerCase().includes(npcName.toLowerCase())
+    );
+
+    if (entity) {
+      console.log('Selected entity for prescription:', entity);
+      setCurrentPatient(entity);  // Treat NPCs the same as patients for prescribing
+      if (command === '#prescribe') {
+        setIsPrescribing(true);
+        setIsInventoryOpen(true);
+        setIsPrescribePopupOpen(true);
       } else {
-        setHistoryOutput(`No valid patient selected for ${command === '#prescribe' ? 'prescription' : 'diagnosis'}.`);
+        setIsDiagnoseOpen(true);
       }
-      break;
+    } else {
+      setHistoryOutput(`No valid patient or NPC selected for ${command === '#prescribe' ? 'prescription' : 'diagnosis'}.`);
+    }
+    break;
+
+
+
 
     default:
       setUserInput(command);
@@ -326,67 +332,66 @@ const selectEntity = useCallback(() => {
 
 
 const handleTurnEnd = useCallback(async (narrativeText) => {
-  const { summary, summaryData, npcImageName, isEmoji, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
+  const { summary, summaryData, npcImageName, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
   console.log('Journal Agent Output:', summary);
   console.log('NPC Image Name from Journal Agent:', npcImageName);
+  
+  const isEmoji = /^\p{Emoji}$/u.test(npcImageName);
+  const lowerCaseImageName = npcImageName.toLowerCase();
+  
+  console.log('ImageMap keys:', Object.keys(imageMap));
+  console.log('NPC Image Name (lowercase):', lowerCaseImageName);
 
-setIsEmoji(isEmoji);
+  let selectedEntity = EntityList.find(entity => 
+  (entity.image && entity.image.toLowerCase() === lowerCaseImageName) ||
+  (entity.name && entity.name.toLowerCase().includes(lowerCaseImageName))
+);
+console.log('Selected entity:', selectedEntity);
 
-    if (isEmoji) {
-      setNpcImage(null);
-      setNpcCaption(null);
-      setNpcInfo(`<span class="emoji-image">${npcImageName}</span>`);
-    } else {
-      // find selected entity based on npc image name
-      let selectedEntity = EntityList.find(entity => entity.image && entity.image.toLowerCase() === npcImageName.toLowerCase());
-      
-      // Update NPC image, caption, and info based on the selected entity or summary data
-      if (selectedEntity) {
-    setNpcImage(imageMap[selectedEntity.image]);
-    setNpcCaption(selectedEntity.caption);
-    setNpcInfo(selectedEntity.description);
-  } else if (imageMap[npcImageName]) {
-    setNpcImage(imageMap[npcImageName]);
-    const timeOfDay = summaryData.time.toLowerCase().includes('night') ? 'night' : 'day';
+if (isEmoji) {
+  setIsEmoji(true);
+  setNpcImage(null);
+  setNpcCaption(`Scene in ${summaryData.location || location}`);
+  setNpcInfo(`<span class="emoji-image">${npcImageName}</span>`);
+} else if (selectedEntity) {
+  setIsEmoji(false);
+  setNpcImage(imageMap[selectedEntity.image]);
+  setNpcCaption(selectedEntity.caption);
+  setNpcInfo(selectedEntity.description);
+  console.log('Image set from EntityList:', selectedEntity.image);
+} else if (imageMap[lowerCaseImageName]) {
+  setIsEmoji(false);
+  setNpcImage(imageMap[lowerCaseImageName]);
+  const timeOfDay = summaryData.time.toLowerCase().includes('night') ? 'night' : 'day';
+  setNpcCaption(`A scene in ${summaryData.location || location}`);
+  setNpcInfo(`A typical ${timeOfDay} scene in ${summaryData.location || location}.`);
+  console.log('Image set from imageMap:', lowerCaseImageName);
+} else {
+  // Fuzzy matching for locations and generic scenes
+  const possibleMatches = Object.keys(imageMap).filter(key => 
+    lowerCaseImageName.includes(key) || key.includes(lowerCaseImageName)
+  );
+  
+  if (possibleMatches.length > 0) {
+    const bestMatch = possibleMatches[0]; // Use the first match
+    setIsEmoji(false);
+    setNpcImage(imageMap[bestMatch]);
     setNpcCaption(`A scene in ${summaryData.location || location}`);
-    setNpcInfo(`A typical ${timeOfDay} scene in ${summaryData.location || location}.`);
+    setNpcInfo(`A scene related to ${bestMatch} in ${summaryData.location || location}.`);
+    console.log('Image set from fuzzy match:', bestMatch);
   } else {
-    console.warn(`No matching image found for: ${npcImageName}. Using emoji as fallback.`);
+    console.warn(`No matching image found for: ${npcImageName}. ImageMap keys: ${Object.keys(imageMap).join(', ')}. Using emoji as fallback.`);
     setIsEmoji(true);
     setNpcImage(null);
     setNpcCaption(`Scene in ${summaryData.location || location}`);
     setNpcInfo(`<span class="emoji-image">${npcImageName || '🏞️'}</span>`);
   }
-    }
-
-    setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
-
-// handle quest progression
-const activeQuest = gameState.quests.find(quest => quest.currentStage !== undefined && !quest.completed);
-if (activeQuest) {
-  // Check if the quest should progress based on some condition
-  // This could be a property of the quest, or based on player actions
-  if (shouldAdvanceQuest(activeQuest, userActions)) {
-    advanceQuestStage(activeQuest.id);
-  }
-  
-  // Check if the quest is completed after advancing
-  if (activeQuest.currentStage >= activeQuest.stages.length - 1) {
-    completeQuest(activeQuest.id);
-  }
 }
 
-setLocation(summaryData.location || location);
-setDate(summaryData.date || date);
-setTime(summaryData.time || time);
-}, [location, date, time, gameState.quests, advanceQuestStage, completeQuest, userActions]);
+setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
+}, [location, setIsEmoji, setNpcImage, setNpcCaption, setNpcInfo, setJournal, imageMap, EntityList]);
 
-// Helper function to determine if a quest should advance
-const shouldAdvanceQuest = (quest, actions) => {
-  // This is a placeholder implementation
-  // You should replace this with your own logic based on your game's requirements
-  return actions.some(action => action.includes(`advanceQuest${quest.id}`));
-};
+
 
 // Handling Submission
 const handleSubmit = useCallback(async (e) => {
@@ -400,6 +405,12 @@ const handleSubmit = useCallback(async (e) => {
     `${item.name} (Quantity: ${item.quantity}, Price: ${item.price} silver coins)`
   ).join('\n');
   
+  // Helper function to determine if a quest should advance
+const shouldAdvanceQuest = (quest, actions) => {
+  // This is a placeholder implementation
+  // You should replace this with your own logic based on your game's requirements
+  return actions.some(action => action.includes(`advanceQuest${quest.id}`));
+};
   // Check for quest start commands
  if (narrativeText.startsWith('quest')) {
   const questNumber = parseInt(narrativeText.replace('quest', ''));
@@ -556,6 +567,7 @@ const contextSummary = `
               **Contextual Awareness:**
               - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in a desperate personal and financial state.
               - Reference real places and events of 1680 Mexico City.
+              - Keep in mind that Maria is practicing outside the realm of the legality by prescribing medicines without a physician's prescription - so her patients are often seeking her out because they have a secret or are in particular need. The patient may also explain that a doctor's orders have failed, for instance that bleeding did not work.
               - Allow FULL latitude for player choice. If Maria wants to ignore her patients to go on an adventure, let her! Encourage experimentation. 
 
               **Character and Narrative Control:**
@@ -629,24 +641,28 @@ setUserInput('');
 
 // Prescribe popup logic
 
-  const handlePrescribe = useCallback(async (item, amount, price) => {
+const handlePrescribe = useCallback(async (item, amount, price) => {
   setIsLoading(true);
   setIsPrescribing(false);
   setIsInventoryOpen(false);
   setIsPrescribePopupOpen(false);
 
-  if (!currentPatient) {
-    console.error("No patient selected for prescription");
-    setHistoryOutput("Error: No patient selected for prescription.");
+   if (!currentPatient) {
+    console.error("No patient or NPC selected for prescription");
+    setHistoryOutput("Error: No patient or NPC selected for prescription.");
     setIsLoading(false);
     return;
   }
 
+  const npcName = currentPatient.name; // Handle both patients and generic NPCs
+
   const prescriptionPrompt = `
-    Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${currentPatient.name}.
-    The patient's reaction should be based on their background and the appropriateness of the prescription for their condition. 1-20 silver coins is fair for most remedies. Up to 50 for complex compounds.
-    Based on context, determine if the patient accepts the prescription (often) or balks and walks away (somewhat frequent). Describe the sensory characteristics of the prescribed medicine and patient reaction in 2-3 paragraphs. A bad bedside manner, noxious drug suggestion, or high price will prompt angry walkouts. 
-    ALWAYS end by summarizing the transaction and ADDING the amount made to her current wealth. If Maria had 11 coins in previous turn and sold a drug for 2 coins, write "Maria has sold [drug name] for 2 silver coins. She now has 13 coins.""
+    Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
+    Using your extensive knowledge of early modern medicine and human biology, consider the dosage, toxicity, the health of the NPC, and potential effects of the medicine prescribed. Is the dose safe or dangerous? 
+    The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine.
+    Summarize the sensory characteristics of the prescribed medicine, describe its effects (positive, neutral, toxic or deadly), and the NPC's reaction in 2-3 paragraphs. Typically, one drachms of most medicines is fine, but some may have adverse effects, and a few, like quicksilver, mercury or other chemicals, might kill at this dose. 
+    Remember that a very high dose of a toxic medicine, like 3 drachms of quicksilver or three drachms of laudanum, can actually kill an NPC. If you think the dose is fatal, show the NPC dying. 
+    End by summarizing the transaction and adjusting Maria's wealth: "Maria has sold [drug name] for [price] silver coins. She now has [updated total] coins." 
   `;
 
   try {
@@ -669,23 +685,32 @@ setUserInput('');
       throw new Error(`API Error: ${response.statusText}`);
     }
 
-
     const data = await response.json();
     const simulatedOutput = data.choices[0].message.content;
 
-    // Update these lines
+    // Update history and conversation
     setHistoryOutput(simulatedOutput);
-    setConversationHistory(prevHistory => [...prevHistory, 
+    setConversationHistory(prevHistory => [
+      ...prevHistory, 
       { role: 'user', content: prescriptionPrompt },
       { role: 'assistant', content: simulatedOutput }
     ]);
 
-    // Only update inventory if the prescription is accepted
-    if (simulatedOutput.toLowerCase().includes("accepts")) {
+    // Check for acceptance and toxicity
+    const isAccepted = simulatedOutput.toLowerCase().includes("accepts");
+    const isToxic = simulatedOutput.toLowerCase().includes("toxic") || simulatedOutput.toLowerCase().includes("poison");
+
+    if (isAccepted) {
+      // Only update inventory if the prescription is accepted
       updateInventory({ name: item.name, quantity: -amount });
     }
 
-    addJournalEntry(`Maria prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${currentPatient.name}.`);
+    // Add journal entry for toxicity or normal prescription
+    if (isToxic) {
+      addJournalEntry(`⚠️ Maria prescribed ${amount} drachms of ${item.name} to ${npcName}, but it had toxic effects.`);
+    } else {
+      addJournalEntry(`Maria prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.`);
+    }
 
     // Increment turn number
     setTurnNumber(prevTurn => prevTurn + 1);
@@ -698,6 +723,7 @@ setUserInput('');
     setIsLoading(false);
   }
 }, [currentPatient, conversationHistory, updateInventory, addJournalEntry]);
+
 
 
  // JSX 

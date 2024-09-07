@@ -17,7 +17,7 @@ const Map = ({ isOpen, onClose, previousOutput, apiKey }) => {
     setIsLoading(true);
     try {
       const mapPrompt = `
-        Create a detailed ASCII map of Maria de Lima's surroundings in 1680 Mexico City. Use the following guidelines:
+        Create a detailed ASCII map of Maria de Lima's surroundings for a historical simulation which begins in Mexico City in 1680 but can move to other locations. Use the following guidelines:
         - Use a consistent width for all lines (e.g., 60 characters).
         - Use '|' for vertical borders and '-' for horizontal borders.
         - Pad shorter lines with spaces to maintain rectangular shape.
@@ -25,9 +25,8 @@ const Map = ({ isOpen, onClose, previousOutput, apiKey }) => {
         - Include a legend below the map.
         
         Ensure the map includes:
-        - Maria's apothecary shop
-        - The Church of Santo Domingo
         - Streets and notable buildings
+        - Named or mentioned NPCs
         - Any other relevant landmarks or features mentioned in the narrative
 
         Base the map on this description of the surroundings:
