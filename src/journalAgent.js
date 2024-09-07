@@ -12,15 +12,15 @@ export const generateJournalEntry = async (narrativeText, apiKey) => {
                     {
                         role: 'system',
 content: `
-  You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary in Mexico City on August 22, 1680. 
+  You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary in Mexico City which begins on August 22, 1680 and can extend for up to a month beyond that.
   Given the following text, provide:
-  1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, an estimate of much time passed during the turn, and other occurences. Format: "Summary: <summary>"
+  1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, an estimate of much time passed during the turn, and primary location. Format: "Summary: <summary>"
   2. A JSON object tracking the current location, date, and time of day formatted like:
   \`\`\`json
   {
-      "location": "...",
-      "date": "August xx, 1680",
-      "time": "...",
+      "location": "Maria's shop",
+      "date": "August 22, 1680",
+      "time": "8:35 AM",
   }
   \`\`\`
   3. Select the appropriate NPC image name based on PRIMARY NPC or location mentioned, from the NPC MAPPING list provided below. NPC MAPPING: 
@@ -43,7 +43,7 @@ content: `
                    - generichome is used for any scene set inside a home in Mexico City.
                    - market is used for any description of the market in Mexico City.
                    - street is for any other scene in Mexico City during the day.
-                   - streetnight is for any other scene in Mexico City during the night.
+                   - streetnight is for any other scene during the night.
                    - outsideday is used any time a scene is set outside Maria's shop during the day.
                    - outsidenight is used any time a scene is set outside Maria's shop during the evening, dusk, or night.
                    - shopmorning is used any time there is a scene inside Maria's shop during the morning.
@@ -79,8 +79,33 @@ content: `
                    - If Maria enters a home, use "generichome".
                    - if she studies, use "study".
                    - if a book or map figures significantly, use "codex". etc.
+                   - use the location choice as a guide for the primary NPC image to show - for instance, if Maria goes to "countryside" or "desert" or "mountains" return "country"
 
-     IMPORTANT: You should ALWAYS select an NPC character over default or location. character or location in the current scene (using the NPC mapping list below).
+     IMPORTANT: You should ALWAYS select an NPC character over default or location. character or location in the current scene (using the NPC mapping list above).
+     IMPORTANT: Don't repeat the same image. Vary your choices while still staying relevent to the context of the scene. 
+
+If you can't determine an appropriate image from the list above, select an emoji that best represents the mood or context of the scene. For example:
+- 🌙 for night scenes (but always prefer outsidenight image)
+- 🌞 for scenes involving observing the sun or being hot (but always prefer outsideday)
+- 🌿 for herb-related scenes
+- 💰 for financial situations
+- 🏜️ for deserts or mesas 
+- 🕯️ for mysterious or secretive scenes
+- 📜 for scrolls or ancient texts
+- ⛵ for ships at sea
+- 🌵 for scrub desert or arid landscapes
+- 🏘️ for village or town squares
+- 🐍 for snakes
+- 🔥 for fires
+- 🛶 for river or lake scenes 
+- 🌲 for forests
+- ⛰️ for mountains
+- other emojis might include 🍇, 🐎, 🌋, ⛪, 🐂, 🎭, 🛖, 🦎, 🌳
+and many more. be creative. 
+
+Return the selected emoji as "NPC image: emoji:[emoji character]" if an emoji is chosen instead of an image name.
+
+
 
 
 `
@@ -108,9 +133,14 @@ content: `
             ? JSON.parse(jsonMatches[1].replace(/```json|```/g, '').trim()).inventoryChanges 
             : [];
 
-        // Extract the NPC image name from the output
+       // Extract the NPC image name or emoji from the output
         const imageMatch = journalOutput.match(/NPC image:\s*(\S+)/);
         const npcImageName = imageMatch ? imageMatch[1].trim().toLowerCase() : "default";
+
+        // Check if the image is an emoji
+        const isEmoji = npcImageName.startsWith('emoji:');
+        const emojiOrImageName = isEmoji ? npcImageName.slice(6) : npcImageName;
+        
 
         // Debugging: Console log outputs for verification
         console.log('Journal Agent Output:', journalOutput);
@@ -120,14 +150,21 @@ content: `
         console.log('Inventory Changes:', inventoryChanges);
 
         // Return the parsed data
-        return { summary, summaryData, npcImageName, inventoryChanges };
+        return { 
+            summary, 
+            summaryData, 
+            npcImageName: emojiOrImageName, 
+            isEmoji, 
+            inventoryChanges 
+        };
 
     } catch (error) {
         console.error("Error generating journal entry:", error);
         return { 
             summary: "Error: Could not generate summary.", 
             summaryData: { location: "", date: "", time: "", wealth: 0 }, 
-            npcImageName: "default",
+            npcImageName: "🤔",
+            isEmoji: true,
             inventoryChanges: []
         };
     }

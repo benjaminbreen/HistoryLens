@@ -37,7 +37,7 @@ const getStatusImage = (status) => {
   }
 };
 
-function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status }) {
+function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isEmoji }) {
   const [showNpcPopup, setShowNpcPopup] = useState(false);
   const [showPcPopup, setShowPcPopup] = useState(false);
   const [fadeClass, setFadeClass] = useState('fade-in');
@@ -48,7 +48,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status }) {
       setFadeClass('fade-in');
     }, 500); // This matches the CSS transition duration
     return () => clearTimeout(timeout);
-  }, [npcImage]);
+  }, [npcImage, npcInfo]);
 
   const handleNpcClick = () => setShowNpcPopup(true);
   const handlePcClick = () => setShowPcPopup(true);
@@ -74,17 +74,23 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status }) {
 
   return (
     <div className="portrait-section">
-      {/* NPC Portrait - Aligned Left with Caption Below */}
       <div className="npc-portrait-container" onClick={handleNpcClick}>
         <div className="npc-portrait-wrapper">
-          <img 
-            src={npcImage} 
-            alt="NPC" 
-            className={`npc-portrait-image ${fadeClass}`} 
-            onError={(e) => {
-              e.target.src = apothecaryImage; // Fallback to apothecary image
-            }}
-          />
+          {isEmoji ? (
+            <div 
+              className={`emoji-image ${fadeClass}`}
+              dangerouslySetInnerHTML={{ __html: npcInfo }}
+            />
+          ) : (
+            <img 
+              src={npcImage} 
+              alt="NPC" 
+              className={`npc-portrait-image ${fadeClass}`} 
+              onError={(e) => {
+                e.target.src = apothecaryImage;
+              }}
+            />
+          )}
           <p className="portrait-caption">{npcCaption}</p>
         </div>
       </div>
@@ -97,15 +103,23 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status }) {
         </div>
       </div>
 
-      {/* NPC Popup */}
+       {/* NPC Popup */}
       {showNpcPopup && (
         <div className="portrait-popup">
-          <img src={npcImage} alt="NPC" className="popup-portrait-image" />
+          {isEmoji ? (
+            <div 
+              className="emoji-image popup-portrait-image"
+              dangerouslySetInnerHTML={{ __html: npcInfo }}
+            />
+          ) : (
+            <img src={npcImage} alt="NPC" className="popup-portrait-image" />
+          )}
           <p><strong>{npcCaption.split(' ').slice(2).join(' ')}</strong></p>
-          <p className="popup-info">{npcInfo}</p>
+          <p className="popup-info">{isEmoji ? npcCaption : npcInfo}</p>
           <button onClick={closeNpcPopup} className="close-button">Close</button>
         </div>
       )}
+
 
       {/* PC Popup */}
       {showPcPopup && (

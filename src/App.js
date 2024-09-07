@@ -86,6 +86,7 @@ function App() {
   };
   const [userActions, setUserActions] = useState([]);
   const [activeQuest, setActiveQuest] = useState(null);
+  const [isEmoji, setIsEmoji] = useState(false);
 
 
 
@@ -324,36 +325,41 @@ const selectEntity = useCallback(() => {
 }, [turnNumber]);
 
 
-
-// Handling Turn End
 const handleTurnEnd = useCallback(async (narrativeText) => {
-  const { summary, summaryData, npcImageName, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
-
+  const { summary, summaryData, npcImageName, isEmoji, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
   console.log('Journal Agent Output:', summary);
   console.log('NPC Image Name from Journal Agent:', npcImageName);
 
-  // find selected entity based on npc image name
+setIsEmoji(isEmoji);
 
-  let selectedEntity = EntityList.find(entity => entity.image && entity.image.toLowerCase() === npcImageName.toLowerCase());
-
-  // Update NPC image, caption, and info based on the selected entity or summary data
-  if (selectedEntity) {
-      setNpcImage(imageMap[selectedEntity.image]);
-      setNpcCaption(selectedEntity.caption);
-      setNpcInfo(selectedEntity.description);
+    if (isEmoji) {
+      setNpcImage(null);
+      setNpcCaption(null);
+      setNpcInfo(`<span class="emoji-image">${npcImageName}</span>`);
+    } else {
+      // find selected entity based on npc image name
+      let selectedEntity = EntityList.find(entity => entity.image && entity.image.toLowerCase() === npcImageName.toLowerCase());
+      
+      // Update NPC image, caption, and info based on the selected entity or summary data
+      if (selectedEntity) {
+    setNpcImage(imageMap[selectedEntity.image]);
+    setNpcCaption(selectedEntity.caption);
+    setNpcInfo(selectedEntity.description);
+  } else if (imageMap[npcImageName]) {
+    setNpcImage(imageMap[npcImageName]);
+    const timeOfDay = summaryData.time.toLowerCase().includes('night') ? 'night' : 'day';
+    setNpcCaption(`A scene in ${summaryData.location || location}`);
+    setNpcInfo(`A typical ${timeOfDay} scene in ${summaryData.location || location}.`);
   } else {
-      if (imageMap[npcImageName]) {
-          setNpcImage(imageMap[npcImageName]);
-          setNpcCaption(`Image of ${npcImageName}`);
-          setNpcInfo(`No specific information available for ${npcImageName}.`);
-      } else {
-          setNpcImage(imageMap.default);
-          setNpcCaption(`Scene in ${summaryData.location || location}`);
-          setNpcInfo("No specific information available for this scene.");
-      }
+    console.warn(`No matching image found for: ${npcImageName}. Using emoji as fallback.`);
+    setIsEmoji(true);
+    setNpcImage(null);
+    setNpcCaption(`Scene in ${summaryData.location || location}`);
+    setNpcInfo(`<span class="emoji-image">${npcImageName || '🏞️'}</span>`);
   }
+    }
 
-  setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
+    setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
 // handle quest progression
 const activeQuest = gameState.quests.find(quest => quest.currentStage !== undefined && !quest.completed);
@@ -539,7 +545,7 @@ const contextSummary = `
               **Commands:**
               - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the market" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest #symptoms,  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
               - if a player asks a patient about their #symptoms in their input, the player will see a popup displaying them. You can go into more detail if prompted but need not. 
-              - #buy: herbs are available at the market. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Approved items that Maria can buy are: "Peyote", "Peyotl", "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
+              - #buy: herbs are available at the market. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Approved items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
     "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
     "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", 
@@ -709,6 +715,7 @@ setUserInput('');
         npcCaption={npcCaption}
         npcInfo={npcInfo}
         pcCaption="Playing as Maria de Lima"
+        isEmoji={isEmoji}  
         status={mariaStatus}  
       />
 

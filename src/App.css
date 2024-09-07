@@ -453,6 +453,30 @@ button:hover {
   }
 }
 
+/* Fallback for NPC Image */
+.emoji-image {
+  font-size: 15vw;  /* Make the emoji larger to overflow the box */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 280px; /* Width of the container */
+  height: 165px; /* Height of the container */
+  background-color: #f0f0f0; /* Light background for contrast */
+  border-radius: 10%; /* Adjust if needed */
+  margin: 0 10px; /* Space between image and container edges */
+  overflow: hidden; /* Hide the parts of the emoji that overflow the box */
+  position: relative; /* Allow positioning within the container */
+  transition: transform 0.6s ease, box-shadow 0.3s ease;
+  transform: scaleX(1.13);
+}
+
+.npc-portrait-image:hover,
+.pc-portrait-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+
 input[type="text"]:focus {
   outline: none; /* Remove default outline */
   animation: greenGlow 2.5s infinite; /* Apply green glow animation */

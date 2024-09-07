@@ -246,50 +246,147 @@ const EntityList = [
 
 
   // Places
-  {
-    type: "place",
-    name: "Outside Maria's Shop (Day)",
-    image: "outsideday",
-    caption: "Outside Maria's shop during the day.",
-    description: "The streets outside Maria's shop are bustling with activity. It's hot and humid today, and the sun beats down on the crowded thoroughfare.",
-    imgdescription: "A highly detailed pixel art scene depicting the bustling street outside Maria's apothecary shop in Mexico City, 1680, during the day. The cobblestone street is lined with two- and three-story stone buildings with red tile roofs, wooden balconies, and colorful awnings. Vendors with carts sell fruits, vegetables, and handmade goods. A mix of people in period-appropriate clothing, from well-dressed Spaniards to humble indigenous laborers, walk by or stand in small groups conversing."
-  },
-  {
-    type: "place",
-    name: "Outside Maria's Shop (Night)",
-    image: "outsidenight",
-    caption: "Outside Maria's shop during the evening.",
-    description: "The streets outside Maria's shop have quieted down as night falls. The air is cooler, and the sounds of distant revelry mix with the rustling of leaves.",
-    imgdescription: "A highly detailed pixel art scene depicting the street outside Maria's apothecary shop in Mexico City, 1680, at night. The cobblestone street is dimly lit by the warm glow of oil lamps hanging from the buildings and the occasional torch carried by a passerby. The two- and three-story stone buildings with red tile roofs and wooden balconies cast long shadows in the flickering light. A few figures in cloaks hurry along the street, while the distant sounds of music and laughter suggest revelry elsewhere in the city. In the foreground, Maria's shop is closed for the night, the wooden sign with the mortar and pestle barely visible in the darkness. The sky is a deep, dark blue with a few twinkling stars visible above the rooftops."
-  },
+  
   {
     type: "place",
     name: "Generic Home",
     image: "generichome",
     caption: "Inside a home in Mexico City.",
     description: "The home is modest and simple, with a small altar in the corner and a few chairs around a wooden table. The scent of burning incense fills the air."
-  },
-  {
+},
+{
     type: "place",
-    name: "market",
+    name: "Market",
     image: "market",
     caption: "The bustling market in Mexico City.",
     description: "Vendors call out to passersby, offering a variety of goods from spices to fresh produce. The market is a vibrant and chaotic place, full of life."
-  },
-  {
+},
+{
+    type: "place",
+    name: "Street (Day)",
+    image: "street",
+    caption: "A street in Mexico City during the day.",
+    description: "The cobblestone streets of Mexico City are filled with people going about their daily business. The sound of horse hooves clattering and merchants calling out fills the air."
+},
+{
+    type: "place",
+    name: "Street (Night)",
+    image: "streetnight",
+    caption: "A street in Mexico City at night.",
+    description: "The streets of Mexico City have quieted as night falls. The occasional flicker of torchlight reveals small groups of people hurrying home, shadows cast by the stone buildings loom over the thoroughfare."
+},
+{
+    type: "place",
+    name: "Outside Maria's Shop (Day)",
+    image: "outsideday",
+    caption: "Outside Maria's shop during the day.",
+    description: "The streets outside Maria's shop are bustling with activity. It's hot and humid today, and the sun beats down on the crowded thoroughfare."
+},
+{
+    type: "place",
+    name: "Outside Maria's Shop (Night)",
+    image: "outsidenight",
+    caption: "Outside Maria's shop during the evening.",
+    description: "The streets outside Maria's shop have quieted down as night falls. The air is cooler, and the sounds of distant revelry mix with the rustling of leaves."
+},
+{
+    type: "place",
+    name: "Shop Interior (Morning)",
+    image: "shopmorning",
+    caption: "Inside Maria's shop in the morning.",
+    description: "The sun filters in through the windows, illuminating the shelves filled with herbs and tinctures. The shop is quiet, but the day has just begun."
+},
+{
+    type: "place",
+    name: "Shop Interior (Afternoon)",
+    image: "shopafternoon",
+    caption: "Inside Maria's shop in the afternoon.",
+    description: "The shop is filled with a warm, afternoon glow. Maria carefully arranges her herbs and remedies, preparing for the day's patients."
+},
+{
     type: "place",
     name: "Shop Interior (Night)",
     image: "shopnight",
     caption: "Inside Maria's shop at night.",
     description: "Maria's shop is dimly lit by a few candles, casting long shadows across the shelves filled with herbs, tinctures, and other remedies. The air is heavy with the scent of dried plants."
-  },
-  {
+},
+{
     type: "place",
     name: "Countryside",
     image: "country",
     caption: "The open countryside near Mexico City.",
     description: "Rolling fields and distant mountains stretch out as far as the eye can see. The air is fresh and the landscape is dotted with small farms and wildflowers."
-  },
+},
+{
+    type: "place",
+    name: "Study",
+    image: "study",
+    caption: "Maria studies in her workshop.",
+    description: "Maria sits at a wooden table with several open books and scrolls in front of her. The smell of old parchment mixes with the sharp scent of dried herbs."
+},
+{
+    type: "place",
+    name: "Codex",
+    image: "codex",
+    caption: "The Nahuatl Codex.",
+    description: "Maria carefully examines an ancient Nahuatl codex, its pages filled with faded drawings and cryptic symbols. She feels the weight of history as she tries to decipher its meaning."
+},
+{
+    type: "place",
+    name: "Herbs",
+    image: "herbs",
+    caption: "Examining herbs in Maria's shop.",
+    description: "Bundles of dried herbs hang from the ceiling. Maria carefully examines them, considering their medicinal properties and uses in remedies."
+},
+{
+    type: "place",
+    name: "Farm",
+    image: "farm",
+    caption: "A farm outside Mexico City.",
+    description: "A small farm with rows of crops stretching towards the horizon. Chickens roam freely, and the smell of fresh earth fills the air."
+},
+{
+    type: "place",
+    name: "Mushroom",
+    image: "mushroom",
+    caption: "Encounter with the curandera.",
+    description: "The curandera presents a basket filled with strange, otherworldly mushrooms. Their colors seem to shift in the dim light, and the air feels thick with mystery."
+},
+{
+    type: "place",
+    name: "Trippy",
+    image: "trippy",
+    caption: "A trance-like vision.",
+    description: "The world begins to warp and twist, colors bleeding into one another. Maria's vision blurs as she falls into a deep trance, the boundaries between reality and dream dissolving."
+},
+{
+    type: "place",
+    name: "Merchant",
+    image: "merchant",
+    caption: "A merchant's stall in the market.",
+    description: "A merchant stands behind a wooden stall, gesturing animatedly as he tries to sell his wares. The air is filled with the scent of spices and fresh produce."
+},
+{
+    type: "place",
+    name: "Priest",
+    image: "priest",
+    caption: "Inside a church in Mexico City.",
+    description: "The stone church is dimly lit by flickering candles. A priest stands at the altar, reciting prayers in Latin as the scent of incense fills the room."
+},
+{
+    type: "place",
+    name: "City (Day)",
+    image: "cityday",
+    caption: "A bustling city street during the day.",
+    description: "The sun shines brightly over the rooftops of Mexico City. People move through the crowded streets, vendors call out, and carts rumble over the cobblestones."
+},
+{
+    type: "place",
+    name: "Default",
+    image: "default",
+    caption: "Fallback image.",
+    description: "A simple placeholder image for scenes or settings not otherwise described."
+},
   
 
   // Quest NPCs
