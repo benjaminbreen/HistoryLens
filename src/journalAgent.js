@@ -14,7 +14,7 @@ export const generateJournalEntry = async (narrativeText, apiKey) => {
 content: `
 You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary in Mexico City which begins on August 22, 1680 and can extend for up to a month beyond that.
 Given the following text, provide:
-1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time. Format: "Summary: <summary>" For example: Summary: <August 23, 10:15 AM: Maria assessed a patient named Fray Esteban, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.>
+1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time. Format: "Summary: <summary>" For example: Summary: <August 23, 10:15 AM: Maria assessed a patient named Fray Patricio, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.>
 2. A JSON object tracking the current location, date, and time of day formatted like:
 \`\`\`json
 {
@@ -34,7 +34,7 @@ When updating the time and date, please follow these specific rules:
 
 3. Select the most appropriate image name based on the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
 
-- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, frayesteban, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, franciscohernandez, franciscoramirez, donignaciodemendoza, tlacaelel, sebastianathayde
+- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, franciscohernandez, franciscoramirez, donignaciodemendoza, tlacaelel, sebastianathayde,
 - Locations: countryside, generichome, market, street, streetnight, outsideday, outsidenight, shopmorning, shopafternoon, shopnight, farm, cityday
 - Generic scenes: study, codex, herbs, herbalist, mushroom, trippy, merchant, priest,
 - Generic people: genericfemalecommoner, genericmalecommoner, genericfemaleupper, genericmaleupper
@@ -180,7 +180,7 @@ let npcImageName = imageMatch ? imageMatch[1].trim().toLowerCase() : "default";
 npcImageName = npcImageName.replace(/['"]+/g, '');
 
 // Fuzzy matching for NPC names
-const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'frayesteban', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'franciscohernandez', 'franciscoramirez', 'donignaciodemendoza', 'tlacaelel'];
+const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'franciscohernandez', 'franciscoramirez', 'donignaciodemendoza', 'tlacaelel', 'sebastianathayde'];
 
 const fuzzyMatch = npcNames.find(name => npcImageName.includes(name));
 if (fuzzyMatch) {

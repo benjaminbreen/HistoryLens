@@ -31,7 +31,7 @@ const EntityList = [
   },
   {
     type: "patient",
-    name: "Fray Esteban",
+    name: "Fray Patricio",
     age: 50,
     gender: "Male",
     occupation: "Dominican friar",
@@ -56,7 +56,7 @@ const EntityList = [
     pdf: "fraypatricio.pdf",
     citation: "João Curvo Semedo, Observaçoens medicas doutrinaes de cem casos gravissimos, [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707), pgs. 70-73",
     secret: "Fray Patricio is a severe alcoholic and is dying of liver damage caused by heavy drinking. He thinks this secret is better kept than it is.",
-    imgdescription: "A highly detailed pixel art portrait of Fray Patricio, a 50-year-old Irish-born Dominican friar in Mexico City, 1680. He is a pale, gaunt man known for his unrelenting work ethic, with sunken eyes and a long face showing signs of exhaustion and anemia. Fray Esteban wears the traditional white tunic and black cloak of his order, his thinning gray hair visible in a tonsure. Around his neck hangs a simple wooden cross."
+    imgdescription: "A highly detailed pixel art portrait of Fray Patricio, a 50-year-old Irish-born Dominican friar in Mexico City, 1680. He is a pale, gaunt man known for his unrelenting work ethic, with sunken eyes and a long face showing signs of exhaustion and anemia. Fray Patricio wears the traditional white tunic and black cloak of his order, his thinning gray hair visible in a tonsure. Around his neck hangs a simple wooden cross."
   },
   {
     type: "patient",

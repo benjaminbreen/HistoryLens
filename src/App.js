@@ -611,7 +611,7 @@ const contextSummary = `
           'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-4o-2024-08-06',
           messages: [
             {
               role: 'system',
@@ -657,7 +657,7 @@ const contextSummary = `
 
               **Maria has [integer] silver coins. She is feeling [status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
-              On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased, preceded with a hashtag#. The item purchased must ALWAYS come at the end of your response and ALWAYS be preceded by a hashtag symbol, like this:  #**Maria has [integer] silver coins. She spent [integer] of them and bought #[itemname].** 
+              On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased. The item purchased must ALWAYS come at the end of your response, like this:  **Maria has [integer] silver coins. She spent [integer] of them. She bought [itemname].** 
 
               ` 
             },
@@ -675,7 +675,7 @@ const historyAgentData = await historyAgentResponse.json();
 const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
 
 // Detect new item purchase
-const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
+const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|and bought|and purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
 
 
 if (purchaseMatch) {

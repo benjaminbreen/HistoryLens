@@ -7,7 +7,7 @@ const imageMap = {
   default: require('./assets/default.jpeg'),
   donalejandrocortez: require('./assets/donalejandrocortez.jpg'),
   donluis: require('./assets/donluis.jpeg'),
-  frayesteban: require('./assets/frayesteban.jpg'),
+  fraypatricio: require('./assets/fraypatricio.jpg'),
   generichome: require('./assets/generichome.jpeg'),
   inquisitorfernando: require('./assets/inquisitorfernando.jpg'),
   isabeldelacruz: require('./assets/isabeldelacruz.jpg'),
@@ -96,6 +96,7 @@ tenochtitlan: require('./assets/tenochtitlan.jpg'),
 lamerced: require('./assets/lamerced.jpg'),
 plazamayor: require('./assets/playamayor.jpg'),
 alamedacentral: require('./assets/alamedacentral.jpg'),
+sebastianathayde: require('./assets/sebastianathayde.jpg'),
 
 
   // Quest images
