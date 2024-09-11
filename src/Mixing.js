@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import './Mixing.css';
 
@@ -42,6 +42,22 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
         }));
         setIsMixButtonEnabled(true);
     };
+    
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                toggleMixingPopup(); // Close the mixing popup when "Escape" is pressed
+            }
+        };
+
+        // Attach the event listener when the component mounts
+        document.addEventListener('keydown', handleKeyDown);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [toggleMixingPopup]);
 
     const handleMixing = async () => {
         const selectedMethod = Object.keys(selectedSimples).find(method => selectedSimples[method].length > 0);
@@ -52,24 +68,27 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
             setError(null);
 
             const systemPrompt = `
-                You are a 1680s iatrochemist tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." Some potential compound drug names: Balsamum Lucatelli, Elixir Proprietatis, Theriac, Sal Volatile Oleosum, Aurum Potabile, Gascon's Powder, Tinctura Antimonii, Sydenham's Laudanum, Aqua Vitae, Tinctura Opii Crocata, Plague Water, Mercurius Dulcis, Balsam of Sulphur, Aqua Mercurialis, Camphorated Oil, Quicksilver Liniment, Mithridate.
-                When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug. Mention if it is toxic in the description. Toxic drugs can either be unusuable sludge or can be "usable" items. 
+                You are a 1680s iatrochemist tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." Some potential compound drug names: Balsamum Lucatelli, Elixir Proprietatis, Theriac, Sal Volatile Oleosum, Aurum Potabile, Gascon's Powder, Tinctura Antimonii, Elixir de Paracelso, Balsamo Peruviano, Aqua Vitae, Tinctura Opii Crocata, Plague Water, Mercurius Dulcis, Balsam of Sulphur, Aqua Mercurialis, Camphorated Oil, Quicksilver Liniment, Mithridate.
+                When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug. Mention if it is toxic in the description. Toxic drugs can either be unusuable sludge or can be usable purgatives (classified as "Vomitorios").
                 Guide for mixing (other combos work too - this is just a guide to general logic):
                 Quicksilver: Calcination ALWAYS yields toxic but highly valuable red precipitate of mercury (used in ointments); distillation yields distilled quicksilver, other methods nothing, as quicksilver is volatile and not suited for these methods. Distillation yields Distilled Quicksilver which is toxic and usually produces toxic compounds (not unusuable sludge - actual named compounds with toxic properties) when mixed.
 Camphor: Distillation yields camphor oil (medicinal), Confectioning produces Trochisci de Camphora (lozenges); Decoction destroys camphor’s volatile properties, creating ineffective residue.
 Rose Water: Distillation for Aqua Rosae (calming); Confectioning with improper ingredients can result in bitter, ineffective syrup. 
-Opium: Distillation produces Sydenham's Laudanum (pain relief); Decoction makes ineffective solution, as opium must be distilled for potency. Opiate compound drugs are highly potent and can be toxic. Mixing opium with any spirits or alcohol creates laudanum.
-Powdered Millipedes: Calcination for Pulvis Millepedum (skin treatment).
+Opium: Distillation produces forms of Laudanum (for instance, opium distilled with saffron = Sydenham's Laudanum, while opium distilled with alchemical products like quicksilver produces Laudanum Paracelsi) or variant; Decoction makes ineffective solution, as opium must be distilled for potency. Opiate compound drugs are highly potent and can be toxic. Mixing opium with any spirits or alcohol creates laudanum.
+Powdered Millipedes: Calcination for Pulvis Millepedum (skin treatment), decoction with any plant or herb for asthma treatment. 
 Powdered Crab’s Eyes: Calcination creates Pulvis Oculorum Cancrorum, other methods produce unusable sludge.
-Sugar: Confectioning for Syrupus Simplex (carrier), Calcination makes burnt, unusable sludge. Distillation makes an alcoholic spirit which varies depending on other ingredients; distilled sugar always makes rum.
+Sugar: Confectioning alone makes Syrupus Simplex; with other simples makes various juleps and treacles. Calcination makes burnt, unusable sludge. Distillation makes an alcoholic spirit which varies depending on other ingredients; distilled sugar always makes rum.
 Laudanum mixed with other simples can be toxic, especially when mixed with alcoholic simples. 
 Senna: Decoction for Decoctum Sennae (laxative); Confectioning weakens potency, creating ineffective cheap compound.
 White Horehound: Makes tea when decocted alone, or horehound ale when decocted with sugar. Creates valuable Balsam Horehound when distilled with any other ingredient and mithridate when distilled with laudanum or opium.
 Decoction works with most every plant but not with alchemical substances. Nettle, Chamomile, sapphron, mint, pennyroyal and other herbs ALWAYS create usable medicine via Decoction method; a tea or infusion if used alone, a cordial if used with rosewater or sugar.
 Calcination usually leads to ashes of low value but still usable; for instance, calcination of Nettle might make simply "Nettle Ash" worth only 1 coin. 
-Confectioning almost always works with everything, as long as you use sugar.
+Confectioning almost always works with everything, as long as you use sugar or honey. 
+Honey can be distilled into various products or will make unguents and treacles if confectioned. Decocting honey makes honey water, useful for mixing more valuable drugs. Decocting wine makes vinegar, which if combined with honey makes oxymel.
 Compounds can be distilled with additional ingredients to create more valuable ones; two or more compounds distilled with make a form of mithridate. 
-Animals and animal products can ALWAYS be distilled and calcinated. For instance, if Maria buys an iguana, she can calcinate it to make "iguana ash" or distill it to make "spiritus iguanae" or "iguana licqueur".
+Distilling cinchona or quina or guiacum produces a highly valuable febrifuge "Agua" like "Agua da Inglaterra."
+Sal Ammoniac can be distilled or calcinated with other drugs, but may produce semi-toxic or unusual alchemical compounds.Sal Ammoniac: calcification = Calx Ammoniaci or Vaporis Pulmonalis;  distillation: Spiritus Ammoniaci. Can be mixed with rosewater, syrups and sugars, and herbs. If mixed with quicksilver, it makes a deadly poison called "Alchemist's Fulminate." 
+Animals and animal products can ALWAYS be distilled and calcinated. For instance, if Maria buys an iguana, she can calcinate it to make "iguana ash" or distill it to make "spiritus iguanae" or "iguana licqueur". Confectioning animal ashes with any plant or herb can produce an extremely valuable item, either the Bezoartico, the Lapis de Goa, or the Artificial Snakestone, depending on the admixtures. Lapis de Goa requires gold and is valued at over 200 reales. 
                
                 Always observe rules above. Another option is for a drug to become somethign weaker, i.e. decoction of opium might create weaker, cheaper "poppy water." 
 
@@ -78,7 +97,7 @@ Animals and animal products can ALWAYS be distilled and calcinated. For instance
                 {
                   "name": "Name of the compound or 'Unusable Sludge'",
                   "humoralQualities": "Description of humoral qualities",
-                  "effects": "Single word description of the effects",
+                  "effects": "Single word description of the effects, such as Purgative, Resolutive, or Narcotic,
                   "description": "Brief, pithy, witty description of the process and result (no more than a single short sentence or phrase)",
                   "price": Number of silver coins (0 if "Unusable Sludge"),
                   "emoji": "A single HISTORICALLY ACCURATE emoji to represent the result (Unusable Sludge is always ☠️)"

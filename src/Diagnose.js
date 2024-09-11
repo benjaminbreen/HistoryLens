@@ -29,14 +29,14 @@ const Diagnose = ({ isOpen, onClose, previousOutput, npcCaption }) => {
 
     try {
       const diagnosisPrompt = `
-        You are an apothecary in the 1680s. Given the following patient information and recent observations from the historical simulation, provide a diagnosis for the patient and suggest medicinal simples or compound remedies of potential value.
+        You are an apothecary in the 1680s. Given the following patient information and recent observations from the historical simulation, provide a brief diagnosis for the patient and suggest medicinal simples or compound remedies of potential value.
         **Patient Information:**
         - Name: ${patient.name}
         - Age: ${patient.age}
         - Symptoms: ${patient.symptoms.map(s => `${s.name} (${s.location}): "${s.quote}"`).join('; ')}
         **Recent Observations:**
         ${previousOutput}
-        Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently, with materia medica she considers using in italic. Limit your response to three paragraphs. She is an eclectic apothecary and uses both New World and traditional drugs - i.e. she might prescribe guiacum, quina, or mumia. 
+        Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently (i.e. Avicenna, Pliny, Monardes), with materia medica she considers using in italic. Limit your response to three paragraphs. She is an eclectic apothecary and uses both New World and traditional drugs - i.e. she might prescribe guiacum, cinchona, bezoar, or mumia. 
       `;
 
       const response = await fetch(

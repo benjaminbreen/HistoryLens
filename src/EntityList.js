@@ -25,7 +25,7 @@ const EntityList = [
     description: "Francisco Dias de Araujo, a major merchant of textiles, looks wealthy and proud but his words tell another story.",
     astrologicalSign: "Aries",
     pdf: "araujo.pdf",
-    citation: "Francisco de Araujo was a real person",
+    citation: "Francisco de Araujo was a real person, his case documented in João Curvo Semedo, Observaçoens medicas doutrinaes de cem casos gravissimos, [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707).",
     secret: "Francisco fears that he contracted syphilis from a brothel and is terrified of the social and economic repercussions if it becomes known.",
     imgdescription: "A highly detailed pixel art portrait of Francisco Dias de Araujo, a 45-year-old textile merchant from Mexico City in 1680. He is a criollo man of medium build, with sallow skin, dark circles under his eyes, and a gaunt face showing signs of stress and illness. Francisco is dressed in a fine black doublet with silver buttons, a white linen shirt with a ruff collar, and black breeches. He is a proud and wealthy man."
   },
@@ -40,23 +40,59 @@ const EntityList = [
     casta: "European immigrant",
     class: "Clergy",
     symptoms: [
-      { name: "Excessive bleeding", location: "chest", quote: "The blood flows too freely, a crimson river unending, as though my very life is draining away, madre de Dios!" },
-      { name: "Extreme weakness", location: "whole body", quote: "I am but a shadow of my former self, my limbs like lead, my spirit weary." },
-      { name: "Paleness", location: "head", quote: "They say my face is as pale as a ghost, drained of all color, as though the blood has fled from my veins." },
-      { name: "Swelling throughout the body", location: "legs", quote: "My hands and feet swell like bloated corpses, a sign, perhaps, that the humors within me are in great disarray." }
+      { name: "Rectal bleeding", location: "abdomen", quote: "The blood from my bowels flows freely, a crimson river unending, as though my very life is draining away, madre de Dios!" },
+      { name: "Extreme weakness", location: "whole body", quote: "I am a shadow of my former self, my limbs like lead, my spirit weary." },
+      { name: "Paleness", location: "head", quote: "They say my face is as pale as a ghost, drained of all color. I feel most unwell, Maria." },
+      { name: "Swelling throughout the body", location: "legs", quote: "My hands and feet swell unendingly... a sign, perhaps, that the humors within me are in great disarray." }
     ],
-    diagnosis: "Anemia",
+    diagnosis: "Cirrhosis of the liver",
     contemporaryTheory: "Excessive heat and thinness of blood causing continuous flux, leading to weakness of the sanguifying faculty and accumulation of serous humors",
     socialContext: "His illness has prevented him from performing his religious duties, causing concern in the Dominican community",
     urgency: "Medium",
-    image: "frayesteban",
-    caption: "Fray Esteban, a Dominican friar",
-    description: "Fray Esteban, a devoted Dominican friar, suffers from a debilitating condition that has left him pale and weak, struggling to fulfill his duties.",
+    image: "fraypatricio",
+    caption: "Fray Patricio, a Dominican friar",
+    description: "Fray Patricio, a devoted Dominican friar of Irish origin, suffers from a debilitating condition that has left him pale and weak, struggling to fulfill his duties. Fray Patricio is convinced that he has been cursed or possessed after a heated dispute with a local curandera, and he seeks Maria's help in secret to avoid scandal.",
     astrologicalSign: "Sagittarius",
-    pdf: "isabel.pdf",
-    secret: "Fray Esteban is convinced that he has been cursed or possessed after a heated dispute with a local curandera, and he seeks Maria's help in secret to avoid scandal.",
-    imgdescription: "A highly detailed pixel art portrait of Fray Esteban, a 50-year-old Dominican friar in Mexico City, 1680. He is a pale, gaunt man of Irish descent, with sunken eyes and a long face showing signs of exhaustion and anemia. Fray Esteban wears the traditional white tunic and black cloak of his order, his thinning gray hair visible in a tonsure. Around his neck hangs a simple wooden cross."
+    pdf: "fraypatricio.pdf",
+    citation: "João Curvo Semedo, Observaçoens medicas doutrinaes de cem casos gravissimos, [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707), pgs. 70-73",
+    secret: "Fray Patricio is a severe alcoholic and is dying of liver damage caused by heavy drinking. He thinks this secret is better kept than it is.",
+    imgdescription: "A highly detailed pixel art portrait of Fray Patricio, a 50-year-old Irish-born Dominican friar in Mexico City, 1680. He is a pale, gaunt man known for his unrelenting work ethic, with sunken eyes and a long face showing signs of exhaustion and anemia. Fray Esteban wears the traditional white tunic and black cloak of his order, his thinning gray hair visible in a tonsure. Around his neck hangs a simple wooden cross."
   },
+  {
+    type: "patient",
+    name: "Sebastián Athayde",
+    age: 12,
+    gender: "Male",
+    occupation: "Apprentice candle maker",
+    birthplace: "Mexico City",
+    currentResidence: "Mexico City, La Merced district",
+    casta: "Pensinsular",
+    class: "Craftsman",
+    symptoms: [
+      { 
+        name: "Shortness of breath", 
+        location: "chest", 
+        quote: "I can barely breathe, mamá. It feels like my lungs are too small to hold any air."
+      },
+      { 
+        name: "Fatigue", 
+        location: "whole body", 
+        quote: "I feel so tired, even though I haven’t done anything today." 
+      }
+    ],
+    diagnosis: "Asthma",
+    contemporaryTheory: "Asthma caused by an excess of cold and damp humors obstructing the lungs, worsened by exposure to cold air at night.",
+    prescription: "Maria might prescribe a decoction of chamomile and crab eyes, with a small amount of powdered millipedes (*mil pies*), as recommended in *Medicina practica de Guadalupe* by Francisco Sanz de Dios y Guadalupe (1734). She also advises the family to burn aromatic herbs like rosemary to purify the air in their home and to wrap Sebastián in warm cloths to counteract the cold humors.",
+    socialContext: "Sebastián’s illness has left him unable to help his family in the candle-making shop. His parents are concerned that his inability to work may affect his apprenticeship, and they worry about the long-term impact on their household’s income.",
+    urgency: "Medium",
+    image: "sebastianathayde",
+    caption: "Sebastián Athayde, apprentice candle maker",
+    description: "Sebastián Athayde is a 12-year-old boy living in Mexico City. His worsening asthma has left him weak and unable to assist in the family business, causing great concern for his future.",
+    astrologicalSign: "Leo",
+    pdf: "athayde.pdf",
+    citation: "*Medicina practica de Guadalupe* by Francisco Sanz de Dios y Guadalupe (1734)",
+    secret: "Sebastián is secretly afraid that his asthma will prevent him from continuing his apprenticeship, and he feels a great deal of guilt for not being able to help his family more in the shop."
+},
   {
     type: "patient",
     name: "Isabel de la Cruz",
@@ -96,20 +132,21 @@ const EntityList = [
     casta: "Peninsular",
     class: "Upper class",
     symptoms: [
-      { name: "Severe gout attacks in the feet and hands", location: "extremities", quote: "The pain in my feet and hands is unbearable, as if fiery needles were piercing my flesh." },
       { name: "Swelling and redness", location: "extremities", quote: "My joints are swollen, red, and throbbing. Oh, God protect me." },
-      { name: "Difficulty walking", location: "legs", quote: "Each step is agony, my legs failing me as though they were bound in chains." },
-      { name: "Chronic pain", location: "whole body", quote: "Please... please help make it stop." }
+      { name: "Difficulty urinating", location: "abdomen", quote: "It feels as though a heavy weight sits upon my bladder, and no relief comes despite the urge." },
+      { name: "Chronic lower back pain", location: "abdomen", quote: "Please... please help make it stop." }
     ],
-    diagnosis: "Gout",
-    contemporaryTheory: "Excess of uric acid (referred to as a cold, wet humor) in the blood, causing the formation of painful crystals in the joints",
-    socialContext: "His gout has rendered him immobile, affecting his ability to engage in social and religious activities, leading to a decline in his social standing",
+    diagnosis: "Kidney stone blocking urination, aggravated by gout",
+    contemporaryTheory: "An obstruction caused by a stone or blood clot in the urinary tract, further inflamed by heat and humor imbalance.",
+    socialContext: "His affliction has rendered him immobile, affecting his ability to engage in social and religious activities, leading to a decline in his social standing",
     urgency: "Medium",
     image: "donalejandrocortez",
     caption: "Don Alejandro Cortez, retired judge",
     description: "Don Alejandro Cortez, once a respected judge, is now confined to his home, his body racked by the painful affliction of gout.",
     astrologicalSign: "Virgo",
-    secret: "Don Alejandro seeks out Maria instead of a licensed physician because he cannot afford to be seen as weak or dependent on charity in his social circles.",
+    pdf: "doncortez.pdf",
+    citation: "Florilegia Medicinal by by Juan de Esteyneffer (Mexico, 1712), pages 196 and 206",
+    secret: "Don Alejandro seeks out Maria instead of a licensed physician because he has suffered repeated fainting spells from the physician's prescription of frequent bleedings.",
     imgdescription: "A highly detailed pixel art portrait of Don Alejandro Cortez, a 70-year-old retired judge of Peninsular origin living in Mexico City in 1680. He is a distinguished-looking man with white hair, a neatly trimmed beard, and a lined face reflecting his age and the pain of his gout. Don Alejandro is dressed in a fine black doublet with gold embroidery, a white linen shirt with a ruff collar, and black breeches.  His expression is a mix of pain, frustration, and weariness."
   },
   {
@@ -220,7 +257,7 @@ const EntityList = [
     caption: "Diego Perez, a young carpenter",
     description: "Diego Perez, known for his craftsmanship and dedication, now finds himself battling a painful illness that threatens to take away his livelihood.",
     astrologicalSign: "Aries",
-        pdf: "/pdfs/diegoperez.pdf",
+        pdf: "diegoperez.pdf",
     secret: "Diego has been working extra hours to pay off a debt incurred by his father, but his illness has made it nearly impossible to keep up, and he fears his family’s future is in jeopardy.",
     imgdescription: "A highly detailed pixel art portrait of Diego Perez, a 26-year-old indigenous carpenter in Mexico City, 1680. He is a lean, muscular man with bronze skin, short black hair, and dark eyes that reflect both his physical pain and his worry about his livelihood. Diego wears a simple white cotton shirt, brown breeches, and a leather apron that signifies his trade."
 },
@@ -236,7 +273,7 @@ const EntityList = [
   casta: "Peninsular",
   class: "Upper middle class",
   symptoms: [
-    { name: "Mild fever", location: "whole body", quote: "I feel as though a slow fire burns within me." },
+    { name: "Mild fever", location: "whole body", quote: "I feel as though a slow fire burns within me. I fear I have plague." },
     { name: "Persistent cough", location: "chest", quote: "This cough lingers interminably, always there but never getting worse." },
     { name: "Fatigue", location: "whole body", quote: "My strength fades with each passing day, though I do nothing to tire myself." }
   ],
@@ -248,7 +285,7 @@ const EntityList = [
   caption: "Francisco Hernandez, merchant",
   description: "Francisco Hernandez is a well-dressed merchant who seems too healthy for the symptoms he describes. His manner is calm, but his eyes dart around the room, betraying a deeper intention.",
   astrologicalSign: "Libra",
-      pdf: "isabel.pdf",
+      pdf: "hysteria.pdf",
   secret: "Francisco Hernandez is actually Licenciado Francisco Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
 },
 
@@ -468,6 +505,7 @@ const EntityList = [
   description: "The Plaza Mayor, located at the heart of Mexico City, is a grand square surrounded by important buildings such as the Viceroy’s Palace and the Metropolitan Cathedral. It is a bustling center of commerce, political activity, and social gatherings.",
   imgdescription: "The Plaza Mayor is a wide, open square paved with cobblestones. The surrounding buildings are imposing, with the grand façade of the Viceroy’s Palace on one side and the towering spires of the Cathedral on the other. Merchants line the edges of the square, selling goods under large canvas awnings, while carriages and horses move through the center.",
   pdf: "plazamayor.pdf",
+  citation: "Antonio de Solis, *Historia de la conquista de Mexico* (Madrid, 1684)",
   image: "plazamayor"
 },
 {
@@ -486,7 +524,7 @@ const EntityList = [
   location: "Mexico City",
   description: "One of the largest markets in Mexico City, La Merced is filled with stalls selling everything from fresh produce to handmade goods. The market is always crowded, with the noise of haggling merchants and customers filling the air.",
   imgdescription: "The market is a maze of stalls and vendors, each selling their wares under colorful cloth canopies. The ground is dusty, and the air is thick with the smells of fresh fruit, roasted meat, and the occasional whiff of incense. People push past each other, jostling for the best deals while merchants call out from behind their stands.",
-  pdf: "la_merced_market.pdf",
+  pdf: "null",
   image: "lamerced"
 },
 {
@@ -495,7 +533,8 @@ const EntityList = [
   location: "Mexico City",
   description: "The ancient ruins of Tenochtitlan, the former Aztec capital, lie beneath and around the colonial buildings of Mexico City. These ruins serve as a reminder of the city's Indigenous past, with portions of temples and palaces still visible.",
   imgdescription: "The ruins are scattered across the landscape, with the crumbling remains of stone temples and walls visible beneath the colonial structures. The stone is weathered and cracked, with vines and plants creeping through the gaps. Some areas are fenced off, but locals still wander through the site, leaving offerings or simply observing.",
-  pdf: "tenochtitlan_ruins.pdf",
+  pdf: "templo.pdf",
+  citation: "Antonio de Solis, *Historia de la conquista de Mexico* (Madrid, 1684)",
   image: "tenochtitlan"
 },
 {
@@ -504,7 +543,7 @@ const EntityList = [
   location: "Mexico City",
   description: "The Metropolitan Cathedral is a grand structure that dominates the Plaza Mayor. Built over centuries, it is the largest cathedral in the Americas and a center of religious and political power in New Spain.",
   imgdescription: "The Cathedral’s grand stone façade is adorned with carvings and statues of saints. Two massive bell towers rise above the surrounding buildings, and the entrance is framed by ornate iron gates. Inside, the air is cool and dim, with tall stone columns supporting the vaulted ceiling. Candles flicker in alcoves where worshippers kneel in prayer.",
-  pdf: "metropolitan_cathedral.pdf",
+
   image: "metropolitancathedral"
 },
 {
@@ -513,7 +552,7 @@ const EntityList = [
   location: "Mexico City",
   description: "The Alameda Central is a large public park in Mexico City, a place where people of all classes come to relax, socialize, and enjoy the natural beauty of the gardens. The park is lined with trees and dotted with fountains and sculptures.",
   imgdescription: "The Alameda Central is a green, expansive park with gravel pathways winding between rows of tall trees. Marble benches are placed at regular intervals, and fountains burble gently in the background. The park is well-maintained, with flowering bushes and carefully manicured lawns providing a tranquil escape from the bustling city.",
-  pdf: "alameda_central.pdf",
+
   image: "alamedacentral"
 },
 
@@ -534,7 +573,7 @@ const EntityList = [
   location: "Just outside Mexico City",
   description: "The outskirts of Mexico City are areas just beyond the city's walls, where sparse homes, farms, and isolated patches of land stretch out toward the countryside. It's a quieter, more rural environment compared to the bustling city.",
   imgdescription: "The outskirts consist of dirt paths winding between small adobe homes and open fields. Farmers tend to their crops, and the occasional rider passes by on horseback. The sound of the city fades into the distance, replaced by the rustle of trees and the calls of distant animals.",
-  pdf: "",
+
   image: "outskirts"
 },
 {

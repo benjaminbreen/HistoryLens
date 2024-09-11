@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'; // Import the GFM plugin for markdown
 import './PDFPopup.css';
 
+
 const PDFPopup = ({ isOpen, onClose, pdfPath, citation }) => {
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -12,15 +13,24 @@ const PDFPopup = ({ isOpen, onClose, pdfPath, citation }) => {
     };
 
     if (isOpen) {
+      // Prevent body scrolling and ensure proper positioning when popup is open
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'relative';
       document.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
+      // Clean up event listeners and reset styles when popup closes
       document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'visible';  // Reset overflow when popup is closed
+      document.body.style.position = 'static';   // Reset position when popup is closed
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+
+
+
 
   return (
     <div className="pdf-popup-overlay" onClick={onClose}>

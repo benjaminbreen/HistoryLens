@@ -34,7 +34,7 @@ When updating the time and date, please follow these specific rules:
 
 3. Select the most appropriate image name based on the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
 
-- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, frayesteban, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, franciscohernandez, franciscoramirez, donignaciodemendoza, tlacaelel
+- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, frayesteban, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, franciscohernandez, franciscoramirez, donignaciodemendoza, tlacaelel, sebastianathayde
 - Locations: countryside, generichome, market, street, streetnight, outsideday, outsidenight, shopmorning, shopafternoon, shopnight, farm, cityday
 - Generic scenes: study, codex, herbs, herbalist, mushroom, trippy, merchant, priest,
 - Generic people: genericfemalecommoner, genericmalecommoner, genericfemaleupper, genericmaleupper

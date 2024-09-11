@@ -14,22 +14,21 @@ body {
   overflow-y: auto !important;
 }
 
+html, body {
+  overflow: visible !important;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 6px;
   min-height: 100vh;
-  overflow-y: auto; /* Main scrolling happens here */
+
   width: 100%; /* Ensure the container takes full width */
   
 }
 
-/* Main content and interaction section */
-.main-content, .interaction-section {
-    flex: 1;
-    overflow-y: auto; /* Main scrolling happens here */
-}
 
 /* Title and Subtitle Styling */
 .title-container {
@@ -89,7 +88,7 @@ h2 {
 }
 
 .history-agent {
-  width: 66%;
+  width: 68%;
   padding: 10px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -112,12 +111,12 @@ h2 {
 
 .output-box {
   background-color: #edf2f7; /* Light gray */
-  padding: 11px;
-  padding-top: 8px;
+  padding: 10px;
+  padding-top: 7px;
   border-radius: 8px;
-  margin-top: 3px;
+  margin-top: 2px;
   max-height: 1000px;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin-bottom: 8px;
 
 }
@@ -517,7 +516,7 @@ input[type="text"]:focus {
   z-index: 1000;
   padding: 20px;
   box-shadow: -2px 0px 7px rgba(0, 0, 0, 0.15);
-  overflow-y: auto;
+
 }
 
 
@@ -581,7 +580,7 @@ input[type="text"]:focus {
 }
 
 .counter {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 11.5px;
   color: #4A5568; /* Tailwind gray */
   font-weight: 600; /* Bold the text to make it stand out */
@@ -931,6 +930,69 @@ body.dark-mode .simulation-history.open {
 
 @media (max-width: 768px) {
 
+ .main-content {
+    display: flex; /* Use flexbox */
+    flex-direction: row; /* Ensure that the sections are placed in a row */
+    justify-content: space-between; /* Space the elements */
+    width: 100%;
+    padding: 8px;
+  }
+
+  .history-agent {
+    width: 80% !important; /* Take 80% of the width */
+    padding: 6px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
+    margin-bottom: 10px;
+    margin-top: -10px;
+  }
+
+  .interaction-section {
+    width: 25% !important; /* Take 20% of the width */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 2px;
+    margin-top: -24px;
+  }
+
+  .output-box {
+    background-color: #edf2f7; /* Light gray */
+    padding: 10px; /* Adjust padding */
+    border-radius: 8px;
+    margin-top: 10px; /* Adjust margin to reduce white space */
+    margin-bottom: 10px; /* Adjust bottom margin */
+    max-height: 70vh; /* Increase max-height to show more content */
+    overflow-y: auto;
+    font-size: .9rem; /* Adjust font size */
+  }
+
+  .command-buttons {
+    flex-direction: row; /* Stack buttons horizontally */
+    align-items: stretch; /* Ensure the buttons take the full width */
+    width: 100%;
+  }
+
+
+  .output-box {
+    background-color: #edf2f7; /* Light gray */
+    padding: 10px; /* Adjust padding */
+    border-radius: 8px;
+    margin-top: 10px; /* Adjust margin to reduce white space */
+    margin-bottom: 10px; /* Adjust bottom margin */
+    max-height: 70vh; /* Increase max-height to show more content */
+    overflow-y: auto;
+    font-size: .9rem; /* Adjust font size */
+  }
+
+  .command-buttons {
+    flex-direction: row; /* Stack buttons vertically on smaller screens */
+    align-items: stretch; /* Ensure the buttons take the full width */
+    width: 100%;
+  }
+
   button, 
   .command-button,
   .submit-button,
@@ -984,35 +1046,7 @@ body.dark-mode .simulation-history.open {
   font-size: .8rem;
 }
 
-.main-content {
-  display: column;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
 
-}
-
-.history-agent {
-  width: 72%;
-  padding: 6px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
-  margin-bottom: 10px;
-  height: auto; /* Allow the container to adjust its height based on contents */
-  margin-top: -3px;
-}
-
-.interaction-section {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 8px;
-  padding: 2px;
-  margin-top: -24px;
-
-}
 
   .counter-and-map {
     display:flex;
@@ -1024,10 +1058,10 @@ body.dark-mode .simulation-history.open {
 
 
 .counter {
-  font-size: 9px;
+  font-size: 8px;
   color: #4A5568; /* Tailwind gray */
   font-weight: 600; /* Bold the text to make it stand out */
-  letter-spacing: 0.03rem; /* Add some letter spacing for a cleaner look */
+  letter-spacing: 0.01rem; /* Add some letter spacing for a cleaner look */
   text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
   padding-left: 4px;
 }
@@ -1046,7 +1080,7 @@ body.dark-mode .simulation-history.open {
     flex-direction: row; /* Stack portraits vertically */
     align-items: center; /* Center-align on mobile */
     text-align: center; /* Center-align text on mobile */
-    margin-bottom: -14px;
+    margin-bottom: -16px;
     margin-top: -2px;
   }
   .portrait-caption {
@@ -1072,7 +1106,7 @@ body.dark-mode .simulation-history.open {
     background-color: #edf2f7; /* Light gray */
     padding: 6px; /* Reduce padding */
     border-radius: 8px;
-    margin-top: -4px; /* Adjust margin to reduce white space */
+    margin-top: -6px; /* Adjust margin to reduce white space */
     margin-bottom: 5px; /* Reduce bottom margin */
     max-height: 70vh; /* Increase max-height to show more content */
     overflow-y: auto;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useCallback, useRef, Suspense, lazy} from 'react';
 import { debounce } from 'lodash'; 
 import Header from './Header';
 import Colophon from './Colophon'; // Import the new Colophon component
@@ -42,7 +42,7 @@ const PDFPopup = lazy(() => import('./PDFPopup'));
 function App() {
   const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime } = useGameState();
 
-  const [isPrescribeOpen, setIsPrescribeOpen] = useState(false);
+
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
   const [gameAssessment, setGameAssessment] = useState('');
@@ -98,6 +98,8 @@ function App() {
 // Toggle functions
 
 
+
+
 const handleIncorporate = (content) => {
     setIncorporatedContent(content);
     setShowIncorporatePopup(true);
@@ -115,9 +117,10 @@ const togglePdfButtons = () => {
     setIsPdfOpen(true);       
   };
 
-  const closePdfPopup = () => {
+const closePdfPopup = () => {
     setIsPdfOpen(false);
     setSelectedPDF(null);
+    setSelectedCitation(null);
   };
 
   const handleClosePrescribePopup = () => {
@@ -190,6 +193,14 @@ const toggleMap = useCallback(() => {
   setIsMapOpen((prev) => !prev);
 }, []);
 
+  // Function to open the prescribe popup and set the current patient
+  const handlePrescribeCommand = (npc) => {
+    setCurrentPatient(npc);
+    setIsPrescribePopupOpen(true);
+  };
+
+  // handling commands
+
 
   // End game handling
 
@@ -249,53 +260,61 @@ useEffect(() => {
     setIsDarkMode(prev => !prev);
   };
 
-// command detection
+// Command handling
+const handleCommand = useCallback((command, npcName) => {
+  // Try to find an entity in the EntityList
+  let entity = EntityList.find(entity => 
+    (entity.type === 'npc' || entity.type === 'patient' || entity.type === 'healer') && entity.name.toLowerCase().includes(npcName.toLowerCase())
+  );
+
+  // Fallback: If no entity is found, create a default entity from the previous turn's context
+  if (!entity) {
+    console.log('No valid entity found in EntityList. Falling back to previous context.');
+    
+    entity = {
+      name: npcName || "Unknown Patient",
+      type: 'fallback',  // Fallback type for unknown or undefined patients/NPCs
+      details: 'Generated from previous turn context', // Basic details from previous context
+    };
+
+    // Optionally, you can extract additional context from historyOutput (like symptoms)
+    const lastContext = historyOutput || "No specific context available"; // Fallback to previous historyOutput
+    entity.context = lastContext;
+  }
+
+  // Handle diagnosis
+  if (command === '#diagnose') {
+    console.log('Selected entity for diagnosis:', entity);
+    setCurrentPatient(entity); // Set the entity for diagnosis (whether valid or fallback)
+    setIsDiagnoseOpen(true); // Open the diagnose popup
+  }
+
+  // Handle prescription
+  if (command === '#prescribe') {
+    console.log('Selected entity for prescription:', entity);
+    setCurrentPatient(entity); // Set the entity for prescription (whether valid or fallback)
+    setIsPrescribing(true); // Open the prescription process
+    setIsPrescribePopupOpen(true); // Trigger the prescription popup
+  }
+
+  // Handle symptoms command
+  if (command === '#symptoms') {
+    if (npcName) {
+      setSelectedNpcName(npcName);
+      setShowSymptomsPopup(true);
+    } else {
+      setHistoryOutput('No NPC is currently selected.');
+    }
+  }
+}, [historyOutput, setCurrentPatient, setIsDiagnoseOpen, setIsPrescribing, setIsPrescribePopupOpen]);
+
+// Command click handler to handle incoming commands from the UI
 const handleCommandClick = (command) => {
   const npcName = npcCaption.split(',')[0]; // Assuming the NPC name is in the caption
-
-  switch (command) {
-    case '#symptoms':
-      if (npcName) {
-        setSelectedNpcName(npcName);
-        setShowSymptomsPopup(true);
-      } else {
-        setHistoryOutput('No NPC is currently selected.');
-      }
-      break;
-
-
-
-// prescribe command
-  case '#prescribe':
-  case '#diagnose':
-    const entity = EntityList.find(entity => 
-      (entity.type === 'npc' || entity.type === 'patient') && entity.name.toLowerCase().includes(npcName.toLowerCase())
-    );
-
-    if (entity) {
-      console.log('Selected entity for prescription:', entity);
-      setCurrentPatient(entity);  // Treat NPCs the same as patients for prescribing
-      if (command === '#prescribe') {
-        setIsPrescribing(true);
-        setIsInventoryOpen(true);
-        setIsPrescribePopupOpen(true);
-      } else {
-        setIsDiagnoseOpen(true);
-      }
-    } else {
-      setHistoryOutput(`No valid patient or NPC selected for ${command === '#prescribe' ? 'prescription' : 'diagnosis'}.`);
-    }
-    break;
-
-
-
-
-    default:
-      setUserInput(command);
-      handleSubmit({ preventDefault: () => {} }); // Automatically submit the command
-  }
+  handleCommand(command, npcName);
 };
 
+// Detected commands state
 const [commandsDetected, setCommandsDetected] = useState({
   prescribe: false,
   symptoms: false,
@@ -305,6 +324,7 @@ const [commandsDetected, setCommandsDetected] = useState({
   // Add more commands as needed
 });
 
+// Effect to detect commands in the historyOutput
 useEffect(() => {
   const newCommandsDetected = {
     prescribe: historyOutput.includes('#prescribe'),
@@ -316,6 +336,13 @@ useEffect(() => {
   };
   setCommandsDetected(newCommandsDetected);
 }, [historyOutput]);
+
+// Fallback for unknown commands
+const defaultCommandHandling = (command) => {
+  setUserInput(command);
+  handleSubmit({ preventDefault: () => {} }); // Automatically submit the command if it's not handled
+};
+
 
 // quest start check 
 
@@ -492,7 +519,7 @@ const shouldAdvanceQuest = (quest, actions) => {
 }
   
 
-  // Add this line to track user actions
+  // track user actions
   setUserActions(prevActions => [...prevActions, narrativeText]);
 
   // Normalize the command by removing the hashtag if present
@@ -500,7 +527,7 @@ const shouldAdvanceQuest = (quest, actions) => {
 
   if (command === 'diagnose' || command === 'buy' || command === 'map') {
     // These commands should trigger the LLM for response
-    // No need to set the output manually here
+ 
   }
 
   // Detect symptoms command
@@ -521,34 +548,15 @@ const shouldAdvanceQuest = (quest, actions) => {
   }
 
   // Detect prescribe command
-  if (command.startsWith('prescribe')) {
-    const npcName = command.split(' ')[1] || npcCaption.split(',')[0];
-    const patient = EntityList.find(entity => 
-      entity.type === 'patient' && entity.name.toLowerCase().includes(npcName.toLowerCase())
-    );
+ if (command.startsWith('prescribe')) {
+  handlePrescribeCommand(command); // Call function that handles this in PrescribePopup.js
+}
 
-    if (patient) {
-      setCurrentPatient(patient);
-      setIsPrescribing(true);
-      setIsInventoryOpen(true);
-      setIsPrescribePopupOpen(true);
-      setUserInput('');
-      setIsLoading(false);
-      return;
-    } else {
-      setHistoryOutput('No valid patient selected for prescription.');
-      setUserInput('');
-      setIsLoading(false);
-      return;
-    } 
-  }
-
+// core gameplay logic (HistoryAgent)
   const selectedEntity = selectEntity();
   if (selectedEntity) {
     narrativeText += `\n\nA new character has entered the scene: ${selectedEntity.name}, ${selectedEntity.age} years old, ${selectedEntity.occupation}. ${selectedEntity.description}`;
   }
-
-
 
 
 const contextSummary = `
@@ -624,9 +632,9 @@ const contextSummary = `
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
     "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
     "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", "Tobacco,"
-    "Yarrow", "Valerian", "Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", "a Small Cat," "Skull of a Man," "Bird Feathers," 
+    "Yarrow", "Valerian", Radish seeds," "Scorpions", "Vinegar", Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", "a Small Cat," "Skull of a Man," "Bird Feathers," 
     "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
-    "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade," "Deer Antlers"
+    "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade", "Deer Antlers", "Vanilla", "Bezoar" (very expensive)
 
               **Contextual Awareness:**
               - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in an increasingly desperate personal and financial state, owing 100 reales to Don Luis and 20 reales to Marta the herb woman. 
@@ -641,15 +649,15 @@ const contextSummary = `
               - When contextually appropriate, reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature, for instance rumors of the Pueblo Revolt on the northern border, or Catholic-Protestant tensions (its the era of the Popish Plot in England), or rivalries between Cartesians and Aristotelians (ancients vs moderns) or the growing importance of "drogas da India" -- exotic materia medica from China, India, and the tropics in general.
               - At the Portal de Mercaderes, there is a quest available if you visit spend more than one turn at the marketplace stalls where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name and you should ask if the user wnats to speak to him.
               - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. After Maria prescribes medicine of any kind, the NPC departs the scene and does not linger, though they may reappear in later turns (and, at times, NPCs may even be killed by a toxic prescription).
-              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth OR her status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious) then note it at the END of your response. Update status every turn or two. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
+              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response. Update status and reputation (via emoji) every turn. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
                Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. 
                - certain NPCs have no names. For instance, an NPC like "soldado" or "Doña" or "Caballero" represents a whole class of people. When you introduce them, give them names to individualize them, like "Doña Maria de Gallego" or "Eduardo, a sailor."
 
-               - Track Maria's wealth, status, and the date and time in each ersponse. Your final line should always be in this exact format:
+               - Track Maria's wealth, status, reputation, and the date and time in each response. Reputation is displayed via a choice of ONE of these emojis (Maria starts at 3, 😐) 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)Your final line should always be in this exact format:
 
-              **Maria has [integer] silver coins. She is feeling [status]. The time is # AM (or PM), xx [month] [year].**
+              **Maria has [integer] silver coins. She is feeling [status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
-              On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased, preceded with a hashtag#:  **Maria has [integer] silver coins. She is feeling [status]. She bought #[itemname].** The item purchased must ALWAYS come at the end of your response and ALWAYS be preceded by a hashtag symbol: #.
+              On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased, preceded with a hashtag#. The item purchased must ALWAYS come at the end of your response and ALWAYS be preceded by a hashtag symbol, like this:  #**Maria has [integer] silver coins. She spent [integer] of them and bought #[itemname].** 
 
               ` 
             },
@@ -703,95 +711,6 @@ setUserInput('');
   incorporatedContent,
   setUserActions
 ]);
-
-
-
-
-// Prescribe popup logic
-
-const handlePrescribe = useCallback(async (item, amount, price) => {
-  setIsLoading(true);
-  setIsPrescribing(false);
-  setIsInventoryOpen(false);
-  setIsPrescribePopupOpen(false);
-
-   if (!currentPatient) {
-    console.error("No patient or NPC selected for prescription");
-    setHistoryOutput("Error: No patient or NPC selected for prescription.");
-    setIsLoading(false);
-    return;
-  }
-
-  const npcName = currentPatient.name; // Handle both patients and generic NPCs
-
-  const prescriptionPrompt = `
-    Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
-    Using your extensive knowledge of early modern medicine and human biology, consider the dosage, toxicity, the health of the NPC, and potential effects of the medicine prescribed. Is the dose safe or dangerous? 
-    The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine.
-    Summarize the sensory characteristics of the prescribed medicine, describe its effects (positive, neutral, toxic or deadly), and the NPC's reaction in 2-3 paragraphs. Typically, one drachms of most medicines is fine, but some may have adverse effects, and a few, like quicksilver, mercury or other chemicals, might kill at this dose. 
-    Remember that a very high dose of a toxic medicine, like 3 drachms of quicksilver or three drachms of laudanum, can actually kill an NPC. If you think the dose is fatal, show the NPC dying. This usually does not happen, but adverse effects are common and provoke angry patient reactions.
-    End by summarizing the transaction and adjusting Maria's wealth: "Maria has sold [drug name] for [price] silver coins. She now has [updated total] coins." 
-  `;
-
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          ...conversationHistory,
-          { role: 'user', content: prescriptionPrompt }
-        ]
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    const simulatedOutput = data.choices[0].message.content;
-
-
-    // Update history and conversation
-    setHistoryOutput(simulatedOutput);
-    setConversationHistory(prevHistory => [
-      ...prevHistory, 
-      { role: 'user', content: prescriptionPrompt },
-      { role: 'assistant', content: simulatedOutput }
-    ]);
-
-    // Check for acceptance and toxicity
-    const isAccepted = simulatedOutput.toLowerCase().includes("accepts");
-    const isToxic = simulatedOutput.toLowerCase().includes("toxic") || simulatedOutput.toLowerCase().includes("poison");
-
-    if (isAccepted) {
-      // Only update inventory if the prescription is accepted
-      updateInventory({ name: item.name, quantity: -amount });
-    }
-
-    // Add journal entry for toxicity or normal prescription
-    if (isToxic) {
-      addJournalEntry(`⚠️ Maria prescribed ${amount} drachms of ${item.name} to ${npcName}, but it had toxic effects.`);
-    } else {
-      addJournalEntry(`Maria prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.`);
-    }
-
-    // Increment turn number
-    setTurnNumber(prevTurn => prevTurn + 1);
-
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    setHistoryOutput(`An error occurred: ${error.message}`);
-  } finally {
-    setCurrentPatient(null);
-    setIsLoading(false);
-  }
-}, [currentPatient, conversationHistory, updateInventory, addJournalEntry]);
 
 
 
@@ -874,7 +793,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
     {showPdfButtons ? '📄 Hide sources' : '📄 Show all sources'}
   </button>
 
-    {/* Command buttons - now placed here */}
+
     <div className="command-buttons">
  
       {commandsDetected.prescribe && (
@@ -935,27 +854,27 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 
 
   {/* PDF links with slide effect */}
-  <div className={`pdf-links ${showPdfButtons ? 'show' : ''}`}>
-    <h4>Available Documents:</h4>
-    {EntityList.filter(entity => entity.pdf).map(entity => (
-      <button
-        key={entity.name}
-        onClick={() => handlePDFClick(`/pdfs/${entity.pdf}`, entity.citation)}
-        className="pdf-link-button"
-      >
-        {entity.name} 📄
-      </button>
-    ))}
-    {initialInventoryData.filter(item => item.pdf).map(item => (
-      <button
-        key={item.name}
-        onClick={() => handlePDFClick(`/pdfs/${item.pdf}`, item.citation)}
-        className="pdf-link-button"
-      >
-        {item.name} 📄
-      </button>
-    ))}
-  </div>
+ <div className={`pdf-links ${showPdfButtons ? 'show' : ''}`}>
+          <h4>Available Documents:</h4>
+          {EntityList.filter(entity => entity.pdf).map(entity => (
+            <button
+              key={entity.name}
+              onClick={() => handlePDFClick(`/pdfs/${entity.pdf}`, entity.citation)}
+              className="pdf-link-button"
+            >
+              {entity.name} 📄
+            </button>
+          ))}
+          {initialInventoryData.filter(item => item.pdf).map(item => (
+            <button
+              key={item.name}
+              onClick={() => handlePDFClick(`/pdfs/${item.pdf}`, item.citation)}
+              className="pdf-link-button"
+            >
+              {item.name} 📄
+            </button>
+          ))}
+        </div>
 </div>
 
   {/* Diagnose Popup */}
@@ -1110,6 +1029,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
                 updateInventory={updateInventory}
                 apiKey={process.env.REACT_APP_OPENAI_API_KEY} 
                 addJournalEntry={addJournalEntry}
+                toggleMixingPopup={toggleMixingPopup}  // Pass the toggleMixingPopup function as a prop
               />
               <button className="close-mixing-button" onClick={toggleMixingPopup}>Close</button>
             </div>
@@ -1124,14 +1044,19 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
           onPDFClick={handlePDFClick}  
         />
         
-<PrescribePopup 
-  gameState={gameState} 
-  updateInventory={updateInventory} 
-  addCompoundToInventory={addCompoundToInventory} 
-  isOpen={isPrescribePopupOpen} 
-  onClose={handleClosePrescribePopup} 
-  onPrescribe={handlePrescribe}  
-/>
+  <PrescribePopup 
+        isOpen={isPrescribePopupOpen}
+        onClose={() => setIsPrescribePopupOpen(false)}
+        currentPatient={currentPatient}
+        gameState={gameState}
+        updateInventory={updateInventory}
+        addCompoundToInventory={addCompoundToInventory}
+        conversationHistory={conversationHistory}
+        setHistoryOutput={setHistoryOutput}
+        setConversationHistory={setConversationHistory}
+        setTurnNumber={setTurnNumber}
+        addJournalEntry={addJournalEntry}
+      />
 
 {isAboutOpen && <About isOpen={isAboutOpen} toggleAbout={toggleAbout} />}
 
@@ -1158,13 +1083,15 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
       </div>
 
     {isPdfOpen && (
-         <PDFPopup
-           isOpen={isPdfOpen}
-           onClose={() => setIsPdfOpen(false)}
-           pdfPath={selectedPDF}
-           citation={selectedCitation} // Pass the selected citation here
-         />
-       )}
+             <Suspense fallback={<div>Loading PDF...</div>}>
+               <PDFPopup
+                 isOpen={isPdfOpen}
+                 onClose={closePdfPopup}
+                 pdfPath={selectedPDF}
+                 citation={selectedCitation}
+               />
+             </Suspense>
+           )}
  
     </DndProvider>
   );

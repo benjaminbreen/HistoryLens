@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9000;
 }
 
 /* PDF Popup Content Styles */
@@ -27,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   transform: translateX(-50px);
-
+   z-index: 3000;
 }
 
 /* Enforce iframe width */
@@ -35,6 +35,7 @@ iframe {
   width: 90% ;      
   height: 80vh ;     /* Use 80% of the viewport height */
   border: none;
+   z-index: 2000;
 }
 
 .citation {
