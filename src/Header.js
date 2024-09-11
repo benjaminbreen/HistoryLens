@@ -10,7 +10,7 @@ function Header() {
       </div>
       <div className="description-container">
         <p className="description">
-          Experience life as an apothecary navigating a summer day in 17th-century Mexico City.
+          Experience a day in the life of an apothecary in 1680s Mexico City.
         </p>
       </div>
       <hr className="header-divider" />

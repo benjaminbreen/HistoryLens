@@ -2,31 +2,27 @@
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Germania+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap'); /* New font for buttons */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap');
 
 /* General body styling */
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  background-color: #f7fafc; /* Light gray background */
-  color: #2d3748; /* Darker text color */
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: #f7fafc;;
+  color: #2d3748;
   height: 100vh;
-  overflow-y: auto !important; /* Main scrolling happens here */
-
- 
-}
-
-html {
-  height: 100%;
+  overflow-y: auto !important;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px;
+  padding: 6px;
   min-height: 100vh;
   overflow-y: auto; /* Main scrolling happens here */
   width: 100%; /* Ensure the container takes full width */
+  
 }
 
 /* Main content and interaction section */
@@ -37,19 +33,19 @@ html {
 
 /* Title and Subtitle Styling */
 .title-container {
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.1rem;
   text-align: center;
+  overflow-y: auto
  
 }
 
 .title {
   display: inline-block; /* Make the title an inline block element */
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  background: linear-gradient(blue, #4A90E2, #4A90E2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
+  font-weight: 700;
+  color: #2c3e50;
+ font-family: 'Playfair Display', serif;
   letter-spacing: 0.02rem;
    margin-bottom: -0.4rem;
 
@@ -57,14 +53,9 @@ html {
 }
 
 .subtitle {
-  display: inline-block; /* Make the subtitle an inline block element */
-  font-size: 1.7rem;
-  color: #4A5568; /* Tailwind gray-700 */
-  margin: 0 0 0 12px; /* Add some space between the title and subtitle */
-  font-family: 'MedievalSharp', cursive;
-  letter-spacing: 0.02rem;
-  vertical-align: bottom; /* Align vertically with the title */
-    margin-bottom: -0.4rem;
+  font-size: 1.2rem;
+  color: #34495e;
+  margin: 0;
 }
 
 .description-container {
@@ -81,22 +72,29 @@ html {
 
 }
 
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+
 /* Main content layout */
 .main-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
+  overflow-y: auto
 
 }
 
 .history-agent {
   width: 66%;
-  padding: 12px;
+  padding: 10px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   height: auto; /* Allow the container to adjust its height based on contents */
 
 }
@@ -106,7 +104,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 13px;
+  gap: 12px;
   padding: 22px;
   margin-top: -24px;
 
@@ -114,14 +112,23 @@ html {
 
 .output-box {
   background-color: #edf2f7; /* Light gray */
-  padding: 12px;
+  padding: 11px;
+  padding-top: 8px;
   border-radius: 8px;
   margin-top: 3px;
   max-height: 1000px;
-  font-size: 1.05rem;
-  margin-bottom: 12px;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+
 }
 
+.output-box p {
+  line-height: 1.5;  /* Reduce line height for manual breaks */
+}
+
+.output-box br {
+  line-height: 0.5;  /* Reduce line height for manual breaks */
+}
 
 
 .bottom-buttons {
@@ -132,6 +139,84 @@ html {
  overflow: visible;
 margin-left: 0px;
 }
+
+.pdf-links {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.pdf-links.show {
+  max-height: 500px; /* Adjust based on content height */
+  transition: max-height 0.5s ease-in-out;
+}
+
+.pdf-link-button {
+  padding: 8px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.pdf-link-button:hover {
+  background-color: #d0d0d0;
+}
+
+.command-button.primary-sources-button {
+  margin: 8px 0;
+  padding: 9px;
+  margin-left: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.command-button.primary-sources-button:hover {
+  background-color: #0056b3;
+}
+
+.pdf-links {
+  margin-top: 14px;
+  border-top: 1px solid #ccc;
+  padding-top: 8px; /* Slightly increased padding for spacing */
+}
+
+.pdf-link-button {
+  background: linear-gradient(145deg, rgba(245, 245, 245, 0.5), rgba(224, 224, 224, 0.5)); /* 50% translucent background */
+  border: 1px solid #ccc;
+  color: #333; /* Slightly darker text for readability */
+  text-decoration: none; /* Remove underline to make it more like a button */
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 2px; /* Add margin to separate the buttons */
+  border-radius: 6px; /* More rounded corners */
+  padding: 7px 13px; /* Increased padding for a more clickable feel */
+  font-size: 0.9em;
+  font-weight: bold; /* Make the text bold for emphasis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for a raised effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.pdf-link-button:hover {
+  background-color: #d0d0d0; /* Darker on hover for visual feedback */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.pdf-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px; 
+  padding-top: -2px; /* Space above buttons */
+  margin-bottom: -10px; /* Adjust bottom margin */
+}
+
+
 
 /* Tip Box */
 
@@ -212,89 +297,8 @@ margin-left: 0px;
   box-shadow: 0 3px 3px rgba(193, 122, 0, 0.5), 0 0 8px rgba(204, 116, 116, 0.7), 0 0 10px rgba(255, 165, 0, 0.3) inset; /* Iridescent gold and ruby glow */
 }
 
-/* Map Button */
-.command-button.map-button {
-  background: linear-gradient(145deg, #20b2aa, #0066cc); /* Turquoise to dark cyan gradient */
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.2),
-    0 0 10px rgba(32, 178, 170, 0.5) inset,
-    0 0 20px rgba(0, 139, 139, 0.3) inset;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-}
-
-.command-button.map-button:hover {
-  background: linear-gradient(145deg, #5f9ea0, #20b2aa); /* Slightly lighter gradient on hover */
-  box-shadow: 
-    0 6px 8px rgba(0, 0, 0, 0.3),
-    0 0 15px rgba(32, 178, 170, 0.7) inset,
-    0 0 30px rgba(0, 139, 139, 0.5) inset;
-  transform: translateY(-.9px);
-}
-
-.command-button.map-button:active {
-  transform: translateY(1px);
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.2),
-    0 0 8px rgba(32, 178, 170, 0.6) inset,
-    0 0 16px rgba(0, 139, 139, 0.4) inset;
-}
-
-
-/* Portrait Section styling */
-.portrait-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 0.1rem ;
-  margin-top: 0.7rem;
-}
-
-.npc-portrait-container,
-.pc-portrait-container {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin: 0 8px;
-}
-
-.npc-portrait-container {
-  justify-content: flex-start;
-}
-
-.pc-portrait-container {
-  justify-content: flex-end;
-}
-
-.npc-portrait-image,
-.pc-portrait-image {
-  width: 280px; /* Increase width to make the image wider */
-  height: 165px; /* Keep the height the same or adjust as needed */
-  border-radius: 10%; /* Adjust border-radius if needed for the desired look */
-  object-fit: cover;
-  margin: 0 10px; /* Space between image and container edges */
-  transition: transform 0.6s ease, box-shadow 0.3s ease;
-}
-
-.npc-portrait-image:hover,
-.pc-portrait-image:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-}
-
-.portrait-caption {
-  font-size: 0.8rem;
-  color: #718096; /* Gray-600 */
-  font-style: italic;
-  font-weight: normal;
-  text-align: center;
-  margin-top: 6px;
-}
-
 /* Popup Box Styling */
-.journal-entry-box,
+
 .portrait-popup {
   position: fixed;
   top: 50%;
@@ -310,6 +314,15 @@ margin-left: 0px;
 
 .journal-entry-box {
   width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
 }
 
 
@@ -358,21 +371,21 @@ margin-left: 0px;
 
 /* General Button Styling */
 button {
-  padding: 6px 20px;
+  padding: 5px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  font-family: 'Quicksand', sans-serif; /* New button font */
+   font-family: 'Quicksand', sans-serif;
   color: white;
-  background-color: #2d3748; /* Default dark gray background */
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #4a5568;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: rgba(26, 32, 44, 0.85); /* Darker gray with slight transparency on hover */
-  transform: scale(1.01); /* Slight scale-up on hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+  background-color: #2d3748;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* End Game Button Styling */
@@ -453,30 +466,6 @@ button:hover {
   }
 }
 
-/* Fallback for NPC Image */
-.emoji-image {
-  font-size: 15vw;  /* Make the emoji larger to overflow the box */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 280px; /* Width of the container */
-  height: 165px; /* Height of the container */
-  background-color: #f0f0f0; /* Light background for contrast */
-  border-radius: 10%; /* Adjust if needed */
-  margin: 0 10px; /* Space between image and container edges */
-  overflow: hidden; /* Hide the parts of the emoji that overflow the box */
-  position: relative; /* Allow positioning within the container */
-  transition: transform 0.6s ease, box-shadow 0.3s ease;
-  transform: scaleX(1.13);
-   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7); /* White glow effect */
-
-}
-
-.npc-portrait-image:hover,
-.pc-portrait-image:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-}
 
 
 input[type="text"]:focus {
@@ -484,16 +473,7 @@ input[type="text"]:focus {
   animation: greenGlow 2.5s infinite; /* Apply green glow animation */
 }
 
-/* Add Journal Entry Button Styling */
-.add-entry-button {
-  background-color: #2d3748; /* Dark gray */
-}
 
-.add-entry-button:hover {
-  background-color: rgba(26, 32, 44, 0.85); /* Darker gray with transparency on hover */
-  transform: scale(1.02); /* Slight scale-up on hover */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
-}
 
 /* CritiqueAgent container styling */
 .critique-agent-container {
@@ -521,34 +501,28 @@ input[type="text"]:focus {
   overflow-y: auto;
 }
 
-/* Journal and Inventory Pane Styling */
-.journal-pane,
-.inventory-pane,
-.simulation-history-pane {
+/* Journal Pane Styling */
+
+
+
+.journal-pane {
   position: fixed;
-  right: -300px;
+  right: -300px; /* Start hidden off-screen */
   top: 0;
   width: 300px;
   height: 100%;
   background-color: #FAF9F6; /* Light gray background */
   border-left: 1px solid #e2e8f0; /* Gray-200 */
-  transition: right 0.4s ease-in-out;
-  z-index: 100;
+  transition: all 0.8s ease-in-out;
+  z-index: 1000;
   padding: 20px;
-  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0px 7px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
 }
 
-.journal-pane.open,
-.inventory-pane.open,
-.simulation-history-pane.open {
-  right: 0;
-  transition: right 0.4s ease-in-out;
-}
 
-.inventory-pane {
-  /* ... existing styles ... */
-  z-index: 1001; /* Ensure it's above the prescribe popup */
+.container .journal-pane.open {
+  right: 0 !important; /* Ensures that this rule is applied */
 }
 
 .journal-entry,
@@ -601,30 +575,79 @@ input[type="text"]:focus {
 /* Date/Time/Location and Map Counter information */
 .counter-and-map {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: -2px;
+  justify-content: space-between; /* Spread out the content across the line */
+  align-items: center; /* Vertically center the content */
+ 
 }
 
 .counter {
-    margin-top: 2px;
-    font-size: 11px;
-    color: #4A5568; /* Tailwind gray */
-    font-weight: 600; /* Bold the text to make it stand out */
-    letter-spacing: 0.02rem; /* Add some letter spacing for a cleaner look */
-    text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
-    border-bottom: 0px solid #e2e8f0; /* Add a subtle bottom border (Gray-200) */
-    padding-left: 6px;
-    padding-bottom: 0px; /* Add some space between the text and the border */
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: #4A5568; /* Tailwind gray */
+  font-weight: 600; /* Bold the text to make it stand out */
+  letter-spacing: 0.06rem; /* Add some letter spacing for a cleaner look */
+  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
+  padding-left: 4px;
 }
 
-.counter-and-map .map-button {
-  margin-left: 10px;
-  padding: 2px 10px;
-  font-size: 1rem;
-  margin-top: 1px;
-    margin-bottom: 8px;
 
+
+/* Map Button */
+.command-button.map-button {
+  background: linear-gradient(145deg, #20b2aa, #0066cc); /* Turquoise to dark cyan gradient */
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(32, 178, 170, 0.5) inset,
+    0 0 20px rgba(0, 139, 139, 0.3) inset;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  margin-left: 5px;
+  padding: 2px 10px;
+  font-size: .9rem;
+  margin-top: 0px;
+    margin-bottom: 12px;
+}
+
+.command-button.map-button:hover {
+  background: linear-gradient(145deg, #5f9ea0, #20b2aa); /* Slightly lighter gradient on hover */
+  box-shadow: 
+    0 6px 8px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(32, 178, 170, 0.7) inset,
+    0 0 30px rgba(0, 139, 139, 0.5) inset;
+  transform: translateY(1.1px);
+}
+
+
+.simulation-history-button {
+  background: linear-gradient(145deg, #4a90e2, #b0bec5); /* Soft blue to muted gray gradient */
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.4),
+    0 0 10px rgba(74, 144, 226, 0.9) inset, /* Soft blue shadow */
+    0 0 20px rgba(176, 190, 197, 0.4) inset; /* Muted gray shadow */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  font-size: .9rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight:bold;
+    margin-left: 10px;
+  padding: 2px 10px;
+  margin-top: 0px;
+    margin-bottom: 12px;
+     margin-right: 6px;
+     
+}
+
+.simulation-history-button:hover {
+  background: linear-gradient(145deg, #6fa3ef, #cfd8dc); /* Slightly lighter on hover */
+  box-shadow: 
+    0 6px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(111, 163, 239, 0.5) inset,
+    0 0 25px rgba(207, 216, 220, 0.3) inset;
+     transform: translateY(1.1px);
 }
 
 
@@ -927,7 +950,7 @@ body.dark-mode .simulation-history.open {
   }
 
   
-  input, textarea, select {
+ .input, textarea, select {
     font-size: 16px; /* Ensure minimum font size of 16px to prevent zoom */
   }
 
@@ -991,17 +1014,24 @@ body.dark-mode .simulation-history.open {
 
 }
 
-
-
   .counter-and-map {
     display:flex;
     justify-content: space-between;
     align-items: center;
-
     align-items: flex-start;
       font-size: 7px;
-
   }
+
+
+.counter {
+  font-size: 9px;
+  color: #4A5568; /* Tailwind gray */
+  font-weight: 600; /* Bold the text to make it stand out */
+  letter-spacing: 0.03rem; /* Add some letter spacing for a cleaner look */
+  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
+  padding-left: 4px;
+}
+
 
    .container {
     padding: 1px;
@@ -1010,23 +1040,10 @@ body.dark-mode .simulation-history.open {
     box-sizing: border-box;
   }
 
-  .counter {
-  flex-grow: 1;
-  margin-bottom: -9px;
 
-
-}
-
-  .counter-and-map .map-button {
-
-    margin-top: 0px;
-    margin-right: 5px;
-        padding: 5px 10px;
-        font-size: 0.7rem;
-  }
 
   .portrait-section {
-    flex-direction: column; /* Stack portraits vertically */
+    flex-direction: row; /* Stack portraits vertically */
     align-items: center; /* Center-align on mobile */
     text-align: center; /* Center-align text on mobile */
     margin-bottom: -14px;
@@ -1111,14 +1128,7 @@ body.dark-mode .simulation-history.open {
     margin: 5px;
   }
 
-   .emoji-image {
-    width: 170px;  /* Reduce width */
-    height: 80px; /* Reduce height */
-    font-size: 20vw;  /* Increase emoji size relative to smaller viewport */
-      margin: 5px;
-       box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7); /* White glow effect */
-
-  }
+   
 
   .title {
     font-size: .9rem; /* Make the title and subtitle smaller */
@@ -1132,7 +1142,7 @@ body.dark-mode .simulation-history.open {
   .subtitle {
     font-size: .9rem; /* Make the title and subtitle smaller */
   justify-content: center;
-    letter-spacing: -.02rem;
+    letter-spacing: -.03rem;
   padding-bottom: 3px;
   }
 

@@ -14,7 +14,7 @@ export const generateJournalEntry = async (narrativeText, apiKey) => {
 content: `
 You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary in Mexico City which begins on August 22, 1680 and can extend for up to a month beyond that.
 Given the following text, provide:
-1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, an estimate of much time passed during the turn, and primary location. Format: "Summary: <summary>"
+1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time. Format: "Summary: <summary>" For example: Summary: <August 23, 10:15 AM: Maria assessed a patient named Fray Esteban, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.>
 2. A JSON object tracking the current location, date, and time of day formatted like:
 \`\`\`json
 {
@@ -24,10 +24,13 @@ Given the following text, provide:
 }
 \`\`\`
 
-NOTE: When updating the time and date, please follow these rules:
-- If the previous entry was in the evening and the current entry is in the morning, increment the date by one day.
-- If the time passes midnight, increment the date.
-- if a turn involves significant time passing, estimate it and increment the date. In general a turn takes around 15 to 30 minutes but some may take days. 
+When updating the time and date, please follow these specific rules:
+- A turn typically lasts between 15-30 minutes. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within this range.
+- If the action described spans multiple events (e.g., traveling to another town, treating multiple patients), increase the time accordingly—use hours, and if necessary, increment the date by a day or more.
+- Always provide an exact time in the format "8:35 AM" or "11:45 PM". Never return vague times like "morning" or "evening".
+- If the current time passes midnight (12:00 AM), increment the date by one day. If the date changes due to significant time passage, clearly reflect this in the JSON output.
+- For example: If Maria treats a patient at 9:15 PM and then travels for 4 hours, set the new time as 1:15 AM the next day.
+
 
 3. Select the most appropriate image name based on the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
 
@@ -37,6 +40,12 @@ NOTE: When updating the time and date, please follow these rules:
 - Generic people: genericfemalecommoner, genericmalecommoner, genericfemaleupper, genericmaleupper
 
 - Locations and scenes (with expanded uses):
+  - plazamayor: the Plaza Mayor in Mexico City, center of governance and urban life, near the markets
+  - lamerced: La Merced Market, the central market area of Mexico City, near a monastery 
+  - tenochititlan: the ruins of the ancient Aztec ceremonial area, still visible in the city 
+  - alamedacentral: the major public park of the city (use for other parks as needed)
+  - metropolitancathedral: the primary cathedral of the city (can use this for other cathedrals as needed)
+
   - countryside: rural areas, wilderness, mountains, forests, open fields
   - generichome: any indoor residential scene, private meetings, domestic activities
   - market: bustling public spaces, trade activities, social gatherings
@@ -86,10 +95,10 @@ NOTE: When updating the time and date, please follow these rules:
 
 
 - Generic people:
-  - genericfemalecommoner: any non-specific female character of lower social status, e.g. weaver, wife, peasant woman, farmer, tradeswoman
-  - genericmalecommoner: any non-specific male character of lower social status, e.g. sailor, farmer, peasant, tradesman of all sorts
-  - genericfemaleupper: any non-specific female character of higher social status, e.g. countess, aristocratic woman, wife of magnate, professional, or lord
-  - genericmaleupper: any non-specific male character of higher social status, e.g. any Don, lord, inquisitor, political figure, or senior religious figure
+  - tejedora: any non-specific female character of lower social status, e.g. weaver, wife, peasant woman, farmer, tradeswoman
+  - paisano: any non-specific male character of lower social status, e.g. tradesman or farmers of all sorts
+  - dona: any non-specific female character of higher social status, e.g. countess, aristocratic woman, wife of magnate, professional, or lord
+  - caballero: any non-specific male character of higher social status, e.g. any Don, lord, inquisitor, political figure, or senior religious figure
   - spanishnoble: well-dressed, upper-class Spaniard, ruling class, colonial officials
   - mestizo: a mixed-race person, often involved in both labor and trade, caught between Spanish and Indigenous worlds
   - friar: religious figures, often walking through towns or monasteries, offering religious services
@@ -110,7 +119,7 @@ NOTE: When updating the time and date, please follow these rules:
   - laborer: any unnamed workers
   - shopkeeper: any shopkeeper
 
-Prioritize NPC images and then locations first, before using emojis as a last resort, i.e. it's always better to show "countryside" image than an emoji representing it. Prioritize using image names with broad latitude, being creative about potential uses to fit a scene. As a last resort, if no specific image name matches the scene, select an emoji that best represents the mood or context of the scene. For example:
+Prioritize NPC images and then locations first, but use emojis if nothing else matches, i.e. it's better to show "countryside" image than an emoji representing it, but if the player says "look at the rainbow," you show 🌈, or if they say "stare at teacup," you show ☕️. Prioritize using image names with broad latitude, being creative about potential uses to fit a scene. As a last resort, if no specific image name matches the scene, select an emoji that best represents the mood or context of the scene. For example:
 - 🏜️ for deserts, dry landscapes, or hardship
 - 🕯️ for mysterious, secretive, or intimate scenes
 - 📜 for scenes involving documents, study, or knowledge
@@ -124,6 +133,9 @@ Prioritize NPC images and then locations first, before using emojis as a last re
 - 🌋 for volatile situations or sudden changes
 - 🏕️ for encampments, tents or small settlements
 - 🌅 for the riverside, lakeside, or bodies of water
+- 🌈 for a rainbow
+- 🐌 for a snail 
+and so on for other animals and specific objects
 
 Always return the selected image name or emoji as a separate string labeled "NPC image". For instance:
 "NPC image: anamariadesoto" or "NPC image: 🌙"

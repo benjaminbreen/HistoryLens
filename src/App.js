@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
+import { debounce } from 'lodash'; 
 import Header from './Header';
 import Colophon from './Colophon'; // Import the new Colophon component
 import InputBox from './InputBox';
@@ -31,13 +32,15 @@ import Diagnose from './Diagnose';
 import Map from './Map';
 import Quest, { quests } from './Quest';
 import { initialInventoryData, potentialInventoryItems } from './initialInventory';
+import HistoryOutput from './HistoryOutput';
 import './App.css';
 import './Inventory.css';
 import './Popup.css';
+const PDFPopup = lazy(() => import('./PDFPopup'));
 
 
 function App() {
-  const { gameState, updateInventory, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest } = useGameState();
+  const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime } = useGameState();
 
   const [isPrescribeOpen, setIsPrescribeOpen] = useState(false);
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
@@ -55,8 +58,6 @@ function App() {
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [turnNumber, setTurnNumber] = useState(1);
   const [location, setLocation] = useState('Mexico City');
-  const [date, setDate] = useState('August 22, 1680');
-  const [time, setTime] = useState('Morning');
   const [isLoading, setIsLoading] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [showJournalEntryBox, setShowJournalEntryBox] = useState(false);
@@ -87,7 +88,11 @@ function App() {
   const [userActions, setUserActions] = useState([]);
   const [activeQuest, setActiveQuest] = useState(null);
   const [isEmoji, setIsEmoji] = useState(false);
-
+  
+  const [selectedPDF, setSelectedPDF] = useState(null);
+  const [selectedCitation, setSelectedCitation] = useState(null);
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
+  const [showPdfButtons, setShowPdfButtons] = useState(false);
 
 
 // Toggle functions
@@ -99,6 +104,21 @@ const handleIncorporate = (content) => {
     setTimeout(() => setShowIncorporatePopup(false), 2000); // Hide after 2 seconds
 };
 
+const togglePdfButtons = () => {
+    setShowPdfButtons(prev => !prev);
+  };
+
+ const handlePDFClick = (pdfPath, citation) => {
+    console.log("PDF Clicked:", pdfPath);
+    setSelectedPDF(pdfPath); 
+    setSelectedCitation(citation); 
+    setIsPdfOpen(true);       
+  };
+
+  const closePdfPopup = () => {
+    setIsPdfOpen(false);
+    setSelectedPDF(null);
+  };
 
   const handleClosePrescribePopup = () => {
   setIsPrescribing(false);
@@ -171,7 +191,6 @@ const toggleMap = useCallback(() => {
 }, []);
 
 
-
   // End game handling
 
   const handleEndGame = useCallback(async () => {
@@ -191,22 +210,26 @@ const toggleMap = useCallback(() => {
 }, [turnNumber, gameState.inventory, journal]);
 
 
+
+
 // Initial description of Maria and NPC image
 useEffect(() => {
   const initialDescription = `
-    You are Maria de Lima, apothecary. You awaken to the first rays of dawn filtering through the window of your quarters above your shop on Calle de la Amargura in Mexico City.  
-    &nbsp;   
+    You are Maria de Lima, apothecary. You awaken to the first rays of dawn filtering through the window of your quarters above your shop on Calle de la Amargura in Mexico City.    
+    &nbsp;  
     Descending a rough-hewn ladder, you light a tallow candle. Shelves line the walls of your shop, laden with jars of dried herbs and vials of tinctures. As always, you begin your day by grinding cacao, cornmeal, and cinnamon in a *molcajete*, making a drink to prepare you for the day ahead. Your mind wanders to your mounting debts, which now top 120 *reales*, and your urgent need for new business.    
     &nbsp;  
     Next, you feed some scraps of fish to a friendly street cat—an orange fluff ball, little more than a kitten, who you've named João.  
     &nbsp;  
     Meanwhile, the street outside comes to life. Servants hurry past with baskets of fresh produce, while a group of Dominican friars makes their way towards the nearby church. A water-carrier with his earthen jug trudges by, followed by a group of boisterous students. A patrol of soldiers carrying pikes is a reminder of troubling rumors – whispers of unrest in the northern provinces.  
     &nbsp;  
-    **Just as you begin to sort through your supply of aloe leaves, a sharp *knock* at the door announces the day's first visitor. Will you see who is there, or ignore them?**
+    __Just as you begin to sort through your supply of aloe leaves, a sharp *knock* at the door announces the day's first visitor. Will you see who is there, or ignore them?__
   `;
   setHistoryOutput(initialDescription.trim());
   setConversationHistory([{ role: 'system', content: initialDescription.trim() }]);
 }, []);
+
+
 
 // effects
 
@@ -239,6 +262,8 @@ const handleCommandClick = (command) => {
         setHistoryOutput('No NPC is currently selected.');
       }
       break;
+
+
 
 // prescribe command
   case '#prescribe':
@@ -303,8 +328,8 @@ useEffect(() => {
       }
     };
 
-    checkForQuestStart(time);
-  }, [turnNumber, userActions, location, startQuest, time]);
+    checkForQuestStart(gameState.time);
+  }, [turnNumber, userActions, location, startQuest, gameState.time]);
 
 
 
@@ -333,63 +358,101 @@ const selectEntity = useCallback(() => {
 
 const handleTurnEnd = useCallback(async (narrativeText) => {
   const { summary, summaryData, npcImageName, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
+  
+  advanceTime(summaryData);  
+
   console.log('Journal Agent Output:', summary);
   console.log('NPC Image Name from Journal Agent:', npcImageName);
-  
+
   const isEmoji = /^\p{Emoji}$/u.test(npcImageName);
   const lowerCaseImageName = npcImageName.toLowerCase();
-  
+
   console.log('ImageMap keys:', Object.keys(imageMap));
   console.log('NPC Image Name (lowercase):', lowerCaseImageName);
 
   let selectedEntity = EntityList.find(entity => 
-  (entity.image && entity.image.toLowerCase() === lowerCaseImageName) ||
-  (entity.name && entity.name.toLowerCase().includes(lowerCaseImageName))
-);
-console.log('Selected entity:', selectedEntity);
-
-if (isEmoji) {
-  setIsEmoji(true);
-  setNpcImage(null);
-  setNpcCaption(`Scene in ${summaryData.location || location}`);
-  setNpcInfo(`<span class="emoji-image">${npcImageName}</span>`);
-} else if (selectedEntity) {
-  setIsEmoji(false);
-  setNpcImage(imageMap[selectedEntity.image]);
-  setNpcCaption(selectedEntity.caption);
-  setNpcInfo(selectedEntity.description);
-  console.log('Image set from EntityList:', selectedEntity.image);
-} else if (imageMap[lowerCaseImageName]) {
-  setIsEmoji(false);
-  setNpcImage(imageMap[lowerCaseImageName]);
-  const timeOfDay = summaryData.time.toLowerCase().includes('night') ? 'night' : 'day';
-  setNpcCaption(`A scene in ${summaryData.location || location}`);
-  setNpcInfo(`A typical ${timeOfDay} scene in ${summaryData.location || location}.`);
-  console.log('Image set from imageMap:', lowerCaseImageName);
-} else {
-  // Fuzzy matching for locations and generic scenes
-  const possibleMatches = Object.keys(imageMap).filter(key => 
-    lowerCaseImageName.includes(key) || key.includes(lowerCaseImageName)
+    (entity.image && entity.image.toLowerCase() === lowerCaseImageName) ||
+    (entity.name && entity.name.toLowerCase().includes(lowerCaseImageName))
   );
-  
-  if (possibleMatches.length > 0) {
-    const bestMatch = possibleMatches[0]; // Use the first match
-    setIsEmoji(false);
-    setNpcImage(imageMap[bestMatch]);
-    setNpcCaption(`A scene in ${summaryData.location || location}`);
-    setNpcInfo(`A scene related to ${bestMatch} in ${summaryData.location || location}.`);
-    console.log('Image set from fuzzy match:', bestMatch);
-  } else {
-    console.warn(`No matching image found for: ${npcImageName}. ImageMap keys: ${Object.keys(imageMap).join(', ')}. Using emoji as fallback.`);
+  console.log('Selected entity:', selectedEntity);
+
+  if (isEmoji) {
     setIsEmoji(true);
     setNpcImage(null);
     setNpcCaption(`Scene in ${summaryData.location || location}`);
-    setNpcInfo(`<span class="emoji-image">${npcImageName || '🏞️'}</span>`);
+    setNpcInfo(`<span class="emoji-image">${npcImageName}</span>`);
+  } else if (selectedEntity) {
+    setIsEmoji(false);
+    setNpcImage(imageMap[selectedEntity.image]);
+    setNpcCaption(selectedEntity.caption);
+    setNpcInfo(selectedEntity.description);
+    console.log('Image set from EntityList:', selectedEntity.image);
+  } else if (imageMap[lowerCaseImageName]) {
+    setIsEmoji(false);
+    setNpcImage(imageMap[lowerCaseImageName]);
+    const timeOfDay = summaryData.time.toLowerCase().includes('night') ? 'night' : 'day';
+    setNpcCaption(`A scene in ${summaryData.location || location}`);
+    setNpcInfo(`A typical ${timeOfDay} scene in ${summaryData.location || location}.`);
+    console.log('Image set from imageMap:', lowerCaseImageName);
+  } else {
+    // Fuzzy matching for locations and generic scenes
+    const possibleMatches = Object.keys(imageMap).filter(key => 
+      lowerCaseImageName.includes(key) || key.includes(lowerCaseImageName)
+    );
+
+    if (possibleMatches.length > 0) {
+      const bestMatch = possibleMatches[0]; // Use the first match
+      setIsEmoji(false);
+      setNpcImage(imageMap[bestMatch]);
+      setNpcCaption(`A scene in ${summaryData.location || location}`);
+      setNpcInfo(`A scene related to ${bestMatch} in ${summaryData.location || location}.`);
+      console.log('Image set from fuzzy match:', bestMatch);
+    } else {
+      console.warn(`No matching image found for: ${npcImageName}. ImageMap keys: ${Object.keys(imageMap).join(', ')}. Using emoji as fallback.`);
+      setIsEmoji(true);
+      setNpcImage(null);
+      setNpcCaption(`Scene in ${summaryData.location || location}`);
+      setNpcInfo(`<span class="emoji-image">${npcImageName || '🏞️'}</span>`);
+    }
   }
+
+  // Add journal entry
+setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
+
+// Update gameState with the new date, time and location from summaryData
+if (summaryData.time && summaryData.date) {
+  advanceTime(); // Call advanceTime to update time and date
+}
+if (summaryData && summaryData.location) {
+  updateLocation(summaryData.location); // Use updateLocation to update the location
 }
 
-setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
-}, [location, setIsEmoji, setNpcImage, setNpcCaption, setNpcInfo, setJournal, imageMap, EntityList]);
+
+// Handle any inventory changes (assuming you already handle this elsewhere)
+if (inventoryChanges && inventoryChanges.length > 0) {
+  inventoryChanges.forEach(change => {
+    updateInventory(change.name, change.quantity);
+  });
+}
+
+}, [
+  setIsEmoji, 
+  setNpcImage, 
+  setNpcCaption, 
+  setNpcInfo, 
+  setJournal, 
+  imageMap, 
+  EntityList, 
+  updateInventory,
+  advanceTime,
+  updateLocation, 
+  advanceTime 
+]);
+
+
+
+
+
 
 
 
@@ -408,7 +471,7 @@ const handleSubmit = useCallback(async (e) => {
   // Helper function to determine if a quest should advance
 const shouldAdvanceQuest = (quest, actions) => {
   // This is a placeholder implementation
-  // You should replace this with your own logic based on your game's requirements
+  // tk come back to this to finalize quest functionality
   return actions.some(action => action.includes(`advanceQuest${quest.id}`));
 };
   // Check for quest start commands
@@ -489,9 +552,9 @@ const shouldAdvanceQuest = (quest, actions) => {
 
 
 const contextSummary = `
-    Current Location: ${location}
-    Current Date: ${date}
-    Current Time: ${time}
+    Current Location: ${gameState.location}
+    Current Date: ${gameState.date}
+    Current Time: ${gameState.time}
     Turn Number: ${turnNumber}
     ${incorporatedContent ? `\nIncorporated Critique:\n${incorporatedContent}` : ''}
     Inventory:
@@ -527,7 +590,7 @@ const contextSummary = `
     ${selectedEntity.symptoms ? `Symptoms: ${selectedEntity.symptoms.join(', ')}` : ''}
     ${selectedEntity.diagnosis ? `Diagnosis: ${selectedEntity.diagnosis}` : ''}` : ''}
 
-    Please consider the previous context, conversation history, user actions, and entity information (if provided) when responding. The current turn number is ${turnNumber + 1}.
+    Please consider the previous context, conversation history, user actions, and entity information (if provided) when responding, although you should always remain narratively flexible and allow for dynamic player decision making. The current turn number is ${turnNumber + 1}.
   `;
 
   try {
@@ -544,42 +607,47 @@ const contextSummary = `
           messages: [
             {
               role: 'system',
-              content: `You are HistoryLens, a historical simulation engine. Your goal is to maintain an immersive simulation set in Mexico City and environs on August 22, 1680, with brief MUD-like descriptions and commands but strict historical accuracy. 
-              The user's playable character (PC) is Maria de Lima, a 45-year-old Lisbon-born apothecary who, ten years earlier, fled to Mexico City following her arrest by the Portuguese Inquisition. 
+              content: `You are HistoryLens, an advanced historical simulation engine. You maintain an immersive simulation which begins in Mexico City and environs on August 22, 1680. The simulation is based on brief MUD-like descriptions and commands and maintains vividly realistic historical versimilitude. 
+              The user's playable character (PC) is Maria de Lima, a 45-year-old Coimbra-born converso apothecary who, ten years earlier, fled to Mexico City following her arrest by the Portuguese Inquisition. 
               Remember, the simulation must remain true to the context of the 17th century: avoid anachronistic language and concepts, and ensure that all actions, objects, and references are historically plausible.
 
               **Gameplay Guidelines:**
               - The human user's inputs should never lead you to move outside the historical frame of Mexico in 1680. For instance, if they input "give the patient a vaccine," you would respond by saying "That is historically inaccurate. Please enter a new command that reflects the setting." Otherwise, player inputs have a wide latitude and should be accepted.
-              - Your responses should be concise, rarely exceeding three paragraphs, and always grounded in the vivid, sensory historical realities of 1680s life. Use appropriate period-specific language and avoid modern concepts.
+              - Your responses should be concise, rarely exceeding three paragraphs and sometimes as few as one, and always grounded in the vivid, sensory historical realities of 1680s life. Use appropriate period-specific language and avoid modern concepts (for instance, Maria would never prescribe a medicine because of its vitamin content - vitamins are unknown. Instead she might mention humoral characteristics or Keith Thomas-style magical-medical beliefs prevalent in 17th century alchemical medicine.)
               - Patients sometimes complain about the foreignness or noxiousness of a medicine Maria prescribes. They are often in a bad mood. Maria/the player needs to converse with them to draw out relevent details. 
+              - If a entity (a patient or other NPC) appears in a turn, they become the main subject of the turn, but they must always be interwoven with the context of time and place. For instance, if it is the middle of the night, a patient might be desperately knocking on Maria's door with an urgent malady, whereas at noon they might be less desperate. Maria (the player) is allowed to tell patients to go away and do something else, but other NPCs like inquisitors may be more insistent. 
 
               **Commands:**
-              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the market" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest #symptoms,  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
+              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest #symptoms,  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
               - if a player asks a patient about their #symptoms in their input, the player will see a popup displaying them. You can go into more detail if prompted but need not. 
-              - #buy: herbs are available at the market. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Approved items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
+              - #buy: herbs and other materia medica are available at the herb stalls of the Portal de Mercaderes and other local markets. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Some of the items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
     "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
-    "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", 
-    "Yarrow", "Valerian", "Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", 
+    "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", "Tobacco,"
+    "Yarrow", "Valerian", "Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", "a Small Cat," "Skull of a Man," "Bird Feathers," 
     "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
-    "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade"
+    "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade," "Deer Antlers"
 
               **Contextual Awareness:**
-              - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in a desperate personal and financial state.
-              - Reference real places and events of 1680 Mexico City.
+              - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in an increasingly desperate personal and financial state, owing 100 reales to Don Luis and 20 reales to Marta the herb woman. 
+              - Reference real places and events of 1680 Mexico City and beyond (it is theoretically possible for Maria to travel long distances, although passage across the Atlantic or land travel to colonial North America is far more likely than say, travel to China)
               - Keep in mind that Maria is practicing outside the realm of the legality by prescribing medicines without a physician's prescription - so her patients are often seeking her out because they have a secret or are in particular need. The patient may also explain that a doctor's orders have failed, for instance that bleeding did not work.
-              - Allow FULL latitude for player choice. If Maria wants to ignore her patients to go on an adventure, let her! Encourage experimentation. 
+              - Allow FULL latitude for player choice. If Maria wants to ignore her patients to go on an adventure, let her! Encourage experimentation. Some places Maria might visit include: 
+
 
               **Character and Narrative Control:**
-              - The simulation should reflect Maria's struggles with limited resources, societal pressures, and the challenges of maintaining her business.
+              - The simulation should reflect Maria's struggles with societal pressures, her past, and the challenges of maintaining her business. In particular, it begins with Don Luis, the moneylender, demanding payment of 100 reales (silver coins) by sunset of August 23. Make sure that Don Luis or his representatives (armed thugs) periodically reppear aggressively in the story as long as Maria is in Mexico City - give her the option to flee if threatened. 
               - The user has the option to click an "Incorporate counter-narrative" button which adds a critique of the previous turn output by an expert historian to your context for preparing the next turn. Integrate this knowledge subtly but actively to enhance realism.
-              - Occasionally reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature.
-              - At the market, there is a quest available if you visit the corner of the market ("market corner") where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name.
-              - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. 
+              - When contextually appropriate, reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature, for instance rumors of the Pueblo Revolt on the northern border, or Catholic-Protestant tensions (its the era of the Popish Plot in England), or rivalries between Cartesians and Aristotelians (ancients vs moderns) or the growing importance of "drogas da India" -- exotic materia medica from China, India, and the tropics in general.
+              - At the Portal de Mercaderes, there is a quest available if you visit spend more than one turn at the marketplace stalls where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name and you should ask if the user wnats to speak to him.
+              - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. After Maria prescribes medicine of any kind, the NPC departs the scene and does not linger, though they may reappear in later turns (and, at times, NPCs may even be killed by a toxic prescription).
               - Maria starts with 11 silver coins. If there are any changes to Maria's wealth OR her status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious) then note it at the END of your response. Update status every turn or two. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
-               Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. Your final line should always be in this exact format:
+               Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. 
+               - certain NPCs have no names. For instance, an NPC like "soldado" or "Doña" or "Caballero" represents a whole class of people. When you introduce them, give them names to individualize them, like "Doña Maria de Gallego" or "Eduardo, a sailor."
 
-              **Maria has [integer] silver coins. She is feeling [status].**
+               - Track Maria's wealth, status, and the date and time in each ersponse. Your final line should always be in this exact format:
+
+              **Maria has [integer] silver coins. She is feeling [status]. The time is # AM (or PM), xx [month] [year].**
 
               On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased, preceded with a hashtag#:  **Maria has [integer] silver coins. She is feeling [status]. She bought #[itemname].** The item purchased must ALWAYS come at the end of your response and ALWAYS be preceded by a hashtag symbol: #.
 
@@ -624,9 +692,9 @@ setUserInput('');
 
 }, [
   conversationHistory, 
-  date, 
-  location, 
-  time, 
+  gameState.date, 
+  gameState.location, 
+  gameState.time, 
   turnNumber, 
   userInput,
   handleTurnEnd,
@@ -661,7 +729,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
     Using your extensive knowledge of early modern medicine and human biology, consider the dosage, toxicity, the health of the NPC, and potential effects of the medicine prescribed. Is the dose safe or dangerous? 
     The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine.
     Summarize the sensory characteristics of the prescribed medicine, describe its effects (positive, neutral, toxic or deadly), and the NPC's reaction in 2-3 paragraphs. Typically, one drachms of most medicines is fine, but some may have adverse effects, and a few, like quicksilver, mercury or other chemicals, might kill at this dose. 
-    Remember that a very high dose of a toxic medicine, like 3 drachms of quicksilver or three drachms of laudanum, can actually kill an NPC. If you think the dose is fatal, show the NPC dying. 
+    Remember that a very high dose of a toxic medicine, like 3 drachms of quicksilver or three drachms of laudanum, can actually kill an NPC. If you think the dose is fatal, show the NPC dying. This usually does not happen, but adverse effects are common and provoke angry patient reactions.
     End by summarizing the transaction and adjusting Maria's wealth: "Maria has sold [drug name] for [price] silver coins. She now has [updated total] coins." 
   `;
 
@@ -687,6 +755,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 
     const data = await response.json();
     const simulatedOutput = data.choices[0].message.content;
+
 
     // Update history and conversation
     setHistoryOutput(simulatedOutput);
@@ -747,27 +816,44 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 
         <div className="main-content">
           <div className="history-agent">
+
            <div className="counter-and-map">
+
+           <button className="simulation-history-button" onClick={toggleHistory}>
+  LOG
+</button>
   <div className="counter">
-    <p>
-      {location.toUpperCase()} | {time.toUpperCase()}, {date.toUpperCase()} | TURN {turnNumber}
-    </p>
+     <p>
+    {gameState.location.toUpperCase()} | {gameState.time.toUpperCase()}, {gameState.date.toUpperCase()} | TURN {turnNumber}
+  </p>
   </div>
+
+ 
+
   <button
     className="command-button map-button"
     onClick={toggleMap}
   >
     MAP
   </button>
+
+
 </div>
 
-           <div className={`output-box ${isLoading ? 'loading' : ''}`}>
-               {isLoading ? (
-                   <LoadingIndicator />
-               ) : (
-                   <ReactMarkdown remarkPlugins={[remarkGfm]}>{historyOutput}</ReactMarkdown>
-               )}
-           </div>
+
+<div className={`output-box ${isLoading ? 'loading' : ''}`}>
+  {isLoading ? (
+    <LoadingIndicator />
+  ) : (
+    <HistoryOutput historyOutput={historyOutput} isLoading={isLoading} />
+  )}
+</div>
+
+
+
+
+
+
 
 
 
@@ -780,7 +866,13 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 
   {/* Command buttons*/}
   <div className="bottom-buttons">
-    <button onClick={toggleHistory}>Simulation History</button>
+
+  <button
+    className="command-button primary-sources-button"
+    onClick={togglePdfButtons}
+  >
+    {showPdfButtons ? '📄 Hide sources' : '📄 Show all sources'}
+  </button>
 
     {/* Command buttons - now placed here */}
     <div className="command-buttons">
@@ -828,6 +920,8 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
       )}
     </div>
 
+
+
     <button
       className="view-counter-button"
       onClick={toggleCounterNarrative}
@@ -835,6 +929,34 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
       {showCounterNarrative ? 'Hide' : 'View'} Counter-Narrative
     </button>
   </div>
+
+   <div className="pdf-section">
+  {/* Existing button to toggle PDF buttons */}
+
+
+  {/* PDF links with slide effect */}
+  <div className={`pdf-links ${showPdfButtons ? 'show' : ''}`}>
+    <h4>Available Documents:</h4>
+    {EntityList.filter(entity => entity.pdf).map(entity => (
+      <button
+        key={entity.name}
+        onClick={() => handlePDFClick(`/pdfs/${entity.pdf}`, entity.citation)}
+        className="pdf-link-button"
+      >
+        {entity.name} 📄
+      </button>
+    ))}
+    {initialInventoryData.filter(item => item.pdf).map(item => (
+      <button
+        key={item.name}
+        onClick={() => handlePDFClick(`/pdfs/${item.pdf}`, item.citation)}
+        className="pdf-link-button"
+      >
+        {item.name} 📄
+      </button>
+    ))}
+  </div>
+</div>
 
   {/* Diagnose Popup */}
 <Diagnose 
@@ -925,7 +1047,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
           location={location}
           activeQuest={activeQuest}
           setActiveQuest={setActiveQuest}
-          time={time} 
+          time={gameState.time} 
           startQuest={startQuest}
         />
         </div>
@@ -958,9 +1080,14 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 
 
 
-        {showSymptomsPopup && (
-          <Symptoms npcName={selectedNpcName} onClose={closeSymptomsPopup} />
-        )}
+       {showSymptomsPopup && (
+         <Symptoms 
+           npcName={selectedNpcName} 
+           onClose={closeSymptomsPopup} 
+           onPDFClick={handlePDFClick}  // Pass handlePDFClick as a prop
+         />
+       )}
+
 
         {showJournalEntryBox && (
           <div className="journal-entry-box">
@@ -989,11 +1116,12 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
           </div>
         )}
 
-        <InventoryPane 
-            inventory={gameState.inventory}
-            isOpen={isInventoryOpen}
-            toggleInventory={toggleInventory}
-            isPrescribing={isPrescribing}
+         <InventoryPane 
+          inventory={gameState.inventory}
+          isOpen={isInventoryOpen}
+          toggleInventory={toggleInventory}
+          isPrescribing={isPrescribing}
+          onPDFClick={handlePDFClick}  
         />
         
 <PrescribePopup 
@@ -1028,6 +1156,16 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
           <SimulationHistory history={conversationHistory} isOpen={isHistoryOpen} toggleHistory={toggleHistory} />
         )}
       </div>
+
+    {isPdfOpen && (
+         <PDFPopup
+           isOpen={isPdfOpen}
+           onClose={() => setIsPdfOpen(false)}
+           pdfPath={selectedPDF}
+           citation={selectedCitation} // Pass the selected citation here
+         />
+       )}
+ 
     </DndProvider>
   );
 }

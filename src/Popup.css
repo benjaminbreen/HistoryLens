@@ -1,8 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
 
-.output-box, .container, .main-content, .interaction-section {
-    user-select: text;
+.pdf-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
+
+.pdf-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+}
+
+.pdf-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.close-popup {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
 
 .popup-overlay {
     position: fixed;
@@ -35,7 +76,7 @@
     margin-top: 10px;
     font-size: 1.8em;
     font-weight: bold;
-    color: #ecf0f1;
+    color: black;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -217,7 +258,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Make sure it's below the prescribe-popup z-index */
+  z-index: 1001; /* Make sure it's below the prescribe-popup z-index */
 }
 
 .portrait-popup {
@@ -466,10 +507,6 @@
   }
 }
 
-h2 {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
-}
 
 
 .medieval-header {

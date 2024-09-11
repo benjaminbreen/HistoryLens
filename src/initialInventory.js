@@ -1,3 +1,6 @@
+
+
+
 const initialInventoryData = [
     {
         id: 1, 
@@ -10,6 +13,8 @@ const initialInventoryData = [
         medicinalEffects: 'Relieves pain, anti-inflammatory, calming.',
         description: 'A fragrant resin obtained from the wood of the aromatic camphor tree. Cooling and resolutive.',
         emoji: '🌿',
+        citation: 'Luís Gomes Ferreira, *Erário Mineral.Lisbon* Lisbon, 1735, pg 38.',
+        pdf: 'camphor.pdf'
     },
     {
         id: 2, 
@@ -22,6 +27,9 @@ const initialInventoryData = [
         medicinalEffects: 'Calming, anti-inflammatory, aids digestion.',
         description: 'Used to reduce inflammation, soothe digestive issues, and calm the nerves.',
         emoji: '🌼',
+         citation: 'Curvo Semmedo, João. *bservaçoens medicas doutrinaes de cem casos gravissimos.* Lisbon: 1707, pg 151, available at https://www.google.com/books/edition/Observa%C3%A7oens_medicas_doutrinaes_de_cem/QJ5dAAAAcAAJ?hl=en&gbpv=1&pg=PA151&printsec=frontcover',
+        pdf: 'chamomile.pdf'
+
     },
     {
         id: 3, 
@@ -34,6 +42,8 @@ const initialInventoryData = [
         medicinalEffects: 'Powerful pain relief, sedative, and treatment for cough and diarrhea.',
         description: 'Dried latex obtained from the opium poppy. Most potent reliever of pain known.',
         emoji: '⚫️',
+        citation: 'Benjamin Breen, *The Age of Intoxication* (Penn, 2019)',
+        pdf: 'opium.pdf'
     },
     {
         id: 4, 
@@ -46,6 +56,7 @@ const initialInventoryData = [
         medicinalEffects: 'For ear pain and inflammation.',
         description: 'Powdered millipedes:  well known as ready cures for many sorts of ear pain and inflammation.',
         emoji: '🐛',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 5, 
@@ -58,6 +69,7 @@ const initialInventoryData = [
         medicinalEffects: 'Used to alleviate melancholy, improve digestion, and treat coughs.',
         description: 'Extremely valuable for treating gripes of all sorts.',
         emoji: '🌸',
+        pdf: 'pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 6, 
@@ -70,6 +82,7 @@ const initialInventoryData = [
         medicinalEffects: 'Expectorant, bitter tonic, aids in respiratory issues.',
         description: 'Bitter... very bitter. Stimulates digestion and helps coughs.',
         emoji: '🍥',
+        pdf: 'pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 7, 
@@ -82,6 +95,7 @@ const initialInventoryData = [
         medicinalEffects: 'Anti-inflammatory, diuretic, treats allergies and arthritis.',
         description: 'It stings... but it also heals.',
         emoji: '🌾',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 8, 
@@ -94,6 +108,7 @@ const initialInventoryData = [
         medicinalEffects: 'Antacid and treatment for kidney stones.',
         description: 'Ground-up crab\'s eyes from the Indies. A singular remedy.',
         emoji: '🦀',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 9,
@@ -106,6 +121,7 @@ const initialInventoryData = [
         medicinalEffects: 'Treatment for syphilis and skin conditions.',
         description: 'Quicksilver, the metal most beloved of alchemists. Commonly used for treating the French Pox.',
         emoji: '⚗️',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 10, 
@@ -118,6 +134,7 @@ const initialInventoryData = [
         medicinalEffects: 'Soothes inflammation, cools the body, and calms the nerves.',
         description: 'Mixes well with almost anything. Useful in the treatment of melancholia.',
         emoji: '🌹',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 11, 
@@ -130,6 +147,7 @@ const initialInventoryData = [
         medicinalEffects: 'Laxative, cleanses the bowels, relieves constipation.',
         description: 'Most effective for purging of the bowels.',
         emoji: '🍂',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
     {
         id: 12, 
@@ -142,6 +160,7 @@ const initialInventoryData = [
         medicinalEffects: 'Used to soothe coughs, treat wounds, and improve digestion.',
         description: 'Sugar candies shipped from Seville. Extremely useful for compounding with noxious medicines.',
         emoji: '🍬',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     }
 ];
 
@@ -158,6 +177,7 @@ const potentialInventoryItems = {
         medicinalEffects: 'For bruises, internal bleeding, and general healing.',
         description: 'The remains of Egyptian mummies. Potent healing properties. But can it be trusted to be real?',
         emoji: '⚰️',
+        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
     },
 };
 

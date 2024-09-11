@@ -5,6 +5,21 @@ import './SimulationHistory.css'; // Make sure this is imported correctly
 function SimulationHistory({ history, isOpen, toggleHistory }) {
   const historyRef = useRef(null);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        toggleHistory(); // Close the pane when "Escape" is pressed
+      }
+    };
+
+    // Attach the event listener when the component mounts
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, toggleHistory]); // Re-run effect if `isOpen` changes
 
   return (
     <div ref={historyRef} className={`simulation-history ${isOpen ? 'open' : ''}`}>
@@ -15,7 +30,9 @@ function SimulationHistory({ history, isOpen, toggleHistory }) {
       {history.map((entry, index) => (
         <div key={index} className="history-entry">
           {entry.role === 'user' ? (
-            <p className="user-input"><strong>User Input:</strong> <ReactMarkdown>{entry.content}</ReactMarkdown></p>
+            <p className="user-input">
+              <strong>User Input:</strong> <ReactMarkdown>{entry.content}</ReactMarkdown>
+            </p>
           ) : (
             <p><ReactMarkdown>{entry.content}</ReactMarkdown></p>
           )}

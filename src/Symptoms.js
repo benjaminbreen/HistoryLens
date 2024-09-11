@@ -3,7 +3,7 @@ import EntityList from './EntityList';
 import SymptomLocator from './SymptomLocator';
 import './Symptoms.css';
 
-function Symptoms({ npcName, onClose }) {
+function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
   const [npc, setNpc] = useState(null);
   const [showAstrologyImage, setShowAstrologyImage] = useState(false);
   const [astrologyImage, setAstrologyImage] = useState('');
@@ -73,6 +73,13 @@ function Symptoms({ npcName, onClose }) {
     setAstrologyImage(astrologyImages[npc.astrologicalSign] || '');
   };
 
+  const handlePDFClick = (pdfPath) => {
+    if (onPDFClick) {
+      onPDFClick(`/pdfs/${pdfPath}`);
+    }
+  };
+
+
   return (
     <div className="symptoms-root">
       <div className="symptoms-popup">
@@ -106,6 +113,18 @@ function Symptoms({ npcName, onClose }) {
                   </div>
                 )}
               </li>
+            {npc.pdf && (
+          <li>
+            <strong>Patient PDF:</strong> 
+            <span 
+              className="pdf-name" 
+              onClick={() => handlePDFClick(npc.pdf)}
+              style={{ cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              View Document 📄
+            </span>
+          </li>
+        )}
             </ul>
           </div>
           <div className="symptoms-chart">

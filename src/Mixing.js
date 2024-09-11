@@ -22,6 +22,11 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
     const [error, setError] = useState(null);
     const [hoveredSimple, setHoveredSimple] = useState(null);
 
+     // Define the updateInventory function inside the component
+    const updateInventoryLocal = (itemName, quantityChange) => {
+        updateInventory(itemName, quantityChange); // Use the passed-in updateInventory prop
+    };
+
     // Initial methods available
     const methods = [
         { name: 'Distill', image: distillImage, activeImage: distillActiveImage, caption: "Distillation separates components by heating. It concentrates the active principles, often producing strong, warming compounds." },
@@ -48,24 +53,25 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
 
             const systemPrompt = `
                 You are a 1680s iatrochemist tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." Some potential compound drug names: Balsamum Lucatelli, Elixir Proprietatis, Theriac, Sal Volatile Oleosum, Aurum Potabile, Gascon's Powder, Tinctura Antimonii, Sydenham's Laudanum, Aqua Vitae, Tinctura Opii Crocata, Plague Water, Mercurius Dulcis, Balsam of Sulphur, Aqua Mercurialis, Camphorated Oil, Quicksilver Liniment, Mithridate.
-                When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug. Mention if it is toxic in the description. 
+                When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug. Mention if it is toxic in the description. Toxic drugs can either be unusuable sludge or can be "usable" items. 
                 Guide for mixing (other combos work too - this is just a guide to general logic):
-                Quicksilver: Calcination ALWAYS yields highly toxic but highly valuable red precipitate of mercury (used in ointments); distillation yields distilled quicksilver, other methods nothing, as quicksilver is volatile and not suited for these methods. Distillation yields Distilled Quicksilver which is toxic and usually produces toxic compounds (not unusuable sludge - actual named compounds with toxic properties) when mixed.
+                Quicksilver: Calcination ALWAYS yields toxic but highly valuable red precipitate of mercury (used in ointments); distillation yields distilled quicksilver, other methods nothing, as quicksilver is volatile and not suited for these methods. Distillation yields Distilled Quicksilver which is toxic and usually produces toxic compounds (not unusuable sludge - actual named compounds with toxic properties) when mixed.
 Camphor: Distillation yields camphor oil (medicinal), Confectioning produces Trochisci de Camphora (lozenges); Decoction destroys camphor’s volatile properties, creating ineffective residue.
 Rose Water: Distillation for Aqua Rosae (calming); Confectioning with improper ingredients can result in bitter, ineffective syrup. 
 Opium: Distillation produces Sydenham's Laudanum (pain relief); Decoction makes ineffective solution, as opium must be distilled for potency. Opiate compound drugs are highly potent and can be toxic. Mixing opium with any spirits or alcohol creates laudanum.
 Powdered Millipedes: Calcination for Pulvis Millepedum (skin treatment).
 Powdered Crab’s Eyes: Calcination creates Pulvis Oculorum Cancrorum, other methods produce unusable sludge.
-Sugar: Confectioning for Syrupus Simplex (carrier), Calcination makes burnt, unusable sludge. Distillation makes an alcoholic spirit which varies depending on other ingredients; sugar alone makes rum.
+Sugar: Confectioning for Syrupus Simplex (carrier), Calcination makes burnt, unusable sludge. Distillation makes an alcoholic spirit which varies depending on other ingredients; distilled sugar always makes rum.
 Laudanum mixed with other simples can be toxic, especially when mixed with alcoholic simples. 
 Senna: Decoction for Decoctum Sennae (laxative); Confectioning weakens potency, creating ineffective cheap compound.
 White Horehound: Makes tea when decocted alone, or horehound ale when decocted with sugar. Creates valuable Balsam Horehound when distilled with any other ingredient and mithridate when distilled with laudanum or opium.
 Decoction works with most every plant but not with alchemical substances. Nettle, Chamomile, sapphron, mint, pennyroyal and other herbs ALWAYS create usable medicine via Decoction method; a tea or infusion if used alone, a cordial if used with rosewater or sugar.
 Calcination usually leads to ashes of low value but still usable; for instance, calcination of Nettle might make simply "Nettle Ash" worth only 1 coin. 
 Confectioning almost always works with everything, as long as you use sugar.
-Compounds can usually be distilled with additional ingredients to create more valuable ones; two or more compounds distilled with make a form of mithridate.
+Compounds can be distilled with additional ingredients to create more valuable ones; two or more compounds distilled with make a form of mithridate. 
+Animals and animal products can ALWAYS be distilled and calcinated. For instance, if Maria buys an iguana, she can calcinate it to make "iguana ash" or distill it to make "spiritus iguanae" or "iguana licqueur".
                
-                Use reasoning to determine if the result is successful or becomes "Unusable Sludge," but also always observe rules above. Another option is for a drug to become somethign weaker, i.e. decoction of opium might create weaker, cheaper "poppy water." 
+                Always observe rules above. Another option is for a drug to become somethign weaker, i.e. decoction of opium might create weaker, cheaper "poppy water." 
 
                 When provided with ingredients and a compounding method, return a JSON object with the following fields:
 

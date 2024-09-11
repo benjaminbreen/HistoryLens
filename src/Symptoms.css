@@ -212,25 +212,27 @@
 
 
 /* Astrology Image Popup */
-.symptoms-root .symptoms-popup .astrology-image-popup {
-  position: fixed !important;
-  top: 50% !important;  /* Center vertically */
-  left: 50% !important;  /* Center horizontally */
+.astrology-image-popup {
+  position: fixed ;
+  top: 50% ;  /* Center vertically */
+  left: 50% ;  /* Center horizontally */
   transform: translate(-50%, -50%) !important;
-  background-color: rgba(0, 0, 0, 0.85) !important;
-  padding: 20px !important;  /* Increase padding for better visibility */
-  border-radius: 15px !important;
-  z-index: 2000 !important;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7) !important;
-  max-width: 100% !important;  /* Constrain maximum width */
-  max-height: 80% !important;  /* Constrain maximum height */
-  overflow: hidden !important;  /* Ensure no overflow */
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  padding: 10px ;  /* Increase padding for better visibility */
+  border-radius: 15px ;
+  z-index: 2000 ;
+  width: 1000px !important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7) !important;
+  max-width: 80% ;  /* Constrain maximum width */
+  max-height: 80% ;  /* Constrain maximum height */
+  overflow: hidden ;  /* Ensure no overflow */
 }
+
 
 .symptoms-root .symptoms-popup .astrology-image-popup img {
   width: 100vh ;
-  height: auto ;  /* Ensure the image scales properly */
-  border-radius: 10px;
+
+  border-radius: 20px;
 }
 
 @media (max-width: 768px) {

@@ -12,11 +12,11 @@
   background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
   border-left: 1px solid #8b8b8b;
   box-shadow: -4px 0px 15px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  z-index: 2001;
   padding: 20px;
-  overflow-y: auto;
+
   color: #f5f5f5;
-  overflow-x: visible;
+  overflow-y: auto; /* Main scrolling happens here */
 
   transition: right 0.4s ease-in-out; /* Slide-in transition */
 }
@@ -25,28 +25,119 @@
   right: 0; /* Slide in when open */
 }
 
+/* PDF popup handling */
 
+.pdf-icon-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 2px;
+}
 
+.pdf-icon-button:hover {
+    opacity: 0.4;
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
 
+.inventory-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  position: relative;
+}
 
-/* Humoral element */
-.humoral-circle {
-  position: absolute;
-  top: 14px;
-  right: 8px;
-  width: 42px;
-  height: 42px;
-  background-color: rgba(170, 150,165, 0.5); /* Off-white circle with transparency */
+.inventory-item .emoji-container {
+  margin-right: 10px;
+}
+
+.inventory-item .item-details {
+  flex-grow: 1;
+}
+
+.inventory-item .humoral-circle {
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .9rem;
-  color: #white; 
-  text-transform: uppercase;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 10; /* Ensure the circle is on top */
+  z-index: 1;
+  background-color: rgba(170, 150,165, 0.3); /* Off-white circle with transparency */
+    display: flex;
+
 }
+
+.inventory-item .pdf-button-container {
+  position: absolute;
+  bottom: 4px;
+  left: 2px;
+}
+
+.pdf-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.pdf-button:hover {
+  transform: scale(1.2);
+}
+
+/* PDF Popup Styles */
+.pdf-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.pdf-popup {
+  position: relative;
+  width: 80%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 3000;
+}
+
+.pdf-popup .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pdf-popup embed {
+  width: 100%;
+  height: 600px;
+  border-radius: 5px;
+    z-index: 3000;
+}
+
+
+
+
+
+
 
 .close-button {
   position: absolute;
@@ -116,7 +207,7 @@
 }
 
 .inventory-item .emoji {
-  font-size: 3.8em;
+  font-size: 4.8em;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
   position: absolute;
   top: 5px;
@@ -162,60 +253,8 @@
   margin-top: 6px;
 }
 
-/* Humoral element */
-.humoral-circle {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 30px;
-  height: 30px;
-  background-color: rgba(170, 150, 165, 0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: #ffffff;
-  text-transform: uppercase;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
 
-/* Item popup */
-.item-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #2c2c2c;
-  color: #f5f5f5;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  z-index: 1001;
-  max-width: 400px;
-  width: 90%;
-}
 
-.item-popup .close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #f5f5f5;
-  cursor: pointer;
-}
-
-.item-popup h2 {
-  font-family: "MedievalSharp", cursive;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.item-popup p {
-  margin-bottom: 10px;
-}
 
 
 /* Scroll bar customization */
@@ -264,7 +303,7 @@
 }
 
 .inventory-item .emoji {
-  font-size: 2.5em;
+  font-size: 3.2em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
   position: absolute;
   top: 5px;
@@ -316,8 +355,8 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  width: 25px;
-  height: 25px;
+  width: 45px;
+  height: 45px;
   background-color: rgba(170, 150, 165, 0.5);
   border-radius: 50%;
   display: flex;
@@ -329,44 +368,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Item popup */
-.item-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #2c2c2c;
-  color: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  z-index: 1001;
-  max-width: 90%;
-  width: 300px;
-}
 
-.item-popup .close-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: none;
-  border: none;
-  font-size: 18px;
-  color: #f5f5f5;
-  cursor: pointer;
-}
-
-.item-popup h2 {
-  font-family: "MedievalSharp", cursive;
-  margin-top: 0;
-  margin-bottom: 8px;
-  font-size: 1.2rem;
-}
-
-.item-popup p {
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-}
 
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
