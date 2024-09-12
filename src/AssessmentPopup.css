@@ -31,15 +31,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.assessment-content, .endgame-content 
-h2, h3 {
 
-  margin-top: 0;
-  font-size: 1.8em;
-  font-weight: bold;
-
-
-}
 .assessment-content, .endgame-content 
 p {
   margin: 20px 0;

@@ -1,3 +1,6 @@
+import camphorImage from './assets/camphor.jpg';
+import chamomileImage from './assets/chamomile.jpg';
+import opiumImage from './assets/poppy.jpg';
 
 
 
@@ -14,7 +17,8 @@ const initialInventoryData = [
         description: 'A fragrant resin obtained from the wood of the aromatic camphor tree. Cooling and resolutive.',
         emoji: '🌿',
         citation: 'Luís Gomes Ferreira, *Erário Mineral.Lisbon* Lisbon, 1735, pg 38.',
-        pdf: 'camphor.pdf'
+        pdf: 'camphor.pdf',
+        image: camphorImage
     },
     {
         id: 2, 
@@ -28,7 +32,8 @@ const initialInventoryData = [
         description: 'Used to reduce inflammation, soothe digestive issues, and calm the nerves.',
         emoji: '🌼',
          citation: 'Curvo Semmedo, João. *bservaçoens medicas doutrinaes de cem casos gravissimos.* Lisbon: 1707, pg 151, available at https://www.google.com/books/edition/Observa%C3%A7oens_medicas_doutrinaes_de_cem/QJ5dAAAAcAAJ?hl=en&gbpv=1&pg=PA151&printsec=frontcover',
-        pdf: 'chamomile.pdf'
+        pdf: 'chamomile.pdf',
+        image: chamomileImage
 
     },
     {
@@ -43,7 +48,8 @@ const initialInventoryData = [
         description: 'Dried latex obtained from the opium poppy. Most potent reliever of pain known.',
         emoji: '⚫️',
         citation: 'Benjamin Breen, *The Age of Intoxication* (Penn, 2019)',
-        pdf: 'opium.pdf'
+        pdf: 'opium.pdf',
+        image: opiumImage
     },
     {
         id: 4, 

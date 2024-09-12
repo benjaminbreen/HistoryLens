@@ -2,7 +2,6 @@
   position: relative; /* Position relative to the input box container */
   text-align: left;
   max-width: 100%; /* Allow full width of the container */
-  margin-bottom: px; /* Add some spacing below the tracker */
 }
 
 .wealth-box {
@@ -22,15 +21,17 @@
   display: flex;
   flex-direction: column; /* Stack label and value vertically */
   align-items: flex-start; /* Align text to the left */
+  padding-bottom: 1px;
 }
 
 .wealth-tracker .wealth-label {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: bold;
   color: gray;
   text-transform: uppercase;
   font-family: 'Quicksand', sans-serif;
-  margin-bottom: 3px; /* Add a small margin below the label */
+  margin-bottom: 6px; /* Add a small margin below the label */
+  margin-right: 6px;
 }
 
 .wealth-tracker .wealth-value {
@@ -40,11 +41,26 @@
   font-family: 'MedievalSharp', cursive;
 }
 
+.wealth-value .emoji {
+  font-size: 2.1vw; /* Responsive size for the emoji */
+  line-height: 1.5; /* Prevent large gaps */
+  margin-left: 10px;
+  margin-top: 10px;
+
+}
+
+
+
+
 @media (max-width: 768px) {
   .wealth-box {
     flex-direction: column; /* Stack wealth and status sections vertically */
     padding: 8px 8px; /* Reduce padding */
     border-radius: 12px; /* Slightly smaller border radius */
+  }
+
+   .wealth-value .emoji {
+    font-size: 2rem; /* Fixed size for larger screens */
   }
 
   .wealth-item {

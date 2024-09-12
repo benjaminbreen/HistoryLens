@@ -2,7 +2,20 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import './PrescribePopup.css';
 
-function PrescribePopup({ gameState = {}, updateInventory, addCompoundToInventory, isOpen, onClose, currentPatient, addJournalEntry, conversationHistory, setHistoryOutput, setConversationHistory, setTurnNumber }) {
+function PrescribePopup({
+  gameState = {},
+  updateInventory,
+  addCompoundToInventory,
+  isOpen,
+  onClose,
+  currentPatient,
+  addJournalEntry,
+  conversationHistory,
+  setHistoryOutput,
+  setConversationHistory,
+  setTurnNumber,
+  toggleInventory,  // Ensure this prop is received
+}) {
   const { inventory = [] } = gameState;
   const [selectedItem, setSelectedItem] = useState(null);
   const [amount, setAmount] = useState(1);
@@ -16,6 +29,12 @@ function PrescribePopup({ gameState = {}, updateInventory, addCompoundToInventor
       setSelectedItem(updatedItem || null);
     }
   }, [inventory, selectedItem]);
+
+  useEffect(() => {
+    if (isOpen) {
+      toggleInventory(true);  // Open inventory when the popup opens
+    }
+  }, [isOpen, toggleInventory]);
 
   // Drop target for inventory items
   const [{ isOver }, drop] = useDrop({
@@ -50,7 +69,7 @@ function PrescribePopup({ gameState = {}, updateInventory, addCompoundToInventor
         Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
         The transaction occurred at ${time} on ${date}, in ${location}.
         Using your extensive knowledge of early modern medicine and human biology, consider the dosage, toxicity, the health of the NPC, and potential effects of the medicine prescribed. Is the dose safe or dangerous? 
-        The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine (which should be mentioned by name only once or twice).
+        Begin with a customzied, opionated assessment of the prescription in h3 markdown font, like "Maria attempted a bold and unconventional treatment which, alas, was *ineffective*" or "Maria prescribed soemthing rather strange and, to be perfectly honest, really quite dangerous..." or "An excellent choice..." or the like whatever is appropriate. The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine (which should be mentioned by name only once or twice).
         Summarize the sensory characteristics of the prescribed medicine, describe its effects (which may range from miraculous to positive, neutral, disgusting/vomit-provoking, toxic, or deadly), and the NPC's reaction in 2-3 paragraphs. Typically, one drachms of most medicines is fine, but some may have adverse effects, and a few, like quicksilver, mercury or other chemicals, might kill at this dose. 
         Remember that a very high dose of a toxic medicine, like 3 drachms of quicksilver or three drachms of laudanum, can actually kill an NPC. If you think the dose is fatal, show the NPC dying. This usually does not happen, but adverse effects are common and provoke angry patient reactions.
         End by summarizing the transaction and adjusting Maria's wealth: "Maria has sold [drug name] for [price] silver coins. She now has [updated total] coins." 
@@ -93,7 +112,7 @@ function PrescribePopup({ gameState = {}, updateInventory, addCompoundToInventor
           'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-4o-2024-08-06',
           messages: [
             ...conversationHistory,
             { role: 'user', content: prescriptionPrompt }
@@ -127,47 +146,64 @@ function PrescribePopup({ gameState = {}, updateInventory, addCompoundToInventor
   }, [currentPatient, conversationHistory, updateInventory, addJournalEntry, setHistoryOutput, setConversationHistory, setTurnNumber]);
 
   const handlePrescribeClick = () => {
-    if (selectedItem) {
-      handlePrescribe(selectedItem, amount, price);
-      setSelectedItem(null);
-      setAmount(1);
-      setPrice(0);
-    }
-  };
+  if (selectedItem) {
+    handlePrescribe(selectedItem, amount, price);
 
-  if (!isOpen) return null;
+    // Clear the selection and reset the amount/price
+    setSelectedItem(null);
+    setAmount(1);
+    setPrice(0);
 
-  return (
-    <div className="prescribe-popup">
-      <div className="prescribe-content">
-        <h2>🧪 Prescribe a Medicine</h2>
-        <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
-          {selectedItem ? (
-            <div className="selected-item">
-              <span className="emoji">{selectedItem.emoji}</span>
-              <span>{selectedItem.name}</span>
-            </div>
-          ) : (
-            <p>Drag an item here from the inventory to prescribe. And don't forget to set a price!</p>
-          )}
-        </div>
-        <div className="prescription-controls">
-          <label>
-            Amount (drachms): 
-            <input type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} min="1" />
-          </label>
-          <label>
-            Price (silver reales): 
-            <input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} min="0" />
-          </label>
-        </div>
-        <div className="prescription-buttons">
-          <button onClick={handlePrescribeClick} disabled={!selectedItem}>Prescribe</button>
-          <button onClick={onClose}>Cancel</button>
-        </div>
+    // Automatically close both the inventory pane and the prescribe popup after prescribing
+    toggleInventory(false);  // Close the inventory pane
+    onClose();  // Close the prescribe popup
+  }
+};
+
+if (!isOpen) return null;
+
+return (
+  <div className="prescribe-popup">
+    <div className="prescribe-content">
+      <h2>🧪 Prescribe a Medicine</h2>
+      <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
+        {selectedItem ? (
+          <div className="selected-item">
+            <span className="emoji">{selectedItem.emoji}</span>
+            <span>{selectedItem.name}</span>
+          </div>
+        ) : (
+          <p>Drag an item here from the inventory to prescribe. And don't forget to set a price!</p>
+        )}
+      </div>
+      <div className="prescription-controls">
+        <label>
+          Amount (drachms): 
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
+            min="1"
+          />
+        </label>
+        <label>
+          Price (silver reales): 
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            min="0"
+          />
+        </label>
+      </div>
+      <div className="prescription-buttons">
+        <button onClick={handlePrescribeClick} disabled={!selectedItem}>Prescribe</button>
+        <button onClick={onClose}>Cancel</button>
       </div>
     </div>
-  );
-}
+  </div>
+);
+};
 
 export default PrescribePopup;
+

@@ -18,6 +18,35 @@ html, body {
   overflow: visible !important;
 }
 
+h2 {
+
+  margin-top: 0;
+  font-size: 1.8em;
+  font-weight: bold;
+
+
+}
+
+h3 {
+
+  margin-top: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+}
+
+h4 {
+
+  margin-top: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: darkred;
+
+
+}
+
 .container {
   display: flex;
   flex-direction: column;

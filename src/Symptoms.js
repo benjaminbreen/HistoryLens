@@ -3,11 +3,12 @@ import EntityList from './EntityList';
 import SymptomLocator from './SymptomLocator';
 import './Symptoms.css';
 
-function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
+function Symptoms({ npcName, onClose, onPDFClick, addQuestionsToContext, handleSubmit}) {
   const [npc, setNpc] = useState(null);
   const [showAstrologyImage, setShowAstrologyImage] = useState(false);
   const [astrologyImage, setAstrologyImage] = useState('');
   const [hoveredSymptom, setHoveredSymptom] = useState(null);
+  const [additionalQuestions, setAdditionalQuestions] = useState('');
 
   useEffect(() => {
     const selectedNpc = EntityList.find(entity => entity.name === npcName);
@@ -31,7 +32,7 @@ function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
   const renderCastaLink = (casta) => {
     const url = castaLinks[casta];
     if (url) {
-      return <a href={url} target="_blank" rel="noopener noreferrer">{casta}</a>;
+      return <a href={url} target="_blank" rel="noopener noreferrer" className="casta-link">{casta}</a>;
     }
     return casta;
   };
@@ -73,12 +74,25 @@ function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
     setAstrologyImage(astrologyImages[npc.astrologicalSign] || '');
   };
 
-  const handlePDFClick = (pdfPath) => {
-    if (onPDFClick) {
-      onPDFClick(`/pdfs/${pdfPath}`);
+  // Handler for submitting additional questions
+const handleQuestionSubmit = () => {
+  if (addQuestionsToContext) {
+    addQuestionsToContext(additionalQuestions);
+  }
+  setAdditionalQuestions('');
+  onClose(); // Close the popup
+
+  // Trigger the next turn after questions are submitted
+  if (handleSubmit) {
+    handleSubmit({ preventDefault: () => {} }); // Pass an empty event to trigger submit
+  }
+};
+  
+    const handlePDFLinkClick = () => {
+    if (onPDFClick && npc.pdf) {
+      onPDFClick(npc.pdf);  // Trigger the PDF popup with the npc's PDF
     }
   };
-
 
   return (
     <div className="symptoms-root">
@@ -89,8 +103,26 @@ function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
               <img src={require(`./assets/${npc.image}.jpg`)} alt={npc.name} />
               <span className="astrology-symbol">{astrologySymbols[npc.astrologicalSign]}</span>
             </div>
+
+            {/* Text entry for additional questions */}
+            <textarea
+              value={additionalQuestions}
+              onChange={(e) => setAdditionalQuestions(e.target.value)}
+              placeholder="Ask additional questions about the patient's symptoms..."
+              className="additional-questions-input"
+            />
+
             <ul>
-              <li><strong>Name:</strong> {npc.name}</li>
+              <li>
+                <strong>
+                  <span
+                    onClick={handlePDFLinkClick} // Trigger the PDF popup
+                    style={{ textDecoration: 'underline', color: '#ffd700', fontSize: '22px', cursor: 'pointer' }}
+                  >
+                    {npc.name}
+                  </span>
+                </strong>
+              </li>
               <li><strong>Age:</strong> {npc.age}</li>
               <li><strong>Gender:</strong> {npc.gender}</li>
               <li><strong>Occupation:</strong> {npc.occupation}</li>
@@ -113,20 +145,9 @@ function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
                   </div>
                 )}
               </li>
-            {npc.pdf && (
-          <li>
-            <strong>Patient PDF:</strong> 
-            <span 
-              className="pdf-name" 
-              onClick={() => handlePDFClick(npc.pdf)}
-              style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            >
-              View Document 📄
-            </span>
-          </li>
-        )}
             </ul>
           </div>
+
           <div className="symptoms-chart">
             <div className="body-chart">
               <SymptomLocator symptoms={npc.symptoms} hoveredSymptom={hoveredSymptom} />
@@ -147,7 +168,14 @@ function Symptoms({ npcName, onClose, onPDFClick }) { // Add onPDFClick here
             </div>
           </div>
         </div>
-        <button className="close-button" onClick={onClose}>Close</button>
+
+        {/* Buttons */}
+        <button className="submit-questions-button" onClick={handleQuestionSubmit}>
+          Submit Questions
+        </button>
+        <button className="close-button" onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );

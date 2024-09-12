@@ -93,6 +93,7 @@ function App() {
   const [selectedCitation, setSelectedCitation] = useState(null);
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [showPdfButtons, setShowPdfButtons] = useState(false);
+  const [additionalQuestions, setAdditionalQuestions] = useState('');
 
 
 // Toggle functions
@@ -198,6 +199,11 @@ const toggleMap = useCallback(() => {
     setCurrentPatient(npc);
     setIsPrescribePopupOpen(true);
   };
+
+  const addQuestionsToContext = (questions) => {
+  setAdditionalQuestions(questions);
+};
+
 
   // handling commands
 
@@ -565,6 +571,7 @@ const contextSummary = `
     Current Time: ${gameState.time}
     Turn Number: ${turnNumber}
     ${incorporatedContent ? `\nIncorporated Critique:\n${incorporatedContent}` : ''}
+    ${additionalQuestions ? `\nPlayer's additional questions:\n${additionalQuestions}` : ''}
     Inventory:
     ${inventorySummary}  // Add the inventory summary here
 `;
@@ -611,7 +618,7 @@ const contextSummary = `
           'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-2024-08-06',
+          model: 'gpt-4o-mini',
           messages: [
             {
               role: 'system',
@@ -626,7 +633,7 @@ const contextSummary = `
               - If a entity (a patient or other NPC) appears in a turn, they become the main subject of the turn, but they must always be interwoven with the context of time and place. For instance, if it is the middle of the night, a patient might be desperately knocking on Maria's door with an urgent malady, whereas at noon they might be less desperate. Maria (the player) is allowed to tell patients to go away and do something else, but other NPCs like inquisitors may be more insistent. 
 
               **Commands:**
-              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest #symptoms,  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
+              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest asking them more about their lives (tailored to specific context) as well as exploring their #symptoms, attempting to  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
               - if a player asks a patient about their #symptoms in their input, the player will see a popup displaying them. You can go into more detail if prompted but need not. 
               - #buy: herbs and other materia medica are available at the herb stalls of the Portal de Mercaderes and other local markets. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Some of the items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
@@ -649,13 +656,13 @@ const contextSummary = `
               - When contextually appropriate, reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature, for instance rumors of the Pueblo Revolt on the northern border, or Catholic-Protestant tensions (its the era of the Popish Plot in England), or rivalries between Cartesians and Aristotelians (ancients vs moderns) or the growing importance of "drogas da India" -- exotic materia medica from China, India, and the tropics in general.
               - At the Portal de Mercaderes, there is a quest available if you visit spend more than one turn at the marketplace stalls where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name and you should ask if the user wnats to speak to him.
               - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. After Maria prescribes medicine of any kind, the NPC departs the scene and does not linger, though they may reappear in later turns (and, at times, NPCs may even be killed by a toxic prescription).
-              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response. Update status and reputation (via emoji) every turn. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
+              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious - always one word), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response. Update status and reputation (via emoji) every turn. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
                Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. 
                - certain NPCs have no names. For instance, an NPC like "soldado" or "Doña" or "Caballero" represents a whole class of people. When you introduce them, give them names to individualize them, like "Doña Maria de Gallego" or "Eduardo, a sailor."
-
+               - when a turn seems to be an important moment, begin your output with either h3 markdown tags (announcing a change or event, like "Maria left Mexico City" or "A new day dawns...") or h4 markdown tags, which render as red and signal an emergency or crisis point, like "Maria has been arrested!" or "The Inquisitor has arrived...".
                - Track Maria's wealth, status, reputation, and the date and time in each response. Reputation is displayed via a choice of ONE of these emojis (Maria starts at 3, 😐) 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)Your final line should always be in this exact format:
 
-              **Maria has [integer] silver coins. She is feeling [status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
+              **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
               On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased. The item purchased must ALWAYS come at the end of your response, like this:  **Maria has [integer] silver coins. She spent [integer] of them. She bought [itemname].** 
 
@@ -709,7 +716,8 @@ setUserInput('');
   selectEntity,
   npcCaption,
   incorporatedContent,
-  setUserActions
+  setUserActions,
+  additionalQuestions, 
 ]);
 
 
@@ -855,7 +863,7 @@ setUserInput('');
 
   {/* PDF links with slide effect */}
  <div className={`pdf-links ${showPdfButtons ? 'show' : ''}`}>
-          <h4>Available Documents:</h4>
+          <h3>Available Documents:</h3>
           {EntityList.filter(entity => entity.pdf).map(entity => (
             <button
               key={entity.name}
@@ -1000,11 +1008,13 @@ setUserInput('');
 
 
        {showSymptomsPopup && (
-         <Symptoms 
-           npcName={selectedNpcName} 
-           onClose={closeSymptomsPopup} 
-           onPDFClick={handlePDFClick}  // Pass handlePDFClick as a prop
-         />
+       <Symptoms 
+         npcName={selectedNpcName} 
+         onClose={closeSymptomsPopup} 
+         onPDFClick={handlePDFClick}
+         addQuestionsToContext={addQuestionsToContext}  
+         handleSubmit={handleSubmit}
+       />
        )}
 
 
@@ -1044,19 +1054,20 @@ setUserInput('');
           onPDFClick={handlePDFClick}  
         />
         
-  <PrescribePopup 
-        isOpen={isPrescribePopupOpen}
-        onClose={() => setIsPrescribePopupOpen(false)}
-        currentPatient={currentPatient}
-        gameState={gameState}
-        updateInventory={updateInventory}
-        addCompoundToInventory={addCompoundToInventory}
-        conversationHistory={conversationHistory}
-        setHistoryOutput={setHistoryOutput}
-        setConversationHistory={setConversationHistory}
-        setTurnNumber={setTurnNumber}
-        addJournalEntry={addJournalEntry}
-      />
+<PrescribePopup 
+  isOpen={isPrescribePopupOpen}
+  onClose={() => setIsPrescribePopupOpen(false)}
+  currentPatient={currentPatient}
+  gameState={gameState}
+  updateInventory={updateInventory}
+  addCompoundToInventory={addCompoundToInventory}
+  conversationHistory={conversationHistory}
+  setHistoryOutput={setHistoryOutput}
+  setConversationHistory={setConversationHistory}
+  setTurnNumber={setTurnNumber}
+  addJournalEntry={addJournalEntry}
+  toggleInventory={toggleInventory}  // Pass toggleInventory here
+/>
 
 {isAboutOpen && <About isOpen={isAboutOpen} toggleAbout={toggleAbout} />}
 
