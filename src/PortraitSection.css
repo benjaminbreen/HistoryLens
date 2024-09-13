@@ -1,0 +1,139 @@
+
+/* Portrait Section styling */
+.portrait-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0.1rem ;
+  margin-top: 0.7rem;
+}
+
+.npc-portrait-container,
+.pc-portrait-container, 
+.npc-portrait-wrapper {
+
+  align-items: center;
+  cursor: pointer;
+  margin: 0 8px;
+}
+
+.npc-portrait-container {
+  justify-content: flex-start;
+}
+
+
+
+.npc-portrait-image,
+.pc-portrait-image {
+  width: 280px; /* Increase width to make the image wider */
+  height: 165px; /* Keep the height the same or adjust as needed */
+  border-radius: 10%; /* Adjust border-radius if needed for the desired look */
+  object-fit: cover;
+  margin: 0 10px; /* Space between image and container edges */
+  transition: transform 0.6s ease, box-shadow 0.3s ease;
+}
+
+.npc-portrait-image:hover,
+.pc-portrait-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.portrait-caption {
+  font-size: 0.8rem;
+  color: #718096; /* Gray-600 */
+  font-style: italic;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 6px;
+}
+
+
+
+
+.npc-portrait-wrapper .emoji-image {
+
+  width: 280px; /* Increase width to make the image wider */
+  height: 165px; /* Keep the height the same or adjust as needed */
+  border-radius: 16%; /* Adjust border-radius if needed for the desired look */
+  object-fit: cover;
+  margin: 0 30px; /* Space between image and container edges */
+
+
+}
+
+.portrait-popup .emoji-image {
+
+  max-width: 400px;  /* Adjust as needed */
+  height: auto;
+
+}
+
+/* Fallback for NPC Image */
+.emoji-image {
+  font-size: 12vw;  /* Make the emoji larger to overflow the box */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 280px; /* Width of the container */
+  height: 145px; /* Height of the container */
+
+  border-radius: 14%; /* Adjust if needed */
+  margin: 0 10px; /* Space between image and container edges */
+
+  position: relative; /* Allow positioning within the container */
+
+  transform: scaleX(1.4);
+
+
+}
+
+.npc-portrait-image:hover,
+.pc-portrait-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+@media (max-width: 768px) {
+
+    .npc-portrait-image,
+  .pc-portrait-image {
+    width: 170px; /* Adjust portrait size for mobile */
+    height: 80px;
+    margin: 5px;
+
+  } 
+
+.npc-portrait-wrapper .emoji-image {
+  font-size: 14vw;  /* Make the emoji larger to overflow the box */
+
+  width: 170px; /* Increase width to make the image wider */
+  height: 80px; /* Keep the height the same or adjust as needed */
+  border-radius: 10%; /* Adjust border-radius if needed for the desired look */
+
+  margin: 5px;
+    display: flex;
+    padding-top: -10px;
+
+
+}
+.emoji-image {
+  font-size: 8vw;  /* Make the emoji larger to overflow the box */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 280px; /* Width of the container */
+  height: 145px; /* Height of the container */
+
+  border-radius: 10%; /* Adjust if needed */
+  margin: 0 10px; /* Space between image and container edges */
+  overflow: auto; /* Hide the parts of the emoji that overflow the box */
+  position: relative; /* Allow positioning within the container */
+  transition: transform 0.6s ease, box-shadow 0.3s ease;
+  transform: scaleX(1.3);
+   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2); /* White glow effect */
+
+}
+}
+

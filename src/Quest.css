@@ -1,0 +1,749 @@
+/* Quest Popup Container */
+.quest-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  background: rgba(0, 0, 0, 0.65); /* Black frosted glass effect */
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  color: #fff;
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  animation: fadeIn 0.8s ease-in-out;
+  max-height: 1200px; /* Limit height to prevent overflow */
+  overflow-y: auto; /* Add scroll if content exceeds max height */
+}
+
+/* Dark overlay background */
+.dark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 110vh;
+  background: rgba(0, 0, 0, 0.8); /* Black with 40% opacity */
+  z-index: 1000; /* Ensure it's below the quest popup but above everything else */
+}
+
+/* Quest Header with Image Banner */
+.quest-header {
+  position: relative;
+  margin-bottom: 15px;
+  height: 500px; /* Increase this value */
+}
+
+.quest-header .dialogue-image,
+.quest-header .decision-image {
+  width: 90%;
+  height: 460px; /* Increase this value */
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+  display: block;
+}
+
+.quest-header .banner-image {
+  width: 90%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+  display: block;
+}
+
+.initial-text {
+  text-align: left; 
+
+    top: 20%;
+  position: fixed;
+
+  padding: 10px;
+  padding-right: 60px;
+  padding-left: 30px;
+    padding-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    font-size: 1.1rem;
+}
+
+
+
+@keyframes pan-down {
+  0% {
+    background-position: top;
+  }
+  100% {
+    background-position: bottom;
+  }
+}
+
+.panning-banner-image {
+  width: 100%;
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px 10px 0 0;
+  animation: pan-image 60s linear forwards;
+
+}
+
+@keyframes pan-image {
+  0% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+.banner-image {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* Default behavior, no animation */
+}
+
+
+
+.button-caption {
+  margin-top: 5px;
+  font-size: .8rem;
+  text-align: center;
+  color: gray;
+}
+
+/* Secondary dialogue image */
+.secondary-dialogue-image {
+  width: 60%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  margin: 10px auto;
+  display: block;
+}
+
+/* Loading indicator with pulsing animation */
+.loading-indicator {
+  font-size: 1.2em;
+  color: #dimgray;
+  text-align: center;
+  margin: 10px 0;
+  letter-spacing: 2px;
+}
+
+/* Pulsing animation for the text */
+.loading-indicator span {
+  display: inline-block;
+  animation: pulse 5s infinite ease-in-out;
+}
+
+/* Dots appear progressively */
+.loading-indicator .dot {
+  display: inline-block;
+  animation: dot-blink 1.5s infinite step-start;
+}
+
+.loading-indicator .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-indicator .dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.loading-indicator .dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+/* Keyframe for pulsing text */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Keyframe for blinking dots */
+@keyframes dot-blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.quest-header img:hover {
+  transform: scale(1.03);
+}
+
+/* Style for User Input */
+.quest-user-input {
+  text-align: right; /* Align the user input text to the right */
+  font-weight: bold; /* Make user input bold */
+  color: #ffffff; /* White color for NPC text */
+  margin-bottom: 10px; /* Add space between user input and NPC response */
+}
+
+/* Style for NPC Response */
+.quest-npc-response {
+  text-align: left; /* Align the NPC response to the left */
+  color: #ffffff; /* White color for NPC text */
+  margin-bottom: 20px; /* Add space after the NPC response */
+  animation: fadeInDialogue 0.2s ease-in;
+}
+
+/* Optional: animation for fading in dialogue */
+@keyframes fadeInDialogue {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+
+/* Close Button */
+.quest-close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.quest-close-button:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Quest Content Area */
+.quest-content {
+  padding-top: 0px; /* Padding to separate from the image */
+  display: flex;
+  flex-direction: column-reverse; /* Newer text will appear at the top */
+  gap: 15px;
+  padding: 20px;
+  overflow-y: auto; /* Add scrollbar if content overflows */
+  max-height: 60vh; /* Limit height to prevent overflow */
+  max-width: 100%; /* Ensure it doesn't overflow the container */
+}
+
+.text-container {
+  width: 100%;
+  
+}
+
+.quest-content p {
+  font-size: 1.1em;
+  line-height: 1.5;
+  animation: fadeInText 0.6s ease-in-out;
+}
+
+/* Text Input for Dialogue */
+.dialogue-input input[type="text"] {
+  width: 80%;
+  padding: 15px; /* Set padding to define height */
+  height: auto; /* Automatically adjust based on padding */
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark grey background */
+  color: #fff; /* White text for contrast */
+  font-size: 1em;
+  margin-top: 10px;
+  margin-bottom: 3px;
+  margin-right: 10px;
+  margin-left: 10px;
+  outline: none;
+  transition: border .9s ease, box-shadow 0.9s ease;
+  box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+.dialogue-entry {
+  margin-bottom: 0px;
+}
+
+/* Focus state: Adds glowing effect when focused */
+.dialogue-input input[type="text"]:focus {
+  border: 1px solid rgba(0, 255, 0, 0.2); /* Green glow on focus */
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.4); /* Full green glow around input */
+  background: rgba(0, 0, 0, 0.9); /* Darker background on focus */
+  color: #fff; /* White text for contrast */
+  transition: box-shadow 4s ease-in-out, border 4s ease-in-out; /* Slower tempo */
+}
+
+/* Jewel-like button styling */
+.dialogue-input button {
+  width: auto; /* Allow button width to adjust based on content */
+  padding: 15px; /* Match the padding of the input */
+  height: auto; /* Automatically adjust based on padding */
+  border-radius: 5px; /* Same border radius for consistent styling */
+  background: linear-gradient(145deg, rgba(0, 100, 200, 0.9), rgba(0, 150, 255, 0.9)); /* Jewel-like blue gradient */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1em; /* Match the font size of the input */
+  transition: background 0.8s ease, transform 0.8s ease, box-shadow 0.4s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 200, 0.5), inset 0 0 10px rgba(0, 150, 255, 0.5); /* Internal and external glow */
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+
+/* Button hover effect */
+.dialogue-input button:hover {
+  background: linear-gradient(145deg, rgba(0, 200, 255, 0.9), rgba(0, 255, 180, 0.9)); /* Slightly brighter on hover */
+  box-shadow: 0 0 25px rgba(0, 255, 180, 0.5), inset 0 0 15px rgba(0, 200, 255, 0.7); /* Enhanced glow on hover */
+  transform: translateY(-.5px);
+}
+
+
+
+/* Button active effect */
+.dialogue-input button:active {
+  transform: scale(0.98);
+  background: linear-gradient(145deg, rgba(0, 100, 200, 0.8), rgba(0, 200, 150, 0.8)); /* Slightly darker when clicked */
+}
+
+
+
+
+
+
+
+/* Button Styles */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.button-group button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-size: 1.1em;
+}
+
+.button-group button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Thumbnail Gallery for Quests with Images */
+.thumbnail-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.thumbnail-gallery img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.thumbnail-gallery img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Subtle animation for the entire popup */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* New text fade-in animation */
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Failure Stage Styles */
+.failure-stage {
+  background-color: rgba(150, 0, 0, 0.8);
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  font-size: 2em;
+  border-radius: 10px;
+  animation: glowingFail 1.5s infinite;
+  box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8);
+}
+
+/* Glowing red failure animation */
+@keyframes glowingFail {
+  0% {
+    box-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red, 0 0 30px red;
+  }
+  50% {
+    box-shadow: 0 0 10px red, 0 0 15px red, 0 0 25px red, 0 0 40px red;
+  }
+  100% {
+    box-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red, 0 0 30px red;
+  }
+}
+
+/* Badge Screen */
+.badge-screen {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: fadeInBadge 1s ease-in-out;
+  margin: 10px;
+}
+
+.badge-popup {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: fadeInBadge 1s ease-in-out;
+}
+
+.badge-screen h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #ffd700; /* Gold color to emphasize achievement */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.badge-screen p {
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+
+@keyframes fadeInBadge {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Failure State Screen */
+.failure-state {
+  background-color: rgba(255, 0, 0, 0.8); /* Red color for failure */
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  animation: fadeInFailure 1s ease-in-out, pulseRed 2s infinite;
+}
+
+.failure-state h2 {
+  font-size: 2.5em;
+  color: #ff0000;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  margin-bottom: 15px;
+}
+
+.failure-state p {
+  font-size: 1.3em;
+  margin: 0;
+  padding: 0;
+  line-height: 1.8;
+}
+
+@keyframes fadeInFailure {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.9);
+  }
+}
+
+/* Dialogue History Styling */
+.quest-output {
+  color: whitesmoke;
+  font-size: 1.1em;
+  line-height: 1.3;
+  padding: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+
+}
+
+.quest-output p {
+  margin: 5px 0;
+  animation: fadeInDialogue 0.5s ease-in;
+}
+
+@keyframes fadeInDialogue {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Prescribe & Mixing Popups */
+.prescribe-popup,
+.mixing-popup {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+
+  z-index: 1000;
+}
+
+.prescribe-popup h3,
+.mixing-popup h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.prescribe-popup p,
+.mixing-popup p {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* Scrollbar styling for dialogue */
+.quest-output::-webkit-scrollbar {
+  width: 10px;
+}
+
+.quest-output::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.quest-output::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.quest-output::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Success State for Prescriptions/Mixing */
+.success-state {
+  background-color: rgba(0, 128, 0, 0.8); /* Green background for success */
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  animation: fadeInSuccess 1s ease-in-out;
+}
+
+@keyframes fadeInSuccess {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+
+  .quest-popup {
+    width: 98%;
+    padding: 15px;
+  }
+
+
+  .button-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));  /* Adjusts to fit smaller screens */
+    gap: 10px;  /* Adjust as needed */
+  }
+
+  .quest-button {
+    width: 150px;
+    height: 150px;
+  }
+
+
+.quest-header {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.quest-header .banner-image {
+  width: 90%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+  display: block;
+}
+
+
+}
+  /* Existing styles */
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.quest-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quest-button:hover {
+  background-color: #45a049;
+}
+
+.image-button {
+  width: 150px;  /* Explicit width */
+  height: 150px;  /* Explicit height */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid #4CAF50;
+  padding: 0;  /* Ensure no extra padding */
+  margin: 0;   /* Ensure no extra margin */
+  display: inline-block; /* Ensure buttons are treated as inline-block for better control */
+  box-sizing: border-box;  /* Ensure borders are included in the width/height */
+}
+
+
+.image-button:hover {
+  border-color: #45a049;
+}
+
+.image-button.active {
+
+}
+
+  .quest-header img {
+    width: 100%;
+    height: 250px; /* Adjust height for smaller screens */
+    margin-bottom: 2px;
+  } 
+
+  .thumbnail-gallery img {
+    width: 60px;
+    height: 60px;
+  }
+
+.dialogue-input {
+    display: flex; /* Use flexbox to align items on the same line */
+    align-items: center; /* Vertically align input and button */
+    justify-content: space-between; /* Space between input and button */
+    gap: 2px; /* Optional: add a gap between input and button */
+  }
+
+  .dialogue-input input[type="text"] {
+    flex-grow: 1; /* Allow the input to take up available space */
+    padding: 5px; /* Set padding to define height */
+    height: auto; /* Automatically adjust based on padding */
+    font-size: 1em;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+  }
+
+  .dialogue-input button {
+    padding: 10px; /* Match the padding of the input */
+    height: auto; /* Automatically adjust based on padding */
+    border-radius: 5px; /* Same border radius for consistent styling */
+    background: linear-gradient(145deg, rgba(0, 100, 200, 0.9), rgba(0, 150, 255, 0.9)); /* Jewel-like blue gradient */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em; /* Match the font size of the input */
+    transition: background 0.8s ease, transform 0.8s ease, box-shadow 0.4s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 200, 0.5), inset 0 0 10px rgba(0, 150, 255, 0.5); /* Internal and external glow */
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box; /* Ensure padding is included in height calculation */
+  }
+

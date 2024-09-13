@@ -1,0 +1,1297 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Germania+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap'); /* New font for buttons */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap');
+
+/* General body styling */
+body {
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: #f7fafc;;
+  color: #2d3748;
+  height: 100vh;
+  overflow-y: auto !important;
+}
+
+html, body {
+  overflow: visible !important;
+}
+
+h2 {
+
+  margin-top: 0;
+  font-size: 1.8em;
+  font-weight: bold;
+
+
+}
+
+h3 {
+
+  margin-top: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+}
+
+h4 {
+
+  margin-top: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: darkred;
+  }
+
+  h5 {
+
+  margin-top: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: red;
+  text-transform: uppercase;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px;
+  min-height: 100vh;
+
+  width: 100%; /* Ensure the container takes full width */
+  
+}
+
+
+/* Title and Subtitle Styling */
+.title-container {
+  margin-bottom: 0.1rem;
+  text-align: center;
+  overflow-y: auto
+ 
+}
+
+.title {
+  display: inline-block; /* Make the title an inline block element */
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-weight: 700;
+  color: #2c3e50;
+ font-family: 'Playfair Display', serif;
+  letter-spacing: 0.02rem;
+   margin-bottom: -0.4rem;
+
+  vertical-align: top; /* Align vertically with the subtitle */
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #34495e;
+  margin: 0;
+}
+
+.description-container {
+  margin-bottom: 0.2rem;
+  margin-top: 0.01rem;
+  text-align: right;
+}
+
+.description {
+  font-size: 1rem;
+  font-style: italic;
+  color: #718096; /* Tailwind gray-600 */
+  margin: 0;
+
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+
+/* Main content layout */
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  overflow-y: auto
+
+}
+
+.history-agent {
+  width: 68%;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
+  margin-bottom: 10px;
+  height: auto; /* Allow the container to adjust its height based on contents */
+
+}
+
+.interaction-section {
+  width: 32%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 22px;
+  margin-top: -24px;
+
+}
+
+.output-box {
+  background-color: #edf2f7; /* Light gray */
+  padding: 10px;
+  padding-top: 7px;
+  border-radius: 8px;
+  margin-top: 2px;
+  max-height: 1000px;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+
+}
+
+.output-box p {
+  line-height: 1.5;  /* Reduce line height for manual breaks */
+}
+
+.output-box br {
+  line-height: 0.5;  /* Reduce line height for manual breaks */
+}
+
+
+.bottom-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+
+ overflow: visible;
+margin-left: 0px;
+}
+
+.pdf-links {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.pdf-links.show {
+  max-height: 500px; /* Adjust based on content height */
+  transition: max-height 0.5s ease-in-out;
+}
+
+.pdf-link-button {
+  padding: 8px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.pdf-link-button:hover {
+  background-color: #d0d0d0;
+}
+
+.command-button.primary-sources-button {
+  margin: 8px 0;
+  padding: 9px;
+  margin-left: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.command-button.primary-sources-button:hover {
+  background-color: #0056b3;
+}
+
+.pdf-links {
+  margin-top: 14px;
+  border-top: 1px solid #ccc;
+  padding-top: 8px; /* Slightly increased padding for spacing */
+}
+
+.pdf-link-button {
+  background: linear-gradient(145deg, rgba(245, 245, 245, 0.5), rgba(224, 224, 224, 0.5)); /* 50% translucent background */
+  border: 1px solid #ccc;
+  color: #333; /* Slightly darker text for readability */
+  text-decoration: none; /* Remove underline to make it more like a button */
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 2px; /* Add margin to separate the buttons */
+  border-radius: 6px; /* More rounded corners */
+  padding: 7px 13px; /* Increased padding for a more clickable feel */
+  font-size: 0.9em;
+  font-weight: bold; /* Make the text bold for emphasis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for a raised effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.pdf-link-button:hover {
+  background-color: #d0d0d0; /* Darker on hover for visual feedback */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.pdf-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px; 
+  padding-top: -2px; /* Space above buttons */
+  margin-bottom: -10px; /* Adjust bottom margin */
+}
+
+
+
+/* Tip Box */
+
+  .tip-box {
+    padding-bottom: 0px;
+  }
+
+
+/* Command Button Styling */
+
+.command-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 45%;
+ overflow: auto;
+
+
+}
+
+.command-button {
+  padding: 8px 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(45deg, #00c6ff, #0072ff); /* Example gradient */
+  color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  margin: 2px 5px; /* Ensure there's space between the buttons */
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+   margin-top: 5px;
+}
+
+/* General Hover Effect */
+.command-button:hover {
+  transform: scale(1.02); /* Slight lift and scale on hover */
+}
+
+/* Prescribe Button */
+.command-button.prescribe-button {
+  background: linear-gradient(30deg, #e57272, #005bb5); /* Original gradient */
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
+}
+
+.command-button.prescribe-button:hover {
+  background: linear-gradient(30deg, #d94f5f, #0066cc); /* Slightly lighter ruby and more vibrant sapphire */
+  box-shadow: 0 3px 3px rgba(217, 79, 95, 0.5), 0 0 8px rgba(0, 102, 204, 0.6), 0 0 6px rgba(255, 105, 180, 0.3) inset; /* Iridescent Ruby and Sapphire glow */
+}
+
+/* Symptoms Button */
+.command-button.symptoms-button {
+  background: linear-gradient(200deg, #d94f5f, #d98b8b); /* Original gradient */
+}
+
+.command-button.symptoms-button:hover {
+  background: linear-gradient(45deg, #d94f5f, #c67c7c); /* Shift to brighter, more iridescent tones */
+  box-shadow: 0 3px 3px rgba(217, 79, 95, 0.7), 0 0 8px rgba(198, 124, 124, 0.9), 0 0 6px rgba(255, 140, 140, 0.3) inset; /* Ruby glow with internal light */
+}
+
+/* Diagnose Button */
+.command-button.diagnose-button {
+  background: linear-gradient(90deg, #e6b800, #cc8400); /* Original gradient */
+}
+
+.command-button.diagnose-button:hover {
+  background: linear-gradient(45deg, #d6a500, #b37a00); /* More golden with a hint of iridescent depth */
+  box-shadow: 0 3px 5px rgba(198, 165, 0, 0.5), 0 0 8px rgba(179, 122, 0, 0.8), 0 2px 10px rgba(255, 223, 0, 0.3) inset; /* Golden amber glow with internal shimmer */
+
+}
+
+/* Buy Button */
+.command-button.buy-button {
+  background: linear-gradient(30deg, #cc9400, #d98b8b); /* Original gradient */
+}
+
+.command-button.buy-button:hover {
+  background: linear-gradient(30deg, #c17a00, #cc7474); /* More intense golden and ruby with a reflective quality */
+  box-shadow: 0 3px 3px rgba(193, 122, 0, 0.5), 0 0 8px rgba(204, 116, 116, 0.7), 0 0 10px rgba(255, 165, 0, 0.3) inset; /* Iridescent gold and ruby glow */
+}
+
+/* Popup Box Styling */
+
+.portrait-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+  text-align: center;
+}
+
+.journal-entry-box {
+  width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+}
+
+
+
+.portrait-popup {
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh; /* Limit height to viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+.popup-portrait-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 30px auto 10px;
+}
+
+.popup-info {
+  font-size: 0.9rem;
+  color: #2d3748; /* Darker text color */
+  text-align: left;
+  margin-top: 10px;
+}
+
+/* Close Button Styling */
+.close-button {
+  background-color: #e53e3e; /* Red */
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  position: absolute; /* Position at the top-right corner of the popup */
+  top: 10px;
+  right: 10px;
+}
+
+.close-button:hover {
+  background-color: #c53030;
+}
+
+
+/* General Button Styling */
+button {
+  padding: 5px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+   font-family: 'Quicksand', sans-serif;
+  color: white;
+  background-color: #4a5568;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #2d3748;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* End Game Button Styling */
+.end-game-button {
+  background-color: #e53e3e; /* Red background */
+  box-shadow: 0 0 15px rgba(229, 62, 62, 0.75); /* Red glow effect */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.end-game-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+  transform: scale(1.05); /* Slight scale-up on hover */
+  box-shadow: 0 0 30px rgba(255, 99, 71, 0.85); /* Enhanced glow on hover */
+}
+
+/* Open Commonplace Book Button Styling */
+.open-commonplace-book-button {
+  background-image: url('./assets/book.jpeg');
+  background-position: center; /* Center the image */
+  color: white; /* Ensure text is visible */
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif; /* New button font */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add a slight text shadow for better readability */
+  background-repeat: no-repeat; /* Prevent the background from repeating */
+}
+
+.open-commonplace-book-button:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
+}
+
+
+.view-counter-button {
+  background-color: #3b82f6; /* Blue */
+  float: right; /* Move the button to the right */
+  margin-right: 5px; /* Add some space from the right edge */
+  padding: 8px;
+}
+
+.view-counter-button:hover {
+  background-color: rgba(37, 99, 235, 0.85); /* Darker blue with transparency on hover */
+}
+
+
+
+.open-commonplace-book-button:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
+}
+
+/* Special Styling for Mix Drugs Button */
+.mix-drugs-button {
+  background-color: #d97706; /* Amber color */
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.75); /* Amber glow effect */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.mix-drugs-button:hover {
+  background-color: rgba(201, 91, 0, 0.85); /* Darker amber on hover */
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0 0 30px rgba(255, 138, 0, 0.85); /* Enhanced glow on hover */
+}
+
+/* Green Glow Animation for Submit Field */
+@keyframes greenGlow {
+  0% {
+    box-shadow: 0 0 2px rgba(0, 255, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 6px rgba(0, 255, 0, 1);
+  }
+  100% {
+    box-shadow: 0 0 3px rgba(0, 255, 0, 0.9);
+  }
+}
+
+
+
+input[type="text"]:focus {
+  outline: none; /* Remove default outline */
+  animation: greenGlow 2.5s infinite; /* Apply green glow animation */
+}
+
+
+
+/* CritiqueAgent container styling */
+.critique-agent-container {
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 8px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+}
+
+.critique-agent-container h2 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.critique-agent-container .output-box {
+  background-color: seashell;
+  padding: 20px;
+  font-size: 1.15rem;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Journal Pane Styling */
+
+
+
+.journal-pane {
+  position: fixed;
+  right: -300px; /* Start hidden off-screen */
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #FAF9F6; /* Light gray background */
+  border-left: 1px solid #e2e8f0; /* Gray-200 */
+  transition: all 0.8s ease-in-out;
+  z-index: 1000;
+  padding: 20px;
+  box-shadow: -2px 0px 7px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+
+}
+
+
+.container .journal-pane.open {
+  right: 0 !important; /* Ensures that this rule is applied */
+}
+
+.journal-entry,
+.inventory-item {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0; /* Gray-200 */
+}
+
+.death-entry {
+  color: #ff0000; /* Red for death */
+  font-weight: bold;
+}
+
+/* Styling for injury entries */
+.injury-entry {
+  color: #ff4500; /* Orange-red for injury */
+  font-weight: bold;
+}
+
+/* Italicize auto-generated journal entries */
+.auto-entry {
+  font-style: italic;
+  font-family: 'Lora', serif; /* Example font for italics, you can change this to your preferred italic font */
+  font-size: .9rem;
+}
+
+/* Regular font style for human-created journal entries */
+.human-entry {
+  font-style: normal;
+  font-family: 'Inter', sans-serif; /* Default or human-created font, you can change this as needed */
+}
+
+/* Loading Indicator */
+.loading-dots span {
+  display: inline-block;
+  font-size: 3rem;
+  animation: blink 1s infinite both;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+/* Date/Time/Location and Map Counter information */
+.counter-and-map {
+  display: flex;
+  justify-content: space-between; /* Spread out the content across the line */
+  align-items: center; /* Vertically center the content */
+ 
+}
+
+.counter {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: #4A5568; /* Tailwind gray */
+  font-weight: 600; /* Bold the text to make it stand out */
+  letter-spacing: 0.06rem; /* Add some letter spacing for a cleaner look */
+  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
+  padding-left: 4px;
+}
+
+
+
+/* Map Button */
+.command-button.map-button {
+  background: linear-gradient(145deg, #20b2aa, #0066cc); /* Turquoise to dark cyan gradient */
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(32, 178, 170, 0.5) inset,
+    0 0 20px rgba(0, 139, 139, 0.3) inset;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  margin-left: 5px;
+  padding: 2px 10px;
+  font-size: .9rem;
+  margin-top: 0px;
+    margin-bottom: 12px;
+}
+
+.command-button.map-button:hover {
+  background: linear-gradient(145deg, #5f9ea0, #20b2aa); /* Slightly lighter gradient on hover */
+  box-shadow: 
+    0 6px 8px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(32, 178, 170, 0.7) inset,
+    0 0 30px rgba(0, 139, 139, 0.5) inset;
+  transform: translateY(1.1px);
+}
+
+
+.simulation-history-button {
+  background: linear-gradient(145deg, #4a90e2, #b0bec5); /* Soft blue to muted gray gradient */
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.4),
+    0 0 10px rgba(74, 144, 226, 0.9) inset, /* Soft blue shadow */
+    0 0 20px rgba(176, 190, 197, 0.4) inset; /* Muted gray shadow */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  font-size: .9rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight:bold;
+    margin-left: 10px;
+  padding: 2px 10px;
+  margin-top: 0px;
+    margin-bottom: 12px;
+     margin-right: 6px;
+     
+}
+
+.simulation-history-button:hover {
+  background: linear-gradient(145deg, #6fa3ef, #cfd8dc); /* Slightly lighter on hover */
+  box-shadow: 
+    0 6px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(111, 163, 239, 0.5) inset,
+    0 0 25px rgba(207, 216, 220, 0.3) inset;
+     transform: translateY(1.1px);
+}
+
+
+/* Hamburger Icon */
+.hamburger-icon {
+    cursor: pointer;
+    position: fixed;
+    top: 10px; /* Adjust this value to create more space between the header and the icon */
+    left: 10px; /* Keep some space from the left edge */
+    z-index: 2000; /* Ensure it appears above other elements */
+    width: 30px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px; /* Add padding around the icon */
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a background color with transparency */
+    border-radius: 5px; /* Optional: Add some border-radius to match the design aesthetic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+
+
+.hamburger-icon.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-icon.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-icon.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Menu Pane */
+.menu-pane {
+    position: fixed;
+    top: 60px;
+    left: -300px; /* Initially hidden off-screen */
+    width: 250px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    z-index: 2000;
+    transition: left 0.3s ease;
+}
+
+.menu-pane.open {
+    left: 20px; /* Slide into view */
+}
+
+.menu-pane ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-pane ul li {
+    margin: 15px 0;
+}
+
+.menu-pane ul li a,
+.menu-pane ul li button {
+    color: #fff;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.menu-pane ul li a:hover,
+.menu-pane ul li button:hover {
+    color: #ffbf00; /* Stylish hover color */
+}
+
+/* Dark Mode Styling */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.user-input.dark-mode {
+    font-weight: bold;
+    color: black; /* Darker text color */
+    font-size: 1.2rem;
+  }
+
+/* Adjustments for the dark mode toggle in dark mode */
+body.dark-mode .hamburger-icon span {
+    background-color: #e0e0e0;
+}
+
+body.dark-mode .menu-pane {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .menu-pane ul li a,
+body.dark-mode .menu-pane ul li button {
+    color: #e0e0e0;
+}
+
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #1a202c; /* Tailwind's Gray-900 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+
+
+body.dark-mode .main-content, 
+body.dark-mode .interaction-section {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .title, 
+body.dark-mode .subtitle {
+  background: linear-gradient(45deg, #4A90E2, #00c6ff); /* Adjusted gradient for better contrast */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode .description {
+  color: #a0aec0; /* Tailwind's Gray-500 */
+}
+
+body.dark-mode .history-agent {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .output-box {
+  background-color: #4a5568; /* Tailwind's Gray-700 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .command-button {
+  background: linear-gradient(45deg, #0072ff, #00c6ff); /* Invert the colors for dark mode */
+  color: #1a202c; /* Tailwind's Gray-900 */
+}
+
+body.dark-mode .command-button:hover {
+  background: linear-gradient(45deg, #005bb5, #00c6ff); /* Adjust hover effect */
+}
+
+body.dark-mode .command-button.prescribe-button {
+  background: linear-gradient(30deg, #005bb5, #e57272); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.symptoms-button {
+  background: linear-gradient(200deg, #b794f4, #805ad5); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.diagnose-button {
+  background: linear-gradient(90deg, #ecc94b, #d69e2e); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.buy-button {
+  background: linear-gradient(30deg, #68d391, #48bb78); /* Adjusted gradient */
+}
+
+body.dark-mode .command-button.map-button {
+  background: linear-gradient(80deg, #9f7aea, #6b46c1); /* Adjusted gradient */
+}
+
+body.dark-mode .portrait-section {
+
+}
+
+body.dark-mode .npc-portrait-image, 
+body.dark-mode .pc-portrait-image {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5); /* Darker shadow for images */
+}
+
+body.dark-mode .portrait-caption {
+  color: #a0aec0; /* Tailwind's Gray-500 */
+}
+
+body.dark-mode .portrait-popup, 
+body.dark-mode .journal-entry-box {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .popup-info {
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .close-button {
+  background-color: #f56565; /* Adjusted to a lighter red */
+}
+
+body.dark-mode .close-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+}
+
+body.dark-mode .end-game-button {
+  background-color: #f56565; /* Adjusted to a lighter red */
+  box-shadow: 0 0 15px rgba(229, 62, 62, 0.75); /* Adjusted glow effect */
+}
+
+body.dark-mode .end-game-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+}
+
+body.dark-mode .view-counter-button {
+  background-color: #3b82f6; /* Adjusted blue */
+}
+
+body.dark-mode .view-counter-button:hover {
+  background-color: #2c5282; /* Darker blue on hover */
+}
+
+body.dark-mode .mix-drugs-button {
+  background-color: #f6ad55; /* Lighter amber */
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.75); /* Adjusted glow effect */
+}
+
+body.dark-mode .mix-drugs-button:hover {
+  background-color: #dd6b20; /* Darker amber on hover */
+}
+
+body.dark-mode .journal-pane, 
+body.dark-mode .inventory-pane, 
+body.dark-mode .simulation-history-pane {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+  border-left: 1px solid #4a5568; /* Darker gray border */
+  z-index:100;
+}
+
+body.dark-mode .journal-entry, 
+body.dark-mode .inventory-item {
+  border-bottom: 1px solid #4a5568; /* Darker border for entries */
+}
+
+body.dark-mode .auto-entry {
+  color: #cbd5e0; /* Tailwind's Gray-400 */
+}
+
+body.dark-mode .human-entry {
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .critique-agent-container {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+}
+
+body.dark-mode .critique-agent-container .output-box {
+  background-color: #4a5568; /* Tailwind's Gray-700 */
+}
+
+body.dark-mode .counter {
+  color: #cbd5e0; /* Tailwind's Gray-400 */
+}
+
+body.dark-mode .loading-dots span {
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+body.dark-mode .simulation-history.open {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+}
+
+
+
+@media (max-width: 768px) {
+
+ .main-content {
+    display: flex; /* Use flexbox */
+    flex-direction: row; /* Ensure that the sections are placed in a row */
+    justify-content: space-between; /* Space the elements */
+    width: 100%;
+    padding: 8px;
+  }
+
+  .history-agent {
+    width: 80% !important; /* Take 80% of the width */
+    padding: 6px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
+    margin-bottom: 10px;
+    margin-top: -10px;
+  }
+
+  .interaction-section {
+    width: 25% !important; /* Take 20% of the width */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 2px;
+    margin-top: -10px;
+  }
+
+  .output-box {
+    background-color: #edf2f7; /* Light gray */
+    padding: 10px; /* Adjust padding */
+    border-radius: 8px;
+    margin-top: 10px; /* Adjust margin to reduce white space */
+    margin-bottom: 10px; /* Adjust bottom margin */
+    max-height: 70vh; /* Increase max-height to show more content */
+    overflow-y: auto;
+    font-size: .9rem; /* Adjust font size */
+  }
+
+  .command-buttons {
+    flex-direction: row; /* Stack buttons horizontally */
+    align-items: stretch; /* Ensure the buttons take the full width */
+    width: 100%;
+  }
+
+
+  .output-box {
+    background-color: #edf2f7; /* Light gray */
+    padding: 10px; /* Adjust padding */
+    border-radius: 8px;
+    margin-top: 10px; /* Adjust margin to reduce white space */
+    margin-bottom: 10px; /* Adjust bottom margin */
+    max-height: 70vh; /* Increase max-height to show more content */
+    overflow-y: auto;
+    font-size: .9rem; /* Adjust font size */
+  }
+
+  .command-buttons {
+    flex-direction: row; /* Stack buttons vertically on smaller screens */
+    align-items: stretch; /* Ensure the buttons take the full width */
+    width: 100%;
+  }
+
+  button, 
+  .command-button,
+  .submit-button,
+  .view-journal-button,
+  .custom-journal-entry-button,
+  .view-inventory-button,
+  .content-guide-button,
+  .commonplace-book-button
+  .mix-drugs-button {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: .70rem;
+    padding-left: 2px;
+    padding-right: 2px
+  }
+
+  
+ .input, textarea, select {
+    font-size: 16px; /* Ensure minimum font size of 16px to prevent zoom */
+  }
+
+  .tip-box {
+    display: none; /* Hide the TipBox on mobile screens */
+  }
+
+.title-container {
+  margin-top: 1rem;
+  text-align: center;
+ 
+}
+
+/* Journal and Inventory Pane Styling */
+.journal-pane,
+.inventory-pane,
+.simulation-history-pane {
+  position: fixed;
+  right: -210px;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  opacity: 95%;
+  background-color: #FAF9F6; /* Light gray background */
+  border-left: 1px solid #e2e8f0; /* Gray-200 */
+  transition: right 0.4s ease-in-out;
+  z-index: 100;
+  padding: 20px;
+ 
+  overflow-y: auto;
+  font-size: .8rem;
+}
+
+
+
+  .counter-and-map {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    align-items: flex-start;
+      font-size: 7px;
+  }
+
+
+.counter {
+  font-size: 8px;
+  color: #4A5568; /* Tailwind gray */
+  font-weight: 600; /* Bold the text to make it stand out */
+  letter-spacing: 0.01rem; /* Add some letter spacing for a cleaner look */
+  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
+  padding-left: 4px;
+}
+
+
+   .container {
+    padding: 1px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+
+
+  .portrait-section {
+    flex-direction: row; /* Stack portraits vertically */
+    align-items: center; /* Center-align on mobile */
+    text-align: center; /* Center-align text on mobile */
+    margin-bottom: -16px;
+    margin-top: -2px;
+  }
+  .portrait-caption {
+        font-size: 0.5rem;
+  }
+
+  .popup-info {
+    font-size: 0.85rem; /* Slightly smaller text for better readability on small screens */
+  }
+
+  .close-button {
+    font-size: 0.8rem; /* Adjust close button size on smaller screens */
+  }
+
+  .history-entry {
+    margin-bottom: 10px;
+    
+  }
+
+
+
+   .output-box {
+    background-color: #edf2f7; /* Light gray */
+    padding: 6px; /* Reduce padding */
+    border-radius: 8px;
+    margin-top: -6px; /* Adjust margin to reduce white space */
+    margin-bottom: 5px; /* Reduce bottom margin */
+    max-height: 70vh; /* Increase max-height to show more content */
+    overflow-y: auto;
+    font-size: .9rem; /* Keep font size manageable */
+  }
+
+   .main-content, .interaction-section {
+    width: 100%;
+    padding: 8px;
+  }
+
+
+  .user-input {
+    font-weight: bold;
+    color: #2d3748; /* Darker text color */
+    font-size: .9rem;
+  }
+
+  .bottom-buttons {
+    flex-direction: row; /* Stack buttons vertically on smaller screens */
+    align-items: stretch; /* Ensure the buttons take the full width */
+     width: 100%;
+     padding: 2px;
+  }
+
+  .command-buttons {
+    flex-direction: column; /* Stack command buttons vertically */
+    align-items: stretch; /* Ensure the buttons take the full width */
+  }
+
+  .command-button {
+    
+    margin-bottom: 10px; /* Add space between stacked buttons */
+  }
+
+  .simulation-history.open {
+    left: 0; /* Slide in from the left when open */
+
+  } 
+  
+
+  .portrait-section {
+    flex-direction: row; /* Ensure the portraits are in a row */
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Center align the portraits */
+  }
+
+  .npc-portrait-image,
+  .pc-portrait-image {
+    width: 170px; /* Adjust portrait size for mobile */
+    height: 80px;
+    margin: 5px;
+  }
+
+   
+
+  .title {
+    font-size: .9rem; /* Make the title and subtitle smaller */
+  justify-content: center;
+    letter-spacing: 0.0rem;
+  padding-bottom: 0px;
+  padding-left: 20px;
+    letter-spacing: -.05rem;
+  }
+
+  .subtitle {
+    font-size: .9rem; /* Make the title and subtitle smaller */
+  justify-content: center;
+    letter-spacing: -.03rem;
+  padding-bottom: 3px;
+  }
+
+  .description {
+    font-size: 0.6rem; /* Make the description font smaller */
+  text-align: center;
+  padding-left: 30px;
+  padding-right: 24px;
+  }
+
+  /* Adjusting the Mix Panel */
+  .mix-panel-container {
+    width: 100%; /* Make sure the mix panel takes full width */
+    padding: 4px; /* Adjust padding for better fit */
+  }
+
+  .mix-panel .mix-options {
+    display: flex;
+    flex-wrap: wrap; /* Make the options wrap to fit smaller screens */
+   
+  }
+
+  .mix-panel button {
+    font-size: 0.8rem; /* Make buttons slightly smaller */
+    padding: 5px; /* Adjust padding for buttons */
+  }
+
+  .mix-drugs-button {
+    font-size: 1rem; /* Slightly reduce the size of the Mix Drug button */
+  }
+
+  .commonplace-book-container {
+    width: 100%; /* Ensure full width */
+    height: auto; /* Allow height to adjust */
+  }
+
+  .commonplace-book-controls {
+    display: flex;
+    flex-direction: column; /* Stack controls vertically */
+    align-items: center; /* Center align controls */
+  }
+
+  .commonplace-book-controls button {
+    margin: 5px 0; /* Space buttons out vertically */
+  }
+
+  /* Smaller Font Overall */
+  body {
+    font-size: 0.9rem; /* Reduce the base font size slightly for mobile */
+    overflow-anchor: none;
+  }
+
+  .footer {
+    padding-bottom: 40px;
+  }
+
+
+    .hamburger-icon {
+        top: 10px; /* Increase this value to ensure the icon doesn't overlap with the header */
+        left: 10px; /* Adjust this value to ensure proper spacing on smaller screens */
+        padding: 10px; /* Keep enough padding to prevent overlap */
+        width: 8px;
+    height: 1px;
+    }
+
+   
+}
+

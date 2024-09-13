@@ -1,0 +1,475 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
+
+/* Main inventory pane */
+.inventory-pane {
+  position: fixed;
+  right: -350px; /* Hidden by default */
+  top: 0;
+  width: 350px;
+  height: 100%;
+  background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);
+  border-left: 1px solid #8b8b8b;
+  box-shadow: -4px 0px 15px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  padding: 20px;
+
+  color: #f5f5f5;
+  overflow-y: auto; /* Main scrolling happens here */
+
+  transition: right 0.4s ease-in-out; /* Slide-in transition */
+}
+
+.inventory-pane.open {
+  right: 0; /* Slide in when open */
+}
+
+/* PDF popup handling */
+
+.pdf-icon-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 2px;
+}
+
+.pdf-icon-button:hover {
+    opacity: 0.4;
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+.inventory-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.inventory-item .emoji-container {
+  margin-right: 10px;
+}
+
+.inventory-item .item-details {
+  flex-grow: 1;
+}
+
+
+.inventory-item .pdf-button-container {
+  position: absolute;
+  bottom: 4px;
+  left: 2px;
+}
+
+.pdf-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.pdf-button:hover {
+  transform: scale(1.2);
+}
+
+/* PDF Popup Styles */
+.pdf-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.pdf-popup {
+  position: relative;
+  width: 80%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 3000;
+}
+
+.pdf-popup .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pdf-popup embed {
+  width: 100%;
+  height: 600px;
+  border-radius: 5px;
+    z-index: 3000;
+}
+
+
+
+
+
+
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 240px;
+  font-size: 1 rem;
+  border: none;
+  color: #white;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #f5e6dc;
+}
+
+/* Header for inventory sections */
+.inventory-pane h2 {
+  font-family: "MedievalSharp", cursive; 
+  font-size: 1.8rem; /* Increased font size */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #8b8b8b;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+   margin-top: 60px;
+  color: #d1bfa5; /* Warm, muted tone for headers */
+  text-align: center; /* Centered header */
+}
+
+
+.inventory-pane.open {
+  right: 0;
+}
+
+/* Inventory list */
+.inventory-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Inventory items */
+.inventory-item {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  border: 3px solid #3d3d3d;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+ 
+}
+
+.inventory-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.inventory-item.dragging {
+  opacity: 1;
+  transform: scale(1.00);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: grabbing;
+  background-color: #444; /* Set a dark background color for the dragging item */
+}
+
+.inventory-item .emoji {
+  font-size: 4.8em;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.item-details {
+  margin-left: 70px;
+}
+
+.item-name {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1.5rem;
+    text-transform: capitalize;
+  color: #f5f5f5;
+  margin-bottom: 5px;
+}
+
+.item-meta {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+.meta-label {
+  font-size: 0.7rem;
+  color: #a8a8a8;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  margin-bottom: 2px;
+}
+
+.meta-value {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1rem;
+  color: #f5f5f5;
+}
+
+.item-description {
+  font-family: 'IM Fell English', serif;
+  color: #cfcfcf;
+  font-size: 1.3rem;
+  margin-top: 6px;
+}
+
+
+
+
+
+/* Scroll bar customization */
+.inventory-pane::-webkit-scrollbar {
+  width: 12px;
+}
+
+.inventory-pane::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.inventory-pane::-webkit-scrollbar-thumb {
+  background-color: #3d3d3d;
+  border-radius: 5px;
+  border: 2px solid #1a1a1a;
+}
+
+
+.inventory-pane.open {
+  right: 0;
+}
+
+/* Inventory list */
+.inventory-list {
+  list-style: none;
+ 
+}
+
+/* Inventory items */
+.inventory-item {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  border: 2px solid #3d3d3d;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.inventory-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.inventory-item .emoji {
+  font-size: 3.2em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.item-details {
+  margin-left: 50px;
+}
+
+.item-name {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1.3rem;
+  text-transform: capitalize;
+  color: #f5f5f5;
+  margin-bottom: 3px;
+}
+
+.item-meta {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2px;
+}
+
+.meta-label {
+  font-size: 0.6rem;
+  color: #a8a8a8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1px;
+}
+
+.meta-value {
+  font-family: "MedievalSharp", cursive;
+  font-size: 0.9rem;
+  color: #f5f5f5;
+}
+
+.item-description {
+  font-family: 'IM Fell English', serif;
+  color: #cfcfcf;
+  font-size: 1.1rem;
+  margin-top: 4px;
+  margin-bottom: -2px;
+}
+
+/* Humoral element */
+.humoral-circle {
+  position: absolute;
+  top: 85px; /* Adjusted to be below the emoji */
+  left: 12px; /* Align with the emoji's left */
+  width: 35px;
+  height: 35px;
+  background-color: rgba(170, 150, 165, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  /* Adjusting the Inventory Pane */
+  .inventory-pane {
+    right: -200px; /* Hidden by default, adjusted for smaller width */
+    width: 160px; /* Reduce the width */
+    padding: 5px; /* Reduce padding */
+    transition: right 0.3s ease-in-out; /* Adjusted slide-in speed */
+  }
+
+
+  .inventory-pane.open {
+    right: 0; /* Slide in when open */
+  }
+
+  /* Header for Inventory Sections */
+  .inventory-pane h2 {
+    font-size: 1.1rem; /* Slightly smaller font size */
+    padding-bottom: 5px; /* Reduce padding */
+    margin-bottom: 5px; /* Reduce margin */
+    margin-top: 56px; /* Adjust top margin */
+  }
+
+  /* Inventory List and Items */
+  .inventory-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  .inventory-item {
+    padding: 4px; /* Reduce padding */
+    margin-bottom: 4px; /* Reduce margin between items */
+    border-radius: 6px; /* Smaller border radius */
+    border: 2px solid #3d3d3d; /* Adjusted border size */
+  }
+
+  .inventory-item .emoji {
+    font-size: 2em; /* Slightly smaller emoji size */
+    top: 5px;
+    left: 1px;
+  }
+
+  .item-details {
+    margin-left: 30px; /* Reduce margin to fit smaller width */
+  }
+
+  .item-name {
+    font-size: .8rem; /* Smaller font size */
+  }
+
+  .item-meta {
+    margin-bottom: 2px;
+  }
+
+  .meta-label {
+    font-size: 0.5rem; /* Smaller font size */
+  letter-spacing: -.01rem;
+  }
+
+  .meta-value {
+    font-size: 0.6rem; /* Smaller font size */
+    letter-spacing: -.01rem;
+  }
+
+  .item-description {
+    font-size: 0.8rem; /* Smaller font size */
+    margin-top: 4px;
+    margin-bottom: -4px;
+     }
+
+  /* Humoral Element */
+  .humoral-circle {
+    width: 20px; /* Smaller size */
+    height: 20px; /* Smaller size */
+    font-size: 0.5rem; /* Smaller font size */
+  }
+
+  /* Scroll bar customization */
+  .inventory-pane::-webkit-scrollbar {
+    width: 6px; /* Smaller scrollbar */
+  }
+
+  .inventory-pane::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+  }
+  /* Enable touch scrolling for mobile */
+  .inventory-list {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Disable hover effects on mobile */
+  .inventory-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Ensure draggable items work on touch devices */
+  .inventory-item {
+    touch-action: pan-y;
+  }
+}
+
+/* Scroll bar customization */
+.inventory-pane::-webkit-scrollbar {
+  width: 8px;
+}
+
+.inventory-pane::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.inventory-pane::-webkit-scrollbar-thumb {
+  background-color: #3d3d3d;
+  border-radius: 4px;
+  border: 1px solid #1a1a1a;
+}

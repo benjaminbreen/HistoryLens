@@ -1,0 +1,93 @@
+.wealth-tracker {
+  position: relative; /* Position relative to the input box container */
+  text-align: left;
+  max-width: 100%; /* Allow full width of the container */
+}
+
+.wealth-box {
+  background: rgba(0, 0, 00, 0.05);
+  padding: 10px 20px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.0);
+  display: flex;
+  flex-direction: row; /* Align wealth and status side by side */
+  justify-content: space-between; /* Add space between wealth and status sections */
+  align-items: flex-start; /* Align items to the top */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wealth-item {
+  display: flex;
+  flex-direction: column; /* Stack label and value vertically */
+  align-items: flex-start; /* Align text to the left */
+  padding-bottom: 1px;
+}
+
+.wealth-tracker .wealth-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: gray;
+  text-transform: uppercase;
+  font-family: 'Quicksand', sans-serif;
+  margin-bottom: 6px; /* Add a small margin below the label */
+  margin-right: 15px;
+}
+
+.wealth-tracker .wealth-value {
+  font-size: 15.5px;
+  font-weight: bold;
+  color: #4A5568; /* Tailwind gray */
+  font-family: 'MedievalSharp', cursive;
+}
+
+.wealth-value .emoji {
+  font-size: 1.8vw; /* Responsive size for the emoji */
+  line-height: 1.2; /* Prevent large gaps */
+  margin-left: 10px;
+  margin-top: 10px;
+
+}
+
+
+
+
+
+/* Add media query for smaller screens */
+@media (max-width: 768px) {
+  .wealth-box {
+    flex-direction: column; /* Stack wealth items vertically */
+    padding: 8px 8px;
+    border-radius: 12px;
+  }
+
+  .wealth-tracker {
+    margin-top: 10px;
+    /* Move it below other content */
+    order: 1; /* Ensure it comes last in flexbox order */
+  }
+
+  .wealth-value .emoji {
+    font-size: 1.3rem;
+  }
+
+  .wealth-item {
+    align-items: flex-start;
+    margin-bottom: 0px;
+  }
+
+  .wealth-tracker .wealth-label {
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+
+  .wealth-tracker .wealth-value {
+    font-size: 10px;
+  }
+
+  /* Ensure wealth tracker moves below buttons and output box */
+  .wealth-tracker-wrapper {
+    order: 2; /* Ensure it's placed after other elements */
+  }
+}
+
