@@ -124,10 +124,22 @@ const closePdfPopup = () => {
     setSelectedCitation(null);
   };
 
+  // Logic to open the prescribe popup and set the current patient
+  const openPrescribePopup = (npc) => {
+    setCurrentPatient(npc);
+    setIsPrescribePopupOpen(true);
+  };
+
   const handleClosePrescribePopup = () => {
   setIsPrescribing(false);
   setIsPrescribePopupOpen(false);
 };
+
+  // Close the popup after use
+  const closePrescribePopup = () => {
+    setIsPrescribePopupOpen(false);
+  };
+
    const toggleCounterNarrative = useCallback(() => {
         setShowCounterNarrative((prev) => !prev);
     }, []);
@@ -140,9 +152,13 @@ const closePdfPopup = () => {
     setShowMixingPopup((prev) => !prev);
   }, []);
 
-  const toggleInventory = useCallback(() => {
+  const toggleInventory = useCallback((forceOpen) => {
+  if (typeof forceOpen === 'boolean') {
+    setIsInventoryOpen(forceOpen);
+  } else {
     setIsInventoryOpen((prev) => !prev);
-  }, []);
+  }
+}, []);
 
 const closeSymptomsPopup = useCallback(() => {
   setShowSymptomsPopup(false);
@@ -173,9 +189,9 @@ const closeSymptomsPopup = useCallback(() => {
     }
   }, [customJournalEntry]);
 
-  const addJournalEntry = useCallback((entry) => {
-    setJournal((prevJournal) => [...prevJournal, { content: entry, type: 'auto' }]);
-  }, []);
+const addJournalEntry = useCallback((entry, type = 'auto') => {
+    setJournal((prevJournal) => [...prevJournal, { content: entry, type }]);
+}, []);
 
   const toggleColophon = () => {
         setShowColophon(prev => !prev);
@@ -194,19 +210,10 @@ const toggleMap = useCallback(() => {
   setIsMapOpen((prev) => !prev);
 }, []);
 
-  // Function to open the prescribe popup and set the current patient
-  const handlePrescribeCommand = (npc) => {
-    setCurrentPatient(npc);
-    setIsPrescribePopupOpen(true);
-  };
 
   const addQuestionsToContext = (questions) => {
   setAdditionalQuestions(questions);
 };
-
-
-  // handling commands
-
 
   // End game handling
 
@@ -232,11 +239,9 @@ const toggleMap = useCallback(() => {
 // Initial description of Maria and NPC image
 useEffect(() => {
   const initialDescription = `
-    You are Maria de Lima, apothecary. You awaken to the first rays of dawn filtering through the window of your quarters above your shop on Calle de la Amargura in Mexico City.    
+    You are Maria de Lima, apothecary. A new day dawns on your apothecary shop (*botica*) on the Calle de la Amargura in Mexico City.    
     &nbsp;  
-    Descending a rough-hewn ladder, you light a tallow candle. Shelves line the walls of your shop, laden with jars of dried herbs and vials of tinctures. As always, you begin your day by grinding cacao, cornmeal, and cinnamon in a *molcajete*, making a drink to prepare you for the day ahead. Your mind wanders to your mounting debts, which now top 120 *reales*, and your urgent need for new business.    
-    &nbsp;  
-    Next, you feed some scraps of fish to a friendly street cat—an orange fluff ball, little more than a kitten, who you've named João.  
+    Shelves line the walls of your shop. Typically, they carry neat rows of medicines in jars. But not today — thanks to the thugs hired by Don Luis, the moneylender, who have either destroyed or confiscated all your most valuable cures. As you grind cacao, cornmeal, and cinnamon in a *molcajete* to make hot chocolate, you ponder what to do about your debts, which now top 100 *reales*. For now, your next move is to feed some scraps of dried fish to a friendly street kitten who you've named João.  
     &nbsp;  
     Meanwhile, the street outside comes to life. Servants hurry past with baskets of fresh produce, while a group of Dominican friars makes their way towards the nearby church. A water-carrier with his earthen jug trudges by, followed by a group of boisterous students. A patrol of soldiers carrying pikes is a reminder of troubling rumors – whispers of unrest in the northern provinces.  
     &nbsp;  
@@ -266,61 +271,77 @@ useEffect(() => {
     setIsDarkMode(prev => !prev);
   };
 
-// Command handling
-const handleCommand = useCallback((command, npcName) => {
-  // Try to find an entity in the EntityList
-  let entity = EntityList.find(entity => 
-    (entity.type === 'npc' || entity.type === 'patient' || entity.type === 'healer') && entity.name.toLowerCase().includes(npcName.toLowerCase())
-  );
+// command detection
+const handleCommandClick = (command) => {
+  const commandParts = command.split(' ');
+  const commandType = commandParts[0].toLowerCase();
+  const targetName = commandParts.slice(1).join(' ');
+    const npcName = npcCaption.split(',')[0]; 
 
-  // Fallback: If no entity is found, create a default entity from the previous turn's context
-  if (!entity) {
-    console.log('No valid entity found in EntityList. Falling back to previous context.');
+  switch (commandType) {
+    case '#symptoms':
+      if (npcName) {
+        setSelectedNpcName(npcName);
+        setShowSymptomsPopup(true);
+      } else {
+        setHistoryOutput('No NPC is currently selected.');
+      }
+      break;
+
+    case '#prescribe':
+  let targetNPC;
+  if (targetName) {
+    targetNPC = EntityList.find(entity => 
+      entity.name.toLowerCase() === targetName.toLowerCase()
+    );
+  } else {
+    // First, check if there's an NPC in the current scene (from npcCaption)
+    const currentNPCName = npcCaption.split(',')[0].trim();
+    targetNPC = EntityList.find(entity => 
+      entity.name.toLowerCase() === currentNPCName.toLowerCase()
+    );
     
-    entity = {
-      name: npcName || "Unknown Patient",
-      type: 'fallback',  // Fallback type for unknown or undefined patients/NPCs
-      details: 'Generated from previous turn context', // Basic details from previous context
-    };
-
-    // Optionally, you can extract additional context from historyOutput (like symptoms)
-    const lastContext = historyOutput || "No specific context available"; // Fallback to previous historyOutput
-    entity.context = lastContext;
-  }
-
-  // Handle diagnosis
-  if (command === '#diagnose') {
-    console.log('Selected entity for diagnosis:', entity);
-    setCurrentPatient(entity); // Set the entity for diagnosis (whether valid or fallback)
-    setIsDiagnoseOpen(true); // Open the diagnose popup
-  }
-
-  // Handle prescription
-  if (command === '#prescribe') {
-    console.log('Selected entity for prescription:', entity);
-    setCurrentPatient(entity); // Set the entity for prescription (whether valid or fallback)
-    setIsPrescribing(true); // Open the prescription process
-    setIsPrescribePopupOpen(true); // Trigger the prescription popup
-  }
-
-  // Handle symptoms command
-  if (command === '#symptoms') {
-    if (npcName) {
-      setSelectedNpcName(npcName);
-      setShowSymptomsPopup(true);
-    } else {
-      setHistoryOutput('No NPC is currently selected.');
+    // If no NPC found in the caption, fall back to checking the history output
+    if (!targetNPC) {
+      targetNPC = EntityList.find(entity => 
+        historyOutput.toLowerCase().includes(entity.name.toLowerCase())
+      );
     }
   }
-}, [historyOutput, setCurrentPatient, setIsDiagnoseOpen, setIsPrescribing, setIsPrescribePopupOpen]);
 
-// Command click handler to handle incoming commands from the UI
-const handleCommandClick = (command) => {
-  const npcName = npcCaption.split(',')[0]; // Assuming the NPC name is in the caption
-  handleCommand(command, npcName);
+  if (targetNPC) {
+    setCurrentPatient(targetNPC);
+    setIsPrescribing(true);
+    setIsInventoryOpen(true);
+    setIsPrescribePopupOpen(true);
+  } else {
+    setHistoryOutput('No valid NPC found for prescription. Make sure an NPC is present in the current scene or specify a valid NPC name.');
+  }
+  break;
+
+
+    case '#diagnose':
+      const patientForDiagnosis = EntityList.find(entity => 
+        entity.type === 'patient' && historyOutput.toLowerCase().includes(entity.name.toLowerCase())
+      );
+      if (patientForDiagnosis) {
+        setCurrentPatient(patientForDiagnosis);
+        setIsDiagnoseOpen(true);
+      } else {
+        setHistoryOutput('No valid patient found for diagnosis. Make sure a patient is present in the current scene.');
+      }
+      break;
+
+    case '#map':
+      toggleMap();
+      break;
+
+    default:
+      setUserInput(command);
+      handleSubmit({ preventDefault: () => {} }); // Automatically submit the command
+  }
 };
 
-// Detected commands state
 const [commandsDetected, setCommandsDetected] = useState({
   prescribe: false,
   symptoms: false,
@@ -330,25 +351,31 @@ const [commandsDetected, setCommandsDetected] = useState({
   // Add more commands as needed
 });
 
-// Effect to detect commands in the historyOutput
 useEffect(() => {
   const newCommandsDetected = {
-    prescribe: historyOutput.includes('#prescribe'),
-    symptoms: historyOutput.includes('#symptoms'),
-    diagnose: historyOutput.includes('#diagnose'),
-    map: historyOutput.includes('#map'),
+    prescribe: historyOutput.includes('prescribe'),
+    symptoms: historyOutput.includes('symptoms'),
+    diagnose: historyOutput.includes('diagnose'),
+
     buy: historyOutput.includes('#buy'),
     // Add more commands as needed
   };
   setCommandsDetected(newCommandsDetected);
 }, [historyOutput]);
 
-// Fallback for unknown commands
-const defaultCommandHandling = (command) => {
-  setUserInput(command);
-  handleSubmit({ preventDefault: () => {} }); // Automatically submit the command if it's not handled
-};
+//prologue quest start
 
+useEffect(() => {
+  console.log('Checking for prologue quest start...');
+  if (gameState.quests.length === 0 && turnNumber === 0) {
+    const prologueQuest = quests.find(q => q.id === 0);
+    if (prologueQuest) {
+      console.log('Prologue quest found, starting...');
+      startQuest(prologueQuest);
+      setActiveQuest(prologueQuest);
+    }
+  }
+}, [gameState.quests.length, startQuest, turnNumber]);
 
 // quest start check 
 
@@ -483,18 +510,20 @@ if (inventoryChanges && inventoryChanges.length > 0) {
 ]);
 
 
-
-
-
-
-
-
 // Handling Submission
 const handleSubmit = useCallback(async (e) => {
   e.preventDefault();
   setIsLoading(true);
   
   let narrativeText = userInput.trim().toLowerCase(); // Convert to lowercase for easier matching
+
+    // Check for #prescribe command
+  if (narrativeText === '#prescribe') {
+    handleCommandClick('#prescribe');
+    setUserInput('');
+    setIsLoading(false);
+    return;
+  }
 
   // Step 1: Prepare the inventory summary for the history agent
   const inventorySummary = gameState.inventory.map(item => 
@@ -531,11 +560,6 @@ const shouldAdvanceQuest = (quest, actions) => {
   // Normalize the command by removing the hashtag if present
   const command = narrativeText.startsWith('#') ? narrativeText.substring(1) : narrativeText;
 
-  if (command === 'diagnose' || command === 'buy' || command === 'map') {
-    // These commands should trigger the LLM for response
- 
-  }
-
   // Detect symptoms command
   if (command.startsWith('symptoms')) {
     const npcName = command.split(' ')[1] || npcCaption.split(',')[0];
@@ -553,10 +577,6 @@ const shouldAdvanceQuest = (quest, actions) => {
     }
   }
 
-  // Detect prescribe command
- if (command.startsWith('prescribe')) {
-  handlePrescribeCommand(command); // Call function that handles this in PrescribePopup.js
-}
 
 // core gameplay logic (HistoryAgent)
   const selectedEntity = selectEntity();
@@ -633,8 +653,8 @@ const contextSummary = `
               - If a entity (a patient or other NPC) appears in a turn, they become the main subject of the turn, but they must always be interwoven with the context of time and place. For instance, if it is the middle of the night, a patient might be desperately knocking on Maria's door with an urgent malady, whereas at noon they might be less desperate. Maria (the player) is allowed to tell patients to go away and do something else, but other NPCs like inquisitors may be more insistent. 
 
               **Commands:**
-              - Certain key words are commands: #symptoms, #prescribe, #diagnose, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate (when NPCs seek medical care, suggest asking them more about their lives (tailored to specific context) as well as exploring their #symptoms, attempting to  #diagnose, and #prescribe - however if Maria wants to poison someone, #prescribe may be suggested too). #buy is suggested whenever items for sale may be nearby.
-              - if a player asks a patient about their #symptoms in their input, the player will see a popup displaying them. You can go into more detail if prompted but need not. 
+              - Certain key words are commands: #symptoms, #prescribe, #diagnose, #forage, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate. This should come at the end of the turn, and remember to always use the hashtag. Suggest exploring #symptoms, attempting to  #diagnose, or to use #prescribe if they feel certain of the diagnosis. #buy is suggested whenever items for sale may be nearby, #forage when items may be harvested.
+              - when treating a patient, you should always ask is player wants to use #symptoms command.
               - #buy: herbs and other materia medica are available at the herb stalls of the Portal de Mercaderes and other local markets. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Some of the items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
     "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
@@ -642,6 +662,7 @@ const contextSummary = `
     "Yarrow", "Valerian", Radish seeds," "Scorpions", "Vinegar", Calendula", "Mullein", "Echinacea", "Anise", "Chamiso", "Sassafras", "a Small Cat," "Skull of a Man," "Bird Feathers," 
     "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
     "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade", "Deer Antlers", "Vanilla", "Bezoar" (very expensive)
+              - #forage: Maria is a skilled forager and can find some of the above substances (and others, as contextually appropriate) in the countryside. She may add them to inventory with the #forage command.
 
               **Contextual Awareness:**
               - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in an increasingly desperate personal and financial state, owing 100 reales to Don Luis and 20 reales to Marta the herb woman. 
@@ -664,7 +685,9 @@ const contextSummary = `
 
               **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
-              On any turn when Maria buys an herb, drug, or simple, you must ALWAYS end your response by noting the item purchased. The item purchased must ALWAYS come at the end of your response, like this:  **Maria has [integer] silver coins. She spent [integer] of them. She bought [itemname].** 
+              On any turn when Maria buys an item, you must ALWAYS end your response by noting the item purchased. The item bought must ALWAYS come at the end of your response, like this:  **Maria has [integer] silver coins. She spent [integer] of them. Maria bought [itemname].** 
+              Likwise for the #forage command: If Maria successfully forages for an item, always end your response noting it as follows: **Maria has [integer] silver coins. Maria foraged [itemname].** 
+              Tracking buying and foraging in this specific way is very important. It allows the game to track new items.  
 
               ` 
             },
@@ -682,12 +705,20 @@ const historyAgentData = await historyAgentResponse.json();
 const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
 
 // Detect new item purchase
-const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|and bought|and purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
+const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|now owns|and bought|and purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
 
 
 if (purchaseMatch) {
   const purchasedItemName = purchaseMatch[1].trim(); 
   generateNewItemDetails(purchasedItemName);
+}
+
+// Detect foraging
+const forageMatch = simulatedHistoryOutput.match(/(?:She foraged|Maria has foraged|foraged for|Maria picked|Maria has picked|Maria foraged)\s+(#?[A-Z][a-zA-Z\s]*)/i);
+
+if (forageMatch) {
+  const foragedItemName = forageMatch[1].trim();
+  generateNewItemDetails(foragedItemName);
 }
 
 await handleTurnEnd(simulatedHistoryOutput);
@@ -968,15 +999,15 @@ setUserInput('');
 
           </div>
 
-      <Quest
-          currentTurn={turnNumber}
-          userActions={userActions}
-          location={location}
-          activeQuest={activeQuest}
-          setActiveQuest={setActiveQuest}
-          time={gameState.time} 
-          startQuest={startQuest}
-        />
+    <Quest
+      currentTurn={turnNumber}
+      userActions={userActions}
+      location={gameState.location}
+      activeQuest={activeQuest}
+      setActiveQuest={setActiveQuest}
+      time={gameState.time} 
+      startQuest={startQuest}
+    />
         </div>
 
         <footer className="footer">
@@ -1014,6 +1045,9 @@ setUserInput('');
          onPDFClick={handlePDFClick}
          addQuestionsToContext={addQuestionsToContext}  
          handleSubmit={handleSubmit}
+         conversationHistory={conversationHistory}
+  setHistoryOutput={setHistoryOutput}
+  setConversationHistory={setConversationHistory}
        />
        )}
 
@@ -1056,7 +1090,11 @@ setUserInput('');
         
 <PrescribePopup 
   isOpen={isPrescribePopupOpen}
-  onClose={() => setIsPrescribePopupOpen(false)}
+  onClose={() => {
+    setIsPrescribePopupOpen(false);
+    setIsPrescribing(false);
+    setIsInventoryOpen(false);
+  }}
   currentPatient={currentPatient}
   gameState={gameState}
   updateInventory={updateInventory}
@@ -1065,8 +1103,9 @@ setUserInput('');
   setHistoryOutput={setHistoryOutput}
   setConversationHistory={setConversationHistory}
   setTurnNumber={setTurnNumber}
+  toggleInventory={toggleInventory}  
+  setIsLoading={setIsLoading}
   addJournalEntry={addJournalEntry}
-  toggleInventory={toggleInventory}  // Pass toggleInventory here
 />
 
 {isAboutOpen && <About isOpen={isAboutOpen} toggleAbout={toggleAbout} />}

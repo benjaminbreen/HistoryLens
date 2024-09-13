@@ -43,8 +43,16 @@ h4 {
   font-weight: bold;
   margin-bottom: 8px;
   color: darkred;
+  }
 
+  h5 {
 
+  margin-top: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: red;
+  text-transform: uppercase;
 }
 
 .container {
@@ -287,6 +295,7 @@ margin-left: 0px;
 /* Prescribe Button */
 .command-button.prescribe-button {
   background: linear-gradient(30deg, #e57272, #005bb5); /* Original gradient */
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
 }
 
 .command-button.prescribe-button:hover {
@@ -545,6 +554,7 @@ input[type="text"]:focus {
   z-index: 1000;
   padding: 20px;
   box-shadow: -2px 0px 7px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
 
 }
 
@@ -558,6 +568,17 @@ input[type="text"]:focus {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e2e8f0; /* Gray-200 */
+}
+
+.death-entry {
+  color: #ff0000; /* Red for death */
+  font-weight: bold;
+}
+
+/* Styling for injury entries */
+.injury-entry {
+  color: #ff4500; /* Orange-red for injury */
+  font-weight: bold;
 }
 
 /* Italicize auto-generated journal entries */
@@ -984,7 +1005,7 @@ body.dark-mode .simulation-history.open {
     justify-content: flex-start;
     gap: 8px;
     padding: 2px;
-    margin-top: -24px;
+    margin-top: -10px;
   }
 
   .output-box {

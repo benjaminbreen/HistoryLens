@@ -10,7 +10,9 @@ function WealthTracker({ llmResponse, onStatusChange }) {
     // Extract wealth (either "reales" or "silver coins") from the LLM response
     const wealthMatch = llmResponse.match(/Maria has (\d+) (reales|silver coins)\./);
     const statusMatch = llmResponse.match(/She is feeling ([\w\s]+)\./);
-    const reputationMatch = llmResponse.match(/Her reputation is represented by the emoji (.+)\./);  // Expecting reputation as emoji from the LLM
+    
+    // Regex to match any emoji in the response
+    const emojiMatch = llmResponse.match(/([\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}])/u);
 
     // If wealth information is found
     if (wealthMatch && wealthMatch[1]) {
@@ -28,9 +30,9 @@ function WealthTracker({ llmResponse, onStatusChange }) {
       }
     }
 
-    // If reputation emoji is found
-    if (reputationMatch && reputationMatch[1]) {
-      setReputationEmoji(reputationMatch[1].trim());
+    // If any emoji is found, update the reputation emoji
+    if (emojiMatch && emojiMatch[1]) {
+      setReputationEmoji(emojiMatch[1].trim());
     }
   }, [llmResponse, onStatusChange]);
 
@@ -48,7 +50,6 @@ function WealthTracker({ llmResponse, onStatusChange }) {
         <div className="wealth-item">
           <span className="wealth-label">REPUTATION:</span>
           <span className="wealth-value"><span className="emoji">{reputationEmoji}</span></span>
-
         </div>
       </div>
     </div>

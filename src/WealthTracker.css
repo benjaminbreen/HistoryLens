@@ -31,7 +31,7 @@
   text-transform: uppercase;
   font-family: 'Quicksand', sans-serif;
   margin-bottom: 6px; /* Add a small margin below the label */
-  margin-right: 6px;
+  margin-right: 15px;
 }
 
 .wealth-tracker .wealth-value {
@@ -42,8 +42,8 @@
 }
 
 .wealth-value .emoji {
-  font-size: 2.1vw; /* Responsive size for the emoji */
-  line-height: 1.5; /* Prevent large gaps */
+  font-size: 1.8vw; /* Responsive size for the emoji */
+  line-height: 1.2; /* Prevent large gaps */
   margin-left: 10px;
   margin-top: 10px;
 
@@ -52,33 +52,42 @@
 
 
 
+
+/* Add media query for smaller screens */
 @media (max-width: 768px) {
   .wealth-box {
-    flex-direction: column; /* Stack wealth and status sections vertically */
-    padding: 8px 8px; /* Reduce padding */
-    border-radius: 12px; /* Slightly smaller border radius */
-  }
-
-   .wealth-value .emoji {
-    font-size: 2rem; /* Fixed size for larger screens */
-  }
-
-  .wealth-item {
-    align-items: flex-start; /* Keep items aligned to the left */
-    margin-bottom: 0px; /* Add some spacing between wealth and status sections */
-  }
-
-  .wealth-tracker .wealth-label {
-    font-size: 11px; /* Reduce font size */
-    margin-bottom: 2px; /* Reduce margin below the label */
-  }
-
-  .wealth-tracker .wealth-value {
-    font-size: 11.5px; /* Reduce font size */
+    flex-direction: column; /* Stack wealth items vertically */
+    padding: 8px 8px;
+    border-radius: 12px;
   }
 
   .wealth-tracker {
-    margin-bottom: -2px; /* Add a little more spacing below the tracker */
+    margin-top: 10px;
+    /* Move it below other content */
+    order: 1; /* Ensure it comes last in flexbox order */
+  }
+
+  .wealth-value .emoji {
+    font-size: 1.3rem;
+  }
+
+  .wealth-item {
+    align-items: flex-start;
+    margin-bottom: 0px;
+  }
+
+  .wealth-tracker .wealth-label {
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+
+  .wealth-tracker .wealth-value {
+    font-size: 10px;
+  }
+
+  /* Ensure wealth tracker moves below buttons and output box */
+  .wealth-tracker-wrapper {
+    order: 2; /* Ensure it's placed after other elements */
   }
 }
 

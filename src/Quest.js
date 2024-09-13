@@ -26,18 +26,18 @@ const quests = [
     name: 'Prologue',
     npc: 'Joao the Kitten', // Placeholder NPC for interaction
     classification: 'Prologue',
- trigger: (turnNumber, actions) => Array.isArray(actions) && actions.includes('#startQuest1'),
+    trigger: () => true, 
     stages: [
       {
         type: 'banner',
         image: 'quest0a', // Placeholder dream sequence image
          text: [
           "Strange...",
-          "I seem to be having the dream again.",
+          "I'm having the dream again.",
           "Always, the same dream.",
           "Cold Atlantic Ocean waters enveloping me. Pulling me down into darkness...",
-          "Then the tug of the tides pulling me back up into new waters. Warmer, unfamiliar.",
-          "Waters of a New World.",
+          "Then the tides pulling me back into new waters. Warmer, unfamiliar... ",
+          "... a new world.",
           "In my dreams I am always still in Portugal. Not Mexico. Even after all these years.",
           "We Portuguese have a word for the feeling:",
           " ",
@@ -53,7 +53,7 @@ const quests = [
         image: 'quest0b', // Placeholder image of Joao the kitten
         text: `*Joao the kitten paws at you, meowing softly. It’s clear he doesn’t intend to let you go back to sleep.*`,
         npcResponses: [
-          '[NOTE: Joao should NEVER speak and your responses for Joao should only record his actions. He only interacts in short actions of a few words, like *Joao purrs contentedly, seemingly satisfied that you’re awake*].',
+          '[NOTE: Joao should NEVER speak and your responses for Joao should only record his actions. He only interacts in short actions of a few words, like *Joao purrs contentedly, seemingly satisfied that you’re awake*]. Give no other commentary, except perhaps a phrase or very short sentence.',
           
         ],
         playerChoices: [
@@ -61,12 +61,12 @@ const quests = [
           'Shoo Joao away.'
         ],
         decisionPoint: true,
-        maxExchanges: 2,
+        maxExchanges: 3,
       },
       {
         type: 'decision',
         image: 'quest0c', // Placeholder image of the letter
-        text: `*You walk downstairs and find a letter waiting for you. Most of your inventory has been smashed. A harsh demand from **Don Luis the moneylender** threatens to repossess your shop if you don’t get him 100 reales by the following evening.*`,
+        text: `*You walk downstairs and find a letter waiting for you. Most of your inventory has been smashed, fragments of jars and piles of spices and herbs scattered around the floor. A harsh demand from **Don Luis the moneylender** threatens to repossess your shop if you don’t get him 100 reales by the following evening. Looks like you have your work cut out for you.*`,
         buttons: [
           { text: 'Ay. This is not good.', action: 'end' }
  
@@ -474,7 +474,7 @@ const questAgent = async (quest, stage, userInput) => {
     NPC Dialogue: ${stage.npcResponses.join('\n')}
     Using this material (inclduing the directions to you in brackets in NPCresponses which should not be reproduced for the end user) please generate a historically accurate response of no more than 2 paragraphs, and sometimes only one or two sentences. Avoid cliches and genre conventions. Example of WHAT TO AVOID: "I ask you, do the whispers of the ancients not have a call upon your own curiosity? What might we unearth together... if we dare?" That sounds like corny, cliched dialogue from a bad fantasy novel. EXAMPLE OF WHAT TO DO: "Señora, I have spoken enough. Let us begin now -- unless you have some reason to object?" 
     Your dialogue should sound like something a real person might've said. Remember that this is a conversation, not a monologue. At times the NPC might take offense, or get angry, or make an odd observation, or do some other surprising thing. They might even answer with a single sentence, like "I have no idea what you mean by that" if the user has inputted something perplexing or unimpressive. NPCs make specific hsitorical references relevent to their background and time period.
-    Any questions should never be didactic or expected. NO EXCLAMATION POINTS! VARIED DIALOGUE, UNUSUAL OBSERVATIONS AND DETAILS. KEEP IT VERY SIMPLE - instead of "Ah, the game of life is a treacherous one, is it not?" perhaps just "Life is crazy, isn't it?" If you are asked to pretend to be "waves," respond only in odd single words or phrases.
+    Any questions should never be didactic or expected. NO EXCLAMATION POINTS! VARIED DIALOGUE, UNUSUAL OBSERVATIONS AND DETAILS. KEEP IT VERY SIMPLE AND SHORT - instead of "Ah, the game of life is a treacherous one, is it not?" perhaps just "Life is crazy, isn't it?" If you are asked to pretend to be "waves," respond only in odd single words or phrases.
   `;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -633,13 +633,13 @@ const goToSpecificStage = (stageType) => {
     setActiveQuest(null);
   };
 
-  useEffect(() => {
-    if (activeQuest) {
-      setShowQuestPopup(true);
-      setCurrentStage(0);
-      setDialogueHistory([]);
-    }
-  }, [activeQuest]);
+useEffect(() => {
+  if (activeQuest) {
+    setShowQuestPopup(true);
+    setCurrentStage(0);
+    setDialogueHistory([]);
+  }
+}, [activeQuest]);
 
   if (!showQuestPopup || !activeQuest) return null;
 

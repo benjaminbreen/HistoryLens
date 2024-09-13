@@ -46,7 +46,7 @@ const PDFPopup = ({ isOpen, onClose, pdfPath, citation }) => {
           Close
         </button>
         <div className="citation">
-        <h4>Citation:</h4>
+        <h3>Citation:</h3>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {citation}
           </ReactMarkdown>

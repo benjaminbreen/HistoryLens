@@ -29,6 +29,42 @@
     z-index: 1000; /* Add a high z-index to ensure it appears above other elements */
 }
 
+.summary-popup {
+  width: 60%; /* Make the window wider */
+  max-width: 700px; /* Adjust as needed */
+  max-height: 90vh;
+  overflow-y: auto
+}
+
+.summary-popup .summary-title {
+  font-size: 1.3rem;
+  text-align: center;
+  color: floralwhite;
+}
+
+.summary-popup button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.summary-popup button:hover {
+  background-color: #45a049;
+}
+
+
+.summary-popup .item-details {
+  font-family: 'IM Fell English', serif;
+  font-size: 1.1rem; /* Adjust the size as needed */
+  color: #4a4a4a;
+}
+
 
 .prescription-controls label {
   color: #4a4a4a;
@@ -271,6 +307,19 @@ body.dark-mode .cancel-button {
     max-height: 90vh;
     transform: translate(-50%, -50%);
   }
+
+  .summary-popup {
+  width: 95%; /* Make the window wider */
+  max-width: 800px; /* Adjust as needed */
+  max-height: 90vh;
+  overflow-y: auto
+}
+
+.summary-popup .summary-title {
+  font-size: 1.1rem;
+  text-align: center;
+  color: floralwhite;
+}
 
   .prescribe-content {
     padding: 15px;

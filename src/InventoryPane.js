@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useDrag } from 'react-dnd';
 import PDFPopup from './PDFPopup'; // Import the PDFPopup component
+import { useGameState } from './gameState';
 import './Inventory.css';
 import './Popup.css'; // Make sure this is imported to handle popup styling
 
@@ -57,7 +58,9 @@ function InventoryItem({ item, index, getHumoralShorthand, onPDFClick, onItemCli
   );
 }
 
-function InventoryPane({ inventory, isOpen, toggleInventory }) {
+function InventoryPane({ isOpen, toggleInventory, isPrescribing, onPDFClick }) {
+  const { gameState } = useGameState();
+  const inventory = gameState.inventory;
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [selectedPdfPath, setSelectedPdfPath] = useState('');
   const [selectedCitation, setSelectedCitation] = useState('');

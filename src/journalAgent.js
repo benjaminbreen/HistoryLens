@@ -34,7 +34,7 @@ When updating the time and date, please follow these specific rules:
 
 3. Select the most appropriate image name based on the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
 
-- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, franciscohernandez, franciscoramirez, donignaciodemendoza, tlacaelel, sebastianathayde,
+- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, rodrigohernandez, rodrigoramirez, donignaciodemendoza, tlacaelel, sebastianathayde,
 - Locations: countryside, generichome, market, street, streetnight, outsideday, outsidenight, shopmorning, shopafternoon, shopnight, farm, cityday
 - Generic scenes: study, codex, herbs, herbalist, mushroom, trippy, merchant, priest,
 - Generic people: genericfemalecommoner, genericmalecommoner, genericfemaleupper, genericmaleupper
@@ -145,8 +145,8 @@ Also, try to vary your image choice. Avoid repeating the same image more than on
 IMPORTANT: When providing the "NPC image" output, ensure there are no extra characters, spaces, or quotation marks. The output should be exactly in this format:
 NPC image: imagename
 For example:
-NPC image: franciscohernandez
-Not "NPC image: "franciscohernandez"" or any other variation.
+NPC image: rodrigohernandez
+Not "NPC image: "rodrigohernandez"" or any other variation.
 `
 
                     },
@@ -180,7 +180,7 @@ let npcImageName = imageMatch ? imageMatch[1].trim().toLowerCase() : "default";
 npcImageName = npcImageName.replace(/['"]+/g, '');
 
 // Fuzzy matching for NPC names
-const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'franciscohernandez', 'franciscoramirez', 'donignaciodemendoza', 'tlacaelel', 'sebastianathayde'];
+const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'rodrigohernandez', 'rodrigooramirez', 'donignaciodemendoza', 'tlacaelel', 'sebastianathayde'];
 
 const fuzzyMatch = npcNames.find(name => npcImageName.includes(name));
 if (fuzzyMatch) {

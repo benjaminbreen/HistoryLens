@@ -1,14 +1,17 @@
 import { useState, useCallback } from 'react';
 import { initialInventoryData, potentialInventoryItems } from './initialInventory';
+import { quests } from './Quest'; 
 
 export const useGameState = () => {
+  // Automatically include the prologue quest on game start
   const [gameState, setGameState] = useState({
     inventory: initialInventoryData, 
-    quests: [], 
+    quests: [quests.find(q => q.id === 0)], // Initialize with the prologue quest
     compounds: [], 
-    time: '8:00 AM',  // these settings can be changed to alter simulation feel - like starting at night, different year, dif location, etc
+    time: '8:00 AM',  
     date: 'August 22, 1680', 
     location: 'Apothecary shop, Mexico City',
+    turnNumber: 0,  // Initialize turn number here
   });
 
   // Update location
@@ -20,6 +23,17 @@ export const useGameState = () => {
       location: newLocation, // Update to the new location
     }));
   }, []);
+
+  // Start a quest manually (you can call this later for non-prologue quests)
+  const startQuest = useCallback((quest) => {
+    setGameState(prevState => ({
+      ...prevState,
+      quests: [...prevState.quests, { ...quest, currentStage: 0 }],
+    }));
+  }, []);
+
+
+
 
 
   // Update inventory logic
@@ -93,7 +107,7 @@ quantity (integer): The default quantity of the item (range: 1-5).
 humoralQualities (string): Describe its qualities according to humoral theory (e.g., "Warm & Moist").
 medicinalEffects (string): The specific effects it has on health and the body.
 description (string): A brief, historically plausible description of the item.
-emoji (single emoji character): Choose a suitable emoji that represents the materia medica.
+emoji (single emoji character): Choose a SINGLE emoji to represent the item.
 Ensure the JSON is valid and uses double quotes for all keys and string values.
 
 Here are two examples of expected formatting:
@@ -118,7 +132,7 @@ Example 2: "Peyote" (Plant)
   "latinName": "Lophophora williamsii",
   "spanishName": "Peyote",
   "price": 10,
-  "quantity": 3,
+  "quantity": 1,
   "humoralQualities": "Hot & Dry",
   "medicinalEffects": "Used for spiritual healing and to treat ailments of the mind and spirit, inducing visions.",
   "description": "A sacred cactus used in religious ceremonies by indigenous peoples, known for its hallucinogenic properties.",
@@ -152,7 +166,7 @@ If your response doesn't meet these criteria, please correct it before returning
                 "latinName": "Crocus sativus",
                 "spanishName": "Azafrán",
                 "price": 15,
-                "quantity": 2,
+                "quantity": 1,
                 "humoralQualities": "Warm & Dry",
                 "medicinalEffects": "Used to alleviate melancholy, improve digestion, and treat coughs.",
                 "description": "Highly valued spice derived from the stigmas of Crocus flowers, often mixed in compound drugs.",
@@ -197,13 +211,7 @@ If your response doesn't meet these criteria, please correct it before returning
     }));
   }, []);
 
-  // Start a quest
-  const startQuest = useCallback((quest) => {
-    setGameState(prevState => ({
-      ...prevState,
-      quests: [...prevState.quests, { ...quest, currentStage: 0 }],
-    }));
-  }, []);
+  
 
 // time handling via summarydata from journal.agent JSON output
 
@@ -267,7 +275,7 @@ const completeQuest = useCallback((questId, outcome) => {
     });
   }, []);
 
-  return {
+ return {
     gameState,
     updateInventory,
     setGameState,
@@ -278,6 +286,6 @@ const completeQuest = useCallback((questId, outcome) => {
     startQuest,  
     advanceQuestStage,
     completeQuest,
-    advanceTime, // Don't forget to return advanceTime
+    advanceTime,
   };
 };

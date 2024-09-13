@@ -264,7 +264,7 @@ const EntityList = [
 
 {
   type: "patient",
-  name: "Francisco Hernandez",
+  name: "Rodrigo Hernandez",
   age: 48,
   gender: "Male",
   occupation: "Merchant",
@@ -279,14 +279,14 @@ const EntityList = [
   ],
   diagnosis: "Feigned illness",
   contemporaryTheory: "Minor imbalance of the humors, perhaps a lingering flux caused by overindulgence in rich foods",
-  socialContext: "Francisco is pretending to be ill to test Maria's willingness to prescribe without a physician's authority.",
+  socialContext: "Rodrigo is pretending to be ill to test Maria's willingness to prescribe without a physician's authority.",
   urgency: "Medium",
-  image: "franciscohernandez",
-  caption: "Francisco Hernandez, merchant",
-  description: "Francisco Hernandez is a well-dressed merchant who seems too healthy for the symptoms he describes. His manner is calm, but his eyes dart around the room, betraying a deeper intention.",
+  image: "rodrigohernandez",
+  caption: "Rodrigo Hernandez, merchant",
+  description: "Rodrigo Hernandez is a well-dressed merchant who seems too healthy for the symptoms he describes. His manner is calm, but his eyes dart around the room, betraying a deeper intention.",
   astrologicalSign: "Libra",
       pdf: "hysteria.pdf",
-  secret: "Francisco Hernandez is actually Licenciado Francisco Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
+  secret: "Rodrigo Hernandez is actually Licenciado Rodrigo Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
 },
 
 
@@ -875,16 +875,16 @@ const EntityList = [
 },
 {
   type: "questnpc",
-  name: "Licenciado Francisco Ramírez",
+  name: "Licenciado Rodrigo Ramírez",
   age: 48,
   birthplace: "Seville, Spain",
   currentResidence: "Mexico City",
   casta: "Peninsular",
   class: "Upper middle class",
   occupation: "Guild Lawyer",
-  image: "francisco_ramirez.jpg",
-  caption: "Licenciado Francisco Ramírez, Guild Lawyer",
-  description: "Licenciado Francisco Ramírez is a cunning and ruthless lawyer representing the Physicians' Guild in their lawsuit against Maria for practicing medicine without a license. He harbors a personal grudge against unlicensed healers, driven by the death of his brother at the hands of one. He is determined to see Maria punished, no matter the cost.",
+  image: "rodrigo_ramirez.jpg",
+  caption: "Licenciado Rodrigo Ramírez, Guild Lawyer",
+  description: "Licenciado Rodrigo Ramírez is a cunning and ruthless lawyer representing the Physicians' Guild in their lawsuit against Maria for practicing medicine without a license. He harbors a personal grudge against unlicensed healers, driven by the death of his brother at the hands of one. He is determined to see Maria punished, no matter the cost.",
   astrologicalSign: "Libra",
   secret: "Licenciado Ramírez's vendetta against unlicensed healers stems from a deep personal loss. He will stop at nothing to see Maria brought to justice.",
   questTrigger: "turn20", // Automatically triggered on turn 20
