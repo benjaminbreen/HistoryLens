@@ -39,7 +39,7 @@ import './App.css';
 import './Inventory.css';
 import './Popup.css';
 const PDFPopup = lazy(() => import('./PDFPopup'));
-import Sleep from './Sleep'; 
+
 
 function App() {
   const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime } = useGameState();
