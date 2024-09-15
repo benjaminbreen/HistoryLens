@@ -22,15 +22,15 @@
   background-color: rgba(45, 45, 45, 0.8);
   padding: 20px;
   border-radius: 12px;
-  width: 74%;
+  width: 80%;
   height: 98%;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-right: 200px;
+  margin-right: 50px;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
-  max-width: 1300px;
+  max-width: 1400px;
 }
 
 .mixing-header {
@@ -51,7 +51,7 @@
 .close-mixing-button {
   position: absolute;
     top: 20px;
-    right: 40px;
+    right: 120px;
     padding: 10px 10px;
     background-color: #ff4d4f;
     color: white;
@@ -111,7 +111,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 10px;
   background-color: rgba(58, 58, 58, 0.9);
   border-radius: 12px;
@@ -123,10 +123,10 @@
 }
 
 .method-square-container {
-  flex: 1 1 23%; /* Allow squares to take up 23% of the container width */
+  flex: 1 2 20%; /* Allow squares to take up 23% of the container width */
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  padding: 2px;
 
   
 }
@@ -141,8 +141,8 @@
 }
 
 .method-square {
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   background-size: cover;
   border-radius: 10px;
   position: relative;
@@ -343,22 +343,22 @@
   /* Mixing Popup Content */
   .mixing-popup-content {
     width: 100%;
-    height: 94%;
-    padding: 10px;
-    max-height: 90vh; /* Ensure the content doesn’t exceed the viewport height */
+    height: 98%;
+    padding: 8px;
+    max-height: 92vh; /* Ensure the content doesn’t exceed the viewport height */
     overflow-y: auto;
     overflow-x: hidden; /* Prevent horizontal scrolling */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-right: 10px;
+  margin-right: 1px;
   
   }
 
   /* Header Styling */
   .mixing-header {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 2px;
     text-align: center;
   }
 
@@ -373,8 +373,8 @@
   /* Method Grid */
   .method-grid {
     flex-wrap: wrap; /* Wrap the squares on smaller screens */
-    gap: 3px;
-    padding: 5px;
+    gap: 1px;
+    padding: 1px;
     max-width: 100%;
     display: flex;
     justify-content: space-between; /* Distribute the squares evenly */
@@ -383,7 +383,7 @@
 
   /* Method Square Containers */
   .method-square-container {
-    flex: 0 0 60%; /* Set a smaller width for method squares */
+    flex: 0 0 50%; /* Set a smaller width for method squares */
     width: 100%; /* Ensure it takes full width of container */
     max-width: 160px; /* Adjust width for smaller screens */
   }
@@ -395,8 +395,8 @@
 
   /* Method Squares Adjustments */
   .method-square {
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
   }
 
   /* Inventory Grid Adjustments */
@@ -454,8 +454,8 @@
   font-size: .9rem;
 }
 .mix-button-container {
-  margin-bottom: 5px;
-   margin-top: 5px;
+
+   margin-top: 10px;
   text-align: left;
 }
 }

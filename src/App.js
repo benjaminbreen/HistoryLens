@@ -33,11 +33,13 @@ import Map from './Map';
 import Quest, { quests } from './Quest';
 import { initialInventoryData, potentialInventoryItems } from './initialInventory';
 import HistoryOutput from './HistoryOutput';
+import NotificationPopup from './NotificationPopup';
+import QuestTester from './QuestTester';
 import './App.css';
 import './Inventory.css';
 import './Popup.css';
 const PDFPopup = lazy(() => import('./PDFPopup'));
-
+import Sleep from './Sleep'; 
 
 function App() {
   const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime } = useGameState();
@@ -85,25 +87,41 @@ function App() {
   const handleStatusChange = (newStatus) => {
     setMariaStatus(newStatus);
   };
-  const [userActions, setUserActions] = useState([]);
-  const [activeQuest, setActiveQuest] = useState(null);
   const [isEmoji, setIsEmoji] = useState(false);
-  
   const [selectedPDF, setSelectedPDF] = useState(null);
   const [selectedCitation, setSelectedCitation] = useState(null);
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [showPdfButtons, setShowPdfButtons] = useState(false);
   const [additionalQuestions, setAdditionalQuestions] = useState('');
+
+  // new part, quests and notification popup
+const [activeQuest, setActiveQuest] = useState(null);
+  const [userActions, setUserActions] = useState([]);
   const [startedQuests, setStartedQuests] = useState(new Set());
+  
+
+  const [notificationPopup, setNotificationPopup] = useState(null);
+
+  // Function to trigger the notification popup
+  const triggerNotificationPopup = (popupData) => {
+    setNotificationPopup(popupData);
+  };
+
+  // Function to mark a quest as started
+  const markQuestAsStarted = (questId) => {
+    setStartedQuests(prev => new Set(prev).add(questId)); // Create a new Set to ensure state immutability
+  };
+
 
 
 
 // Toggle functions
 
 
-const markQuestAsStarted = (questId) => {
-  setStartedQuests(prev => new Set(prev).add(questId)); // Create a new Set to ensure state immutability
-};
+  const closeNotificationPopup = () => {
+    setNotificationPopup(null);
+  };
+
 
 
 const handleIncorporate = (content) => {
@@ -510,24 +528,8 @@ const shouldAdvanceQuest = (quest, actions) => {
   // tk come back to this to finalize quest functionality
   return actions.some(action => action.includes(`advanceQuest${quest.id}`));
 };
-  // Check for quest start commands
- if (narrativeText.startsWith('quest')) {
-  const questNumber = parseInt(narrativeText.replace('quest', ''));
-  if (!isNaN(questNumber)) {
-    const questToStart = quests.find(quest => quest.id === questNumber);
-    if (questToStart) {
-      startQuest(questToStart);
-      setActiveQuest(questToStart);
-      setHistoryOutput(prev => `${prev}\n\nStarting Quest: ${questToStart.name}`);
-      setUserActions(prevActions => [...prevActions, `#startQuest${questNumber}`]); // Add this line
-      setUserInput('');
-      setIsLoading(false);
-      return;
-    }
-  }
-}
-  
 
+  
   // track user actions
   setUserActions(prevActions => [...prevActions, narrativeText]);
 
@@ -633,7 +635,7 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
               **Commands:**
               - Certain key words are commands: #symptoms, #prescribe, #diagnose, #forage, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate. This should come at the end of the turn, and remember to always use the hashtag. Suggest exploring #symptoms, attempting to  #diagnose, or to use #prescribe if they feel certain of the diagnosis. #buy is suggested whenever items for sale may be nearby, #forage when items may be harvested.
               - when treating a patient, you should always ask is player wants to use #symptoms command.
-              - #buy: herbs and other materia medica are available at the herb stalls of the Portal de Mercaderes and other local markets. ALWAYS provide a markdown list, with name, brief description, and price in silver coins, of all herbs, medicines, or drugs for sale nearby. Some of the items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
+              - #buy: a very wide range of materia medica (and other items) are available to buy from NPCs. If Maria buys an item, ALWAYS record this event at the last sentence of your response as directed below ("Maria has bought [item name]"). If user simply types #buy rather than #buy [item name], provide a markdown list, with name, brief description, and price in silver coins, of all materia medica for sale nearby. Some of the items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
     "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
     "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "St. John's Wort", "Tobacco,"
@@ -655,17 +657,17 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
               - When contextually appropriate, reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature, for instance rumors of the Pueblo Revolt on the northern border, or Catholic-Protestant tensions (its the era of the Popish Plot in England), or rivalries between Cartesians and Aristotelians (ancients vs moderns) or the growing importance of "drogas da India" -- exotic materia medica from China, India, and the tropics in general.
               - At the Portal de Mercaderes, there is a quest available if you visit spend more than one turn at the marketplace stalls where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name and you should ask if the user wnats to speak to him.
               - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. After Maria prescribes medicine of any kind, the NPC departs the scene and does not linger, though they may reappear in later turns (and, at times, NPCs may even be killed by a toxic prescription).
-              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious - always one word), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response. Update status and reputation (via emoji) every turn. If Maria sold a drug for 2 coins, write "Maria has sold [drug name] for [#] coins."
+              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious - always one word), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response as detailed below.
                Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. 
                - certain NPCs have no names. For instance, an NPC like "soldado" or "Doña" or "Caballero" represents a whole class of people. When you introduce them, give them names to individualize them, like "Doña Maria de Gallego" or "Eduardo, a sailor."
                - when a turn seems to be an important moment, begin your output with either h3 markdown tags (announcing a change or event, like "Maria left Mexico City" or "A new day dawns...") or h4 markdown tags, which render as red and signal an emergency or crisis point, like "Maria has been arrested!" or "The Inquisitor has arrived...".
-               - Track Maria's wealth, status, reputation, and the date and time in each response. Reputation is displayed via a choice of ONE of these emojis (Maria starts at 3, 😐) 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)Your final line should always be in this exact format:
+               - Track Maria's wealth, status, reputation, and the date and time at the end of each response. Reputation is displayed via a choice of ONE of these emojis (Maria starts at 3, 😐) 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)Your final line should always be in this exact format:
 
-              **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
+              *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
 
-              On any turn when Maria buys an item, you must ALWAYS end your response by noting the item purchased. The item bought must ALWAYS come at the end of your response, like this:  **Maria has [integer] silver coins. She spent [integer] of them. Maria bought [itemname].** 
+              - Maria is able to buy items with the #buy [item name] command. On any turn when Maria buys an item, you must ALWAYS end your response by noting the item purchased. The item bought must ALWAYS come at the end of your response, in this EXACT format, with no deviation ever:  "*Maria spent [#] silver coins. Now Maria has [#] silver coins. Maria bought [item name].*'"'
               Likwise for the #forage command: If Maria successfully forages for an item, always end your response noting it as follows: **Maria has [integer] silver coins. Maria foraged [itemname].** 
-              Tracking buying and foraging in this specific way is very important. It allows the game to track new items.  
+              Tracking buying and foraging in this specific way is very important. It allows the game to track new items.
 
               ` 
             },
@@ -731,35 +733,24 @@ setUserInput('');
   additionalQuestions, 
 ]);
 
-// Prologue quest start
-useEffect(() => {
-  console.log('Checking for quest starts...');
 
-  // Find quests that should start (e.g., prologue at turn 1)
-  const questToStart = quests.find(quest => !startedQuests.has(quest.id) && quest.trigger(turnNumber, userActions, gameState.location, gameState.time));
-  
-  if (questToStart) {
-    console.log(`${questToStart.name} quest found, starting...`);
-    startQuest(questToStart);
-    setActiveQuest(questToStart);
-    markQuestAsStarted(questToStart.id); // Mark this quest as started
-  }
-}, [turnNumber, userActions, gameState.location, gameState.time, quests, startedQuests]);
+  //  useEffect to start quests based on triggers
+  useEffect(() => {
+    console.log('Checking for quests to start...');
 
-// Generalized quest start logic
-useEffect(() => {
-  console.log('Checking for quests to start...');
-
-  // Find any available quests that should start, based on triggers and whether they have already started
-  const questToStart = quests.find(quest => !startedQuests.has(quest.id) && quest.trigger(turnNumber, userActions, gameState.location, gameState.time));
-  
-  if (questToStart) {
-    console.log(`${questToStart.name} quest found, starting...`);
-    startQuest(questToStart);
-    setActiveQuest(questToStart);
-    markQuestAsStarted(questToStart.id); // Mark this quest as started
-  }
-}, [turnNumber, userActions, gameState.location, gameState.time, quests, startedQuests, startQuest, setActiveQuest]);
+    // Find any available quests that should start, based on triggers and whether they have already started
+    const questToStart = quests.find(quest => 
+      !startedQuests.has(quest.id) && 
+      quest.trigger(turnNumber, userActions, gameState.location, gameState.time)
+    );
+    
+    if (questToStart) {
+      console.log(`${questToStart.name} quest found, starting...`);
+      startQuest(questToStart);
+      setActiveQuest(questToStart);
+      markQuestAsStarted(questToStart.id); // Mark this quest as started
+    }
+  }, [turnNumber, userActions, gameState.location, gameState.time, quests, startedQuests, startQuest, setActiveQuest]);
 
 
 
@@ -806,6 +797,7 @@ useEffect(() => {
   </button>
 
 
+
 </div>
 
 
@@ -816,6 +808,8 @@ useEffect(() => {
     <HistoryOutput historyOutput={historyOutput} isLoading={isLoading} />
   )}
 </div>
+
+
 
 
 
@@ -1009,18 +1003,31 @@ useEffect(() => {
 
           </div>
 
-    <Quest
-      currentTurn={turnNumber}
-      userActions={userActions}
-      location={gameState.location}
-      activeQuest={activeQuest}
-      setActiveQuest={setActiveQuest}
-      time={gameState.time} 
-      startQuest={startQuest}
-    />
+  {activeQuest && (
+  <Quest
+    currentTurn={turnNumber}
+    userActions={userActions}
+    location={gameState.location}
+    activeQuest={activeQuest}
+    setActiveQuest={setActiveQuest}
+    time={gameState.time} 
+    startQuest={startQuest}
+    triggerNotificationPopup={triggerNotificationPopup}
+  />
+  )}
+
+    {notificationPopup && (
+          <NotificationPopup 
+            popupData={notificationPopup} 
+            onClose={() => setNotificationPopup(null)} 
+          />
+          )}
         </div>
 
+
         <footer className="footer">
+
+  
                 <p style={{ fontSize: '13px', color: 'gray', textAlign: 'center', marginTop: '20px' }}>
                      Made in Santa Cruz by <a 
             href="https://benjaminpbreen.com" 
@@ -1035,7 +1042,174 @@ useEffect(() => {
                         See the Colophon for more info.
                     </span>
                 </p>
-            </footer>
+
+   
+
+      <div className="quest-buttons-container" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+  <button
+    style={{
+      width: '20px',
+      height: '20px',
+      borderRadius: '50%',
+      backgroundColor: '#6B7280', // Cool Gray
+      color: 'white',
+      fontSize: '10px',
+      padding: '0',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '20px'
+    }}
+    onClick={() => setActiveQuest(quests[0])}
+  >
+    0
+  </button>
+  <button
+    style={{
+      width: '18px',
+      padding: '0',
+      height: '18px',
+      borderRadius: '50%',
+      backgroundColor: '#4B5563', // Darker Gray
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '18px'
+    }}
+    onClick={() => setActiveQuest(quests[1])}
+  >
+    1
+  </button>
+  <button
+    style={{
+      width: '18px',
+      padding: '0',
+      height: '18px',
+      borderRadius: '50%',
+      backgroundColor: '#9CA3AF', // Lighter Gray
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '18px'
+    }}
+    onClick={() => setActiveQuest(quests[2])}
+  >
+    2
+  </button>
+  <button
+    style={{
+      width: '18px',
+      height: '18px',
+      padding: '0',
+      borderRadius: '50%',
+      backgroundColor: '#F59E0B', // Warm Amber
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '18px'
+    }}
+    onClick={() => setActiveQuest(quests[3])}
+  >
+    3
+  </button>
+  <button
+    style={{
+      width: '18px',
+      padding: '0',
+      height: '18px',
+      borderRadius: '50%',
+      backgroundColor: '#10B981', // Emerald Green
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '18px'
+    }}
+    onClick={() => setActiveQuest(quests[4])}
+  >
+    4
+  </button>
+  <button
+    style={{
+      width: '18px',
+      height: '18px',
+      padding: '0',
+      borderRadius: '50%',
+      backgroundColor: '#3B82F6', // Blue
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '18px'
+    }}
+    onClick={() => setActiveQuest(quests[5])}
+  >
+    5
+  </button>
+  <button
+    style={{
+      width: '18px',
+      height: '18px',
+      borderRadius: '50%',
+      padding: '0',
+      backgroundColor: '#EC4899', // Pink
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+     
+    }}
+    onClick={() => setActiveQuest(quests[6])}
+  >
+    6
+  </button>
+  <button
+    style={{
+      width: '18px',
+      padding: '0',
+      height: '18px',
+      borderRadius: '50%',
+      backgroundColor: '#8B5CF6', // Violet
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      lineHeight: '18px'
+    }}
+    onClick={() => setActiveQuest(quests[7])}
+  >
+    7
+  </button>
+</div>
+
+
+         </footer>
             
             {showColophon && (
                 <Colophon isOpen={showColophon} toggleColophon={toggleColophon} />

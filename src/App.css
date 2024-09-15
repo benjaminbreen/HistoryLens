@@ -114,6 +114,7 @@ h2 {
 }
 
 
+
 /* Main content layout */
 .main-content {
   display: flex;
@@ -1280,8 +1281,13 @@ body.dark-mode .simulation-history.open {
   }
 
   .footer {
-    padding-bottom: 40px;
+    padding-bottom: 20px;
+    line-height: .5rem;
   }
+
+
+
+
 
 
     .hamburger-icon {

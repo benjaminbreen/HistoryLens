@@ -1,0 +1,86 @@
+/* NotificationPopup.css */
+
+.notification-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 70%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-image {
+  width: 250px;
+  height: 450px;
+  object-fit: contain; /* Ensures the image scales correctly */
+  margin-bottom: 15px;
+}
+
+/* Image in Notification Popup */
+.notification-popup img {
+  width: 100%;            /* Full width of the popup */
+  max-height: 450px;       /* Limit the height to 250px */
+  object-fit: cover;       /* Ensure the image covers the entire area while maintaining aspect ratio */
+  border-radius: 10px;     /* Optional: adds rounded corners */
+  margin-bottom: 15px;     /* Space between the image and text */
+}
+
+
+.popup-content p {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.popup-content button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.popup-content button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Styles for Smaller Screens */
+@media (max-width: 600px) {
+  .popup-content {
+    padding: 15px;
+  }
+
+  .popup-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .popup-content p {
+    font-size: 1rem;
+  }
+
+  .popup-content button {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

@@ -5,7 +5,6 @@ import './PrescribePopup.css';
 function PrescribePopup({
   gameState = {},
   updateInventory,
-  addCompoundToInventory,
   isOpen,
   onClose,
   currentPatient,
@@ -25,23 +24,30 @@ function PrescribePopup({
   const [simulatedOutput, setSimulatedOutput] = useState('');
   const [prescriptionPrompt, setPrescriptionPrompt] = useState('');
 
-  useEffect(() => {
-    if (selectedItem) {
-      const updatedItem = inventory.find(i => i.id === selectedItem.id);
-      setSelectedItem(updatedItem || null);
+// Update selectedItem when an item is dropped in
+useEffect(() => {
+  if (selectedItem) {
+    const updatedItem = inventory.find(
+      i => i.name.toLowerCase() === selectedItem.name.toLowerCase()
+    );
+    if (updatedItem) {
+      setSelectedItem(updatedItem); // Ensuring the updated item is set properly
     }
-  }, [inventory, selectedItem]);
+  }
+}, [inventory, selectedItem]);
 
+  // Automatically open inventory when the popup opens
   useEffect(() => {
     if (isOpen && toggleInventory) {
       toggleInventory(true);
     }
   }, [isOpen, toggleInventory]);
 
+  // Handle drop of item into prescription area
   const [{ isOver }, drop] = useDrop({
     accept: ['inventoryItem', 'compoundItem'],
     drop: (item) => {
-      const updatedItem = inventory.find(i => i.id === item.id);
+      const updatedItem = inventory.find(i => i.name.toLowerCase() === item.name.toLowerCase());
       if (updatedItem) {
         setSelectedItem(updatedItem);
       } else {
@@ -53,6 +59,7 @@ function PrescribePopup({
     }),
   });
 
+  // Function to handle prescription
   const handlePrescribe = useCallback(async (item, amount, price) => {
     if (!currentPatient) {
       console.error("No patient or NPC selected for prescription");
@@ -78,7 +85,7 @@ function PrescribePopup({
 
         This final line should ALWAYS be in this exact format, in markdown bold [**] tags:
 
-              **Maria now has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
+              *Maria now has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
       `;
     } else if (currentPatient.type === 'npc') {
       if (price === 0) {
@@ -139,8 +146,8 @@ function PrescribePopup({
       const lowerCaseOutput = simulatedOutput.toLowerCase();
 
       // Define arrays of synonyms for different scenarios
-      const deathKeywords = ['died', 'had died', 'perished', 'passed away', 'expired'];
-      const injuryKeywords = ['injury', 'injured', 'collapse', 'collapsed', 'grave', 'serious condition', 'worsened', 'critical', 'harm', 'near-death', 'suffers', 'debilitating'];
+      const deathKeywords = ['died', 'had died', 'perished', 'passed away', 'fatal', 'expired'];
+      const injuryKeywords = ['injury', 'injured', 'collapse', 'collapsed', 'grave', 'serious condition', 'complications', 'worsened', 'critical', 'near-death', 'suffers', 'debilitating'];
       const cureKeywords = ['perfect cure', 'miraculous', 'fully recovered', 'healed', 'recovered', 'excellent', 'complete recovery'];
 
       // Helper function to check for keyword presence
@@ -203,7 +210,7 @@ function PrescribePopup({
             <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
               {selectedItem ? (
                 <div className="selected-item">
-                  <span className="emoji">{selectedItem.emoji}</span>
+                  <span className="emoji">{selectedItem.emoji || '❓'}</span>
                   <span>{selectedItem.name}</span>
                 </div>
               ) : (
@@ -240,48 +247,36 @@ function PrescribePopup({
         </div>
       )}
 
-     {isSummaryOpen && (
-  <div className="popup-overlay">
-    <div className="popup-content summary-popup" onClick={(e) => e.stopPropagation()}>
-      <h2 className="summary-title">Prescription Summary</h2>
-      <p>
-        Maria prescribed {amount} drachms of {selectedItem?.name} for {price} reales.
-        She waits expectantly to see what effect it will have...
-      </p>
+      {isSummaryOpen && (
+        <div className="popup-overlay">
+          <div className="popup-content summary-popup" onClick={(e) => e.stopPropagation()}>
+            <h2 className="summary-title">Prescription Summary</h2>
+            <p>
+              Maria prescribed {amount} drachms of {selectedItem?.name} for {price} reales.
+              She waits expectantly to see what effect it will have...
+            </p>
 
-      {/* Item header with separate lines for the name */}
-      <h1 className="medieval-header">
-        <span>{selectedItem?.name}</span>
-        <br />
-        <span className="spanish-name">({selectedItem?.spanishName})</span>
-      </h1>
+            <h1 className="medieval-header">
+              <span>{selectedItem?.name || 'Unknown Item'}</span>
+              <br />
+              <span className="spanish-name">({selectedItem?.spanishName || 'No Spanish name'})</span>
+            </h1>
 
-      {/* Display the image if available, otherwise display the emoji */}
-{selectedItem?.image ? (
-  <img 
-    src={selectedItem.image} 
-    alt={selectedItem.name} 
-    className="item-image"
-  />
-) : (
-  <div className="item-emoji" style={{ fontSize: '4rem', textAlign: 'center' }}>
-    {selectedItem?.emoji}
-  </div>
-)}
+            <div className="item-emoji" style={{ fontSize: '4rem', textAlign: 'center' }}>
+              {selectedItem?.emoji || '🍵'}
+            </div>
 
-      {/* Larger italicized Latin name */}
-      <p style={{ fontSize: '1.4rem', fontStyle: 'italic', textAlign: 'center', marginBottom: '15px' }}>
-        {selectedItem?.latinName}
-      </p>
+            <p style={{ fontSize: '1.4rem', fontStyle: 'italic', textAlign: 'center', marginBottom: '15px' }}>
+              {selectedItem?.latinName || 'No Latin name available'}
+            </p>
 
-      {/* Other item details */}
-      <p><strong>Humoral Qualities:</strong> {selectedItem?.humoralQualities}</p>
-      <p><strong>Medicinal Effects:</strong> {selectedItem?.medicinalEffects}</p>
-      <p>{selectedItem?.description}</p>
+            <p><strong>Humoral Qualities:</strong> {selectedItem?.humoralQualities || 'Unknown'}</p>
+            <p><strong>Medicinal Effects:</strong> {selectedItem?.medicinalEffects || 'No known effects'}</p>
+            <p>{selectedItem?.description || 'No description available'}</p>
 
-      <button onClick={handleSummaryContinue}>Continue</button>
-    </div>
-  </div>
+            <button onClick={handleSummaryContinue}>Continue</button>
+          </div>
+        </div>
       )}
     </>
   );

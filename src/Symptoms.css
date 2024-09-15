@@ -272,8 +272,8 @@
 }
 
 .astrology-image-popup img {
-  width: 900px !important;
-
+  width: 900px ;
+  z-index: 2000;
   border-radius: 10px;
 }
 

@@ -8,7 +8,7 @@ function WealthTracker({ llmResponse, onStatusChange }) {
 
   useEffect(() => {
     // Extract wealth (either "reales" or "silver coins") from the LLM response
-    const wealthMatch = llmResponse.match(/Maria has (\d+) (reales|silver coins)\./);
+    const wealthMatch = llmResponse.match(/(?:Maria now has|You now have|Maria has|Your current wealth stands at|Your wealth stands at|You possess) (\d+) (?:silver coins|reales|coins)/i);
     const statusMatch = llmResponse.match(/She is feeling ([\w\s]+)\./);
     
     // Regex to match any emoji in the response

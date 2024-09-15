@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import './Quest.css'; // Ensure you have Quest.css to style the quest popups
+import React, { useState, useEffect } from 'react';
+import './Quest.css'; 
 import { useGameState } from './gameState';
 import imageMap from './imageMap';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import NotificationPopup from './NotificationPopup'; 
 import { potentialInventoryItems } from './initialInventory';
 import distillImage from './assets/distill.jpg';
 import distillActiveImage from './assets/distill-active.jpg';
@@ -16,14 +17,13 @@ import decoctActiveImage from './assets/decoct-active.jpg';
 
 
 
-
-
 const quests = [
 
 
   {
     id: 0,
     name: 'Prologue',
+    completed: false,
     npc: 'Joao the Kitten', // Placeholder NPC for interaction
     classification: 'Prologue',
     trigger: (turnNumber) => turnNumber === 1,  
@@ -559,34 +559,55 @@ const questAgent = async (quest, stage, userInput) => {
 };
 
 // Main Quest component
-export const Quest = ({ currentTurn, userActions, location, activeQuest, setActiveQuest, startQuest }) => {
+const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, setActiveQuest, triggerNotificationPopup }) => {
   const { gameState, advanceQuestStage, completeQuest, updateInventory } = useGameState();
   const [currentStage, setCurrentStage] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [showQuestPopup, setShowQuestPopup] = useState(false);
   const [questOutput, setQuestOutput] = useState('');
   const [dialogueHistory, setDialogueHistory] = useState([]);
-  const [failureState, setFailureState] = useState(false);
-  const [badges, setBadges] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [animatedText, setAnimatedText] = useState([]);
   const [hoverButton, setHoverButton] = useState(null);
 
-// Helper function to mark a quest as completed
-const markQuestAsCompleted = (activeQuest) => {
-  const updatedQuests = quests.map((quest) =>
-    quest.id === activeQuest.id ? { ...quest, completed: true } : quest
-  );
-  completeQuest(activeQuest.id);
+  // Function to handle closing the quest via the 'X' button
+  const handleCloseQuest = () => {
+    if (activeQuest && activeQuest.id === 0) {
+      // Trigger the inventory destruction popup for Quest 0
+      triggerNotificationPopup({
+        image: imageMap['quest0f'],
+        text: '**Disaster!** Most of your precious inventory of "simples — the raw ingredients to make medicinal drugs — has been destroyed.  &nbsp;    You have only ten items left. Click the *Inventory* button to check them, and the *Mix Drugs* button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
+        type: 'questCompletion',
+      });
+    }
+
+    setShowQuestPopup(false);  // Close the quest popup
+    setActiveQuest(null);      // Reset active quest to null
   };
 
-    // Helper function to get the correct image URL
-const getImageUrl = (imageName) => {
-  console.log('Image name:', imageName); // Add this for debugging
-  console.log('Image URL:', imageMap[imageName]); // Add this for debugging
-  return imageMap[imageName] || imageMap.default;
-};
+  // Function to mark the quest as completed
+  const markQuestAsCompleted = () => {
+    if (activeQuest && activeQuest.id === 0) {
+      // Trigger the inventory destruction popup for Quest 0 upon completion
+      triggerNotificationPopup({
+        image: imageMap['quest0f'],
+         text: '**Disaster!** Most of your precious inventory of "simples — the raw ingredients to make medicinal drugs — has been destroyed.</br>You have only ten items left. Click the *Inventory* button to check them, and the *Mix Drugs* button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
+        type: 'questCompletion',
+      });
+    }
 
+    completeQuest(activeQuest.id); // Mark the quest as completed
+
+    setShowQuestPopup(false);
+    setActiveQuest(null);
+  };
+
+  // Helper function to get the correct image URL
+  const getImageUrl = (imageName) => {
+    return imageMap[imageName] || imageMap.default;
+  };
+
+  // Animate quest text for Quest 0
   useEffect(() => {
     if (activeQuest && activeQuest.id === 0 && activeQuest.stages[currentStage].type === 'banner') {
       const lines = activeQuest.stages[currentStage].text;
@@ -604,66 +625,60 @@ const getImageUrl = (imageName) => {
     }
   }, [activeQuest, currentStage]);
 
+  const handleQuestInput = async (input, buttonAction) => {
+    setIsLoading(true);
+    const currentQuestStage = activeQuest.stages[currentStage];
 
-const handleQuestInput = async (input, buttonAction) => {
-  setIsLoading(true);
-  const currentQuestStage = activeQuest.stages[currentStage];  // Renaming this variable to avoid conflict
-
-  if (currentQuestStage.type === 'banner' || currentQuestStage.type === 'decision') {
-    if (typeof buttonAction === 'object' && buttonAction.type === 'goToStage') {
-      goToSpecificStage(buttonAction.stage);
-    } else if (buttonAction === 'success' || buttonAction === 'failure') {
-      // Handle success/failure for Quest 1
-      if (activeQuest.id === 1) {
-        const outcomeStage = activeQuest.stages.find(s => s.type === 'outcome');
-        if (outcomeStage) {
-          setCurrentStage(activeQuest.stages.indexOf(outcomeStage));
-          if (typeof outcomeStage.text === 'function') {
-            setQuestOutput(outcomeStage.text(buttonAction));
-          } else {
-            setQuestOutput(outcomeStage.text);
-          }
-          if (buttonAction === 'success') {
-    // Add the mumia to the inventory if quest 1 is successfully completed
-    if (activeQuest.id === 1) {
-        updateInventory(potentialInventoryItems.mumia.name, 1);  // Passing name and quantity
-    }
-
+    if (currentQuestStage.type === 'banner' || currentQuestStage.type === 'decision') {
+      if (typeof buttonAction === 'object' && buttonAction.type === 'goToStage') {
+        goToSpecificStage(buttonAction.stage);
+      } else if (buttonAction === 'success' || buttonAction === 'failure') {
+        // Handle success/failure for Quest 1
+        if (activeQuest.id === 1) {
+          const outcomeStage = activeQuest.stages.find(s => s.type === 'outcome');
+          if (outcomeStage) {
+            setCurrentStage(activeQuest.stages.indexOf(outcomeStage));
+            if (typeof outcomeStage.text === 'function') {
+              setQuestOutput(outcomeStage.text(buttonAction));
+            } else {
+              setQuestOutput(outcomeStage.text);
+            }
+            if (buttonAction === 'success') {
+              // Add the mumia to the inventory if quest 1 is successfully completed
+              updateInventory(potentialInventoryItems.mumia.name, 1);  // Passing name and quantity
+            }
           }
         }
+      } else {
+        switch (buttonAction) {
+          case 'end':
+          case 'fail':
+          case 'complete':
+            markQuestAsCompleted();
+            break;
+          case 'proceed':
+            advanceToNextStage();
+            break;
+          default:
+            console.error('Unknown action type:', buttonAction);
+        }
       }
-    } else {
-      switch (buttonAction) {
-        case 'end':
-        case 'fail':
-        case 'complete':
-          markQuestAsCompleted(activeQuest);
-          setShowQuestPopup(false);
-          setActiveQuest(null);
-          break;
-        case 'proceed':
+    } else if (currentQuestStage.type === 'dialogue') {
+      try {
+        const questResponse = await questAgent(activeQuest, currentQuestStage, input);
+        setDialogueHistory(prev => [...prev, { userInput: input, npcResponse: questResponse }]);
+
+        if (dialogueHistory.length >= currentQuestStage.maxExchanges - 1) {
           advanceToNextStage();
-          break;
-        default:
-          console.error('Unknown action type:', buttonAction);
+        }
+      } catch (error) {
+        console.error("Error fetching LLM response:", error);
       }
     }
-  } else if (currentQuestStage.type === 'dialogue') {
-    try {
-      const questResponse = await questAgent(activeQuest, currentQuestStage, input);
-      setDialogueHistory(prev => [...prev, { userInput: input, npcResponse: questResponse }]);
 
-      if (dialogueHistory.length >= currentQuestStage.maxExchanges - 1) {
-        advanceToNextStage();
-      }
-    } catch (error) {
-      console.error("Error fetching LLM response:", error);
-    }
-  }
-
-  setIsLoading(false);
-  setUserInput('');
-};
+    setIsLoading(false);
+    setUserInput('');
+  };
 
   const advanceToNextStage = () => {
     const nextStageIndex = currentStage + 1;
@@ -672,36 +687,29 @@ const handleQuestInput = async (input, buttonAction) => {
       advanceQuestStage(activeQuest.id);
       setDialogueHistory([]);
     } else {
-      markQuestAsCompleted(activeQuest);
-      setShowQuestPopup(false);
-      setActiveQuest(null);
+      markQuestAsCompleted();
     }
   };
 
-
-const goToSpecificStage = (stageType) => {
-  const stageIndex = activeQuest.stages.findIndex(s => s.type === stageType);
-  if (stageIndex !== -1) {
-    setCurrentStage(stageIndex);
-    advanceQuestStage(activeQuest.id);
-    setDialogueHistory([]);  // Clear dialogue history when changing stages
-  } else {
-    console.error(`Stage type "${stageType}" not found in quest`);
-  }
-};
-
-  const handleCloseQuest = () => {
-    setShowQuestPopup(false);
-    setActiveQuest(null);
+  const goToSpecificStage = (stageType) => {
+    const stageIndex = activeQuest.stages.findIndex(s => s.type === stageType);
+    if (stageIndex !== -1) {
+      setCurrentStage(stageIndex);
+      advanceQuestStage(activeQuest.id);
+      setDialogueHistory([]);  // Clear dialogue history when changing stages
+    } else {
+      console.error(`Stage type "${stageType}" not found in quest`);
+    }
   };
 
-useEffect(() => {
-  if (activeQuest) {
-    setShowQuestPopup(true);
-    setCurrentStage(0);
-    setDialogueHistory([]);
-  }
-}, [activeQuest]);
+  useEffect(() => {
+    if (activeQuest) {
+      setShowQuestPopup(true);
+      setCurrentStage(0);
+      setDialogueHistory([]);
+      setAnimatedText([]); // Reset animated text when a new quest starts
+    }
+  }, [activeQuest]);
 
   if (!showQuestPopup || !activeQuest) return null;
 
@@ -736,7 +744,7 @@ useEffect(() => {
               ))}
             </div>
 
-            ) : stage.type === 'outcome' ? (
+          ) : stage.type === 'outcome' ? (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{questOutput}</ReactMarkdown>
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{stage.text}</ReactMarkdown>
@@ -763,38 +771,35 @@ useEffect(() => {
             </div>
           )}
 
-{(stage.type === 'banner' || stage.type === 'decision') && stage.buttons && (
-  <div className="button-group">
-    {stage.buttons.map((btn, idx) => (
-      <div key={idx} className="button-container">
-        <button
-          onClick={() => handleQuestInput(btn.text, btn.action)}
-          className={`quest-button ${btn.image ? 'image-button' : ''}`}  // Apply 'image-button' class for buttons with images
-          onMouseEnter={() => setHoverButton(idx)}
-          onMouseLeave={() => setHoverButton(null)}
-          style={btn.image ? {
-            backgroundImage: `url(${hoverButton === idx && btn.activeImage ? btn.activeImage : btn.image})`,
-            width: '200px',   // Hardcoded width
-            height: '200px',  // Hardcoded height
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          } : {}}
-        >
-          {btn.image ? '' : btn.text}  {/* Only show text if no image is provided */}
-        </button>
-        {/* Only show captions for specific hover buttons */}
-        {(btn.text === 'Calcination' || btn.text === 'Distillation' || btn.text === 'Confection' || btn.text === 'Decoction') && (
-          <span className="button-caption">
-            {btn.text}
-          </span>
-        )}
-      </div>
-    ))}
-  </div>
-)}
-
-
-
+          {(stage.type === 'banner' || stage.type === 'decision') && stage.buttons && (
+            <div className="button-group">
+              {stage.buttons.map((btn, idx) => (
+                <div key={idx} className="button-container">
+                  <button
+                    onClick={() => handleQuestInput(btn.text, btn.action)}
+                    className={`quest-button ${btn.image ? 'image-button' : ''}`}  // Apply 'image-button' class for buttons with images
+                    onMouseEnter={() => setHoverButton(idx)}
+                    onMouseLeave={() => setHoverButton(null)}
+                    style={btn.image ? {
+                      backgroundImage: `url(${hoverButton === idx && btn.activeImage ? btn.activeImage : btn.image})`,
+                      width: '200px',   // Hardcoded width
+                      height: '200px',  // Hardcoded height
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    } : {}}
+                  >
+                    {btn.image ? '' : btn.text}  {/* Only show text if no image is provided */}
+                  </button>
+                  {/* Only show captions for specific hover buttons */}
+                  {(btn.text === 'Calcination' || btn.text === 'Distillation' || btn.text === 'Confection' || btn.text === 'Decoction') && (
+                    <span className="button-caption">
+                      {btn.text}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {stage.type === 'dialogue' && (
             <div className="dialogue-input">
@@ -814,13 +819,12 @@ useEffect(() => {
               </button>
             </div>
           )}
+
         </div>
       </div>
     </>
   );
 };
-
-
 
 export { quests };
 export default Quest;
