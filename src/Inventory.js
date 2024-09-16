@@ -7,25 +7,25 @@ const getHumoralShorthand = (qualities) => qualities.split('&').map(q => q.trim(
 
 const Inventory = ({ isOpen, toggleInventory, compounds, handleItemClick, inventory, onPDFClick }) => {
 
-    const maxItems = 16;
+    const maxItems = 20;
     const isInventoryFull = (compounds.length + inventory.length) >= maxItems;
 
     const renderInventoryItem = (item, itemType) => {
-        const [{ isDragging }, drag] = useDrag(() => ({
-            type: itemType,
-            item: { ...item, type: itemType },
-            collect: (monitor) => ({
-                isDragging: monitor.isDragging(),
-            }),
-        }));
+      const [{ isDragging }, drag] = useDrag(() => ({
+        type: itemType,
+        item: () => ({ ...item, type: itemType }), // Use a function to return the latest item data
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
+      }), [item]); // Add item as a dependency
 
-        return (
-            <li 
-                key={item.id} 
-                ref={drag}
-                className={`inventory-item ${isDragging ? 'dragging' : ''}`} 
-                onClick={() => handleItemClick(item)}
-            >
+      return (
+        <li
+          key={item.id || item.name} // Use a unique identifier
+          ref={drag}
+          className={`inventory-item ${isDragging ? 'dragging' : ''}`}
+          onClick={() => handleItemClick(item)}
+        >
                 <span className="emoji">{item.emoji}</span>
                 <div className="item-details">
                     <strong>{item.name} ({item.spanishName})</strong> - <i>{item.latinName}</i><br />

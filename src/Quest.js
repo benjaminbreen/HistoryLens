@@ -81,7 +81,10 @@ const quests = [
     completed: false, 
     npc: 'Antonius Philalethes',
     classification: 'Helper',
-      trigger: (actions) => Array.isArray(actions) && actions.includes('#startQuest1'),
+      trigger: (gameState) =>
+      gameState.time >= '6:00 PM' &&
+      gameState.inventory.some((item) => item.type === 'compound') &&
+      !gameState.activeQuests.includes(1),
     stages: [
       {
         type: 'banner',
@@ -176,7 +179,9 @@ const quests = [
     completed: false, 
     npc: 'High Inquisitor Santiago Valdez',
     classification: 'Antagonist',
-    trigger: (turnNumber, actions) => actions.includes('#Santiago') || turnNumber === 20,
+   trigger: (gameState) =>
+      gameState.turnNumber >= 3 &&
+      !gameState.activeQuests.includes(2),
     stages: [
       {
         type: 'banner',
@@ -230,7 +235,8 @@ const quests = [
     completed: false, 
     npc: 'Tlacaelel',
     classification: 'Investigate',
-    trigger: (turnNumber, actions, location) => actions.includes('#Tlacaelel') || location === 'market corner',
+     trigger: (gameState) =>
+      gameState.location === 'Marketplace',
     stages: [
       {
         type: 'banner',
@@ -418,13 +424,14 @@ const quests = [
       {
         type: 'dialogue',
         image: 'quest0d', // Reuse the waves image for the dialogue stage
-        text: `The waves speak... sometimes...`,
+        text: `The waves speak...`,
         npcResponses: [
-          '[NOTE: MOST RESPONSES SHOULD BE ONLY ONE WORD, A PHRASE AT MOST] Why worry?',
+          '[NOTE: MOST RESPONSES SHOULD BE ONLY ONE WORD, A PHRASE AT MOST] Yes, you are dying.',
           'The sparrow says *quiet interlude, quiet interlude.*',
           'And ye shall find it in the furthest depths of the King of Spain his dominions...',
           'Words, words, words.',
-          'Unknown.',
+          'Death is a beggining.',
+          'Those are pearls that were his eyes...',
         ],
         playerChoices: [
           '...',
@@ -436,9 +443,9 @@ const quests = [
       {
         type: 'outcome',
         image: 'quest0b',
-        text: `You wake up the next morning, feeling unsettled.`,
+        text: `Maria has died. The game is over.`,
          buttons: [
-          { text: 'Get off me, João...', action: 'end' },
+          { text: '...', action: 'end' },
         ],
       },
     ], 
@@ -513,6 +520,7 @@ const checkPlayerResponseQuality = async (userInput, quest, npc, stage) => {
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
+      temperature: .3,
       messages: [
         { role: 'system', content: 'You are a role-playing game judge for historical accuracy.' },
         { role: 'user', content: prompt },
@@ -537,6 +545,7 @@ const questAgent = async (quest, stage, userInput) => {
     Using this material (inclduing the directions to you in brackets in NPCresponses which should not be reproduced for the end user) please generate a historically accurate response of no more than 2 paragraphs, and sometimes only one or two sentences. Avoid cliches and genre conventions. Example of WHAT TO AVOID: "I ask you, do the whispers of the ancients not have a call upon your own curiosity? What might we unearth together... if we dare?" That sounds like corny, cliched dialogue from a bad fantasy novel. EXAMPLE OF WHAT TO DO: "Señora, I have spoken enough. Let us begin now -- unless you have some reason to object?" 
     Your dialogue should sound like something a real person might've said. Remember that this is a conversation, not a monologue. At times the NPC might take offense, or get angry, or make an odd observation, or do some other surprising thing. They might even answer with a single sentence, like "I have no idea what you mean by that" if the user has inputted something perplexing or unimpressive. NPCs make specific hsitorical references relevent to their background and time period.
     Any questions should never be didactic or expected. NO EXCLAMATION POINTS! VARIED DIALOGUE, UNUSUAL OBSERVATIONS AND DETAILS. KEEP IT VERY SIMPLE AND SHORT - instead of "Ah, the game of life is a treacherous one, is it not?" perhaps just "Life is crazy, isn't it?" If you are asked to pretend to be "waves," respond only in odd single words or phrases.
+    Quest id 6, the Dream of the Waves, is triggered when Maria dies in the game. It is a near-death experience. The waves should answer in ONLY single words or very short phrases. Think T.S. Eliot.
   `;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -548,7 +557,7 @@ const questAgent = async (quest, stage, userInput) => {
     body: JSON.stringify({
       model: 'gpt-4o-mini',
       messages: [
-        { role: 'system', content: 'You are a historical role-playing engine for a 17th-century Mexico City simulation.' },
+        { role: 'system', content: 'You are a historical role-playing engine for a 17th-century Mexico City simulation. Your job is to create interactive dialogue and events in a quest popup in this educational game which centers on a converso apothecary named Maria de Lima.' },
         { role: 'user', content: prompt },
       ],
     }),
@@ -573,14 +582,7 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
   // Function to handle closing the quest via the 'X' button
   const handleCloseQuest = () => {
     if (activeQuest && activeQuest.id === 0) {
-      // Trigger the inventory destruction popup for Quest 0
-      triggerNotificationPopup({
-        image: imageMap['quest0f'],
-        text: '**Disaster!** Most of your precious inventory of "simples — the raw ingredients to make medicinal drugs — has been destroyed.  &nbsp;    You have only ten items left. Click the *Inventory* button to check them, and the *Mix Drugs* button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
-        type: 'questCompletion',
-      });
     }
-
     setShowQuestPopup(false);  // Close the quest popup
     setActiveQuest(null);      // Reset active quest to null
   };
@@ -591,7 +593,7 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
       // Trigger the inventory destruction popup for Quest 0 upon completion
       triggerNotificationPopup({
         image: imageMap['quest0f'],
-         text: '**Disaster!** Most of your precious inventory of "simples — the raw ingredients to make medicinal drugs — has been destroyed.</br>You have only ten items left. Click the *Inventory* button to check them, and the *Mix Drugs* button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
+         text: '**Disaster!** Most of your inventory of "simples" — the raw ingredients to make medicinal drugs — has been destroyed. You have only ten items left. Click the **Inventory** button to check them, and the **Mix Drugs** button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
         type: 'questCompletion',
       });
     }

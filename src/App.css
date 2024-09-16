@@ -388,23 +388,6 @@ margin-left: 0px;
   margin-top: 10px;
 }
 
-/* Close Button Styling */
-.close-button {
-  background-color: #e53e3e; /* Red */
-  color: white;
-  padding: 10px 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  position: absolute; /* Position at the top-right corner of the popup */
-  top: 10px;
-  right: 10px;
-}
-
-.close-button:hover {
-  background-color: #c53030;
-}
 
 
 /* General Button Styling */
@@ -900,9 +883,7 @@ body.dark-mode .popup-info {
   color: #e2e8f0; /* Tailwind's Gray-200 */
 }
 
-body.dark-mode .close-button {
-  background-color: #f56565; /* Adjusted to a lighter red */
-}
+
 
 body.dark-mode .close-button:hover {
   background-color: #c53030; /* Darker red on hover */

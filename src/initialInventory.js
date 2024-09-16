@@ -2,6 +2,16 @@ import camphorImage from './assets/camphor.jpg';
 import chamomileImage from './assets/chamomile.jpg';
 import opiumImage from './assets/poppy.jpg';
 import millipedeImage from './assets/millipede.jpg';
+import wine from './assets/wine.jpg';
+import nettle from './assets/nettle.jpg';
+import senna from './assets/senna.jpg';
+import rose from './assets/rose.jpg';
+import saffron from './assets/saffron.jpg';
+import horehound from './assets/horehound.jpg';
+import sugar from './assets/sugar.jpg';
+import honey from './assets/honey.jpg';
+import crab from './assets/crab.jpg';
+import sal from './assets/sal.jpg';
 
 
 
@@ -80,7 +90,8 @@ const initialInventoryData = [
         description: 'Extremely valuable for treating gripes of all sorts.',
         emoji: '🌸',
         pdf: 'saffron.pdf',
-        citation: 'Henry Banyer, *Pharmacopoeia Pauperum Or, The Hospital Dispensatory* (1718), pg 74'
+        citation: 'Henry Banyer, *Pharmacopoeia Pauperum Or, The Hospital Dispensatory* (1718), pg 74',
+        image: saffron
     },
     {
         id: 6, 
@@ -94,7 +105,8 @@ const initialInventoryData = [
         description: 'Bitter... very bitter. Stimulates digestion and helps coughs.',
         emoji: '🍥',
         pdf: 'horehound.pdf',
-        citation: 'John French, *The London-Distiller* (London, 1667), pg. 19'
+        citation: 'John French, *The London-Distiller* (London, 1667), pg. 19',
+        image: horehound
     },
     {
         id: 7, 
@@ -107,7 +119,8 @@ const initialInventoryData = [
         medicinalEffects: 'Anti-inflammatory, diuretic, treats allergies and arthritis.',
         description: 'It stings... but it also heals.',
         emoji: '🌾',
-        pdf: '/assets/pdfs/BuccaneerEthnography.pdf'
+        pdf: 'nettle.pdf',
+        image: nettle
     },
     {
         id: 8, 
@@ -121,7 +134,8 @@ const initialInventoryData = [
         description: 'Ground-up crab\'s eyes from the Indies. A singular remedy.',
         emoji: '🦀',
         pdf: 'crabseyes.pdf',
-        citation: 'John French, *The Art of Distillation* (London, 1651), pg. 126'
+        citation: 'John French, *The Art of Distillation* (London, 1651), pg. 126',
+        image: crab
     },
     {
         id: 9,
@@ -149,7 +163,8 @@ const initialInventoryData = [
         description: 'Mixes well with almost anything. Useful in the treatment of melancholia.',
         emoji: '🌹',
         pdf: 'rosewater.pdf',
-        citation: 'John French, *The Art of Distillation* (London, 1651), pgs. 19-21'
+        citation: 'John French, *The Art of Distillation* (London, 1651), pgs. 19-21',
+        image: rose
     },
     {
         id: 11, 
@@ -163,7 +178,8 @@ const initialInventoryData = [
         description: 'Most effective for purging of the bowels.',
         emoji: '🍂',
         pdf: 'senna.pdf',
-        citation: 'Jean de Renou, *A Medicinal Dispensatory Containing the Whole Body of Physick,* translated by Richard Tomlinson (London, 1657)'
+        citation: 'Jean de Renou, *A Medicinal Dispensatory Containing the Whole Body of Physick,* translated by Richard Tomlinson (London, 1657)',
+        image: senna
     },
     {
         id: 12, 
@@ -177,7 +193,8 @@ const initialInventoryData = [
         description: 'Sugar shipped from Seville. Useful for confectioning with noxious medicines to make juleps and treacles.',
         emoji: '🍬',
         pdf: 'sugar.pdf',
-        citation: 'Jean de Renou, *A Medicinal Dispensatory Containing the Whole Body of Physick,* translated by Richard Tomlinson (London, 1657)'
+        citation: 'Jean de Renou, *A Medicinal Dispensatory Containing the Whole Body of Physick,* translated by Richard Tomlinson (London, 1657)',
+        image: sugar
     },
 {
     id: 13,
@@ -191,7 +208,8 @@ const initialInventoryData = [
     description: 'Golden honey harvested from local hives. Crucial ingredient in unguents via confectioning.',
     emoji: '🍯',
     pdf: 'honey.pdf',
-    citation: 'John Woodall, *The Surgion’s Mate* (1617)'
+    citation: 'John Woodall, *The Surgion’s Mate* (1617)',
+    image: honey
 },
 {
     id: 14,
@@ -205,7 +223,8 @@ const initialInventoryData = [
     description: 'Sherry wine imported from southern Spain. Used for decoction or distillation with other drugs, or as an enema.',
     emoji: '🍷',
     pdf: 'wine.pdf',
-    citation: 'George Bate, Pharmacopœia Bateana (London, 1694)'
+    citation: 'George Bate, Pharmacopœia Bateana (London, 1694)',
+    image: wine
 },
 {
     id: 15,
@@ -219,7 +238,8 @@ const initialInventoryData = [
     description: 'A crystalline salt often used in alchemy. Try distilling or calcinating with other drugs.',
     emoji: '🧂',
     pdf: '/assets/pdfs/salammoniacmedicinaluses.pdf',
-    citation: 'Nicholas Culpeper, The English Physician Enlarged (1653)'
+    citation: 'Nicholas Culpeper, The English Physician Enlarged (1653)',
+    image: sal
 }
 ];
 

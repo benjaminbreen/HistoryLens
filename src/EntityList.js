@@ -1,5 +1,38 @@
 const EntityList = [
 // Patients
+
+{
+  type: "patient",
+  name: "Pancho Rodriguez",
+  age: 50,
+  gender: "Male",
+  occupation: "Goldsmith",
+  birthplace: "Seville, Spain",
+  currentResidence: "Mexico City, Calle de San José",
+  casta: "Peninsular",
+  class: "Artisan",
+  symptoms: [
+  { name: "Severe headaches", location: "head", quote: "This gold-lined cap the doctor has made me wear is certainly not helping my head." },
+  { name: "Insomnia", location: "head", quote: "Sleep is a stranger to me. The gold nose plugs make it even worse. Damned physicians..." },
+  { name: "Weakness", location: "whole body", quote: "My limbs feel as heavy as lead, drained of their usual strength and vigor." },
+{ name: "Tremors", location: "hands", quote: "See how my hands shake, señora, as if palsied by age or drink, though I am not so very old and I touch no wine." }
+],
+diagnosis: "Mercurial poisoning",
+contemporaryTheory: "Toxicity caused by exposure to the vapors of mercury used in the gilding process, which penetrate the brain and nerves causing tremors, weakness, and pain",
+socialContext: "Pancho's illness has impaired his ability to work, jeopardizing the livelihood of his family. A local physician's odd treatment of gold cap and nose plugs is a failure, and he seeks Maria as a backup plan. In your presentation of him, ensure that you EXPLAIN TO THE PLAYER why he is wearing a gold lined cap and gold plugs - note that he has become something of a laughingstock in the neighborhood due to this unusual treatment.",
+urgency: "High",
+image: "panchorodriguez",
+caption: "Pancho Rodriguez, goldsmith",
+description: "Pancho Rodriguez, a skilled goldsmith, suffers from severe neurological symptoms caused by chronic exposure to the mercury used in his trade. He is wearing gold plugs in his nose and a goldleaf-lined cap, on doctor's orders, but is frustrated that they are not working.",
+astrologicalSign: "Pisces",
+pdf: "panchorodriguez.pdf",
+citation: "Pancho Rodriguez was a real person, his case documented in João Curvo Semedo, *Observaçoens medicas doutrinaes de cem casos gravissimos,* [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707), Observation XLIX, pg. 302.",
+secret: "Pancho has been secretly using mercury to counterfeit silver coins, exposing himself to even greater levels of the toxic substance.",
+imgdescription: "A highly detailed pixel art portrait of Pancho Rodriguez, a 50-year-old Spanish goldsmith in Mexico City, 1680. He is a thin, sickly-looking man with pale, clammy skin and trembling hands. Pancho's once keen eyes are now rheumy and underscored by dark circles. He wears a simple brown doublet and breeches, with a leather apron bearing the stains and scorch marks of his trade. A fine tremor is visible in his hands and jaw, and he squints as if in pain.",
+treatment: "The author advised Pancho to shave his head and wear a cap lined with fine gold leaf, which would draw out the mercury from his body. He also instructed him to insert small plugs of gold leaf into his nostrils and mouth. As the gold blackened, it was replaced, gradually leaching the mercury from his system and relieving his symptoms. The author cites this case as proof of gold's ability to extract mercury from the body and counteract its toxic effects."
+},
+
+
 {
    type: "patient",
     name: "Francisco Dias de Araujo",
@@ -264,7 +297,7 @@ const EntityList = [
 
 {
   type: "patient",
-  name: "Rodrigo Hernandez",
+  name: "Arturo Hernandez",
   age: 48,
   gender: "Male",
   occupation: "Merchant",
@@ -279,14 +312,14 @@ const EntityList = [
   ],
   diagnosis: "Feigned illness",
   contemporaryTheory: "Minor imbalance of the humors, perhaps a lingering flux caused by overindulgence in rich foods",
-  socialContext: "Rodrigo is pretending to be ill to test Maria's willingness to prescribe without a physician's authority.",
+  socialContext: "Arturo is pretending to be ill to test Maria's willingness to prescribe without a physician's authority.",
   urgency: "Medium",
-  image: "rodrigohernandez",
-  caption: "Rodrigo Hernandez, merchant",
-  description: "Rodrigo Hernandez is a well-dressed merchant who seems too healthy for the symptoms he describes. His manner is calm, but his eyes dart around the room, betraying a deeper intention.",
+  image: "arturohernandez",
+  caption: "Arturo Hernandez, merchant",
+  description: "Arturo Hernandez is a well-dressed merchant who seems too healthy for the symptoms he describes. His manner is calm, but his eyes dart around the room, betraying a deeper intention.",
   astrologicalSign: "Libra",
       pdf: "hysteria.pdf",
-  secret: "Rodrigo Hernandez is actually Licenciado Rodrigo Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
+  secret: "Arturo Hernandez is actually Licenciado Arturo Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
 },
 
 
@@ -432,6 +465,20 @@ const EntityList = [
     image: "countryside",
     caption: "The open countryside.",
     description: "Rolling fields and distant mountains stretch out as far as the eye can see. The air is fresh and the landscape is dotted with small farms and wildflowers."
+},
+{
+    type: "place",
+    name: "University",
+    image: "university",
+    caption: "The Royal and Pontifical University of Mexico.",
+    description: "The Royal and Pontifical University of Mexico is a forbidding place, one in which women are typically strictly barred and most studies are devoted to theology and esoteric scholastic disputes."
+},
+{
+    type: "place",
+    name: "Library",
+    image: "library",
+    caption: "A library.",
+    description: "The books inside this library are extraordinarily valuable."
 },
 {
     type: "place",
@@ -733,7 +780,7 @@ const EntityList = [
   type: "place",
   name: "Turf",
   location: "Countryside",
-  description: "A patch of grassy land, often seen in rural or wilderness settings.",
+  description: "A patch of grassy land, potentially yielding herbs you can forage for.",
   imgdescription: "The turf is thick and green, the blades of grass soft underfoot. Small wildflowers dot the landscape, and the ground is springy, the earth damp from recent rain. The air is fresh and cool, filled with the scent of grass and soil.",
   pdf: "",
   image: "turf"
@@ -895,6 +942,23 @@ const EntityList = [
   imgdescription: "Licenciado Ramírez wears a black doublet over a white linen shirt, with finely tailored breeches that reach just below the knee. His black shoes are polished but practical, and he carries a small leather portfolio containing legal documents. His face is clean-shaven, with a stern, unforgiving expression."
 },
 
+ // rivals
+
+  {
+    type: "rival",
+    name: "Juan Braga (rival apothecary)",
+    age: 40,
+    birthplace: "Mexico City",
+    currentResidence: "Mexico City",
+    casta: "Mestizo",
+    class: "Middle class",
+    occupation: "Apothecary",
+    image: "juan",
+    caption: "Juan Braga, a rival apothecary",
+    description: "Juan, Maria's closest competitor in the apothecary trade, is proprietor of the Botica de San Rafael, a thriving shop. He is known for his expertise in medicinal plants from the Indies and his willingness to undercut Maria's prices. He frequently mocks Maria's dour demeanor and her equally gloomy choice of a name for her shop, the Botica de la Amurgura, as typical of the melancholic Portuguese. Their rivalry is well-known throughout the city.",
+    secret: "Juan is secretly in financial trouble, as his business has begun to fail due to increased competition and poor management. He hopes to sabotage Maria's apothecary to save his own.",
+  imgdescription: "Juan wears a plain brown wool doublet over a linen shirt, his sleeves rolled up from constant work. His apron is often stained with herbs and oils, and his hair is tied back neatly, though his face shows the strain of a man trying to maintain control in a faltering business."
+},
 
   // Non-patient, non-quest NPCs
 
@@ -914,21 +978,7 @@ const EntityList = [
   imgdescription: "Fernando wears a black cassock with a simple white collar, his attire modest and appropriate for a man of his rank in the Church. His face is weathered, his expression impassive, but his eyes carry the intensity of a man used to power. A small wooden crucifix dangles from his neck, mostly tucked away beneath his garments."
   },
 
-  {
-    type: "npc",
-    name: "Juan Braga (rival apothecary)",
-    age: 40,
-    birthplace: "Mexico City",
-    currentResidence: "Mexico City",
-    casta: "Mestizo",
-    class: "Middle class",
-    occupation: "Apothecary",
-    image: "juan",
-    caption: "Juan Braga, a rival apothecary",
-    description: "Juan, Maria's closest competitor in the apothecary trade, is known for his expertise in medicinal plants from the Indies and his willingness to undercut Maria's prices. Their rivalry is well-known throughout the city.",
-    secret: "Juan is secretly in financial trouble, as his business has begun to fail due to increased competition and poor management. He hopes to sabotage Maria's apothecary to save his own.",
-  imgdescription: "Juan wears a plain brown wool doublet over a linen shirt, his sleeves rolled up from constant work. His apron is often stained with herbs and oils, and his hair is tied back neatly, though his face shows the strain of a man trying to maintain control in a faltering business."
-},
+
   {
     type: "npc",
     name: "João",

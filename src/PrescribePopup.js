@@ -14,6 +14,7 @@ function PrescribePopup({
   setConversationHistory,
   setTurnNumber,
   toggleInventory,
+  currentWealth
 }) {
   const { inventory = [] } = gameState;
   const [selectedItem, setSelectedItem] = useState(null);
@@ -75,6 +76,7 @@ useEffect(() => {
       prescriptionPrompt = `
         Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
         The transaction occurred at ${time} on ${date}, in ${location}. (This is provided as context to inform your simulation of the resulting effects, and should not be restated for the player.)
+        Maria's current wealth is ${currentWealth} silver coins. 
         Using your extensive knowledge of early modern medicine and human biology, consider the dosage, toxicity, the health of the NPC, and potential effects of the medicine prescribed. Is the dose safe or dangerous? 
         Always BEGIN with a customized, opinionated "headline" assessment of the prescription. Typically this wil be in h3 markdown font, like "Maria attempted an unconventional treatment which was somewhat ineffective*" or "The prescription led to minor complications" or "An excellent choice..." or whatever else is appropriate (make sure that you only call it dangerous if it is - any dose of a standard herb or spice is fine, just ineffective - the only really fatal things are opiates like laudanum or chemicals/minerals like quicksilver. The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine (which should be mentioned by name only once or twice).
         h3 markdown font for special headlines: If a patient suffers a fatal response (dies) or near-fatal (serious medical consequences) or if they have a highly negative reaction then ALWAYS use h5 tags for your "headline" inead of h3 - this will show it in red to the user. If they die, begin with "The patient has died!"
@@ -83,9 +85,9 @@ useEffect(() => {
         This turn may take up several hours or even a day as the patient's reaction may take time to manifest. Pay attention to accurately deciding on the passage of time and the effects. 
         After documenting the effects, you will provide a final line tracking Maria's updated wealth, status, reputation, and the date and time at the VERY END of your response, displayed in bold, as explained below (Reputation is displayed via a choice of ONE of these emojis [if a patient dies, Maria's reputation goes to 1; if she has a miraculous cure, it goes to 8, 9, or 10]: 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10) ).
 
-        This final line should ALWAYS be in this exact format, in markdown bold [**] tags:
+        This final line should ALWAYS be in this exact format, in markdown italic [*] tags:
 
-              *Maria now has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
+              *Now Maria has [integer] silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
       `;
     } else if (currentPatient.type === 'npc') {
       if (price === 0) {
@@ -172,7 +174,7 @@ useEffect(() => {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPatient, conversationHistory, gameState, updateInventory, addJournalEntry]);
+  }, [currentPatient, conversationHistory, gameState, updateInventory, addJournalEntry, currentWealth]);
 
   const handlePrescribeClick = async () => {
     if (selectedItem) {

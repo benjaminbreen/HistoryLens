@@ -35,14 +35,17 @@ import { initialInventoryData, potentialInventoryItems } from './initialInventor
 import HistoryOutput from './HistoryOutput';
 import NotificationPopup from './NotificationPopup';
 import QuestTester from './QuestTester';
+import Sleep from './Sleep';
 import './App.css';
 import './Inventory.css';
 import './Popup.css';
 const PDFPopup = lazy(() => import('./PDFPopup'));
 
 
+
+
 function App() {
-  const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime } = useGameState();
+  const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime, refreshInventory } = useGameState();
 
 
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
@@ -93,13 +96,13 @@ function App() {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [showPdfButtons, setShowPdfButtons] = useState(false);
   const [additionalQuestions, setAdditionalQuestions] = useState('');
+  const [currentWealth, setCurrentWealth] = useState(11);
+   const [isSleepOpen, setIsSleepOpen] = useState(false);
 
   // new part, quests and notification popup
 const [activeQuest, setActiveQuest] = useState(null);
   const [userActions, setUserActions] = useState([]);
   const [startedQuests, setStartedQuests] = useState(new Set());
-  
-
   const [notificationPopup, setNotificationPopup] = useState(null);
 
   // Function to trigger the notification popup
@@ -112,11 +115,11 @@ const [activeQuest, setActiveQuest] = useState(null);
     setStartedQuests(prev => new Set(prev).add(questId)); // Create a new Set to ensure state immutability
   };
 
-
-
-
 // Toggle functions
 
+const handleWealthChange = (newWealth) => {
+  setCurrentWealth(newWealth);
+};
 
   const closeNotificationPopup = () => {
     setNotificationPopup(null);
@@ -233,9 +236,6 @@ const toggleMap = useCallback(() => {
   setIsMapOpen((prev) => !prev);
 }, []);
 
-
-
-
   // End game handling
 
   const handleEndGame = useCallback(async () => {
@@ -254,9 +254,6 @@ const toggleMap = useCallback(() => {
   }
 }, [turnNumber, gameState.inventory, journal]);
 
-
-
-
 // Initial description of Maria and NPC image
 useEffect(() => {
   const initialDescription = `
@@ -271,8 +268,6 @@ useEffect(() => {
   setHistoryOutput(initialDescription.trim());
   setConversationHistory([{ role: 'system', content: initialDescription.trim() }]);
 }, []);
-
-
 
 // effects
 
@@ -297,7 +292,12 @@ const handleCommandClick = (command) => {
   const commandParts = command.split(' ');
   const commandType = commandParts[0].toLowerCase();
   const targetName = commandParts.slice(1).join(' ');
-    const npcName = npcCaption.split(',')[0]; 
+  let npcName;
+
+  // Only check npcCaption for certain commands
+  if (commandType !== '#sleep' && npcCaption) {
+    npcName = npcCaption.split(',')[0];
+  }
 
   switch (commandType) {
     case '#symptoms':
@@ -310,39 +310,37 @@ const handleCommandClick = (command) => {
       break;
 
     case '#prescribe':
-  let targetNPC;
-  if (targetName) {
-    targetNPC = EntityList.find(entity => 
-      entity.name.toLowerCase() === targetName.toLowerCase()
-    );
-  } else {
-    // First, check if there's an NPC in the current scene (from npcCaption)
-    const currentNPCName = npcCaption.split(',')[0].trim();
-    targetNPC = EntityList.find(entity => 
-      entity.name.toLowerCase() === currentNPCName.toLowerCase()
-    );
-    
-    // If no NPC found in the caption, fall back to checking the history output
-    if (!targetNPC) {
-      targetNPC = EntityList.find(entity => 
-        historyOutput.toLowerCase().includes(entity.name.toLowerCase())
-      );
-    }
-  }
-
-  if (targetNPC) {
-    setCurrentPatient(targetNPC);
-    setIsPrescribing(true);
-    setIsInventoryOpen(true);
-    setIsPrescribePopupOpen(true);
-  } else {
-    setHistoryOutput('No valid NPC found for prescription. Make sure an NPC is present in the current scene or specify a valid NPC name.');
-  }
-  break;
-
+      let targetNPC;
+      if (targetName) {
+        targetNPC = EntityList.find(entity =>
+          entity.name.toLowerCase() === targetName.toLowerCase()
+        );
+      } else {
+        // First, check if there's an NPC in the current scene (from npcCaption)
+        const currentNPCName = npcCaption?.split(',')[0].trim();
+        targetNPC = EntityList.find(entity =>
+          entity.name.toLowerCase() === currentNPCName.toLowerCase()
+        );
+        
+        // If no NPC found in the caption, fall back to checking the history output
+        if (!targetNPC) {
+          targetNPC = EntityList.find(entity =>
+            historyOutput.toLowerCase().includes(entity.name.toLowerCase())
+          );
+        }
+      }
+      if (targetNPC) {
+        setCurrentPatient(targetNPC);
+        setIsPrescribing(true);
+        setIsInventoryOpen(true);
+        setIsPrescribePopupOpen(true);
+      } else {
+        setHistoryOutput('No valid NPC found for prescription. Make sure an NPC is present in the current scene or specify a valid NPC name.');
+      }
+      break;
 
     case '#diagnose':
-      const patientForDiagnosis = EntityList.find(entity => 
+      const patientForDiagnosis = EntityList.find(entity =>
         entity.type === 'patient' && historyOutput.toLowerCase().includes(entity.name.toLowerCase())
       );
       if (patientForDiagnosis) {
@@ -357,11 +355,16 @@ const handleCommandClick = (command) => {
       toggleMap();
       break;
 
+    case '#sleep':
+      handleSleepCommand(); // Directly call the sleep command, no NPC dependency
+      break;
+
     default:
       setUserInput(command);
       handleSubmit({ preventDefault: () => {} }); // Automatically submit the command
   }
 };
+
 
 const [commandsDetected, setCommandsDetected] = useState({
   prescribe: false,
@@ -369,6 +372,7 @@ const [commandsDetected, setCommandsDetected] = useState({
   diagnose: false,
   map: false,
   buy: false,
+  sleep: false,
   // Add more commands as needed
 });
 
@@ -377,27 +381,41 @@ useEffect(() => {
     prescribe: historyOutput.includes('prescribe'),
     symptoms: historyOutput.includes('symptoms'),
     diagnose: historyOutput.includes('diagnose'),
-
     buy: historyOutput.includes('#buy'),
-    // Add more commands as needed
+    sleep: historyOutput.includes('#sleep'),
   };
   setCommandsDetected(newCommandsDetected);
 }, [historyOutput]);
+
+// Define handleSleepCommand function
+  const handleSleepCommand = () => {
+    setIsSleepOpen(true); 
+  };
 
 
 // Entity Selection
 
 const selectEntity = useCallback(() => {
   // Check if the current turn is one of the specified turns
-  const specialTurns = [7, 11, 14, 19];
+  const specialTurns = [14, 19];
   const isSpecialTurn = specialTurns.includes(turnNumber);
 
   if (turnNumber === 1) {
     // On the first turn, choose a random patient to visit.
     const patients = EntityList.filter(entity => entity.type === 'patient');
     return patients[Math.floor(Math.random() * patients.length)];
+  } else if (turnNumber === 2) {
+    // On turn 2, there's an 80% chance of a patient visit and 20% chance of a rival visit.
+    const patients = EntityList.filter(entity => entity.type === 'patient');
+    const rivals = EntityList.filter(entity => entity.type === 'rival');
+    
+    // Use Math.random() to determine whether to pick a patient or a rival.
+    const combinedList = Math.random() < 0.8 ? patients : rivals;
+
+    // Randomly pick from the selected list (either patients or rivals).
+    return combinedList[Math.floor(Math.random() * combinedList.length)];
   } else if (isSpecialTurn && Math.random() < 0.4) {
-    // On special turns, there's a 40% chance to summon the Inquisitor
+    // On special turns, there's a 40% chance to summon the Inquisitor.
     const inquisitor = EntityList.find(entity => entity.name === 'Assistant Inquisitor Fernando de Toledo');
     return inquisitor;
   } else if (turnNumber > 1 && Math.random() < 0.15) {
@@ -406,6 +424,7 @@ const selectEntity = useCallback(() => {
   }
   return null;
 }, [turnNumber]);
+
 
 
 const handleTurnEnd = useCallback(async (narrativeText) => {
@@ -509,7 +528,7 @@ const handleSubmit = useCallback(async (e) => {
   
   let narrativeText = userInput.trim().toLowerCase(); // Convert to lowercase for easier matching
 
-    // Check for #prescribe command
+    // handling #prescribe command
   if (narrativeText === '#prescribe') {
     handleCommandClick('#prescribe');
     setUserInput('');
@@ -517,7 +536,15 @@ const handleSubmit = useCallback(async (e) => {
     return;
   }
 
-  // Step 1: Prepare the inventory summary for the history agent
+
+  if (narrativeText === '#sleep') { // Handle #sleep command
+    handleCommandClick('#sleep');
+    setUserInput('');
+    setIsLoading(false);
+    return;
+  }
+
+  // Prepare the inventory summary for the history agent
   const inventorySummary = gameState.inventory.map(item => 
     `${item.name} (Quantity: ${item.quantity}, Price: ${item.price} silver coins)`
   ).join('\n');
@@ -537,7 +564,7 @@ const shouldAdvanceQuest = (quest, actions) => {
   const command = narrativeText.startsWith('#') ? narrativeText.substring(1) : narrativeText;
 
   // Detect symptoms command
-  if (command.startsWith('symptoms')) {
+  if (command.startsWith('#symptoms')) {
     const npcName = command.split(' ')[1] || npcCaption.split(',')[0];
     if (npcName) {
       setSelectedNpcName(npcName);
@@ -617,6 +644,7 @@ const contextSummary = `
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
+          temperature: .3,
           messages: [
             {
               role: 'system',
@@ -633,7 +661,7 @@ const contextSummary = `
 tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldier, curandera, ranchero, scholar, dons, child, enslavedperson, sailor, frontierdweller, curandera, peasantwoman, bandito, townsfolk, laborer, shopkeeper. ALWAYS give each of these a unique name and personality and contextually appropriate description - for instance, if Maria sails to England, you might introduce a caballero as the Cavalier Sir Richard Roundtree, or if she treats a noblewoman in Mexico, she would not simply be "Doña" but "Doña Maria de Valparaiso" or the like.
 
               **Commands:**
-              - Certain key words are commands: #symptoms, #prescribe, #diagnose, #forage, and #buy. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate. This should come at the end of the turn, and remember to always use the hashtag. Suggest exploring #symptoms, attempting to  #diagnose, or to use #prescribe if they feel certain of the diagnosis. #buy is suggested whenever items for sale may be nearby, #forage when items may be harvested.
+              - Certain key words are commands: #symptoms, #prescribe, #diagnose, #sleep, #forage, and #buy. Always suggest the #sleep command if it is after 7 pm. In addition to suggesting a plausible course of action, like "perhaps you could ask her more about her illness" or "the herbs you need might be at the Portal de Mercaderes or La Alameda" you might suggest up to three specific commands whenever contextually appropriate. This should come at the end of the turn, and remember to always use the hashtag. Suggest exploring #symptoms, attempting to  #diagnose, or to use #prescribe if they feel certain of the diagnosis. #buy is suggested whenever items for sale may be nearby, #forage when items may be harvested, #sleep when it's late or Maria is tired.
               - when treating a patient, you should always ask is player wants to use #symptoms command.
               - #buy: a very wide range of materia medica (and other items) are available to buy from NPCs. If Maria buys an item, ALWAYS record this event at the last sentence of your response as directed below ("Maria has bought [item name]"). If user simply types #buy rather than #buy [item name], provide a markdown list, with name, brief description, and price in silver coins, of all materia medica for sale nearby. Some of the items that Maria can buy are: "Peyote",[only very rarely] "Hongos Malos", "Ayahuasca", "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
@@ -643,6 +671,7 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
     "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
     "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade", "Deer Antlers", "Vanilla", "Bezoar" (very expensive)
               - #forage: Maria is a skilled forager and can find some of the above substances (and others, as contextually appropriate) in the countryside. She may add them to inventory with the #forage command.
+              - #sleep: Think of the #sleep command as a "new chapter." If entered, always find a contextually appropriate way and place for Maria to sleep until the next morning, then pick up the narrative from that point. It is a fast forward that leads to new plot points and new events the following day. You wil receive a system prompt about it; don't share this with the player in your output, instead just just pick up the simulation the following morning.
 
               **Contextual Awareness:**
               - Avoid overly optimistic or rosy depictions of the past - Maria de Lima is in debt and has a strong incentive to make money from her patients; likewise, patients are sick and often annoyed. Maria is in an increasingly desperate personal and financial state, owing 100 reales to Don Luis and 20 reales to Marta the herb woman. 
@@ -652,20 +681,22 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
 
 
               **Character and Narrative Control:**
-              - The simulation should reflect Maria's struggles with societal pressures, her past, and the challenges of maintaining her business. In particular, it begins with Don Luis, the moneylender, demanding payment of 100 reales (silver coins) by sunset of August 23. Make sure that Don Luis or his representatives (armed thugs) periodically reppear aggressively in the story as long as Maria is in Mexico City - give her the option to flee if threatened. 
+              - The simulation should reflect Maria's struggles with societal pressures, her past, and the challenges of maintaining her business. In particular, it begins with Don Luis, the moneylender, demanding payment of 100 reales (silver coins) by sunset of August 23. Make sure that Don Luis or his representatives (armed thugs) periodically reppear aggressively in the story as long as Maria is in Mexico City - give her the option to flee if threatened. Maria can navigate a wide ranges of spaces but remember to depict gender bias and other barriers - for instance, she might sneak into the university library to read a text, but would typically be expelled from it if caught. Perhaps she might convince a librarian to allow her to visit, but this is by no means certain.
               - The user has the option to click an "Incorporate counter-narrative" button which adds a critique of the previous turn output by an expert historian to your context for preparing the next turn. Integrate this knowledge subtly but actively to enhance realism.
               - When contextually appropriate, reference rumors of brujas and curanderos in the villages outside the city, using an unfamiliar drug called *hongos malos.* And other intriguing things of that nature, for instance rumors of the Pueblo Revolt on the northern border, or Catholic-Protestant tensions (its the era of the Popish Plot in England), or rivalries between Cartesians and Aristotelians (ancients vs moderns) or the growing importance of "drogas da India" -- exotic materia medica from China, India, and the tropics in general.
               - At the Portal de Mercaderes, there is a quest available if you visit spend more than one turn at the marketplace stalls where a Nahuatl man named Tlacaelel approaches you and initiates Quest 3, the Nahuatl Codex. This quest is implemented when the user types: Tlacaelel, as in "speak to Tlacaelel," so he should introduce himself by name and you should ask if the user wnats to speak to him.
               - On some turns, such as Turn 1, you will introduce patients and other NPCs from a list of "entities" (NPCs, patients, places, and events) which is in the underlying source code. The NPC/patient should DIRECTLY appear - not a family member. Always introduce their full name, age, and background. After Maria prescribes medicine of any kind, the NPC departs the scene and does not linger, though they may reappear in later turns (and, at times, NPCs may even be killed by a toxic prescription).
-              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious - always one word), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response as detailed below.
-               Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. 
+              - Maria starts with 11 silver coins. If there are any changes to Maria's wealth, status (she awakens feeling rested, but might feel tired, amused, exhilarated, curious, desperate, terribly frightened, etc in later turns - i.e. if she encounters an Inquisitor, she will be frightened or anxious, or if she fails to sleep she will get increasingly tired until the #sleep command is used - status should be always one word), or her "reputation meter" (for instance, if she is sued, if a patient dies or complains, if she steals, if the Inquisition questions her) then note it at the END of your response as detailed below.
+               - Remember that when Maria sells a drug, the coins she makes ADD to her existing wealth. When she buys a drug, they DETRACT. 
                - certain NPCs have no names. For instance, an NPC like "soldado" or "Doña" or "Caballero" represents a whole class of people. When you introduce them, give them names to individualize them, like "Doña Maria de Gallego" or "Eduardo, a sailor."
                - when a turn seems to be an important moment, begin your output with either h3 markdown tags (announcing a change or event, like "Maria left Mexico City" or "A new day dawns...") or h4 markdown tags, which render as red and signal an emergency or crisis point, like "Maria has been arrested!" or "The Inquisitor has arrived...".
-               - Track Maria's wealth, status, reputation, and the date and time at the end of each response. Reputation is displayed via a choice of ONE of these emojis (Maria starts at 3, 😐) 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)Your final line should always be in this exact format:
+               - if a patient dies due to Maria's prescription, the goal of the game becomes disposing of their body in a realistic manner. MAria will usualy be arrested and may be executed for malpractice in such a situation.
+               - It is possible for Maria to die. If so, trigger Quest6 by outputting ONLY the following string: StartQuest6
+               - Track Maria's purchases, wealth, status, reputation, and the date and time at the end of each response. Reputation is displayed via a choice of ONE of these emojis (Maria starts at 3, 😐) 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)Your final line should always be in this exact format:
 
-              *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
+              **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
-              - Maria is able to buy items with the #buy [item name] command. On any turn when Maria buys an item, you must ALWAYS end your response by noting the item purchased. The item bought must ALWAYS come at the end of your response, in this EXACT format, with no deviation ever:  "*Maria spent [#] silver coins. Now Maria has [#] silver coins. Maria bought [item name].*'"'
+              - Maria is able to buy items with the #buy [item name] command. On any turn when Maria buys an item, you must ALWAYS end your response by noting the item purchased. The item bought must ALWAYS come at the end of your response, in this EXACT format, with no deviation ever:  "**Maria has bought [item name]. Now Maria has [#] silver coins [rest of final line goes here]'"'
               Likwise for the #forage command: If Maria successfully forages for an item, always end your response noting it as follows: **Maria has [integer] silver coins. Maria foraged [itemname].** 
               Tracking buying and foraging in this specific way is very important. It allows the game to track new items.
 
@@ -752,18 +783,12 @@ setUserInput('');
     }
   }, [turnNumber, userActions, gameState.location, gameState.time, quests, startedQuests, startQuest, setActiveQuest]);
 
-
-
  // JSX 
-
      return (
   <DndProvider backend={HTML5Backend}>
     <div className="container">
-    
               <NavMobile setIsDarkMode={setIsDarkMode} setIsAboutOpen={setIsAboutOpen} />
-
         <Header />
-
         <PortraitSection 
         npcImage={npcImage}
         npcCaption={npcCaption}
@@ -772,7 +797,6 @@ setUserInput('');
         isEmoji={isEmoji}  
         status={mariaStatus}  
       />
-
         <div className="main-content">
           <div className="history-agent">
 
@@ -786,21 +810,13 @@ setUserInput('');
     {gameState.location.toUpperCase()} | {gameState.time.toUpperCase()}, {gameState.date.toUpperCase()} | TURN {turnNumber}
   </p>
   </div>
-
- 
-
   <button
     className="command-button map-button"
     onClick={toggleMap}
   >
     MAP
   </button>
-
-
-
 </div>
-
-
 <div className={`output-box ${isLoading ? 'loading' : ''}`}>
   {isLoading ? (
     <LoadingIndicator />
@@ -808,17 +824,6 @@ setUserInput('');
     <HistoryOutput historyOutput={historyOutput} isLoading={isLoading} />
   )}
 </div>
-
-
-
-
-
-
-
-
-
-
-
             {/* Incorporate Popup */}
           {showIncorporatePopup && (
             <div className="incorporate-popup">
@@ -835,8 +840,6 @@ setUserInput('');
   >
     {showPdfButtons ? '📄 Hide sources' : '📄 Show all sources'}
   </button>
-
-
     <div className="command-buttons">
  
       {commandsDetected.prescribe && (
@@ -863,7 +866,6 @@ setUserInput('');
                 DIAGNOSE
               </button>
             )}
-
        {commandsDetected.map && (
         <button
           className="command-button map-button"
@@ -879,8 +881,30 @@ setUserInput('');
         >
           BUY
         </button>
+        )}
+         {commandsDetected.sleep && (
+        <button
+          className="command-button sleep-button"
+          onClick={handleSleepCommand}
+        >
+          SLEEP
+        </button>
       )}
     </div>
+
+
+        {/* Sleep Popup */}
+        <Sleep
+        isOpen={isSleepOpen}
+        onClose={() => setIsSleepOpen(false)}
+        gameState={gameState}
+        conversationHistory={conversationHistory}
+        handleTurnEnd={handleTurnEnd}
+        addJournalEntry={addJournalEntry}
+        setHistoryOutput={setHistoryOutput}  
+        setConversationHistory={setConversationHistory}
+        setTurnNumber={setTurnNumber}
+      />
 
 
 
@@ -919,7 +943,6 @@ setUserInput('');
           ))}
         </div>
 </div>
-
   {/* Diagnose Popup */}
 <Diagnose 
   isOpen={isDiagnoseOpen} 
@@ -927,7 +950,6 @@ setUserInput('');
   previousOutput={historyOutput} 
   npcCaption={npcCaption} 
 />
-
 <Map 
   isOpen={isMapOpen} 
   onClose={toggleMap} 
@@ -939,8 +961,11 @@ setUserInput('');
 
           <div className="interaction-section">
           {/* Pass llmResponse to WealthTracker and handle status change */}
-          <WealthTracker llmResponse={historyOutput} onStatusChange={handleStatusChange} />
-
+        <WealthTracker 
+  llmResponse={historyOutput} 
+  onStatusChange={handleStatusChange}
+  onWealthChange={handleWealthChange}
+/>
             <InputBox
               userInput={userInput}
               setUserInput={setUserInput}
@@ -958,14 +983,14 @@ setUserInput('');
               onClick={toggleJournalEntryBox} 
               className="add-entry-button"
             >
-              Custom Journal Entry
+              Custom Journal
             </button>
 
             <button 
               onClick={toggleInventory} 
               className="view-inventory-button"
             >
-              View Inventory
+              Inventory
             </button>
             
             <button 
@@ -979,7 +1004,7 @@ setUserInput('');
               className="commonplace-book-button"
               onClick={toggleCommonplaceBook}
             >
-              Commonplace Book
+              Note Book
             </button>
             <button 
               className="mix-drugs-button"
@@ -1270,6 +1295,7 @@ setUserInput('');
     toggleInventory={toggleInventory}
     isPrescribing={isPrescribing}
     onPDFClick={handlePDFClick}  
+     refreshInventory={refreshInventory}
 />
 
 
@@ -1292,6 +1318,8 @@ setUserInput('');
   toggleInventory={toggleInventory}  
   setIsLoading={setIsLoading}
   addJournalEntry={addJournalEntry}
+   currentWealth={currentWealth}
+
 />
 
 {isAboutOpen && <About isOpen={isAboutOpen} toggleAbout={toggleAbout} />}

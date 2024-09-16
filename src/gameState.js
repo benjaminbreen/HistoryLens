@@ -46,7 +46,6 @@ export const useGameState = () => {
     }));
   }, []);
 
-
    // Update inventory logic
   const updateInventory = useCallback((updateItemName, quantityChange) => {
     setGameState((prevState) => {
@@ -209,12 +208,13 @@ If your response doesn't meet these criteria, please correct it before returning
   }, [addCompoundToInventory]);
 
   // Function to ensure that inventory updates are immediately reflected in the game state
-  const refreshInventory = useCallback(() => {
-    setGameState((prevState) => ({
-      ...prevState,
-      inventory: [...prevState.inventory],
-    }));
-  }, []);
+const refreshInventory = useCallback(() => {
+  setGameState((prevState) => ({
+    ...prevState,
+    inventory: [...prevState.inventory],
+    compounds: [...prevState.compounds]  // Add this line to refresh compounds as well
+  }));
+}, []);
 
 
   // time handling via summarydata from journal.agent JSON output

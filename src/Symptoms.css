@@ -298,8 +298,8 @@
 .submit-questions-button {
   background-color: #4CAF50;
   color: white;
-  float: left;
-  font-size: 18px;
+  font-size: 18px !important;
+  padding: 20px !important;
 }
 
 .submit-questions-button:hover {

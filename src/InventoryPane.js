@@ -9,11 +9,11 @@ function InventoryItem({ item, index, getHumoralShorthand, onPDFClick, onItemCli
   const ref = useRef(null);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'inventoryItem',
-    item: { ...item },
+    item: () => ({ ...item }), // Use a function to return the latest item data
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-  }));
+  }), [item]); // Add item as a dependency
   drag(ref);
 
 
@@ -59,7 +59,7 @@ function InventoryItem({ item, index, getHumoralShorthand, onPDFClick, onItemCli
   );
 }
 
-function InventoryPane({ isOpen, toggleInventory, isPrescribing, onPDFClick, inventory }) {
+function InventoryPane({ isOpen, toggleInventory, isPrescribing, onPDFClick, inventory, refreshInventory }) {
   const { gameState } = useGameState();
   const currentInventory = inventory; 
   const [isPdfOpen, setIsPdfOpen] = useState(false);
@@ -83,6 +83,12 @@ function InventoryPane({ isOpen, toggleInventory, isPrescribing, onPDFClick, inv
     setSelectedItem(null); // Close the item popup
     setSelectedItemIndex(null); // Reset the index when closing the popup
   };
+
+  useEffect(() => {
+  if (isOpen) {
+    refreshInventory();
+  }
+}, [isOpen, refreshInventory]);
 
   // Add escape key listener to close inventory pane and arrow keys to navigate items
   useEffect(() => {
@@ -122,18 +128,18 @@ function InventoryPane({ isOpen, toggleInventory, isPrescribing, onPDFClick, inv
   return (
     <>
       <div className={`inventory-pane ${isOpen ? 'open' : ''}`}>
-        <button className="close-button" onClick={toggleInventory}>Close</button>
+        <button className="close-map-button" onClick={toggleInventory}>Close</button>
         <h2>Inventory</h2>
         <ul className="inventory-list">
           {inventory.map((item, index) => (
-            <InventoryItem 
-              key={index}
-              item={item}
-              index={index}
-              getHumoralShorthand={getHumoralShorthand}
-              onPDFClick={handlePDFClick}  // Pass the PDF click handler to InventoryItem
-              onItemClick={handleItemClick}  // Handle item click for popup
-            />
+             <InventoryItem 
+      key={item.id || item.name} // Use a unique identifier
+      item={item}
+      index={index}
+      getHumoralShorthand={getHumoralShorthand}
+      onPDFClick={handlePDFClick}
+      onItemClick={handleItemClick}
+    />
           ))}
         </ul>
       </div>
@@ -152,7 +158,7 @@ function InventoryPane({ isOpen, toggleInventory, isPrescribing, onPDFClick, inv
       {selectedItem && (
         <div className="item-popup-overlay" onClick={closeItemPopup}>
           <div className="item-popup-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={closeItemPopup}>×</button>
+            <button className="close-map-button" onClick={closeItemPopup}>×</button>
 
             {/* Item header with separate lines for the name */}
             <h1 className="medieval-header">

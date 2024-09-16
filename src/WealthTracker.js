@@ -1,7 +1,8 @@
+// WealthTracker.js
 import React, { useEffect, useState } from 'react';
 import './WealthTracker.css';
 
-function WealthTracker({ llmResponse, onStatusChange }) {
+function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
   const [currentWealth, setCurrentWealth] = useState(11);  // Default starting wealth
   const [status, setStatus] = useState('rested');  // Default starting status
   const [reputationEmoji, setReputationEmoji] = useState('😐');  // Default reputation emoji
@@ -16,14 +17,15 @@ function WealthTracker({ llmResponse, onStatusChange }) {
 
     // If wealth information is found
     if (wealthMatch && wealthMatch[1]) {
-      setCurrentWealth(parseInt(wealthMatch[1], 10));
+      const newWealth = parseInt(wealthMatch[1], 10);
+      setCurrentWealth(newWealth);
+      onWealthChange(newWealth);  // Notify parent component of wealth change
     }
 
     // If status information is found
     if (statusMatch && statusMatch[1]) {
       const newStatus = statusMatch[1].trim();
       setStatus(newStatus);
-
       // Notify the parent component of the status change
       if (onStatusChange) {
         onStatusChange(newStatus);
@@ -34,7 +36,7 @@ function WealthTracker({ llmResponse, onStatusChange }) {
     if (emojiMatch && emojiMatch[1]) {
       setReputationEmoji(emojiMatch[1].trim());
     }
-  }, [llmResponse, onStatusChange]);
+  }, [llmResponse, onStatusChange, onWealthChange]);
 
   return (
     <div className="wealth-tracker">

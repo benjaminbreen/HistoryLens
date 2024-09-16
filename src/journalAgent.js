@@ -8,17 +8,22 @@ export const generateJournalEntry = async (narrativeText, apiKey) => {
             },
             body: JSON.stringify({
                 model: 'gpt-4o-mini',
+                temperature: 0.3,
                 messages: [
                     {
                         role: 'system',
 content: `
-You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary in Mexico City which begins on August 22, 1680 and can extend for up to a month beyond that.
+You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary who runs the Botica de la Amurgura in Mexico City. The game begins on August 22, 1680 and can extend for up to a year beyond that.
 Given the following text, provide:
 1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time. Format: "Summary: <summary>" For example: Summary: <August 23, 10:15 AM: Maria assessed a patient named Fray Patricio, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.>
+If the entry describes a dream, include a brief mention of the dream content in the summary.
+For example:
+Summary: <August 24, 7:00 AM: Maria woke up after dreaming of a serpent coiled around itself in a dense wood, feeling unsettled but ready to start her day.>
+
 2. A JSON object tracking the current location, date, and time of day formatted like:
 \`\`\`json
 {
-    "location": "Maria's shop",
+    "location": "Botica de la Amargura",
     "date": "August 22, 1680",
     "time": "8:35 AM",
 }
@@ -34,11 +39,13 @@ When updating the time and date, please follow these specific rules:
 
 3. Select the most appropriate image name based on the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
 
-- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, rodrigohernandez, rodrigoramirez, donignaciodemendoza, tlacaelel, sebastianathayde,
+- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, arturohernandez, arturoramirez, donignaciodemendoza, tlacaelel, sebastianathayde, panchorodriguez
 - Locations: countryside, generichome, market, street, streetnight, outsideday, outsidenight, shopmorning, shopafternoon, shopnight, farm, cityday
-- Generic scenes: study, codex, herbs, herbalist, mushroom, trippy, merchant, priest, drugs, bottles
+- Generic scenes: study, codex, herbs, herbalist, mushroom, trippy, merchant, priest, drugs, bottles, university, library
 - Generic people: 
 tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldier, curandera, ranchero, scholar, dons, child, enslavedperson, sailor, frontierdweller, curandera, peasantwoman, bandito, townsfolk, laborer, shopkeeper
+
+IMPORTANT: If the NPC name does not match any in the predefined list, you must select the most fitting option from the 'generic people' section. Consider the social status, occupation, and general description provided in the narrative to guide your choice. If no specific match fits, select 'townsfolk' for a generic group or 'paisano' for a generic male character.
 
 - Locations and scenes (with expanded uses):
   - plazamayor: the Plaza Mayor in Mexico City, center of governance and urban life, near the markets
@@ -59,13 +66,15 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
   - shopnight: late work, candlelit activities, nighttime business
   - farm: agricultural scenes, rivers, irrigation, boats, freshwater activities, rural labor, riverside, rivers
   - cityday: urban panoramas, city architecture, busy city life
-  - study: intellectual activities, reading, writing, planning, strategizing
+  - study: intellectual activities, reading, writing, planning, strategizing, which happen at night
+  - library: any library setting, such as a university or palace library 
   - codex: any scene involving books, documents, maps, or written materials
   - herbs: selling, buying or observing herbs or plants in an outdoor setting (outside Maria's shop)
   - herbalist: healing practices, folk medicine, herbal remedies, consultations
   - mushroom: foraging, mysterious or magical elements, altered states
   - trippy: visions, dreams, hallucinations, spiritual experiences
   - merchant: any commercial activity, negotiations, trading
+  - university: use for any scene of studying or academic intellectual life during the day
   - priest: religious scenes, spiritual guidance, church activities
   - joao is joao, Maria's cat
   - outskirts: areas just outside the city, with sparse homes, farms, and more isolated areas
@@ -86,14 +95,12 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
   - churchcourtyard: religious spaces, grand buildings, outdoor gatherings, colonial architecture
   - cobblestones: detail of road or pavement
   - rock: any turn centering on rock or mineral
-  - turf: any turn centering on staring at grass or foiliage or turf
+  - turf: any turn centering on staring at grass or foiliage or turf, such as when the #forage command is used
   - ocean: any turn centering on ocean 
   - bottles: any closeup of bottles
   - moon: any moon or night scene which is otherwise not defined
   - ship: any sailing vessel interior
   - horse: any horse
-
-
 
 - Generic people:
   - tejedora: any non-specific female character of lower social status, e.g. weaver, wife, peasant woman, farmer, tradeswoman
@@ -146,8 +153,8 @@ Also, try to vary your image choice. Avoid repeating the same image more than on
 IMPORTANT: When providing the "NPC image" output, ensure there are no extra characters, spaces, or quotation marks. The output should be exactly in this format:
 NPC image: imagename
 For example:
-NPC image: rodrigohernandez
-Not "NPC image: "rodrigohernandez"" or any other variation.
+NPC image: arturohernandez
+Not "NPC image: "arturohernandez"" or any other variation.
 `
 
                     },
@@ -181,7 +188,7 @@ let npcImageName = imageMatch ? imageMatch[1].trim().toLowerCase() : "default";
 npcImageName = npcImageName.replace(/['"]+/g, '');
 
 // Fuzzy matching for NPC names
-const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'rodrigohernandez', 'rodrigooramirez', 'donignaciodemendoza', 'tlacaelel', 'sebastianathayde'];
+const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'arturohernandez', 'arturoramirez', 'donignaciodemendoza', 'tlacaelel', 'sebastianathayde', 'panchorodriguez'];
 
 const fuzzyMatch = npcNames.find(name => npcImageName.includes(name));
 if (fuzzyMatch) {

@@ -37,8 +37,8 @@ const imageMap = {
   trippy: require('./assets/trippy.jpeg'),
   herbs: require('./assets/herbs.jpeg'),
   herbalist: require('./assets/herbalist.jpeg'),
-  rodrigohernandez: require('./assets/rodrigoramirez.jpg'),
-  rodrigoramirez: require('./assets/rodrigoramirez.jpg'),
+  arturohernandez: require('./assets/arturoramirez.jpg'),
+  arturoramirez: require('./assets/arturoramirez.jpg'),
   cityday: require('./assets/city_day.jpg'),
   streetnight: require('./assets/street_night.jpg'),
   donignaciodemendoza: require('./assets/donignaciodemendoza.jpg'),
@@ -97,6 +97,8 @@ plazamayor: require('./assets/playamayor.jpg'),
 alamedacentral: require('./assets/alamedacentral.jpg'),
 sebastianathayde: require('./assets/sebastianathayde.jpg'),
 drugs: require('./assets/drugs.jpg'),
+panchorodriguez: require('./assets/panchorodriguez.jpg'),
+university: require('./assets/university.jpg'),
 
 
   // Quest images
@@ -125,6 +127,15 @@ drugs: require('./assets/drugs.jpg'),
   quest5b: require('./assets/quest5b.jpg'),
   quest5c: require('./assets/donluis.jpeg'),
   quest5d: require('./assets/donluis.jpeg'),
+
+  // Dream images
+ dream1: require('./assets/dreams/dream1.jpg'),
+dream4: require('./assets/dreams/dream4.jpg'),
+dream5: require('./assets/dreams/dream5.jpg'),
+dream6: require('./assets/dreams/dream6.jpg'),
+dream8: require('./assets/dreams/dream8.jpg'),
+dream10: require('./assets/dreams/dream10.jpg'),
+    
 };
 
 export default imageMap;
