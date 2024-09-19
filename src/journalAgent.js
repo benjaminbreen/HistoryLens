@@ -27,15 +27,21 @@ Given the following text, provide:
 \`\`\`
 
 When updating the time and date, please follow these specific rules:
-- A turn typically lasts between 5 minutes and several hours/days. Use your judgement to determine the length. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within a 1-2 hour range.
+- A turn typically lasts between 5 minutes and several hours/days. Use your judgement to determine the length. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within a 1-2 hour range. However, NEVER go backwards in time. If it is dusk, you can only go further into evening, or the morning of the following day if the turn calls for it.
 - If the action described spans multiple events (e.g., traveling to another town, treating multiple patients), increase the time accordingly—use hours, and if necessary, increment the date by a day or more.
 - Always provide an exact time in the format "8:35 AM" or "11:45 PM". Never return vague times like "morning" or "evening".
 - If the current time passes midnight (12:00 AM), increment the date by one day. If the date changes due to significant time passage, clearly reflect this in the JSON output.
-- For example: If Maria treats a patient at 9:15 PM and then travels for 4 hours, set the new time as 1:15 AM the next day.
+- For example: If Maria treats a patient at 9:15 PM on August 23 and then travels for 4 hours, set the new time as 1:15 AM the next day, August 24.
 - give the location as a short phrase which clearly indicates the setting - for instance, rather than just "street," you could say "Busy thoroughfare, Mexico City" or instead of "ship" you could say "Fisherman's trawler, mid-Atlantic"
 
 
 3. Select the most appropriate image name based on these IMAGETAGS. Select the image which best depicts the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
+    Prioritize images in the following order:
+   1. Named NPCs: If a named NPC is mentioned, ALWAYS use their specific image.
+   2. Locations: If a specific location is described, use the corresponding location image.
+   3. Generic scenes: If no specific NPC or location is mentioned, select a generic scene that best fits the narrative context. Be very creative with this one. Think outside the box. 
+   4. Generic people: If a generic NPC is described, select the most appropriate image based on their social status, occupation, and description.
+   5. Emojis: If no suitable image is available, select an emoji that best represents the mood or context of the scene.
 
 IMAGETAGS: 
 - NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, frayjordanes, antoniadeochoa, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, arturohernandez, arturoramirez, santiagovaldez, tlacaelel, sebastianathayde, panchorodriguez
@@ -44,7 +50,7 @@ IMAGETAGS:
 - Generic people: 
 tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldier, curandera, ranchero, scholar, dons, child, enslavedperson, sailor, frontierdweller, curandera, peasantwoman, bandito, townsfolk, laborer, shopkeeper
 
-IMPORTANT: If the NPC name does not match any in the predefined list, you must select the most fitting option from the 'generic people' section. Consider the social status, occupation, and general description provided in the narrative to guide your choice. If no specific match fits, select 'townsfolk' for a generic group or 'paisano' for a generic male character.
+IMPORTANT: If the NPC name does not match any in the predefined list, you must select the most fitting option from the 'generic people' section. Consider the social status, occupation, and general description provided in the narrative to guide your choice. If no specific match fits, select 'townsfolk' for a generic group or 'paisano' for a generic male character. Vary your choice of image so you don't repeat each turn.
 
 - Guide to IMAGETAGS (with examples of potential uses):
   - plazamayor: the Plaza Mayor in Mexico City, center of governance and urban life, near the markets

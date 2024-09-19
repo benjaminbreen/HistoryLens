@@ -8,22 +8,25 @@
 body {
   margin: 0;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: #f7fafc;;
   color: #2d3748;
   height: 100vh;
   overflow-y: auto !important;
+  transition: background-color 10s ease, color 10s ease; /* Add this line */
 }
+
+.fade-transition {
+  transition: background-color 2s ease, color 2s ease;
+}
+
 
 html, body {
   overflow: visible !important;
 }
 
 h2 {
-
   margin-top: 0;
   font-size: 1.8em;
   font-weight: bold;
-
 
 }
 
@@ -37,7 +40,6 @@ h3 {
 }
 
 h4 {
-
   margin-top: 0;
   font-size: 1.1em;
   font-weight: bold;
@@ -59,45 +61,85 @@ h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6px;
+  padding: 4px;
   min-height: 100vh;
-
   width: 100%; /* Ensure the container takes full width */
-  
 }
 
 
 /* Title and Subtitle Styling */
 .title-container {
-  margin-bottom: 0.1rem;
-  text-align: center;
-  overflow-y: auto
- 
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: -14px;
 }
+
+/* Title Styling */
 
 .title {
-  display: inline-block; /* Make the title an inline block element */
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; 
   font-weight: 700;
-  color: #2c3e50;
- font-family: 'Playfair Display', serif;
-  letter-spacing: 0.02rem;
-   margin-bottom: -0.4rem;
-
-  vertical-align: top; /* Align vertically with the subtitle */
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  color: #34495e;
+  letter-spacing: 0.04rem;
+  text-align: center;
   margin: 0;
+  padding: 12px 0 1px;
+  margin-right: 0.5rem;
+  text-transform: none; 
+  position: relative;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  color: darkslategray;
+
+  /* Transition for smooth gradient change */
+  transition: background 1s ease, color 1s ease;
 }
+
+.title::after {
+  content: '';
+  display: block;
+  width: 120px;
+  height: 2px;
+  background-color: #e0d5b8;
+  margin: 3px auto 0;
+  border-radius: 2px;
+}
+
+/* Hover effect for title: more vibrant gradient */
+.subtitle:hover {
+  background: linear-gradient(to right, #ff7e5f, #feb47b, #f6d365); /* Orange to yellow gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background 1.5s ease; /* Smooth slow transition */
+}
+
+/* Subtitle Styling */
+.subtitle {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 1.22rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 10px 0 20px;
+  background: linear-gradient(to right, #6b3e9c, #c02a8c, #2f80ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Transition for smooth gradient change */
+  transition: background 1s ease, color 4s ease;
+}
+
+
+/* Hover effect on underline */
+.title:hover::after {
+  width: 137px;
+  background-color: gold;
+  transition: width 0.8s ease, background-color 0.8s ease;
+}
+
 
 .description-container {
-  margin-bottom: 0.2rem;
-  margin-top: 0.01rem;
-  text-align: right;
+padding: 5px;
+
+  text-align: center;
 }
 
 .description {
@@ -113,54 +155,53 @@ h2 {
   margin-bottom: 15px;
 }
 
-
-
 /* Main content layout */
 .main-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   overflow-y: auto
-
 }
 
 .history-agent {
-  width: 68%;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
-  margin-bottom: 10px;
+  width: 70%;
+  padding: 15px;
+  background: rgba(70, 30, 00, 0.04);
+  border-radius: 12px;
+  box-shadow: 1px 4px 7px rgba(0, 0, 0, 0.18);
+  border: 1px solid #e0d5b8; /* Subtle border */
+   margin-bottom: 10px;
   height: auto; /* Allow the container to adjust its height based on contents */
-
 }
 
 .interaction-section {
-  width: 32%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 12px;
-  padding: 22px;
-  margin-top: -24px;
-
+  padding:18px;
+  margin-top: -18px;
 }
 
+
 .output-box {
-  background-color: #edf2f7; /* Light gray */
+  background-color: #ffffff ; /* Light gray */
   padding: 10px;
   padding-top: 7px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-top: 2px;
   max-height: 1000px;
-  font-size: 1.15rem;
-  margin-bottom: 8px;
-
+  margin-bottom: 10px;
+    border: 1px solid #e0d5b8; /* Subtle border */
+     box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+  padding: 22px;
 }
 
 .output-box p {
   line-height: 1.5;  /* Reduce line height for manual breaks */
+  font-size: 1.2rem;
 }
 
 .output-box br {
@@ -172,11 +213,14 @@ h2 {
   justify-content: space-between; /* Push buttons to opposite ends */
   align-items: center; /* Vertically center buttons */
   margin-bottom: 25px; /* Add space below the button container */
+
+
 }
 
 .button-container button {
   margin: 0 10px; /* Ensure there's at least 20px gap on both sides */
   margin-top: 10px;
+
 }
 
 
@@ -255,6 +299,7 @@ margin-left: 0px;
 .pdf-link-button:hover {
   background-color: #d0d0d0; /* Darker on hover for visual feedback */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  transform: translateY(-2px);
 }
 
 .pdf-buttons {
@@ -262,9 +307,10 @@ margin-left: 0px;
   flex-wrap: wrap;
   gap: 6px; 
   padding-top: -2px; /* Space above buttons */
-  margin-bottom: -10px; /* Adjust bottom margin */
-}
+  margin-bottom: 1px; /* Adjust bottom margin */
+  font-size: 1rem;
 
+}
 
 
 /* Tip Box */
@@ -281,12 +327,12 @@ margin-left: 0px;
   justify-content: space-around;
   width: 45%;
  overflow: auto;
-
+  transition: background-color 12s ease, color 12s ease;
 
 }
 
 .command-button {
-  padding: 8px 8px;
+  padding: 2px 8px;
   border: none;
   cursor: pointer;
   font-weight: bold;
@@ -298,7 +344,9 @@ margin-left: 0px;
   box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
    margin-top: 5px;
+     transition: background-color 12s ease, color 12s ease;
 }
+
 
 /* General Hover Effect */
 .command-button:hover {
@@ -362,19 +410,6 @@ margin-left: 0px;
   text-align: center;
 }
 
-.journal-entry-box {
-  width: 400px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  z-index: 1000;
-}
-
 
 
 
@@ -392,6 +427,7 @@ margin-left: 0px;
   object-fit: cover;
   border-radius: 8px;
   margin: 30px auto 10px;
+
 }
 
 .popup-info {
@@ -405,15 +441,16 @@ margin-left: 0px;
 
 /* General Button Styling */
 button {
-  padding: 5px 20px;
+  padding: 6px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
    font-family: 'Quicksand', sans-serif;
   color: white;
   background-color: #4a5568;
   transition: all 0.3s ease;
+   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
 }
 
 button:hover {
@@ -422,17 +459,33 @@ button:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Add white glow effect to emojis */
+.emoji {
+  font-size: 1.15rem; /* Increase emoji size */
+  margin-right: 10px; /* Add extra space between the emoji and text */
+  text-shadow: 0px 2px 10px rgba(255, 255, 255, 0.7); /* White glow effect */
+  transition: text-shadow 0.3s ease, font-size 0.3s ease; /* Smooth transition */
+}
+
+button:hover .emoji {
+  text-shadow: 0px 5px 12px rgba(255, 255, 255, 1); /* Stronger glow on hover */
+
+}
+
 /* End Game Button Styling */
 .end-game-button {
   background-color: #e53e3e; /* Red background */
   box-shadow: 0 0 15px rgba(229, 62, 62, 0.75); /* Red glow effect */
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
 }
 
 .end-game-button:hover {
   background-color: #c53030; /* Darker red on hover */
   transform: scale(1.05); /* Slight scale-up on hover */
   box-shadow: 0 0 30px rgba(255, 99, 71, 0.85); /* Enhanced glow on hover */
+  transform: translateY(-2px);
+
 }
 
 /* Open Commonplace Book Button Styling */
@@ -461,6 +514,7 @@ button:hover {
   float: right; /* Move the button to the right */
   margin-right: 5px; /* Add some space from the right edge */
   padding: 8px;
+
 }
 
 .view-counter-button:hover {
@@ -479,12 +533,14 @@ button:hover {
   background-color: #d97706; /* Amber color */
   box-shadow: 0 0 15px rgba(217, 119, 6, 0.75); /* Amber glow effect */
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
 }
 
 .mix-drugs-button:hover {
   background-color: rgba(201, 91, 0, 0.85); /* Darker amber on hover */
   transform: scale(1.02); /* Slight scale-up on hover */
   box-shadow: 0 0 30px rgba(255, 138, 0, 0.85); /* Enhanced glow on hover */
+  transform: translateY(-2px);
 }
 
 /* Green Glow Animation for Submit Field */
@@ -502,10 +558,6 @@ button:hover {
 
 
 
-input[type="text"]:focus {
-  outline: none; /* Remove default outline */
-  animation: greenGlow 2.5s infinite; /* Apply green glow animation */
-}
 
 
 
@@ -539,70 +591,18 @@ input[type="text"]:focus {
 
 
 
-.journal-pane {
-  position: fixed;
-  right: -300px; /* Start hidden off-screen */
-  top: 0;
-  width: 300px;
-  height: 100%;
-  background-color: #FAF9F6; /* Light gray background */
-  border-left: 1px solid #e2e8f0; /* Gray-200 */
-  transition: all 0.8s ease-in-out;
-  z-index: 1000;
-  padding: 20px;
-  box-shadow: -2px 0px 7px rgba(0, 0, 0, 0.15);
-  overflow-y: auto;
-
-}
-
-.journal-pane code {
-  font-family: sans-serif; /* Change font to sans-serif */
-  text-transform: uppercase; /* Make it all caps */
-  background-color: transparent; /* Remove default background */
-  color: #2c3e50; /* Change text color */
-  font-style: normal !important;
-    font-size: 12px;
-  color: #4A5568; /* Tailwind gray */
-  font-weight: 600; /* Bold the text to make it stand out */
-  letter-spacing: -.01rem; /* Add some letter spacing for a cleaner look */
-  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
-}
-
 
 .container .journal-pane.open {
   right: 0 !important; /* Ensures that this rule is applied */
 }
 
-.journal-entry,
 .inventory-item {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e2e8f0; /* Gray-200 */
 }
 
-.death-entry {
-  color: #ff0000; /* Red for death */
-  font-weight: bold;
-}
 
-/* Styling for injury entries */
-.injury-entry {
-  color: #ff4500; /* Orange-red for injury */
-  font-weight: bold;
-}
-
-/* Italicize auto-generated journal entries */
-.auto-entry {
-  font-style: italic;
-  font-family: 'Lora', serif; /* Example font for italics, you can change this to your preferred italic font */
-  font-size: .9rem;
-}
-
-/* Regular font style for human-created journal entries */
-.human-entry {
-  font-style: normal;
-  font-family: 'Inter', sans-serif; /* Default or human-created font, you can change this as needed */
-}
 
 /* Loading Indicator */
 .loading-dots span {
@@ -636,17 +636,19 @@ input[type="text"]:focus {
   display: flex;
   justify-content: space-between; /* Spread out the content across the line */
   align-items: center; /* Vertically center the content */
+
  
 }
 
 .counter {
   margin-top: 4px;
-  font-size: 11.5px;
+  font-size: 14px;
   color: #4A5568; /* Tailwind gray */
-  font-weight: 600; /* Bold the text to make it stand out */
-  letter-spacing: 0.06rem; /* Add some letter spacing for a cleaner look */
+  font-weight: 700; /* Bold the text to make it stand out */
+  letter-spacing: 0.04rem; /* Add some letter spacing for a cleaner look */
   text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
   padding-left: 4px;
+
 }
 
 
@@ -667,6 +669,7 @@ input[type="text"]:focus {
   font-size: .9rem;
   margin-top: 0px;
     margin-bottom: 12px;
+       box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
 }
 
 .command-button.map-button:hover {
@@ -676,6 +679,7 @@ input[type="text"]:focus {
     0 0 15px rgba(32, 178, 170, 0.7) inset,
     0 0 30px rgba(0, 139, 139, 0.5) inset;
   transform: translateY(1.1px);
+
 }
 
 
@@ -697,6 +701,7 @@ input[type="text"]:focus {
   margin-top: 0px;
     margin-bottom: 12px;
      margin-right: 6px;
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
      
 }
 
@@ -725,7 +730,8 @@ input[type="text"]:focus {
     padding: 10px; /* Add padding around the icon */
     background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a background color with transparency */
     border-radius: 5px; /* Optional: Add some border-radius to match the design aesthetic */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
+    
+           box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.45);
 }
 
 .hamburger-icon span {
@@ -734,6 +740,7 @@ input[type="text"]:focus {
     background-color: #333;
     border-radius: 3px;
     transition: all 0.3s ease;
+
 }
 
 
@@ -795,10 +802,12 @@ input[type="text"]:focus {
     color: #ffbf00; /* Stylish hover color */
 }
 
+
 /* Dark Mode Styling */
 body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+  background-color: #1a202c; /* Tailwind's Gray-900 */
+  color: #e2e8f0; /* Tailwind's Gray-200 */
+  transition: background-color 12s ease, color 12s ease; /* Add this line */
 }
 
 .user-input.dark-mode {
@@ -834,7 +843,9 @@ body.dark-mode .main-content,
 body.dark-mode .interaction-section {
   background-color: #2d3748; /* Tailwind's Gray-800 */
   color: #e2e8f0; /* Tailwind's Gray-200 */
+  transition: background-color 12s ease, color 12s ease; /* Add this line */
 }
+
 
 body.dark-mode .title, 
 body.dark-mode .subtitle {
@@ -860,6 +871,7 @@ body.dark-mode .output-box {
 body.dark-mode .command-button {
   background: linear-gradient(45deg, #0072ff, #00c6ff); /* Invert the colors for dark mode */
   color: #1a202c; /* Tailwind's Gray-900 */
+  transition: background-color 12s ease, color 12s ease; /* Add this line */
 }
 
 body.dark-mode .command-button:hover {
@@ -988,6 +1000,56 @@ body.dark-mode .simulation-history.open {
 
 @media (max-width: 768px) {
 
+.title-container {
+    display: flex;
+    flex-direction: row; /* Stack title and subtitle vertically */
+    align-items: center; /* Center-align */
+    justify-content: center;
+    margin-bottom: -10px; /* Less margin for tighter spacing */
+  }
+
+  /* Title styling for smaller screens */
+  .title {
+    font-size: 1.01rem !important; /* Slightly larger but still compact */
+    letter-spacing: 0.010rem; /* Subtle letter spacing */
+    margin-bottom: 0.01rem; /* Reduce spacing */
+    margin-right: 3px; /* No margin to conserve space */
+    font-weight: 700; /* Keep boldness */
+    color: #2c3e50; /* Same color for consistency */
+  }
+  .title::after {
+  content: '';
+  display: block;
+  width: 0px;
+  height: 2px;
+  background-color: #e0d5b8;
+  margin: 3px auto 0;
+  border-radius: 2px;
+  margin-right: 5px;
+}
+
+  /* Subtitle styling for smaller screens */
+  .subtitle {
+     font-size: .9rem !important;
+    letter-spacing: 0.015rem; /* Subtle letter spacing */
+    margin-bottom: 0.01rem; /* Reduce spacing */
+    font-weight: 700; /* Keep boldness */
+    color: #2c3e50; /* Same color for consistency */
+  }
+
+.description-container {
+padding: 3px;
+  text-align: center;
+}
+
+.description {
+  font-size: .6rem !important;
+  font-style: italic;
+  color: #718096; /* Tailwind gray-600 */
+  margin: 0;
+
+}
+
  .main-content {
     display: flex; /* Use flexbox */
     flex-direction: row; /* Ensure that the sections are placed in a row */
@@ -999,11 +1061,12 @@ body.dark-mode .simulation-history.open {
   .history-agent {
     width: 80% !important; /* Take 80% of the width */
     padding: 6px;
-    background-color: #ffffff;
+
     border-radius: 8px;
     box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.26);
     margin-bottom: 10px;
     margin-top: -10px;
+      background-color: white;
   }
 
   .interaction-section {
@@ -1016,16 +1079,6 @@ body.dark-mode .simulation-history.open {
     margin-top: -10px;
   }
 
-  .output-box {
-    background-color: #edf2f7; /* Light gray */
-    padding: 10px; /* Adjust padding */
-    border-radius: 8px;
-    margin-top: 10px; /* Adjust margin to reduce white space */
-    margin-bottom: 10px; /* Adjust bottom margin */
-    max-height: 70vh; /* Increase max-height to show more content */
-    overflow-y: auto;
-    font-size: .9rem; /* Adjust font size */
-  }
 
   .command-buttons {
     flex-direction: row; /* Stack buttons horizontally */
@@ -1033,16 +1086,23 @@ body.dark-mode .simulation-history.open {
     width: 100%;
   }
 
+.history-content {
+      background-color: white;
+} 
+.output-box p {
+  line-height: 1.3;  /* Reduce line height for manual breaks */
+  font-size: .9rem;
+}
 
   .output-box {
-    background-color: #edf2f7; /* Light gray */
+    
     padding: 10px; /* Adjust padding */
     border-radius: 8px;
     margin-top: 10px; /* Adjust margin to reduce white space */
     margin-bottom: 10px; /* Adjust bottom margin */
     max-height: 70vh; /* Increase max-height to show more content */
     overflow-y: auto;
-    font-size: .9rem; /* Adjust font size */
+      background-color: white;
   }
 
   .command-buttons {
@@ -1161,7 +1221,7 @@ body.dark-mode .simulation-history.open {
 
 
    .output-box {
-    background-color: #edf2f7; /* Light gray */
+
     padding: 6px; /* Reduce padding */
     border-radius: 8px;
     margin-top: -6px; /* Adjust margin to reduce white space */
@@ -1177,11 +1237,6 @@ body.dark-mode .simulation-history.open {
   }
 
 
-  .user-input {
-    font-weight: bold;
-    color: #2d3748; /* Darker text color */
-    font-size: .9rem;
-  }
 
   .bottom-buttons {
     flex-direction: row; /* Stack buttons vertically on smaller screens */
@@ -1194,6 +1249,8 @@ body.dark-mode .simulation-history.open {
     flex-direction: column; /* Stack command buttons vertically */
     align-items: stretch; /* Ensure the buttons take the full width */
   }
+
+
 
   .command-button {
     

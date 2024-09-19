@@ -6,11 +6,11 @@ function Header() {
     <header className="header-container">
       <div className="title-container">
         <h1 className="title">HistoryLens:</h1>
-        <h2 className="subtitle">17th Century Apothecary Simulator</h2>
+        <h2 className="subtitle">1680s APOTHECARY SIMULATOR</h2>
       </div>
       <div className="description-container">
         <p className="description">
-          Experience a day in the life of an apothecary in 1680s Mexico City.
+          An experimental, LLM-based educational game about early modern medicine.
         </p>
       </div>
       <hr className="header-divider" />

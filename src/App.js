@@ -23,7 +23,7 @@ import CommonplaceBook from './CommonplaceBook';
 import WealthTracker from './WealthTracker';
 import Symptoms from './Symptoms';
 import PrescribePopup from './PrescribePopup';
-import { assessPrescription, assessGameplay } from './AssessmentAgent';
+import { EndGamePopup, assessGameplay } from './EndGameAssessment';
 import About from './About';  
 import imageMap from './imageMap';
 import CounterNarrative from './CounterNarrative'; 
@@ -39,7 +39,11 @@ import Sleep from './Sleep';
 import './App.css';
 import './Inventory.css';
 import './Popup.css';
+import Helper from './Helper.js';
+import gameoverimage from './assets/gameover.jpg';
+
 const PDFPopup = lazy(() => import('./PDFPopup'));
+
 
 
 
@@ -49,6 +53,7 @@ function App() {
 
 
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
+  const [gameOver, setGameOver] = useState(false); 
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
   const [gameAssessment, setGameAssessment] = useState('');
   const [npcImage, setNpcImage] = useState(imageMap.shopmorning);
@@ -107,6 +112,7 @@ const [activeQuest, setActiveQuest] = useState(null);
   const [userActions, setUserActions] = useState([]);
   const [startedQuests, setStartedQuests] = useState(new Set());
   const [notificationPopup, setNotificationPopup] = useState(null);
+  const [pendingEndGame, setPendingEndGame] = useState(false);
 
   // Function to trigger the notification popup
   const triggerNotificationPopup = (popupData) => {
@@ -224,10 +230,9 @@ const closeSymptomsPopup = useCallback(() => {
   const handleJournalEntrySubmit = useCallback(() => {
     if (customJournalEntry.trim()) {
       setJournal((prevJournal) => [...prevJournal, { content: customJournalEntry.trim(), type: 'human' }]);
-      setCustomJournalEntry('');
-      setShowJournalEntryBox(false);
+      setCustomJournalEntry('');  
     }
-  }, [customJournalEntry]);
+  }, [customJournalEntry, setJournal, setCustomJournalEntry]);
 
 const addJournalEntry = useCallback((entry, type = 'auto') => {
     setJournal((prevJournal) => [...prevJournal, { content: entry, type }]);
@@ -252,28 +257,33 @@ const toggleMap = useCallback(() => {
 
   // End game handling
 
-  const handleEndGame = useCallback(async () => {
-  setIsLoading(true);
+const handleEndGame = useCallback(async () => {
+    triggerNotificationPopup({
+      image: gameoverimage, // Replace with the correct image path
+      text: '**Game Over: Maria has died. Her last thought is of the Atlantic ocean.**',
+      type: 'gameOver',
+    });
 
-  try {
-    const assessment = await assessGameplay(turnNumber, gameState.inventory[0].quantity, gameState.inventory, journal);
-    setGameAssessment(assessment);
-    setShowEndGamePopup(true);
-  } catch (error) {
-    console.error('Error generating game assessment:', error);
-    setGameAssessment('An error occurred during the assessment.');
-    setShowEndGamePopup(true);
-  } finally {
-    setIsLoading(false);
-  }
-}, [turnNumber, gameState.inventory, journal]);
+    try {
+      const assessment = await assessGameplay(turnNumber, currentWealth, gameState.inventory, journal);
+      setGameAssessment(assessment);
+      setShowEndGamePopup(true);
+    } catch (error) {
+      console.error('Error generating game assessment:', error);
+      setGameAssessment('An error occurred during the assessment.');
+      setShowEndGamePopup(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [turnNumber, currentWealth, gameState.inventory, journal, triggerNotificationPopup, assessGameplay]);
+
 
 // Initial description of Maria and NPC image
 useEffect(() => {
   const initialDescription = `
-    You are Maria de Lima, apothecary. A new day dawns on your shop on the Calle de la Amargura in Mexico City.    
+    __You are Maria de Lima, an apothecary of limited means but considerable talent.__ Dawn light bathes your shop on the Calle de la Amargura in Mexico City. The year is 1680.    
     &nbsp;  
-    Shelves line your walls. Typically, they carry neat rows of medicines in jars. But not today — thanks to the thugs hired by Don Luis, the moneylender, who have destroyed all your most valuable cures. As you grind cacao in a *molcajete* to make hot chocolate, you ponder what to do about your debts, which now top 100 *reales*. For now, your next move is to feed some scraps of dried fish to a friendly street kitten who you've named João.  
+    Typically, the shelves lining your walls carry neat rows of medicines in jars. But not today — thanks to the thugs hired by Don Luis, the moneylender, who have destroyed all your most valuable cures. As you grind cacao in a *molcajete* to make hot chocolate, you ponder what to do about your debts, which now top 100 *reales*. For now, your next move is to feed some scraps of dried fish to a friendly street kitten who you've named João.  
     &nbsp;  
     Meanwhile, the street outside comes to life. Servants hurry past with baskets of fresh produce. A group of Dominican friars makes their way towards the nearby church, casting disapproving glances at a boisterous group of students. A patrol of soldiers carrying pikes is a reminder of troubling rumors – whispers of unrest in the northern provinces.  
     &nbsp;  
@@ -284,6 +294,8 @@ useEffect(() => {
 }, []);
 
 // effects
+
+
 
 useEffect(() => {
   console.log('NPC Image updated:', npcImage);
@@ -439,12 +451,32 @@ const selectEntity = useCallback(() => {
   return null;
 }, [turnNumber]);
 
+useEffect(() => {
+  if (
+    historyOutput.includes("The Inquisitor's condition worsened") ||
+    historyOutput.includes("The Inquisitor's condition improved")
+  ) {
+    console.log('End game condition met. Scheduling game over for next turn...');
+    setPendingEndGame(true);
+  }
+}, [historyOutput]);
+
+useEffect(() => {
+  if (pendingEndGame) {
+    console.log('Triggering game over on new turn...');
+    handleEndGame();  // Call the endgame function
+    setPendingEndGame(false);  // Reset the flag
+  }
+}, [turnNumber, pendingEndGame, handleEndGame]);
 
 
 const handleTurnEnd = useCallback(async (narrativeText) => {
+  // Generate journal entry (includes summary from history agent)
   const { summary, summaryData, npcImageName, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
-  
+
+
   advanceTime(summaryData);  
+
 
   console.log('Journal Agent Output:', summary);
   console.log('NPC Image Name from Journal Agent:', npcImageName);
@@ -501,25 +533,26 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
     }
   }
 
-  // Add journal entry
-setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
+ 
 
-// Update gameState with the new date, time and location from summaryData
-if (summaryData.time && summaryData.date) {
-  advanceTime(); // Call advanceTime to update time and date
-}
-if (summaryData && summaryData.location) {
-  updateLocation(summaryData.location); // Use updateLocation to update the location
-}
+  // Continue with inventory updates and the rest of the turn
+  setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
+  // Update gameState with the new date, time and location from summaryData
+  if (summaryData.time && summaryData.date) {
+    advanceTime(); // Call advanceTime to update time and date
+  }
+  if (summaryData && summaryData.location) {
+    updateLocation(summaryData.location); // Use updateLocation to update the location
+  }
 
-// Handle any inventory changes (assuming you already handle this elsewhere)
-if (inventoryChanges && inventoryChanges.length > 0) {
-  inventoryChanges.forEach(change => {
-    updateInventory(change.name, change.quantity);
-  });
-}
-
+  // Handle any inventory changes (assuming you already handle this elsewhere)
+  if (inventoryChanges && inventoryChanges.length > 0) {
+    inventoryChanges.forEach(change => {
+      updateInventory(change.name, change.quantity);
+    });
+  }
+  
 }, [
   setIsEmoji, 
   setNpcImage, 
@@ -531,8 +564,11 @@ if (inventoryChanges && inventoryChanges.length > 0) {
   updateInventory,
   advanceTime,
   updateLocation, 
-  advanceTime 
+  handleEndGame, // 
+  notificationPopup, 
+  startQuest 
 ]);
+
 
 
 // Handling Submission
@@ -718,7 +754,7 @@ const contextSummary = `
     - For **generic NPCs** like soldiers or sailors, give them individualized names and descriptions. For example, a soldier could be "Eduardo, a tired infantryman," or a noblewoman might become "Doña Maria de Valparaiso."
 
     ### Important Narrative Events:
-    1. **Start a new day** using **h3** markdown, e.g., "A new day dawns." But do this ONLY when it's actually a new day, i.e. any time the date moves to the following day or after the #sleep command has been used.
+    1. **Start a new day** using **h3** markdown, with a headline appropriate to the context. But do this ONLY when it's actually a new day, i.e. any time the date moves to the following morning or after the #sleep command has been used.
     2. Signal a **crisis** using **h4** markdown, such as "Maria has been arrested!" or "The Inquisitor has arrived..."
     3. If a patient dies, Maria may face **serious consequences**. In such cases, prompt the start of Quest 6 by outputting the string **StartQuest6**.
     
@@ -728,6 +764,7 @@ const contextSummary = `
     - **Status**: SINGLE WORD description of her current state (e.g., tired, exhilarated, frightened)
     - **Reputation**: Indicated by an emoji from the following scale:
       😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)
+    - **Time of day**: record the exact time of day, such as 5:15 pm or 6:15 am, and the date, such as August 24, 1680.
 
     This final line must ALWAYS be in this **exact format** EXCEPT on turns when Maria buys or forages:
 
@@ -815,7 +852,7 @@ useEffect(() => {
   }
 
   // Enable dark mode between 8 PM and 6 AM
-  if (hour24 >= 20 || hour24 < 6) {
+  if (hour24 >= 19 || hour24 < 6) {
     setIsDarkMode(true);
   } else {
     setIsDarkMode(false);
@@ -1038,59 +1075,56 @@ useEffect(() => {
               handleSubmit={handleSubmit}
             />
             <TipBox />
-            <button 
-              onClick={toggleJournal} 
-              className="view-journal-button"
-            >
-              View Journal
-            </button>
-
-            <button 
-              onClick={toggleJournalEntryBox} 
-              className="add-entry-button"
-            >
-              Custom Journal
-            </button>
-
-            <button 
-              onClick={toggleInventory} 
-              className="view-inventory-button"
-            >
-              Inventory
-            </button>
             
-            <button 
-              onClick={toggleContentGuide} 
-              className="content-guide-button"
-            >
-              Content Guide
-            </button>
-            
-            <button 
-              className="commonplace-book-button"
-              onClick={toggleCommonplaceBook}
-            >
-              Note Book
-            </button>
-            <button 
-              className="mix-drugs-button"
-              onClick={toggleMixingPopup}
-            >
-              Mix Drugs
-            </button>
-              <button 
-            className="end-game-button"
-            onClick={handleEndGame}
-          >
-            End Game
-          </button>
-
           <button 
+  onClick={toggleJournal} 
+  className="view-journal-button"
+>
+  <span className="emoji">📕</span> Journal
+</button>
+
+<button 
+  onClick={toggleInventory} 
+  className="view-inventory-button"
+>
+  <span className="emoji">🍵</span> Inventory
+</button>
+
+<button 
+  onClick={toggleContentGuide} 
+  className="content-guide-button"
+>
+  <span className="emoji">📜</span> Content Guide
+</button>
+
+<button 
+  className="commonplace-book-button"
+  onClick={toggleCommonplaceBook}
+>
+  <span className="emoji">✍🏼</span> Sketchbook
+</button>
+
+<button 
+  className="mix-drugs-button"
+  onClick={toggleMixingPopup}
+>
+  <span className="emoji">⚗️</span> Mix Drugs
+</button>
+
+<button 
+  className="end-game-button"
+  onClick={handleEndGame}
+>
+  <span className="emoji">🎩</span> End Game
+</button>
+
+    <button 
     onClick={toggleAbout} 
     className="about-button"
   >
     About
   </button>
+
 
           </div>
 
@@ -1307,6 +1341,8 @@ useEffect(() => {
   >
     7
   </button>
+
+  <Helper />
 </div>
 
 
@@ -1336,18 +1372,7 @@ useEffect(() => {
        )}
 
 
-        {showJournalEntryBox && (
-          <div className="journal-entry-box">
-            <textarea
-              value={customJournalEntry}
-              onChange={(e) => setCustomJournalEntry(e.target.value)}
-              placeholder="Write your journal entry here..."
-              className="journal-entry-input"
-            />
-            <button onClick={handleJournalEntrySubmit}>Submit Entry</button>
-          </div>
-        )}
-
+    
         {showMixingPopup && (
           <div className="mixing-popup">
             <div className="mixing-popup-content">
@@ -1417,9 +1442,16 @@ useEffect(() => {
           />
         )}
 
-        {isJournalOpen && (
-          <Journal journal={journal} isOpen={isJournalOpen} toggleJournal={toggleJournal} />
-        )}
+       {isJournalOpen && (
+         <Journal
+           journal={journal}
+           isOpen={isJournalOpen}
+           toggleJournal={toggleJournal}
+           customJournalEntry={customJournalEntry}
+           setCustomJournalEntry={setCustomJournalEntry}
+           handleJournalEntrySubmit={handleJournalEntrySubmit}
+         />
+       )}
 
         {isHistoryOpen && (
           <SimulationHistory history={conversationHistory} isOpen={isHistoryOpen} toggleHistory={toggleHistory} />
@@ -1436,6 +1468,13 @@ useEffect(() => {
                />
              </Suspense>
            )}
+
+           {showEndGamePopup && (
+  <EndGamePopup 
+    assessment={gameAssessment} 
+    onClose={() => setShowEndGamePopup(false)} 
+  />
+)}
  
     </DndProvider>
   );

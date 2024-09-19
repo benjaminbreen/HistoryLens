@@ -26,7 +26,29 @@ export const useGameState = () => {
     date: 'August 22, 1680', 
     location: 'Botica de la Amurgura, Mexico City',
     turnNumber: 1,  
+    isGameOver: false,  // New property to track Game Over state
+    endQuestResult: null,  // Modular result for any quest, not just Valdez
+    assessmentTriggered: false,  // Track if EndGameAssessment is triggered
   });
+
+  // Function to trigger the Game Over process based on the result of any quest
+  const triggerGameOver = useCallback((result) => {
+    setGameState((prevState) => ({
+      ...prevState,
+      isGameOver: true,  // Mark the game as over
+      endQuestResult: result,  // Save the result of the quest (e.g., success, failure, poisoning)
+    }));
+  }, []);
+
+  // Function to reset the game state after Game Over
+  const resetGameOver = useCallback(() => {
+    setGameState((prevState) => ({
+      ...prevState,
+      isGameOver: false,
+      endQuestResult: null,
+      assessmentTriggered: false,
+    }));
+  }, []);
 
   // Update location
   const updateLocation = useCallback((newLocation) => {
@@ -37,6 +59,7 @@ export const useGameState = () => {
       location: newLocation, // Update to the new location
     }));
   }, []);
+
 
 const startQuest = useCallback((newQuest) => {
   setGameState((prevState) => {
@@ -228,22 +251,21 @@ const refreshInventory = useCallback(() => {
 
   // time handling via summarydata from journal.agent JSON output
 
-  const advanceTime = useCallback((summaryData) => {
+const advanceTime = useCallback((summaryData) => {
     setGameState((prevState) => {
       let newTime = prevState.time;
       let newDate = prevState.date;
 
-      // Check if the journal agent provided an estimated time and date
       if (summaryData && summaryData.time && summaryData.date) {
-        newTime = summaryData.time;  // Use the exact time provided by the journal agent
-        newDate = summaryData.date;  // Use the exact date provided by the journal agent
+        // Use the exact time and date provided by journal agent
+        newTime = summaryData.time;
+        newDate = summaryData.date;
       } else {
-        // Fallback logic: Increment by 1 hour if journal output is unavailable
+        // Fallback logic to increment the time and date if journal output isn't available
         const currentTime = new Date(`August 22, 1680 ${prevState.time}`);
         currentTime.setHours(currentTime.getHours() + 1);
         newTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        // If the new time goes past midnight, increment the date
         if (newTime === '12:00 AM') {
           const currentDate = new Date(prevState.date);
           currentDate.setDate(currentDate.getDate() + 1);
@@ -257,7 +279,8 @@ const refreshInventory = useCallback(() => {
         date: newDate,
       };
     });
-  }, []);
+}, []);
+
 
 
   // Advance quest to the next stage
@@ -293,5 +316,7 @@ const completeQuest = useCallback((questId) => {
     advanceQuestStage,
     completeQuest,
     advanceTime,
+    triggerGameOver,  
+    resetGameOver,  
   };
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import './AssessmentPopup.css';
+import './EndGameAssessment.css';
 
 const callOpenAIApi = async (prompt) => {
   try {
@@ -11,7 +11,7 @@ const callOpenAIApi = async (prompt) => {
         'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o-mini', // Adjust the model as needed
         messages: [
           { role: 'system', content: 'You are a game master for a historical simulation.' },
           { role: 'user', content: prompt }
@@ -30,11 +30,12 @@ const callOpenAIApi = async (prompt) => {
 const determineOutcomeFromResponse = (response) => {
   const lowerCaseResponse = response.toLowerCase();
   if (lowerCaseResponse.includes('success')) return 'success';
-  if (lowerCaseResponse.includes('no effect')) return 'neutral';
+  if (lowerCaseResponse.includes('neutral')) return 'neutral';
   if (lowerCaseResponse.includes('worse')) return 'worse';
   return 'neutral';
 };
 
+// Function to assess the final gameplay result for the Valdez quest
 export const assessPrescription = async (quantity, item, patient) => {
   const prompt = `
     Maria de Lima, an apothecary in 1680 Mexico City, has prescribed ${quantity} of ${item.name} (${item.spanishName}) to a patient.
@@ -65,6 +66,7 @@ export const assessPrescription = async (quantity, item, patient) => {
   };
 };
 
+// Popup component to display prescription results
 export const PrescriptionPopup = ({ assessment, onClose }) => {
   const badgeMap = {
     success: 'badge-success.png',
@@ -84,6 +86,7 @@ export const PrescriptionPopup = ({ assessment, onClose }) => {
   );
 };
 
+// Assess final gameplay at the end of the game
 export const assessGameplay = async (turnNumber, wealth, inventory, journalEntries) => {
   const inventorySummary = inventory.map(item => `${item.name} (${item.quantity})`).join(', ');
   const journalSummary = journalEntries.map(entry => entry.content).join(' ');
@@ -99,13 +102,14 @@ export const assessGameplay = async (turnNumber, wealth, inventory, journalEntri
     - Final Inventory: ${inventorySummary}
     - Summary of Journal Entries: ${journalSummary}
 
-    Keep the assessment to 4-5 sentences and end with a quirky rating in bold.
+    Keep the assessment to 2-3 paragraphs and end with a quirky rating in bold.
   `;
 
   const assessmentOutput = await callOpenAIApi(prompt);
   return assessmentOutput;
 };
 
+// Final End Game Popup showing the assessment
 export const EndGamePopup = ({ assessment, onClose }) => {
   return (
     <div className="endgame-popup">

@@ -84,7 +84,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
       Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez, attempting to treat his illness (syphilis). He has threatened violence if she fails or reveals his secret.
       This is a medical treatment rather than poison. Consider the appropriate dosage and the likely effects of the medicine.
       Using your extensive knowledge of early modern treatments and their effects, assess if the treatment will relieve his symptoms or cause dangerous side effects.
-      Begin with a customized "headline" in h5 markdown font, either "Maria's treatment was successful. The Inquisitor's condition improved." or "Maria's treatment failed. The Inquisitor's condition worsened."
+      Begin with a customized "headline" in h5 markdown font, either "Maria's treatment was successful. The condition of the Inquisitor improved." or "Maria's treatment failed. The condition of the Inquisitor worsened."
       Describe the sensory characteristics of the treatment, the Inquisitor's reaction, and the aftermath in 2-3 paragraphs. If the treatment is successful, the Inquisitor thanks Maria effusively and sends her on her way. If it failed, he arrests her for brujeria and jails her. Ensure historical accuracy regarding the type and effects of the treatment.
       Remember that this treatment is taking place in the personal residence of Valdez, not Maria's shop, and under extremely tense circumstances as the revelation of his syphilis would be catastrophic for him. There is notable tension and Maria wonders when the other shoe will drop - is her life at risk?
     `;

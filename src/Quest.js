@@ -35,10 +35,11 @@ const quests = [
         image: 'quest0a', // Placeholder dream sequence image
          text: [
           "Strange...",
-          "I'm having the dream again.",
+          "...",
+          "...I'm having the dream again.",
           "Always, the same dream.",
-          "Cold Atlantic Ocean waters enveloping me. Pulling me down into darkness...",
-          "Then the tides pulling me back into new waters. Warmer, unfamiliar... ",
+          "Cold Atlantic Ocean waters pulling me down into darkness...",
+          "Then the tides pulling me back into new waters... ",
           "... a new world.",
           "In my dreams I am always still in Portugal. Not Mexico. Even after all these years.",
           "We Portuguese have a word for the feeling:",
@@ -608,6 +609,23 @@ const [currentStage, setCurrentStage] = useState(0);
       setCurrentPatient(santiagoValdez); // Set Santiago Valdez as the current patient
     }
   }, [activeQuest]);
+
+    useEffect(() => {
+    if (activeQuest && activeQuest.id === 0 && activeQuest.stages[currentStage].type === 'banner') {
+      const lines = activeQuest.stages[currentStage].text;
+      let currentLineIndex = 0;
+      const intervalId = setInterval(() => {
+        if (currentLineIndex < lines.length) {
+          setAnimatedText(prev => [...prev, lines[currentLineIndex]]);
+          currentLineIndex++;
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 3200);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [activeQuest, currentStage]);
 
 
   // Function to handle prescription outcomes

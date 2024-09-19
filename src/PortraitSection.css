@@ -4,8 +4,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 0.1rem ;
-  margin-top: 0.7rem;
+
+  margin-top: 0.5rem;
+   margin-bottom: -8px;
 }
 
 .npc-portrait-container,
@@ -14,7 +15,8 @@
 
   align-items: center;
   cursor: pointer;
-  margin: 0 8px;
+  margin: 0 7px;
+
 }
 
 .npc-portrait-container {
@@ -27,7 +29,7 @@
   text-transform: uppercase;
 
   border-bottom: 2px solid #8b8b8b;
-  padding-bottom: 5px;
+  padding-bottom: 3px;
 
   color: darkslategray;
   text-align: center;
@@ -36,12 +38,14 @@
 
 .npc-portrait-image,
 .pc-portrait-image {
-  width: 280px; /* Increase width to make the image wider */
-  height: 165px; /* Keep the height the same or adjust as needed */
+  width: 300px; /* Increase width to make the image wider */
+  height: 170px; /* Keep the height the same or adjust as needed */
   border-radius: 10%; /* Adjust border-radius if needed for the desired look */
   object-fit: cover;
   margin: 0 10px; /* Space between image and container edges */
   transition: transform 0.6s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+  border: 3px solid #e0d5b8; /* Subtle border */
 }
 
 .npc-portrait-image:hover,
@@ -51,12 +55,12 @@
 }
 
 .portrait-caption {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: #718096; /* Gray-600 */
   font-style: italic;
   font-weight: normal;
   text-align: center;
-  margin-top: 6px;
+  margin-top: 5px;
 }
 
 
@@ -73,6 +77,7 @@
   border-radius: 16%; /* Keep border-radius */
   object-fit: contain; /* Keep aspect ratio without distortion */
   margin: 0 30px; /* Add space between image and container edges */
+
 }
 
 .portrait-popup .emoji-image {

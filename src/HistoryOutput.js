@@ -51,7 +51,7 @@ const HistoryOutput = React.memo(({ historyOutput, isLoading }) => {
   }
 
   return (
-    <div className="output-box">
+    <div className="history-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

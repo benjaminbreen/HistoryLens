@@ -10,18 +10,17 @@ function TipBox({ currentTurn }) {
     "Use the mixing functionality to create custom compounds by combining different ingredients. Experiment with various combinations to discover potent remedies, but be mindful of your inventory!",
     "Try the #sleep command to jump to the next morning and change up the narrative.",
     "Remember that you can #forage for medicinal substances and #buy them in marketplaces. Both can be lucrative.",
-    "Try visiting the university or the cathedral for some historical sight-seeing.",
+    "Try visiting the university, the market, the Zocalo, or the cathedral for some historical sight-seeing. Or try taking a trip out of town...",
     "Remember to use the Mix Drugs button to create more valuable and effective cures.",
-    "Don’t neglect rest—your character’s performance may suffer if they don’t sleep enough.",
-    "Consider consulting older medical texts in the university for special knowledge.",
-    "You can learn more about key characters and items by clicking the 📄 item beside their name.",
+    "Consider consulting older medical texts in the university for special knowledge. Quests may also be activated which provide you with new drugs and skills.",
+    "You can learn more about key characters and items by clicking the 📄 item beside their name or the NPC guide button below.",
     "Be creative in your prompting. Try copying and pasting from real primary sources to add more historical detail.",
-    "If you don't know what to do next, type #help to get suggestions.",
-    "The #symptoms screen allows you to ask detailed questions of any patient.",
-    "Keep your reputation high. Word of mouth can bring new clients or drive them away.",
+    "If you don't know what to do next, type #help to get suggestions. Or take a leap into the unknown with a creative or unusual prompt.",
+    "The #symptoms screen allows you to ask detailed questions of any patient, while #prescribe allows you to offer them a treatment.",
+    "Keep your reputation high. Word of mouth can bring new clients or drive them away. You can track it in the box above.",
     "Earning 120 coins to repay your debts is the immediate goal - but be creative and explore the limits of this simulated world.",
-    "Sometimes, a little empathy is the best medicine—ask about the patient and their life.",
-    "Be aware of potential spies or rivals who might sabotage your work."
+    "Sometimes, a little empathy is the best medicine—ask about the patient and their life. Your bedside manner may impact the success of your treatment — and its profitability.",
+    "Be aware of potential spies or rivals who might sabotage your work. Not everyone is who they seem."
   ];
 
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
@@ -43,16 +42,17 @@ function TipBox({ currentTurn }) {
 
   return (
     <div
+    className="tip-box"
       style={{
         width: '100%',
         maxWidth: '640px',
         backgroundColor: '#FEF3C7',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        borderRadius: '8px',
-        padding: '16px',
-        marginBottom: '16px',
+        borderRadius: '10px',
+        padding: '9px',
         position: 'relative',
         cursor: 'pointer',
+        maxHeight: '400px'
       }}
       onClick={() => setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length)}
     >
@@ -63,8 +63,8 @@ function TipBox({ currentTurn }) {
         }}
         style={{
           position: 'absolute',
-          top: '8px',
-          right: '8px',
+          top: '4px',
+          right: '4px',
           color: '#854d0e',
           fontWeight: 'bold',
           opacity: 0.75,
@@ -80,25 +80,14 @@ function TipBox({ currentTurn }) {
       >
         ×
       </button>
-      <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#854d0e' }}>
-        Tips
-      </h2>
-      <p style={{ fontSize: '0.9rem', color: '#4a5568' }}>
+      <h2 style={{ fontSize: '1.05rem', fontWeight: '600', color: '#854d0e' }}>
+        Tips (click for more...)
+      </h2> 
+      <p style={{ fontSize: '1rem', color: '#4a5568' }}>
         {tips[currentTipIndex]}
       </p>
       {/* Small note at the bottom */}
-      <p 
-        style={{
-          fontSize: '0.8rem',
-          color: '#718096',
-          textAlign: 'right',
-          cursor: 'pointer',
-          textDecoration: 'underline',
-        }}
-        onClick={() => setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length)}
-      >
-        Click for more tips &gt;
-      </p>
+
     </div>
   );
 }

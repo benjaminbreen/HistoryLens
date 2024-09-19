@@ -1,0 +1,87 @@
+.helper-container {
+  position: fixed;
+  top: 1%;  /* Adjust this value to move it further down */
+  left: 78%; /* Adjust if necessary */
+  z-index: 3000; /* Ensure it has a higher z-index */
+  padding: 5px;
+}
+
+.helper-button {
+  background-color: rgba(44, 62, 80, 0.1); /* Semi-transparent */
+  color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid white; /* Added border to make the button more noticeable */
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1); /* Added shadow for visibility */
+}
+
+.helper-panel {
+  position: fixed;
+  top: 6%;
+  left: 65%;
+  width: 300px;
+  max-height: 50%;
+  overflow-y: auto;
+  background-color: #ecf0f1;
+  border: 1px solid #2c3e50;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.helper-panel.open {
+  display: block;
+}
+
+.helper-panel h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.helper-panel ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.helper-panel ul li {
+  margin: 10px 0;
+  cursor: pointer;
+  color: #2980b9;
+}
+
+.helper-content {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.back-button {
+  margin-top: 15px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #34495e;
+}

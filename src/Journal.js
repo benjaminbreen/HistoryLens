@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
-function Journal({ journal, isOpen, toggleJournal }) {
+import './Journal.css';
+
+function Journal({ journal, isOpen, toggleJournal, customJournalEntry, setCustomJournalEntry, handleJournalEntrySubmit }) {
+  const [isCustomEntryOpen, setIsCustomEntryOpen] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape' && isOpen) {
@@ -30,33 +34,63 @@ function Journal({ journal, isOpen, toggleJournal }) {
     window.URL.revokeObjectURL(url);
   };
 
+  const toggleCustomEntry = () => {
+    setIsCustomEntryOpen(!isCustomEntryOpen);
+  };
+
   return (
-  <div className={`journal-pane ${isOpen ? 'open' : ''}`}>
-    <div className="button-container">
-      <button onClick={toggleJournal} className="bg-blue-600 text-white p-2 rounded">
-        Close Journal
+    <div className={`journal-pane ${isOpen ? 'open' : ''}`}>
+      <div className="button-container">
+        <button onClick={toggleJournal} className="bg-blue-600 text-white p-2 rounded">
+          Close Journal
+        </button>
+
+        <button onClick={handleSaveJournal} className="bg-green-600 text-white p-2 rounded">
+          Save Journal
+        </button>
+      </div>
+
+      {/* Toggle button for custom entry */}
+      <button 
+        className="toggle-entry-button" 
+        onClick={toggleCustomEntry}
+      >
+        {isCustomEntryOpen ? 'Close without submitting' : 'Create Custom Entry'}
       </button>
 
-      {/* Save Journal button */}
-      <button onClick={handleSaveJournal} className="bg-green-600 text-white p-2 rounded">
-        Save Journal
-      </button>
-    </div>
-
-    <h2>Journal</h2>
-    {journal && journal.length > 0 ? (
-      journal.map((entry, index) => (
-        <div
-          key={index}
-          className={`journal-entry ${entry.type === 'human' ? 'human-entry' : 'auto-entry'}`}
+      {/* Custom Entry Section */}
+      <div className={`custom-entry-section ${isCustomEntryOpen ? 'open' : ''}`}>
+        <textarea
+          value={customJournalEntry}
+          onChange={(e) => setCustomJournalEntry(e.target.value)}
+          placeholder="Write here to add your own notes to the auto-generated summary of events."
+          className="journal-entry-input"
+        />
+        <button 
+          onClick={() => {
+            handleJournalEntrySubmit();
+            toggleCustomEntry();
+          }} 
+          className="submit-entry-button mt-2"
         >
-          <ReactMarkdown>{entry.content}</ReactMarkdown>
-        </div>
-      ))
-    ) : (
-      <p>No entries yet.</p>
-    )}
-  </div>
+          Submit Journal Entry
+        </button>
+      </div>
+
+      <h2>Journal</h2>
+      {journal && journal.length > 0 ? (
+        journal.map((entry, index) => (
+          <div
+            key={index}
+            className={`journal-entry ${entry.type === 'human' ? 'human-entry' : 'auto-entry'}`}
+          >
+            <ReactMarkdown>{entry.content}</ReactMarkdown>
+          </div>
+        ))
+      ) : (
+        <p>No entries yet.</p>
+      )}
+    </div>
   );
 }
 
