@@ -1,3 +1,4 @@
+// PrescribePopup.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import './PrescribePopup.css';
@@ -9,12 +10,15 @@ function PrescribePopup({
   onClose,
   currentPatient,
   addJournalEntry,
-  conversationHistory,
+  conversationHistory = [],
   setHistoryOutput,
   setConversationHistory,
   setTurnNumber,
   toggleInventory,
-  currentWealth
+  currentWealth,
+  prescriptionType, 
+  handlePrescriptionOutcome, 
+  onPrescriptionComplete
 }) {
   const { inventory = [] } = gameState;
   const [selectedItem, setSelectedItem] = useState(null);
@@ -25,17 +29,17 @@ function PrescribePopup({
   const [simulatedOutput, setSimulatedOutput] = useState('');
   const [prescriptionPrompt, setPrescriptionPrompt] = useState('');
 
-// Update selectedItem when an item is dropped in
-useEffect(() => {
-  if (selectedItem) {
-    const updatedItem = inventory.find(
-      i => i.name.toLowerCase() === selectedItem.name.toLowerCase()
-    );
-    if (updatedItem) {
-      setSelectedItem(updatedItem); // Ensuring the updated item is set properly
+  // Update selectedItem when an item is dropped in
+  useEffect(() => {
+    if (selectedItem) {
+      const updatedItem = inventory.find(
+        i => i.name.toLowerCase() === selectedItem.name.toLowerCase()
+      );
+      if (updatedItem) {
+        setSelectedItem(updatedItem); // Ensuring the updated item is set properly
+      }
     }
-  }
-}, [inventory, selectedItem]);
+  }, [inventory, selectedItem]);
 
   // Automatically open inventory when the popup opens
   useEffect(() => {
@@ -61,62 +65,112 @@ useEffect(() => {
   });
 
   // Function to handle prescription
-  const handlePrescribe = useCallback(async (item, amount, price) => {
-    if (!currentPatient) {
-      console.error("No patient or NPC selected for prescription");
-      setHistoryOutput("Error: No patient or NPC selected for prescription.");
-      return;
-    }
+const handlePrescribe = useCallback(async (item, amount, price) => {
+  if (!currentPatient) {
+    console.error("No patient or NPC selected for prescription");
+    setHistoryOutput("Error: No patient or NPC selected for prescription.");
+    return;
+  }
 
-    const npcName = currentPatient.name;
-    const { location, time, date } = gameState;
-    let prescriptionPrompt = '';
+  const npcName = currentPatient.name;
+  const { location, time, date } = gameState;
+  let prescriptionPrompt = '';
 
-    if (currentPatient.type === 'patient') {
-      prescriptionPrompt = `
-        Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
-        The transaction occurred at ${time} on ${date}, in ${location}. (This is provided as context to inform your simulation of the resulting effects, and should not be restated for the player.)
-        Maria's current wealth is ${currentWealth} silver coins. 
-        Using your extensive knowledge of early modern medicine and human biology, consider the dosage, toxicity, the health of the NPC, and potential effects of the medicine prescribed. Is the dose safe or dangerous? 
-        Always BEGIN with a customized, opinionated "headline" assessment of the prescription. Typically this wil be in h3 markdown font, like "Maria attempted an unconventional treatment which was somewhat ineffective*" or "The prescription led to minor complications" or "An excellent choice..." or whatever else is appropriate (make sure that you only call it dangerous if it is - any dose of a standard herb or spice is fine, just ineffective - the only really fatal things are opiates like laudanum or chemicals/minerals like quicksilver. The patient's or NPC's reaction should be based on the appropriateness of the prescription for their condition and potential effects of the medicine (which should be mentioned by name only once or twice).
-        h3 markdown font for special headlines: If a patient suffers a fatal response (dies) or near-fatal (serious medical consequences) or if they have a highly negative reaction then ALWAYS use h5 tags for your "headline" inead of h3 - this will show it in red to the user. If they die, begin with "The patient has died!"
-        Summarize the sensory characteristics of the prescribed medicine, show the patient experiencing its perceived effects (which may range from miraculous to positive, neutral, disgusting/vomit-provoking, toxic, or deadly), and elaborate on the NPC's reaction in 2-3 paragraphs. Typically, one drachm of most medicines is fine, but some may have adverse effects, and a few, like quicksilver, mercury or other chemicals, might kill at this dose. 
-        Remember that a very high dose of a toxic medicine, like 2 drachms of quicksilver or three drachms of laudanum, can actually kill an NPC. If you think the dose is fatal, show the NPC dying. This usually does not happen, but adverse effects are common and provoke angry patient reactions.
-        This turn may take up several hours or even a day as the patient's reaction may take time to manifest. Pay attention to accurately deciding on the passage of time and the effects. 
-        After documenting the effects, you will provide a final line tracking Maria's updated wealth, status, reputation, and the date and time at the VERY END of your response, displayed in bold, as explained below (Reputation is displayed via a choice of ONE of these emojis [if a patient dies, Maria's reputation goes to 1; if she has a miraculous cure, it goes to 8, 9, or 10]: 😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10) ).
+  // patient picking logic 
+  if (npcName === 'Inquisitor Santiago Valdez') {
+  if (prescriptionType === 'treatment') {
+    // Special treatment prompt for the Inquisitor
+    prescriptionPrompt = `
+      Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez, attempting to treat his illness (syphilis). He has threatened violence if she fails or reveals his secret.
+      This is a medical treatment rather than poison. Consider the appropriate dosage and the likely effects of the medicine.
+      Using your extensive knowledge of early modern treatments and their effects, assess if the treatment will relieve his symptoms or cause dangerous side effects.
+      Begin with a customized "headline" in h5 markdown font, either "Maria's treatment was successful. The Inquisitor's condition improved." or "Maria's treatment failed. The Inquisitor's condition worsened."
+      Describe the sensory characteristics of the treatment, the Inquisitor's reaction, and the aftermath in 2-3 paragraphs. If the treatment is successful, the Inquisitor thanks Maria effusively and sends her on her way. If it failed, he arrests her for brujeria and jails her. Ensure historical accuracy regarding the type and effects of the treatment.
+      Remember that this treatment is taking place in the personal residence of Valdez, not Maria's shop, and under extremely tense circumstances as the revelation of his syphilis would be catastrophic for him. There is notable tension and Maria wonders when the other shoe will drop - is her life at risk?
+    `;
+  } else if (prescriptionType === 'poison') {
+    // Special poison prompt for the Inquisitor
+    prescriptionPrompt = `
+      Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez, treating his secret illness (syphilis). He has brought her to his residence under threat of violence if she fails or reveals his secret.
+      This is an attempt to poison him rather than cure his illness. Consider the dosage and potential lethality of the poison.
+      Using your extensive knowledge of early modern poisons and their effects, determine if the dose is sufficient to kill without causing suspicion.
+      Begin with a customized "headline" in h5 markdown font, either "Maria's poison was successful. The Inquisitor has died." or "Maria's poison failed. The Inquisitor survived."
+      Describe the sensory characteristics of the poison, the Inquisitor's reaction, and the aftermath in 2-3 paragraphs. If the poison is successful, Maria slips away by darting into a servant's door and making her way to the street. If the poison fails, she is imprisoned by the Inquisitor, who is enraged. Ensure historical accuracy regarding the type and effects of the poison.
+    `;
+  }
+} else if (prescriptionType === 'treatment' || currentPatient.type === 'patient') {
+  // General treatment prompt for other NPCs
+  prescriptionPrompt = `
+    Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
+    The transaction occurred at ${time} on ${date}, in ${location}. (This is context and should not be restated to the player.)
+    Maria's current wealth is ${currentWealth} silver coins.
 
-        This final line should ALWAYS be in this exact format, in markdown italic [*] tags:
+    Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC.
 
-              *Now Maria has [integer] silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
-      `;
-    } else if (currentPatient.type === 'npc') {
-      if (price === 0) {
-        prescriptionPrompt = `
-          Maria has secretly given ${amount} drachms of ${item.name} to ${npcName}.
-          This may be an attempt to dose or poison the NPC. Consider the dosage and potential effects.
-          Summarize the NPC's response and the potential consequences in vivid detail, with special attention to documenting what you believe to be the most historically authentic and realistic reactions - how would real humans actually act in this context? 
-          If the NPC dies, show the event as a critical turning point for Maria. If they do not die, Maria will presumably be in very, very deep trouble and will be forced to flee.
-        `;
-      } else {
-        prescriptionPrompt = `
-          Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
-          Summarize the NPC's reaction to the medicine (note that NPC can be a wide range of entities, from a human to an animal to natural features - the reaction is up to you and should be explored creatively and in an open-ended fashion). End by summarizing the transaction: "Maria has sold [drug name] for [price] silver coins."
-        `;
-      }
-    } else if (currentPatient.type === 'healer') {
-      prescriptionPrompt = `
-        Maria has sold ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}, who is a fellow healer (either licensed or unlicensed).
-        The drug is not for personal use but for their practice. There may be bargaining or complaints about purity or counterfeiting. Summarize any discussion about the drug's potency or properties.
-        End by summarizing the transaction: "Maria has sold [drug name] for [price] silver coins. She now has [updated total] coins."
-      `;
-    } else {
-      prescriptionPrompt = `
-        Maria has prescribed ${amount} drachms of ${item.name} to an unknown patient (fallback context from the previous turn).
-        Summarize the effects based on the general context from the previous turn and end with a transaction summary.
-      `;
-    }
+    Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. Use appropriate markdown formatting as follows:
 
-    setPrescriptionPrompt(prescriptionPrompt);
+    - **h3 markdown**: Use h3 markdown tags (###) for headlines where the effects are neutral, positive, or only slightly negative. For example, you might write: 
+      ### Maria attempted an unconventional treatment that was somewhat ineffective.
+      or
+      ### The prescription led to minor complications.
+      or ### The patient balked at the high price and walked out without paying.
+
+    - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
+      - If the patient **died**, always start with: ##### The patient has died!
+      - For **severe complications** that are non-fatal, use something like:
+        ##### The prescription resulted in severe complications.
+
+    **Important:**
+    - The headline must always appear as the first line of the output.
+    - Ensure the markdown tags (### or #####) are correctly used at the start of the headline.
+    - Do not restate the markdown tags or explain the headline in your output—just present the headline with the appropriate markdown tag.
+
+    ### Patient Reactions:
+    After the headline, describe the patient's experience in 3 highly detailed paragraphs which emphasize vivid, historically authentic characterization and finely observed details:
+    - Focus on the **sensory characteristics** of the medicine (e.g., taste, smell, texture).
+    - Show how the patient reacts to the prescribed dose, including the price. This might range from a miraculous cure to mild discomfort to violent reactions like vomiting or even death.
+    - Describe the **perceived effects** of the medicine on the patient's health.
+    - If the dose is toxic or fatal, be explicit about the timeline of how the patient worsens or dies.
+    - If the price is particularly high (over 10 coins, say - though some patients may be able to afford more than this, it depends on the specific NPC) they may walk out without paying or taking the prescription at all. If so, describe this and remember that Maria does not receive any new coins in such a situation.
+
+    ### Dosage & Effects:
+    - One drachm of most medicines is usually safe, but two or more drachms of highly toxic substances (like quicksilver or laudanum) could lead to fatal outcomes. If the dose is fatal, show the NPC dying.
+    - Angry reactions are common if the medicine is ineffective or causes discomfort, so show the patient's response accordingly.
+
+    At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time in **this exact format** using markdown **bold** tags:
+
+    **Now Maria has ${currentWealth + price} silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
+
+    **Reputation Emoji Guide:**
+    - 😡 (1) : Extremely bad (e.g., patient dies)
+    - 😠 (2) : Very bad (e.g., severe complications)
+    - 😐 (3) : Neutral (e.g., treatment is ineffective but not harmful)
+    - 🙂 (5) : Positive (e.g., minor positive effects)
+    - 😇 (9) : Excellent (e.g., miraculous cure)
+    - 👑 (10) : Outstanding (e.g., near-mythical healing)
+  `;
+} else if (prescriptionType === 'poison') {
+  // General poison prompt for other NPCs
+  prescriptionPrompt = `
+    Maria has secretly administered ${amount} drachms of ${item.name} to ${npcName}.
+    This is an attempt to poison them rather than cure any illness. Consider the dosage and potential lethality of the poison.
+    Using your extensive knowledge of early modern poisons and their effects, determine if the dose is sufficient to kill without causing suspicion.
+    Begin with a customized "headline" in h3 markdown font, such as "Maria successfully poisoned ${npcName}" or "The poison had unintended effects." If the poison kills the NPC, use h5 tags with "${npcName} has died!".
+    Describe the sensory characteristics of the poison, the NPC's reaction, and the aftermath in 2-3 paragraphs. Ensure historical accuracy regarding the type and effects of the poison.
+    After documenting the effects, provide a final line tracking Maria's updated wealth, status, reputation, and the date and time at the VERY END of your response, displayed in bold, as explained below.
+
+    *Now Maria has [integer] silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
+  `;
+} else {
+  // Fallback prompt
+  prescriptionPrompt = `
+    Maria has administered ${amount} drachms of ${item.name} to ${npcName}.
+    Describe the effects based on the type of prescription.
+  `;
+}
+
+// Set the generated prescription prompt
+setPrescriptionPrompt(prescriptionPrompt);
 
     try {
       setIsLoading(true);
@@ -127,11 +181,12 @@ useEffect(() => {
           'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-2024-08-06',
+          model: 'gpt-4o-mini',
+          temperature: .2,
           messages: [
-            ...conversationHistory,
+             ...(conversationHistory || []), 
             { role: 'user', content: prescriptionPrompt }
-          ]
+          ],
         }),
       });
 
@@ -144,37 +199,51 @@ useEffect(() => {
       setSimulatedOutput(simulatedOutput);
 
       // Handle inventory updates and journal entry
-      updateInventory(item.name, -amount);
-      const lowerCaseOutput = simulatedOutput.toLowerCase();
+     updateInventory(item.name, -amount);
 
-      // Define arrays of synonyms for different scenarios
-      const deathKeywords = ['died', 'had died', 'perished', 'passed away', 'fatal', 'expired'];
-      const injuryKeywords = ['injury', 'injured', 'collapse', 'collapsed', 'grave', 'serious condition', 'complications', 'worsened', 'critical', 'near-death', 'suffers', 'debilitating'];
-      const cureKeywords = ['perfect cure', 'miraculous', 'fully recovered', 'healed', 'recovered', 'excellent', 'complete recovery'];
+    // Now make a second API call to generate a summary with distinctive flavor
+    const summaryPrompt = `
+      Please summarize the following text with an overall summary of "Result: [emoji] [single word summing it up." Then add one sentence with a succinct, basic summary of what happened, but with vivid details for instance it should say exactly what the complications or impact was. Then a final short pithy sentence with a sardonic, biting wit and wisdom characteristic of Samuel Johnson or Mark Twain - but not too over the top. It should be 
+      Emoji guidance: use one of the following emojis as appropriate to represent the result (💀 for death, 🩸 for injury, ✨ for miraculous cure, 😡 for a patient walking out due to price, 🤢 for marked nauseau or disgust or minor toxicity, 😐 if ineffective, 💸 for an extremely valuable prescription, 🚪 for when a patient leaves unhappy.). The summary should reflect the patient's response:
+      ${simulatedOutput}
+    `;
 
-      // Helper function to check for keyword presence
-      const includesAny = (text, keywords) => {
-        return keywords.some(keyword => text.includes(keyword));
-      };
+    const summaryResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        temperature: 0.4,
+        messages: [
+          { role: 'user', content: summaryPrompt }
+        ],
+      }),
+    });
 
-      // Check for death, injury, or cure and handle journal entry
-      if (includesAny(lowerCaseOutput, deathKeywords)) {
-        addJournalEntry(`💀 Maria's prescription of ${amount} drachms of ${item.name} resulted in the death of ${npcName}.`, 'death');
-      } else if (includesAny(lowerCaseOutput, injuryKeywords)) {
-        addJournalEntry(`🩸 ${npcName} has suffered a serious injury from ${amount} drachms of ${item.name}.`, 'injury');
-      } else if (includesAny(lowerCaseOutput, cureKeywords)) {
-        addJournalEntry(`✨ Maria's prescription of ${amount} drachms of ${item.name} resulted in a miraculous recovery for ${npcName}.`, 'cure');
-      } else {
-        addJournalEntry(`Maria prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.`);
-      }
-
-    } catch (error) {
-      console.error("Error during prescription:", error);
-      console.error("Error details:", error.response ? await error.response.text() : error.message);
-    } finally {
-      setIsLoading(false);
+    if (!summaryResponse.ok) {
+      throw new Error(`API Error: ${summaryResponse.statusText}`);
     }
-  }, [currentPatient, conversationHistory, gameState, updateInventory, addJournalEntry, currentWealth]);
+
+    const summaryData = await summaryResponse.json();
+    const journalSummary = summaryData.choices[0].message.content.trim();
+
+ // Safeguard before adding journal entry
+    if (typeof addJournalEntry === 'function') {
+      addJournalEntry(`℞ Maria prescribed ${amount} drachms of **${item.name}** for **${price} reales** to **${npcName}**. ${journalSummary}`);
+    } else {
+      console.warn('addJournalEntry is not a function. Skipping journal entry.');
+    }
+
+  } catch (error) {
+    console.error("Error during prescription:", error);
+
+  } finally {
+    setIsLoading(false);
+  }
+}, [currentPatient, conversationHistory, gameState, updateInventory, addJournalEntry, currentWealth, prescriptionType, handlePrescriptionOutcome]);
 
   const handlePrescribeClick = async () => {
     if (selectedItem) {
@@ -186,22 +255,29 @@ useEffect(() => {
     }
   };
 
-  const handleSummaryContinue = () => {
-    setIsSummaryOpen(false);
-    setHistoryOutput(simulatedOutput);
-    setConversationHistory(prev => [
-      ...prev,
-      { role: 'user', content: prescriptionPrompt },
-      { role: 'assistant', content: simulatedOutput }
-    ]);
-    setTurnNumber(prev => prev + 1);
-    toggleInventory(false);
-    setSelectedItem(null);
-    setAmount(1);
-    setPrice(0);
-  };
+  // Modify the function that handles the outcome after PrescribePopup
+const handleSummaryContinue = () => {
+  setIsSummaryOpen(false);
+  setHistoryOutput(simulatedOutput);
+  
+  // Notify the parent component that the prescription is complete
+  if (typeof onPrescriptionComplete === 'function') {
+    onPrescriptionComplete(simulatedOutput);
+  }
 
-  if (!isOpen && !isSummaryOpen) return null;
+  setConversationHistory(prev => [
+    ...prev,
+    { role: 'user', content: prescriptionPrompt },
+    { role: 'assistant', content: simulatedOutput },
+  ]);
+
+  setTurnNumber(prev => prev + 1);
+  toggleInventory(false);
+  setSelectedItem(null);
+  setAmount(1);
+  setPrice(0);
+};
+
 
   return (
     <>

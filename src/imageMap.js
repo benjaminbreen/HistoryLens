@@ -41,7 +41,7 @@ const imageMap = {
   arturoramirez: require('./assets/arturoramirez.jpg'),
   cityday: require('./assets/city_day.jpg'),
   streetnight: require('./assets/street_night.jpg'),
-  donignaciodemendoza: require('./assets/donignaciodemendoza.jpg'),
+  santiagovaldez: require('./assets/santiagovaldez.jpg'),
   symptoms: require('./assets/symptoms.jpg'),
   tlacaelel: require('./assets/tlacaelel.jpg'),
   outskirts: require('./assets/outskirts.jpg'),
@@ -99,6 +99,9 @@ sebastianathayde: require('./assets/sebastianathayde.jpg'),
 drugs: require('./assets/drugs.jpg'),
 panchorodriguez: require('./assets/panchorodriguez.jpg'),
 university: require('./assets/university.jpg'),
+library: require('./assets/library.jpg'),
+frayjordanes: require('./assets/frayjordanes.jpg'),
+antoniadeochoa: require('./assets/antoniadeochoa.jpg'),
 
 
   // Quest images

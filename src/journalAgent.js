@@ -8,19 +8,16 @@ export const generateJournalEntry = async (narrativeText, apiKey) => {
             },
             body: JSON.stringify({
                 model: 'gpt-4o-mini',
-                temperature: 0.3,
+                temperature: 0.5,
                 messages: [
                     {
                         role: 'system',
 content: `
 You are a journal summarizer for a historical simulation featuring Maria de Lima, a 45-year-old apothecary who runs the Botica de la Amurgura in Mexico City. The game begins on August 22, 1680 and can extend for up to a year beyond that.
 Given the following text, provide:
-1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time. Format: "Summary: <summary>" For example: Summary: <August 23, 10:15 AM: Maria assessed a patient named Fray Patricio, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.>
-If the entry describes a dream, include a brief mention of the dream content in the summary.
-For example:
-Summary: <August 24, 7:00 AM: Maria woke up after dreaming of a serpent coiled around itself in a dense wood, feeling unsettled but ready to start her day.>
+1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time and short summary of location bold. Format: " Summary:**Date, Location**: summary with **NPC names bolded**" For example: Summary:**August 23, 10:15 AM, Botica de la Amurgura**:Maria assessed a patient named **Fray Patricio**, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.
 
-2. A JSON object tracking the current location, date, and time of day formatted like:
+2. A JSON object tracking the current location, date, and time of day formatted as follows:
 \`\`\`json
 {
     "location": "Botica de la Amargura",
@@ -30,16 +27,18 @@ Summary: <August 24, 7:00 AM: Maria woke up after dreaming of a serpent coiled a
 \`\`\`
 
 When updating the time and date, please follow these specific rules:
-- A turn typically lasts between 15-30 minutes. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within this range.
+- A turn typically lasts between 5 minutes and several hours/days. Use your judgement to determine the length. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within a 1-2 hour range.
 - If the action described spans multiple events (e.g., traveling to another town, treating multiple patients), increase the time accordingly—use hours, and if necessary, increment the date by a day or more.
 - Always provide an exact time in the format "8:35 AM" or "11:45 PM". Never return vague times like "morning" or "evening".
 - If the current time passes midnight (12:00 AM), increment the date by one day. If the date changes due to significant time passage, clearly reflect this in the JSON output.
 - For example: If Maria treats a patient at 9:15 PM and then travels for 4 hours, set the new time as 1:15 AM the next day.
+- give the location as a short phrase which clearly indicates the setting - for instance, rather than just "street," you could say "Busy thoroughfare, Mexico City" or instead of "ship" you could say "Fisherman's trawler, mid-Atlantic"
 
 
-3. Select the most appropriate image name based on the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
+3. Select the most appropriate image name based on these IMAGETAGS. Select the image which best depicts the PRIMARY NPC, location, or scene described. Use ONLY the following options. think carefully and reflect on your journal entry before selecting the best choice. If any named NPC is included, ALWAYS use their image:
 
-- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, arturohernandez, arturoramirez, donignaciodemendoza, tlacaelel, sebastianathayde, panchorodriguez
+IMAGETAGS: 
+- NPC names: anamariadesoto, franciscodiasdearaujo, carlosenriquez, donalejandrocortez, fraypatricio, frayjordanes, antoniadeochoa, isabeldelacruz, joao, diegoperez, marta, rosamariaperez, juanbraga, donluis, inquisitorfernando, arturohernandez, arturoramirez, santiagovaldez, tlacaelel, sebastianathayde, panchorodriguez
 - Locations: countryside, generichome, market, street, streetnight, outsideday, outsidenight, shopmorning, shopafternoon, shopnight, farm, cityday
 - Generic scenes: study, codex, herbs, herbalist, mushroom, trippy, merchant, priest, drugs, bottles, university, library
 - Generic people: 
@@ -47,7 +46,7 @@ tejedora, paisano, dona, caballero, spanishnoble, mestizo, friar, laborer, soldi
 
 IMPORTANT: If the NPC name does not match any in the predefined list, you must select the most fitting option from the 'generic people' section. Consider the social status, occupation, and general description provided in the narrative to guide your choice. If no specific match fits, select 'townsfolk' for a generic group or 'paisano' for a generic male character.
 
-- Locations and scenes (with expanded uses):
+- Guide to IMAGETAGS (with examples of potential uses):
   - plazamayor: the Plaza Mayor in Mexico City, center of governance and urban life, near the markets
   - lamerced: La Merced Market, the central market area of Mexico City, near a monastery 
   - tenochititlan: the ruins of the ancient Aztec ceremonial area, still visible in the city 
@@ -142,18 +141,21 @@ Prioritize NPC images and then locations first, but use emojis if nothing else m
 - 🏕️ for encampments, tents or small settlements
 - 🌅 for the riverside, lakeside, or bodies of water
 - 🌈 for a rainbow
-- 🐌 for a snail 
-and so on for other animals and specific objects
+- 🐌 for a snail, 🐒 for when maria is looking at a monkey, etc.
+- 🧑🏼‍🌾 for a farmer and similar emojis for other generic male or female figures you can't find an IMAGETAG for
+and so on for other animals and specific objects - use emojis creatively and in wide variety. NEVER return a text string for this task which isn't one of the IMAGETAGs given above or an emoji. 
 
 Always return the selected image name or emoji as a separate string labeled "NPC image". For instance:
 "NPC image: anamariadesoto" or "NPC image: 🌙"
 
 IMPORTANT: When selecting an image, always prefer a specific location or NPC image over an emoji. Only use an emoji if there is absolutely no relevant image in the provided list. For example, if the scene is in the countryside, always use "NPC image: countryside" instead of an emoji, even if the emoji seems more specific.
 Also, try to vary your image choice. Avoid repeating the same image more than once or twice.  
-IMPORTANT: When providing the "NPC image" output, ensure there are no extra characters, spaces, or quotation marks. The output should be exactly in this format:
-NPC image: imagename
+IMPORTANT: When providing the "NPC image" output, ensure there are no extra characters, spaces, or quotation marks. Remember: the NPC image should ALWAYS be either an emoji or one of the IMAGETAGS. Never anything else. The output should be exactly in this format:
+NPC image: imagetag
 For example:
 NPC image: arturohernandez
+or if using an emoji:
+NPC image: 🐒
 Not "NPC image: "arturohernandez"" or any other variation.
 `
 
@@ -188,7 +190,7 @@ let npcImageName = imageMatch ? imageMatch[1].trim().toLowerCase() : "default";
 npcImageName = npcImageName.replace(/['"]+/g, '');
 
 // Fuzzy matching for NPC names
-const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'arturohernandez', 'arturoramirez', 'donignaciodemendoza', 'tlacaelel', 'sebastianathayde', 'panchorodriguez'];
+const npcNames = ['anamariadesoto', 'franciscodiasdearaujo', 'carlosenriquez', 'donalejandrocortez', 'fraypatricio', 'frayjordanes', 'isabeldelacruz', 'joao', 'diegoperez', 'marta', 'rosamariaperez', 'juanbraga', 'donluis', 'inquisitorfernando', 'arturohernandez', 'arturoramirez', 'santiagovaldez', 'tlacaelel', 'sebastianathayde', 'panchorodriguez', 'antoniadeochoa', ];
 
 const fuzzyMatch = npcNames.find(name => npcImageName.includes(name));
 if (fuzzyMatch) {

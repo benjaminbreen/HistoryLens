@@ -16,7 +16,7 @@ const getRandomInventory = () => {
   return shuffledInventory.slice(0, 10); // Return the first 10 items
 };
 
-// Ensure the export is at the top level
+// initial game state
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
     inventory: getRandomInventory(), // Initialize with a random selection of 10 items
@@ -24,7 +24,7 @@ export const useGameState = () => {
     compounds: [], 
     time: '8:00 AM',  
     date: 'August 22, 1680', 
-    location: 'Apothecary shop, Mexico City',
+    location: 'Botica de la Amurgura, Mexico City',
     turnNumber: 1,  
   });
 
@@ -38,13 +38,22 @@ export const useGameState = () => {
     }));
   }, []);
 
-  // Start a quest manually (you can call this later for non-prologue quests)
-  const startQuest = useCallback((quest) => {
-    setGameState(prevState => ({
+const startQuest = useCallback((newQuest) => {
+  setGameState((prevState) => {
+    // Check if the quest already exists
+    const existingQuest = prevState.quests.find(quest => quest.id === newQuest.id);
+    if (existingQuest) {
+      console.warn(`Quest with ID ${newQuest.id} already started.`);
+      return prevState; // Prevent adding the same quest twice
+    }
+
+    // Add the new quest to the quests array
+    return {
       ...prevState,
-      quests: [...prevState.quests, { ...quest, currentStage: 0 }],
-    }));
-  }, []);
+      quests: [...prevState.quests, { ...newQuest, currentStage: 1, completed: false }],
+    };
+  });
+}, []);
 
    // Update inventory logic
   const updateInventory = useCallback((updateItemName, quantityChange) => {

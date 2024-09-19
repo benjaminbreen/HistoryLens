@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import NotificationPopup from './NotificationPopup'; 
 import { potentialInventoryItems } from './initialInventory';
+import PrescribePopup from './PrescribePopup'; // Import PrescribePopup
 import distillImage from './assets/distill.jpg';
 import distillActiveImage from './assets/distill-active.jpg';
 import calcinateImage from './assets/calcinate.jpg';
@@ -14,6 +15,7 @@ import confectionImage from './assets/confection.jpg';
 import confectionActiveImage from './assets/confection-active.jpg';
 import decoctImage from './assets/decoct.jpg';
 import decoctActiveImage from './assets/decoct-active.jpg';
+
 
 
 
@@ -174,61 +176,54 @@ const quests = [
     ],
   },
   {
-    id: 2,
-    name: 'The Inquisitor with Syphilis',
-    completed: false, 
-    npc: 'High Inquisitor Santiago Valdez',
-    classification: 'Antagonist',
-   trigger: (gameState) =>
-      gameState.turnNumber >= 3 &&
-      !gameState.activeQuests.includes(2),
-    stages: [
-      {
-        type: 'banner',
-        image: 'quest2a',
-        text: 'A nervous-looking messenger delivers a sealed letter from the Inquisition.',
-        buttons: [
-          { text: 'Yes, I\'ll go', action: 'proceed' },
-          { text: 'No, I\'m not interested', action: 'end' },
-          { text: 'Tell me more', action: 'proceed' }
-        ],
-      },
-      {
-        type: 'dialogue',
-        image: 'quest2b',
-        text: ` High Inquisitor Santiago Valdez: "I need your discretion... I fear I have contracted a venereal disease. My position is at risk if this becomes known. I am willing to pay handsomely for your silence."
-        `,
-        npcResponses: [
-          'The Church is not as forgiving as it once was, and my enemies are many.',
-          'This illness has been a curse upon my soul. Perhaps it is divine retribution.',
-          'You must understand, the consequences of a public scandal would be catastrophic for both of us.',
-        ],
-        playerChoices: [
-          'Agree to treat the Inquisitor.',
-          'Refuse and suggest he sees a licensed physician.',
-          'Offer to help but hint at a more sinister solution (poison).',
-        ],
-        decisionPoint: true,
-        inputType: 'text',
-        maxExchanges: 3,
-      },
-      {
-        type: 'decision',
-        image: 'quest2c',
-        text: 'Do you agree to treat him, and possibly poison him?',
-        options: [
-          { text: 'Yes', action: 'game_over' },
-          { text: 'No', action: 'end' }
-        ],
-      },
-      {
-        type: 'outcome',
-        image: imageMap.quest2d,
-        text: 'You successfully poison the Inquisitor, but it comes at a great personal cost. You must flee the city.',
-        outcome: 'game_over',
-      },
-    ],
-  },
+  id: 2,
+  name: 'Letter from the Inquisitor',
+  completed: false, 
+  npc: 'Inquisitor Santiago Valdez',
+  classification: 'Antagonist',
+ trigger: (turnNumber, actions) => actions.includes('#startQuest2') || turnNumber === 20,
+  stages: [
+    {
+      type: 'banner',
+      image: 'quest2a',
+      text: 'A nervous-looking messenger delivers a sealed letter from the Inquisition. The thought of your secret identity as a converso being uncovered once again sends a chill through you as you hold the letter, but upon opening it, you realize it is soemthing quite unusual: a personal invitation from a senior official in the Inquisition named Don Santiago Valdez who turns out to be a patient seeking your assistance, not an Inquisitor seeking to ruin you. He does not specify his ailment. Instead, he simply invites you to his quarters to offer an expert opinion and, if necessary, provide a cure. Will you help him?',
+      buttons: [
+        { text: 'Yes, I\'ll go', action: 'proceed' },
+        { text: 'No, I\'m not interested', action: 'end' },
+        { text: 'Tell me more', action: 'proceed' }
+      ],
+    },
+    {
+      type: 'dialogue',
+      image: 'quest2b',
+      text: `Inquisitor Santiago Valdez: "I need your discretion... I have long feared that I have contracted the French pox. Now unmistakeable symptoms have made this a certainty. I am in great pain, Señora. But I am also in an extremely delicate position. My position is... at risk if this becomes known. I am willing to pay handsomely for your silence."`,
+      npcResponses: [
+        'This illness has been a curse upon my soul. Perhaps it is divine retribution.',
+        'You must understand, the consequences of this becoming known would be catastrophic. You must TELL NO ONE.',
+      ],
+      playerChoices: [
+        'Agree to treat the Inquisitor.',
+        'Refuse and suggest he sees a licensed physician.',
+      ],
+      decisionPoint: true,
+      inputType: 'text',
+      maxExchanges: 2,
+    },
+    {
+  type: 'decision',
+  image: 'quest2c',
+  text: 'The Inquisitor has requested that you treat his "French pox," aka syphilis, a venereal disease. Needless to say, this would be a shameful revelation if it were made public. The stakes are high, as the Inquisitor is an extremely powerful man in the society of New Spain, and he has everything to lose if you were to reveal his secret. Then again... you have much to lose as well. What will you do?',
+  buttons: [ 
+    { text: 'Submit an excuse', action: 'submit_excuse' },
+    { text: 'Provide Treatment', action: 'provide_treatment' },
+    { text: 'Poison Him', action: 'provide_poison' }
+  ],
+},
+
+
+  ],
+},
+
   {
     id: 3,
     name: 'The Nahuatl Codex',
@@ -293,12 +288,12 @@ const quests = [
     completed: false, 
     npc: 'Licenciado Francisco Ramírez',
     classification: 'Antagonist',
-    trigger: (turnNumber, actions) => actions.includes('#startQuest4') || turnNumber === 20,
+    trigger: (turnNumber, actions) => actions.includes('#startQuest4') || turnNumber === 30,
     stages: [
       {
         type: 'banner',
         image: 'quest4a',
-        text: 'A stern-looking lawyer arrives at your shop with a summons. The Physicians\' Guild is suing you for practicing medicine without a license.',
+        text: 'A stern-looking lawyer arrives with a summons. The Physicians\' Guild is suing you for practicing medicine without a license.',
         buttons: [
           { text: 'Yes, I\'ll go', action: 'proceed' },
           { text: 'No, I\'m not interested', action: 'end' },
@@ -308,12 +303,11 @@ const quests = [
       {
         type: 'dialogue',
         image: 'quest4b',
-        text: `Licenciado Francisco Ramírez: "You have been accused of practicing medicine unlawfully, señora. The Guild does not take kindly to those who infringe upon their domain. You will need to defend yourself in court."
+        text: `Licenciado José de Aguillar: "You have been accused of practicing medicine unlawfully, señora. The Guild does not take kindly to those who infringe upon their domain. You will need to defend yourself in court."
         `,
         npcResponses: [
           'The evidence against you is overwhelming. You should consider settling before things get worse.',
           'The Guild has powerful allies. Fighting them could ruin you.',
-          'However, if you have something to offer, perhaps we can reach an agreement. I do not speak of a bribe, of course, which is expressly against Royal law and the moral principles which guide all men of virtue. Merely, ah... let us call it *assistance*... you see, what I mean, do you not?',
         ],
         playerChoices: [
           'Argue that you are providing a necessary service to the community.',
@@ -322,7 +316,7 @@ const quests = [
         ],
         decisionPoint: true,
         inputType: 'text',
-        maxExchanges: 4,
+        maxExchanges: 2,
       },
       {
         type: 'decision',
@@ -333,6 +327,7 @@ const quests = [
           { text: 'Prepare for court', action: 'end' }
         ],
       },
+      // add a special section here in which Arturo Hernandez, a faux patient who had visited Maria's shop under a false name to test if she was prescribing drugs without a physician's license, is revealed to be the powerful licenciado Arturo Ramirez. He delivers a summary of Maria's misdeeds which pulls dynamically from 
       {
         type: 'outcome',
         image: 'quest4d',
@@ -568,9 +563,29 @@ const questAgent = async (quest, stage, userInput) => {
 };
 
 // Main Quest component
-const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, setActiveQuest, triggerNotificationPopup }) => {
-  const { gameState, advanceQuestStage, completeQuest, updateInventory } = useGameState();
-  const [currentStage, setCurrentStage] = useState(0);
+const Quest = ({
+  currentTurn,
+  userActions,
+  location,
+  startQuest,
+  activeQuest,
+  setActiveQuest,
+  triggerNotificationPopup,
+  markQuestAsStarted,
+    conversationHistory = [],
+  setConversationHistory = () => {},
+  setHistoryOutput,
+  setTurnNumber,
+  currentWealth,
+  toggleInventory,
+  isPrescribePopupOpen,
+  currentPrescriptionType,
+  openPrescribePopup,
+  setCurrentPatient
+}) => {
+  const { gameState, advanceQuestStage, completeQuest, updateInventory, addCompoundToInventory,  addJournalEntry 
+} = useGameState();
+const [currentStage, setCurrentStage] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [showQuestPopup, setShowQuestPopup] = useState(false);
   const [questOutput, setQuestOutput] = useState('');
@@ -578,109 +593,203 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
   const [isLoading, setIsLoading] = useState(false);
   const [animatedText, setAnimatedText] = useState([]);
   const [hoverButton, setHoverButton] = useState(null);
+  const [simulatedOutput, setSimulatedOutput] = useState('');
+  const [prescriptionPrompt, setPrescriptionPrompt] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [amount, setAmount] = useState(1);
+  const [price, setPrice] = useState(0);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [npcPortrait, setNpcPortrait] = useState('default.jpg')
 
-  // Function to handle closing the quest via the 'X' button
-  const handleCloseQuest = () => {
-    if (activeQuest && activeQuest.id === 0) {
+// Helper function to handle Santiago Valdez as the patient
+  useEffect(() => {
+    if (activeQuest?.id === 2) {  // Quest 2 is active
+      const santiagoValdez = { name: 'Santiago Valdez', type: 'npc' }; 
+      setCurrentPatient(santiagoValdez); // Set Santiago Valdez as the current patient
     }
-    setShowQuestPopup(false);  // Close the quest popup
-    setActiveQuest(null);      // Reset active quest to null
+  }, [activeQuest]);
+
+
+  // Function to handle prescription outcomes
+  const handlePrescriptionOutcome = (outcome) => {
+    if (outcome === 'game_over') {
+      // Maria dies, trigger Quest 6
+      triggerNotificationPopup({
+        image: imageMap.quest2i, // Ensure this image exists in imageMap
+        text: '**Maria has been killed by the Inquisitor\'s men to preserve his secret.**',
+        type: 'gameOver',
+      });
+      // Start Quest 6: The Dream of the Waves
+      const quest6 = quests.find(q => q.id === 6);
+      if (quest6) {
+        startQuest(quest6);
+        setActiveQuest(quest6);
+        if (markQuestAsStarted) {
+          markQuestAsStarted(quest6.id);
+        }
+      }
+    } else if (outcome === 'success') {
+      // Successfully poisoned Inquisitor
+      triggerNotificationPopup({
+        image: imageMap.quest2k, // Ensure this image exists in imageMap
+        text: '**You have successfully poisoned the Inquisitor. He succumbs to the poison, and you slip away unscathed, maintaining your safety.**',
+        type: 'questSuccess',
+      });
+      markQuestAsCompleted();
+    } else if (outcome === 'end') {
+      markQuestAsCompleted();
+    }
   };
 
+  //  function that handles the outcome after PrescribePopup
+  const handleSummaryContinue = () => {
+  setIsSummaryOpen(false); // Close the summary popup
+  setHistoryOutput(simulatedOutput); // Display the simulated output in the main history box
+
+
+
+  setTurnNumber(prev => prev + 1);
+  toggleInventory(false);  // Close the inventory
+  setSelectedItem(null);  // Reset the selected item
+  setAmount(1);  // Reset the amount
+  setPrice(0);  // Reset the price
+};
   // Function to mark the quest as completed
   const markQuestAsCompleted = () => {
     if (activeQuest && activeQuest.id === 0) {
       // Trigger the inventory destruction popup for Quest 0 upon completion
       triggerNotificationPopup({
         image: imageMap['quest0f'],
-         text: '**Disaster!** Most of your inventory of "simples" — the raw ingredients to make medicinal drugs — has been destroyed. You have only ten items left. Click the **Inventory** button to check them, and the **Mix Drugs** button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
+        text: '**Disaster!** Most of your inventory of "simples" — the raw ingredients to make medicinal drugs — has been destroyed. You have only ten items left. Click the **Inventory** button to check them, and the **Mix Drugs** button to experiment with recipes. Looks like you will need to be creative about your drug mixing to make enough money to pay back **Don Luis**.',
         type: 'questCompletion',
       });
+    }
+    
+    // Check for Quest 2 completion to update NPC portrait
+    if (activeQuest && activeQuest.id === 2) {
+      setNpcPortrait('quest2d.jpg'); // Set NPC portrait to quest2d.jpg when Quest 2 is completed
     }
 
     completeQuest(activeQuest.id); // Mark the quest as completed
 
     setShowQuestPopup(false);
     setActiveQuest(null);
+};
+
+
+  // Function to handle closing the quest via the 'X' button
+  const handleCloseQuest = () => {
+    setShowQuestPopup(false);  // Close the quest popup
+    setActiveQuest(null);      // Reset active quest to null
   };
 
-  // Helper function to get the correct image URL
-  const getImageUrl = (imageName) => {
-    return imageMap[imageName] || imageMap.default;
-  };
+  // Function to handle quest input
+ const handleQuestInput = async (input, buttonAction) => {
+  setIsLoading(true);
+  const currentQuestStage = activeQuest.stages[currentStage];
 
-  // Animate quest text for Quest 0
-  useEffect(() => {
-    if (activeQuest && activeQuest.id === 0 && activeQuest.stages[currentStage].type === 'banner') {
-      const lines = activeQuest.stages[currentStage].text;
-      let currentLineIndex = 0;
-      const intervalId = setInterval(() => {
-        if (currentLineIndex < lines.length) {
-          setAnimatedText(prev => [...prev, lines[currentLineIndex]]);
-          currentLineIndex++;
-        } else {
-          clearInterval(intervalId);
-        }
-      }, 3200);
-
-      return () => clearInterval(intervalId);
-    }
-  }, [activeQuest, currentStage]);
-
-  const handleQuestInput = async (input, buttonAction) => {
-    setIsLoading(true);
-    const currentQuestStage = activeQuest.stages[currentStage];
-
-    if (currentQuestStage.type === 'banner' || currentQuestStage.type === 'decision') {
-      if (typeof buttonAction === 'object' && buttonAction.type === 'goToStage') {
-        goToSpecificStage(buttonAction.stage);
-      } else if (buttonAction === 'success' || buttonAction === 'failure') {
-        // Handle success/failure for Quest 1
-        if (activeQuest.id === 1) {
-          const outcomeStage = activeQuest.stages.find(s => s.type === 'outcome');
-          if (outcomeStage) {
-            setCurrentStage(activeQuest.stages.indexOf(outcomeStage));
-            if (typeof outcomeStage.text === 'function') {
-              setQuestOutput(outcomeStage.text(buttonAction));
-            } else {
-              setQuestOutput(outcomeStage.text);
-            }
-            if (buttonAction === 'success') {
-              // Add the mumia to the inventory if quest 1 is successfully completed
-              updateInventory(potentialInventoryItems.mumia.name, 1);  // Passing name and quantity
-            }
-          }
-        }
-      } else {
-        switch (buttonAction) {
-          case 'end':
-          case 'fail':
-          case 'complete':
-            markQuestAsCompleted();
-            break;
-          case 'proceed':
-            advanceToNextStage();
-            break;
-          default:
-            console.error('Unknown action type:', buttonAction);
-        }
-      }
-    } else if (currentQuestStage.type === 'dialogue') {
-      try {
-        const questResponse = await questAgent(activeQuest, currentQuestStage, input);
-        setDialogueHistory(prev => [...prev, { userInput: input, npcResponse: questResponse }]);
-
-        if (dialogueHistory.length >= currentQuestStage.maxExchanges - 1) {
+  if (currentQuestStage.type === 'banner' || currentQuestStage.type === 'decision') {
+    if (typeof buttonAction === 'object' && buttonAction.type === 'goToStage') {
+      goToSpecificStage(buttonAction.stage);
+    } else {
+      switch (buttonAction) {
+        case 'end':
+        case 'fail':
+        case 'complete':
+          markQuestAsCompleted();
+          break;
+        case 'proceed':
           advanceToNextStage();
-        }
-      } catch (error) {
-        console.error("Error fetching LLM response:", error);
+          break;
+        case 'submit_excuse':
+          setCurrentStage(activeQuest.stages.findIndex(s => s.type === 'dialogue' && s.text.includes('submit an excuse')));
+          break;
+        case 'provide_treatment':
+          openPrescribePopup('treatment', { name: 'Inquisitor Santiago Valdez', type: 'npc' }); // Use the active quest NPC for prescription
+          
+          // Immediately close the quest after prescription is provided
+          markQuestAsCompleted();
+          break;
+        case 'provide_poison':
+          openPrescribePopup('poison', { name: 'Inquisitor Santiago Valdez', type: 'npc' }); // Use the active quest NPC for poisoning
+          
+          // Immediately close the quest after poison is provided
+          markQuestAsCompleted();
+          break;
+        default:
+          console.error('Unknown action type:', buttonAction);
       }
     }
+  } else if (currentQuestStage.type === 'check_excuse') {
+    // Handle excuse validation via LLM
+    const isValid = await checkExcuse(input); // Implement this function to validate the excuse
+    if (isValid) {
+      // Proceed to outcome where Maria leaves
+      const outcomeStage = activeQuest.stages.find(s => s.type === 'outcome' && s.text.includes('return safely'));
+      if (outcomeStage) {
+        setCurrentStage(activeQuest.stages.indexOf(outcomeStage));
+      }
+    } else {
+      // Excuse not convincing, possibly force end quest or provide feedback
+      triggerNotificationPopup({
+        image: imageMap.quest2_invalid_excuse, // Ensure this image exists in imageMap
+        text: 'Your excuse was not convincing. The Inquisitor presses further, leaving you with no choice but to comply.',
+        type: 'questFailure',
+      });
+      // Proceed to the next stage or handle as needed
+      advanceToNextStage();
+    }
+  } else if (currentQuestStage.type === 'dialogue') {
+    try {
+      const questResponse = await questAgent(activeQuest, currentQuestStage, input);
+      setDialogueHistory(prev => [...prev, { userInput: input, npcResponse: questResponse }]);
 
-    setIsLoading(false);
-    setUserInput('');
+      if (dialogueHistory.length >= currentQuestStage.maxExchanges - 1) {
+        advanceToNextStage();
+      }
+    } catch (error) {
+      console.error("Error fetching LLM response:", error);
+    }
+  }
+
+  setIsLoading(false);
+  setUserInput('');
+};
+
+
+  // Implement 'checkExcuse' function
+  const checkExcuse = async (excuse) => {
+    const prompt = `
+      You are an assistant evaluating excuses for declining medical assistance from Maria to an Inquisitor who desires secret treatment for his debilitating syphilis. He is a dangerous and crafty man. Determine if the following excuse is sufficiently convincing to prevent suspicion of the Inquisitor's condition.
+      Excuse: "${excuse}"
+      Return "pass" if convincing, otherwise "fail".
+    `;
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [
+            { role: 'system', content: 'You are a quality checker for excuses in a historical simulation educational game set in Mexico City in 1680, where the player is a female apothecary named Maria de Lima.' },
+            { role: 'user', content: prompt },
+          ],
+        }),
+      });
+
+      const data = await response.json();
+      const result = data.choices[0].message.content.trim().toLowerCase();
+      return result === 'pass';
+    } catch (error) {
+      console.error("Error validating excuse:", error);
+      return false; // Default to fail on error
+    }
   };
+
 
   const advanceToNextStage = () => {
     const nextStageIndex = currentStage + 1;
@@ -704,6 +813,11 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
     }
   };
 
+   // Helper function to get the correct image URL
+  const getImageUrl = (imageName) => {
+    return imageMap[imageName] || imageMap.default;
+  };
+
   useEffect(() => {
     if (activeQuest) {
       setShowQuestPopup(true);
@@ -716,6 +830,7 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
   if (!showQuestPopup || !activeQuest) return null;
 
   const stage = activeQuest.stages[currentStage];
+
 
   return (
     <>
@@ -745,9 +860,8 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
                 <ReactMarkdown key={index} remarkPlugins={[remarkGfm]} className="animated-line">{line}</ReactMarkdown>
               ))}
             </div>
-
           ) : stage.type === 'outcome' ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{questOutput}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{stage.text}</ReactMarkdown>
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{stage.text}</ReactMarkdown>
           )}
@@ -779,20 +893,19 @@ const Quest = ({ currentTurn, userActions, location, startQuest, activeQuest, se
                 <div key={idx} className="button-container">
                   <button
                     onClick={() => handleQuestInput(btn.text, btn.action)}
-                    className={`quest-button ${btn.image ? 'image-button' : ''}`}  // Apply 'image-button' class for buttons with images
+                    className={`quest-button ${btn.image ? 'image-button' : ''}`}
                     onMouseEnter={() => setHoverButton(idx)}
                     onMouseLeave={() => setHoverButton(null)}
                     style={btn.image ? {
                       backgroundImage: `url(${hoverButton === idx && btn.activeImage ? btn.activeImage : btn.image})`,
-                      width: '200px',   // Hardcoded width
-                      height: '200px',  // Hardcoded height
+                      width: '200px',
+                      height: '200px',
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     } : {}}
                   >
-                    {btn.image ? '' : btn.text}  {/* Only show text if no image is provided */}
+                    {btn.image ? '' : btn.text}
                   </button>
-                  {/* Only show captions for specific hover buttons */}
                   {(btn.text === 'Calcination' || btn.text === 'Distillation' || btn.text === 'Confection' || btn.text === 'Decoction') && (
                     <span className="button-caption">
                       {btn.text}

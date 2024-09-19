@@ -167,6 +167,18 @@ h2 {
   line-height: 0.5;  /* Reduce line height for manual breaks */
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Push buttons to opposite ends */
+  align-items: center; /* Vertically center buttons */
+  margin-bottom: 25px; /* Add space below the button container */
+}
+
+.button-container button {
+  margin: 0 10px; /* Ensure there's at least 20px gap on both sides */
+  margin-top: 10px;
+}
+
 
 .bottom-buttons {
   display: flex;
@@ -365,6 +377,7 @@ margin-left: 0px;
 
 
 
+
 .portrait-popup {
   width: 90%;
   max-width: 600px;
@@ -540,6 +553,19 @@ input[type="text"]:focus {
   box-shadow: -2px 0px 7px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
 
+}
+
+.journal-pane code {
+  font-family: sans-serif; /* Change font to sans-serif */
+  text-transform: uppercase; /* Make it all caps */
+  background-color: transparent; /* Remove default background */
+  color: #2c3e50; /* Change text color */
+  font-style: normal !important;
+    font-size: 12px;
+  color: #4A5568; /* Tailwind gray */
+  font-weight: 600; /* Bold the text to make it stand out */
+  letter-spacing: -.01rem; /* Add some letter spacing for a cleaner look */
+  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
 }
 
 

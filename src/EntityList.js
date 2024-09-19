@@ -58,10 +58,52 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
     description: "Francisco Dias de Araujo, a major merchant of textiles, looks wealthy and proud but his words tell another story.",
     astrologicalSign: "Aries",
     pdf: "araujo.pdf",
-    citation: "Francisco de Araujo was a real person, his case documented in João Curvo Semedo, Observaçoens medicas doutrinaes de cem casos gravissimos, [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707).",
+    citation: "Francisco de Araujo was a real person, his case documented in João Curvo Semedo, *Observaçoens medicas doutrinaes de cem casos gravissimos,* [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707).",
     secret: "Francisco fears that he contracted syphilis from a brothel and is terrified of the social and economic repercussions if it becomes known.",
     imgdescription: "A highly detailed pixel art portrait of Francisco Dias de Araujo, a 45-year-old textile merchant from Mexico City in 1680. He is a criollo man of medium build, with sallow skin, dark circles under his eyes, and a gaunt face showing signs of stress and illness. Francisco is dressed in a fine black doublet with silver buttons, a white linen shirt with a ruff collar, and black breeches. He is a proud and wealthy man."
   },
+{
+  type: "patient",
+  name: "Fray Jordanes",
+  age: 45,
+  gender: "Male",
+  occupation: "Augustinian friar",
+  birthplace: "Spain",
+  currentResidence: "Mexico City",
+  casta: "Peninsular",
+  class: "Clergy",
+  symptoms: [
+    { 
+      name: "Visible spasms", 
+      location: "whole body", 
+      quote: "The spasms come upon me without warning, a divine force coursing through me as if I am but a vessel for something far greater." 
+    },
+    { 
+      name: "Unsettling clairvoyance", 
+      location: "head", 
+      quote: "It is as though I can hear the thoughts of others, not in words, but as if their souls whisper directly to mine. Surely, this is a sign of Providence, no?" 
+    },
+
+    { 
+      name: "Euphoric visions", 
+      location: "head", 
+      quote: "In my visions, I see heavenly lights, signs of the divine. My soul is lifted beyond this earth, and I know it is the Lord’s will that I see these things." 
+    }
+  ],
+  diagnosis: "Possible schizophrenia or bipolar disorder",
+  contemporaryTheory: "The excessive fervor of divine visions and the uncontrolled bodily spasms are likely seen as symptoms of a divine 'illumination' by some, though others in the Inquisition suspect spiritual possession or the presence of melancholic humors causing madness. Fray Jordanes attributes these episodes to divine intervention, viewing them as a sign of grace.",
+  socialContext: "Fray Jordanes is viewed with suspicion by the Church authorities for his claims of clairvoyance and divine favor. His disorderly conduct, spasms, and incidents of clairvoyance have raised concerns, culminating in accusations of being an 'iluso y alumbrado' (deluded and illuminated). His case has been brought before the Inquisition, where he is accused not only of heretical claims of direct communication with God but also of inappropriate behavior toward a female parishioner.",
+  urgency: "High",
+  image: "frayjordanes",
+  caption: "Fray Jordanes, an Augustinian friar",
+  description: "Fray Jordanes is a 45-year-old Augustinian friar living in Mexico City, accused of heresy and spiritual delusion by the Inquisition. He claims to possess divine clairvoyance and has been known to enter states of ecstasy, accompanied by spasms. These episodes have alienated him from many in the clergy, who view his 'visions' with skepticism. Nonetheless, Fray Jordanes firmly believes he has been blessed by divine providence, though his behavior is becoming increasingly erratic and dangerous.",
+  astrologicalSign: "Scorpio",
+  pdf: "frayjordanes.pdf",
+  citation: "Rodríguez Delgado, Adriana. El goce del cuerpo. La impecabilidad entre los alumbrados de la Nueva España. In *Presencias y miradas del cuerpo en la Nueva España,* edited by Estela Roselló Soberón, 79-108. México: Universidad Nacional Autónoma de México Instituto de Investigaciones Históricas, 2011. http://www.historicas.unam.mx/publicaciones/publicadigital/libros/555/mira_das_cuerpo.html. For original archival file see AGN, Inquisición, Vol. 477, El Señor Fiscal del Santo Oficio contra Fray Francisco Jordanes del Orden de San Agustín por sospechoso de iluso y alumbrado, México City, 1687–1691. Box 1, Folder 27.",
+  secret: "Fray Jordanes believes he is divinely chosen and does not consider his condition to be a curse or a malady. However, privately, he experiences moments of doubt and fear, especially when his visions become violent or troubling. He suspects that revealing these darker moments would lead to his permanent imprisonment by the Inquisition.",
+  imgdescription: "A detailed pixel art portrait of Fray Jordanes, a 45-year-old Spanish-born Augustinian friar in Mexico City, 1687. His gaunt, wild-eyed appearance contrasts with his traditional Augustinian habit, suggesting a man consumed by fervor. His hands shake visibly, and his unkempt hair and beard contribute to the impression of a man both physically and mentally tormented."
+}
+,
   {
     type: "patient",
     name: "Fray Patricio",
@@ -91,6 +133,48 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
     secret: "Fray Patricio is a severe alcoholic and is dying of liver damage caused by heavy drinking. He thinks this secret is better kept than it is.",
     imgdescription: "A highly detailed pixel art portrait of Fray Patricio, a 50-year-old Irish-born Dominican friar in Mexico City, 1680. He is a pale, gaunt man known for his unrelenting work ethic, with sunken eyes and a long face showing signs of exhaustion and anemia. Fray Patricio wears the traditional white tunic and black cloak of his order, his thinning gray hair visible in a tonsure. Around his neck hangs a simple wooden cross."
   },
+
+  {
+    type: "patient",
+    name: "Antonia de Ochoa",
+    age: 22,
+    gender: "Female",
+    occupation: "Nun",
+    birthplace: "New Spain",
+    currentResidence: "Convent of San Francisco, Mexico City",
+    casta: "Criolla",
+    class: "Clergy",
+    symptoms: [
+      {
+        name: "Stigmata", 
+        location: "hands and feet", 
+        quote: "I bear the holy wounds of our Lord on my hands and feet, just as he did when he was crucified."
+      },
+      {
+        name: "Visions", 
+        location: "whole body", 
+        quote: "The love of God seizes me with such force that I am left breathless, lost in ecstasy."
+      },
+      {
+        name: "Levitation", 
+        location: "whole body", 
+        quote: "At times, in the midst of prayer, I feel myself rise off the ground, as though the Lord is lifting me to Him."
+      },
+    ],
+    diagnosis: "Religious mania",
+    contemporaryTheory: "Her episodes of stigmata and levitation are considered divine manifestations by some, though others suspect they are the result of hysteria or demonic influence. Antonia's confessor believes her to be blessed, but the Inquisition is investigating her for possible heresy.",
+    socialContext: "Antonia is highly revered by some members of the religious community for her supposed divine gifts, but she is also under scrutiny from the Inquisition for her claims of visions and stigmata, which may be seen as heretical.",
+    urgency: "High",
+    image: "antoniadeochoa",
+    caption: "Antonia de Ochoa, a nun",
+    description: "Antonia de Ochoa is a Criolla nun residing in the Convent of San Francisco in Mexico City. Known for her ecstatic visions, levitations, and claims of bearing the stigmata, she has garnered both reverence and suspicion. While her confessor supports her as a holy woman, the Inquisition is investigating her for potential heresy under the suspicion of alumbradismo.",
+    astrologicalSign: "Capricorn",
+    pdf: "antoniadeochoa.pdf",
+    citation: "AGN, Inquisición, vol. 539, exp. 25, f. 369v; vol. 539, exp. 15, f. 362-410; vol. 693, exp. 5, f. 400-443.",
+    secret: "Antonia is privately unsure whether her visions are divine or the result of mental strain. She harbors a secret fear that her experiences may not be true revelations from God but rather the work of her own mind or even the Devil.",
+    imgdescription: "A highly detailed pixel art portrait of Antonia de Ochoa, a 30-year-old Criolla nun in Mexico City, 1680s. She is depicted in her black habit, her face marked by an intense expression of religious fervor, her hands and feet showing faint traces of stigmata. Behind her looms the shadow of the convent, with faint echoes of divine light surrounding her figure."
+}
+,
   {
     type: "patient",
     name: "Sebastián Athayde",
@@ -835,7 +919,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
   // Quest NPCs
 {
-  type: "questnpc",
+  type: "npc",
   name: "Antonius Philalethes",
   age: 40,
   birthplace: "Athens, Greece",
@@ -857,29 +941,24 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Antonius, a black-haired Greek man of 40, wears a dark wool doublet, cut close to the body, with plain linen cuffs and a high collar. His attire is modest but of good quality, fitting for an educated man. His breeches are of heavy fabric, ending just below the knee, and he wears plain leather shoes, well-worn from years of use. His hands are often clasped behind his back, betraying faint traces of soot from his clandestine alchemical work."
 },
 {
-  type: "questnpc",
-  name: "Don Ignacio de Mendoza",
+  type: "npc",
+  questNPC: "true",
+  name: "Santiago Valdez",
   age: 64,
   birthplace: "Madrid, Spain",
   currentResidence: "Mexico City",
   casta: "Peninsular",
   class: "Clergy",
-  occupation: "High Inquisitor",
+  occupation: "Inquisitor",
   image: "don_ignacio_mendoza.jpg",
-  caption: "Don Ignacio de Mendoza, High Inquisitor",
-  description: "Don Ignacio de Mendoza is the formidable High Inquisitor of New Spain. His stern demeanor and piercing gaze can make even the bravest tremble. Despite his authority, he is plagued by a shameful illness that could ruin his reputation if discovered. Desperate for a cure, he seeks Maria's discretion, but the risks involved in treating him are high.",
+  caption: "Padre Santiago Valdez, High Inquisitor",
+  description: "Padre Santiago Valdez is a formidable Inquisitor of New Spain. His stern demeanor and piercing gaze can make even the bravest tremble. Despite his authority, he is plagued by a shameful illness that could ruin his reputation if discovered. Desperate for a cure, he seeks Maria's discretion, but the risks involved in treating him are high.",
   astrologicalSign: "Capricorn",
-  secret: "Don Ignacio has contracted syphilis, a condition he must keep hidden at all costs. He is willing to use any means necessary to secure a cure, including silencing those who know.",
-  questTrigger: "turn20", // Triggered automatically on turn 20
-  questDetails: {
-    successOutcome: "Poison him and survive",
-    failureOutcome: "Fail to poison him, game over",
-    stages: 3
-  },
-  imgdescription: "Don Ignacio is dressed in a black wool cassock, with a narrow white collar and sleeves that fall just above the wrist. His attire is austere, reflecting his role in the church. His face is marked by the lines of age and stress, his eyes sharp but sunken. He holds a wooden rosary loosely in his left hand, though it is more often kept in his pocket than used publicly."
+  secret: "Inquisitor Valdez has contracted syphilis, a condition he must keep hidden at all costs. He is willing to use any means necessary to secure a cure, including silencing those who know.",
+  imgdescription: "Don Santiago is dressed in a black wool cassock, with a narrow white collar and sleeves that fall just above the wrist. His attire is austere, reflecting his role in the church. His face is marked by the lines of age and stress, his eyes sharp but sunken. He holds a wooden rosary loosely in his left hand, though it is more often kept in his pocket than used publicly."
 },
 {
-  type: "questnpc",
+  type: "npc",
   name: "Tlacaelel",
   age: 38,
   birthplace: "Texcoco",
@@ -901,7 +980,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Tlacaelel wears a simple cotton tunic dyed in earthy tones, with a *tilmatli* cloak draped over one shoulder. His sandals, made of leather strips, are worn from travel, and a small leather pouch hangs at his waist, filled with plants and herbs gathered from the countryside. His demeanor is quiet and thoughtful, his movements deliberate."
 },
 {
-  type: "questnpc",
+  type: "npc",
   name: "Alonso García",
   age: 35,
   birthplace: "Mexico City",
@@ -921,7 +1000,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Alonso dresses in a neatly pressed linen shirt, with a broad belt securing his breeches, which are made of sturdy cloth suited to his profession. His leather apron is often spotted with traces of paint and wood shavings, a testament to his work as a sign maker. His appearance is humble, but his sharp eyes reveal a calculating nature."
 },
 {
-  type: "questnpc",
+  type: "npc",
   name: "Licenciado Rodrigo Ramírez",
   age: 48,
   birthplace: "Seville, Spain",
@@ -960,7 +1039,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Juan wears a plain brown wool doublet over a linen shirt, his sleeves rolled up from constant work. His apron is often stained with herbs and oils, and his hair is tied back neatly, though his face shows the strain of a man trying to maintain control in a faltering business."
 },
 
-  // Non-patient, non-quest NPCs
+  // Non-patient NPCs
 
   {
     type: "npc",

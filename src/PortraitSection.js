@@ -74,18 +74,16 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
 
   const pcInfoContent = (
     <div>
-      <h2 className="medieval-header">
+      <h2 className="portrait-medieval-header">
         <span>NAME:</span> Maria de Lima<br/>
         <span>AGE:</span> 45<br/>
         <span>BIRTHPLACE:</span> Coimbra, Portugal
       </h2>
       <p><strong>Biography:</strong> Maria, a skilled apothecary, has been living in Mexico City for the past 10 years after she was charged with heresy and deported from Portugal by the Inquisition. Born into a <i>converso</i> family, she is well-versed in the hybrid of alchemical and Galenic medicine practiced in mid-seventeenth-century Iberia.</p>
-      <p>Maria is based on the real-life historical figure of Maria Coelho, who had a similar background and life history but who disappears from the historical record following her deportation from Portugal by the Inquisition in 1669. She was last recorded as bound for Brazil. You can read more about the real-life Maria <a href="https://recipes.hypotheses.org/4710" target="_blank" rel="noopener noreferrer">here</a>.</p>
+      <p>Maria is based on the real-life historical figure of Maria Coelho, who had a similar background and life history but who disappears from the historical record following her deportation from Portugal by the Inquisition in 1669. She was last recorded as bound for Brazil. You can read more about the real-life Maria <a href="https://recipes.hypotheses.org/4710" target="_blank" rel="noopener noreferrer">here</a> and by clicking the Content Guide button.</p>
       <img src={mariaCoelhoImage} alt="Maria Coelho" style={{ maxWidth: '100%', height: 'auto' }} />
       <div className="pdf-button-container">
-        <button className="pdf-button" onClick={() => handlePDFClick('mariacoelho.pdf')}>
-          📄 View Relevant PDF
-        </button>
+       
       </div>
     </div>
   );
@@ -147,7 +145,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           )}
           <p><strong>{npcCaption.split(' ').slice(2).join(' ')}</strong></p>
           <p className="popup-info">{isEmoji ? npcCaption : npcInfo}</p>
-          <button onClick={closeNpcPopup} className="close-button">Close</button>
+          <button onClick={closeNpcPopup} className="close-map-button">Close</button>
         </div>
       )}
 
@@ -156,7 +154,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           <img src={mariaPortrait} alt="Maria" className="popup-portrait-image" />
           <p><strong>Maria de Lima</strong></p>
           <div className="popup-info">{pcInfoContent}</div>
-          <button onClick={closePcPopup} className="close-button">Close</button>
+          <button onClick={closePcPopup} className="close-map-button">Close</button>
         </div>
       )}
 

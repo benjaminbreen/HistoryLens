@@ -13,6 +13,12 @@
   z-index: 1000; /* Ensure it's above other elements */
 }
 
+.notification-popup.gameOverPopup {
+  background-color: #ff3333; /* Red background for Game Over */
+  color: white;
+  border: 2px solid #cc0000;
+}
+
 .popup-content {
   background-color: #fff;
   padding: 20px;
@@ -60,6 +66,7 @@
   font-size: 1rem;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+      width: 80%;
 }
 
 .popup-content button:hover {
@@ -67,18 +74,19 @@
 }
 
 /* Responsive Styles for Smaller Screens */
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .popup-content {
+    max-width: 90%;
     padding: 15px;
   }
 
   .popup-image {
-    width: 100px;
-    height: 100px;
+    height: 120px;
   }
 
   .popup-content p {
     font-size: 1rem;
+    margin: 0 10px 15px;
   }
 
   .popup-content button {

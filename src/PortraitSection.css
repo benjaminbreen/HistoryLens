@@ -21,7 +21,18 @@
   justify-content: flex-start;
 }
 
+.portrait-medieval-header {
+   font-family: "MedievalSharp", cursive;
+  font-size: 1.3rem;
+  text-transform: uppercase;
 
+  border-bottom: 2px solid #8b8b8b;
+  padding-bottom: 5px;
+
+  color: darkslategray;
+  text-align: center;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.23);
+}
 
 .npc-portrait-image,
 .pc-portrait-image {
@@ -40,7 +51,7 @@
 }
 
 .portrait-caption {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #718096; /* Gray-600 */
   font-style: italic;
   font-weight: normal;
@@ -51,41 +62,34 @@
 
 
 
+/* Emoji container styling */
 .npc-portrait-wrapper .emoji-image {
-
-  width: 280px; /* Increase width to make the image wider */
-  height: 165px; /* Keep the height the same or adjust as needed */
-  border-radius: 16%; /* Adjust border-radius if needed for the desired look */
-  object-fit: cover;
-  margin: 0 30px; /* Space between image and container edges */
-
-
-}
-
-.portrait-popup .emoji-image {
-
-  max-width: 400px;  /* Adjust as needed */
-  height: auto;
-
-}
-
-/* Fallback for NPC Image */
-.emoji-image {
-  font-size: 12vw;  /* Make the emoji larger to overflow the box */
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 280px; /* Width of the container */
-  height: 145px; /* Height of the container */
+  width: 280px; /* Match container width */
+  height: 165px; /* Match container height */
+  font-size: 8vw; /* Adjust font size for emoji */
+  border-radius: 16%; /* Keep border-radius */
+  object-fit: contain; /* Keep aspect ratio without distortion */
+  margin: 0 30px; /* Add space between image and container edges */
+}
 
-  border-radius: 14%; /* Adjust if needed */
-  margin: 0 10px; /* Space between image and container edges */
+.portrait-popup .emoji-image {
+  max-width: 300px;  /* Limit maximum width */
+  height: auto;  /* Maintain aspect ratio */
+}
 
-  position: relative; /* Allow positioning within the container */
-
-  transform: scaleX(1.4);
-
-
+.emoji-image {
+  font-size: 11vw;  /* Adjust emoji size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px; /* Adjust container width */
+  height: 145px; /* Adjust container height */
+  border-radius: 10%; /* Keep border-radius */
+  margin: 0 5px; /* Add space between image and container edges */
+  object-fit: contain; /* Ensure the emoji fits without being stretched */
 }
 
 .npc-portrait-image:hover,
@@ -93,7 +97,6 @@
   transform: scale(1.02);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
-
 
 @media (max-width: 768px) {
 
