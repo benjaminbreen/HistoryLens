@@ -107,18 +107,18 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 
     Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC.
 
-    Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. Use appropriate markdown formatting as follows:
+    Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. Add an emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
     - **h3 markdown**: Use h3 markdown tags (###) for headlines where the effects are neutral, positive, or only slightly negative. For example, you might write: 
-      ### Maria attempted an unconventional treatment that was somewhat ineffective.
+      ### Maria attempted an unconventional treatment that was somewhat ineffective ⚖️
       or
-      ### The prescription led to minor complications.
-      or ### The patient balked at the high price and walked out without paying.
+      ### The prescription was revolting and led to minor complications 🤢
+      or ### The patient balked at the high price and walked out without paying 💸
 
     - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
-      - If the patient **died**, always start with: ##### The patient has died!
+      - If the patient **died**, always start with: ##### 💀 The patient has died! 💀
       - For **severe complications** that are non-fatal, use something like:
-        ##### The prescription resulted in severe complications.
+        ##### ⚠️ The prescription failed, resulting in severe complications ⚠️
 
     **Important:**
     - The headline must always appear as the first line of the output.

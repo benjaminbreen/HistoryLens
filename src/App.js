@@ -765,10 +765,11 @@ const contextSummary = `
     - **Reputation**: Indicated by an emoji from the following scale:
       😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)
     - **Time of day**: record the exact time of day, such as 5:15 pm or 6:15 am, and the date, such as August 24, 1680.
+    - metadata_tags to allow image selection: give 3-4 key words to allow journalagent to select appropriate main image, i.e. the primary NPC name, location, mood, etc
 
     This final line must ALWAYS be in this **exact format** EXCEPT on turns when Maria buys or forages:
 
-    *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
+    *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year]. Metadata_tags: [main NPC encountered, mood, setting]*
 
     **Purchases & Foraging**: On turns in which Maria is engaged in buying or foraging, ALWAYS use this format:
     - "*Maria has [integer] silver coins. Maria bought [itemname].*"
