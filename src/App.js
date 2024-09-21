@@ -41,6 +41,9 @@ import './Inventory.css';
 import './Popup.css';
 import Helper from './Helper.js';
 import gameoverimage from './assets/gameover.jpg';
+import generateImageAndCaption from './ImageAndCaptionSelector';
+import shopmorning from './assets/shopmorning.jpeg';
+
 
 const PDFPopup = lazy(() => import('./PDFPopup'));
 
@@ -56,7 +59,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false); 
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
   const [gameAssessment, setGameAssessment] = useState('');
-  const [npcImage, setNpcImage] = useState(imageMap.shopmorning);
+  const [npcImage, setNpcImage] = useState(shopmorning);
   const [npcCaption, setNpcCaption] = useState("Maria's apothecary shop");
   const [currentPatient, setCurrentPatient] = useState(null);
   const [npcInfo, setNpcInfo] = useState("Maria's apothecary shop is located on the bustling Calle de la Amargura in Mexico City, serving a wide range of clientele from all walks of life.");
@@ -125,6 +128,8 @@ const [activeQuest, setActiveQuest] = useState(null);
   };
 
 // Toggle functions
+
+
 
 const handleWealthChange = (newWealth) => {
   setCurrentWealth(newWealth);
@@ -469,106 +474,63 @@ useEffect(() => {
   }
 }, [turnNumber, pendingEndGame, handleEndGame]);
 
-
 const handleTurnEnd = useCallback(async (narrativeText) => {
-  // Generate journal entry (includes summary from history agent)
-  const { summary, summaryData, npcImageName, inventoryChanges } = await generateJournalEntry(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
+  try {
+    // Generate the image and caption based on the narrative text
+    const { npcImage, caption, description } = await generateImageAndCaption(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
 
-
-  advanceTime(summaryData);  
-
-
-  console.log('Journal Agent Output:', summary);
-  console.log('NPC Image Name from Journal Agent:', npcImageName);
-
-  const isEmoji = /^\p{Emoji}$/u.test(npcImageName);
-  const lowerCaseImageName = npcImageName.toLowerCase();
-
-  console.log('ImageMap keys:', Object.keys(imageMap));
-  console.log('NPC Image Name (lowercase):', lowerCaseImageName);
-
-  let selectedEntity = EntityList.find(entity => 
-    (entity.image && entity.image.toLowerCase() === lowerCaseImageName) ||
-    (entity.name && entity.name.toLowerCase().includes(lowerCaseImageName))
-  );
-  console.log('Selected entity:', selectedEntity);
-
-  if (isEmoji) {
-    setIsEmoji(true);
-    setNpcImage(null);
-    setNpcCaption(`Scene in ${summaryData.location || location}`);
-    setNpcInfo(`<span class="emoji-image">${npcImageName}</span>`);
-  } else if (selectedEntity) {
-    setIsEmoji(false);
-    setNpcImage(imageMap[selectedEntity.image]);
-    setNpcCaption(selectedEntity.caption);
-    setNpcInfo(selectedEntity.description);
-    console.log('Image set from EntityList:', selectedEntity.image);
-  } else if (imageMap[lowerCaseImageName]) {
-    setIsEmoji(false);
-    setNpcImage(imageMap[lowerCaseImageName]);
-    const timeOfDay = summaryData.time.toLowerCase().includes('night') ? 'night' : 'day';
-    setNpcCaption(`A scene in ${summaryData.location || location}`);
-    setNpcInfo(`A typical ${timeOfDay} scene in ${summaryData.location || location}.`);
-    console.log('Image set from imageMap:', lowerCaseImageName);
-  } else {
-    // Fuzzy matching for locations and generic scenes
-    const possibleMatches = Object.keys(imageMap).filter(key => 
-      lowerCaseImageName.includes(key) || key.includes(lowerCaseImageName)
-    );
-
-    if (possibleMatches.length > 0) {
-      const bestMatch = possibleMatches[0]; // Use the first match
-      setIsEmoji(false);
-      setNpcImage(imageMap[bestMatch]);
-      setNpcCaption(`A scene in ${summaryData.location || location}`);
-      setNpcInfo(`A scene related to ${bestMatch} in ${summaryData.location || location}.`);
-      console.log('Image set from fuzzy match:', bestMatch);
-    } else {
-      console.warn(`No matching image found for: ${npcImageName}. ImageMap keys: ${Object.keys(imageMap).join(', ')}. Using emoji as fallback.`);
+    // Check if the result is an emoji
+    const isEmoji = /^\p{Emoji}$/u.test(npcImage);
+    if (isEmoji) {
+      setNpcImage(npcImage);
       setIsEmoji(true);
-      setNpcImage(null);
-      setNpcCaption(`Scene in ${summaryData.location || location}`);
-      setNpcInfo(`<span class="emoji-image">${npcImageName || '🏞️'}</span>`);
+    } else {
+      // npcImage is now the key for imageMap
+      setNpcImage(imageMap[npcImage]?.src || imageMap['default'].src);
+      setIsEmoji(false);
     }
-  }
+    setNpcCaption(caption);
+    setNpcInfo(description);
 
- 
+    // Generate journal entry
+    const { summary, summaryData, inventoryChanges } = await generateJournalEntry(narrativeText);
 
-  // Continue with inventory updates and the rest of the turn
-  setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
+    // Log journal entry with the generated summary
+    setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
-  // Update gameState with the new date, time and location from summaryData
-  if (summaryData.time && summaryData.date) {
-    advanceTime(); // Call advanceTime to update time and date
-  }
-  if (summaryData && summaryData.location) {
-    updateLocation(summaryData.location); // Use updateLocation to update the location
-  }
+    // Update game state with time, date, and location from summaryData
+    if (summaryData.time && summaryData.date) {
+      advanceTime(summaryData);
+    }
+    if (summaryData.location) {
+      updateLocation(summaryData.location);
+    }
 
-  // Handle any inventory changes (assuming you already handle this elsewhere)
-  if (inventoryChanges && inventoryChanges.length > 0) {
-    inventoryChanges.forEach(change => {
-      updateInventory(change.name, change.quantity);
-    });
+    // Handle inventory changes
+    if (inventoryChanges && inventoryChanges.length > 0) {
+      inventoryChanges.forEach(change => {
+        updateInventory(change.item, change.quantity, change.action);
+      });
+    }
+
+  } catch (error) {
+    console.error("Error in handleTurnEnd:", error);
+    // Fallback to a default image and caption
+    setNpcImage(imageMap['default'].src);
+    setNpcCaption("An unexpected event occurred.");
+    setIsEmoji(false);
   }
-  
 }, [
-  setIsEmoji, 
-  setNpcImage, 
-  setNpcCaption, 
-  setNpcInfo, 
-  setJournal, 
-  imageMap, 
-  EntityList, 
-  updateInventory,
+  setIsEmoji,
+  setNpcImage,
+  setNpcCaption,
+  setNpcInfo,
+  setJournal,
   advanceTime,
-  updateLocation, 
-  handleEndGame, // 
-  notificationPopup, 
-  startQuest 
+  updateLocation,
+  updateInventory,
+  imageMap
 ]);
-
 
 
 // Handling Submission
@@ -750,7 +712,7 @@ const contextSummary = `
     - Incorporate **counter-narratives** when they are made available; these are critiques from an expert historian which should inform how you construct the narrative. This knowledge should be subtly integrated into future turns for added realism.
 
     ### NPC and Entity Management:
-    - NPCs like **Don Luis, Marta the herb woman, and Tlacaelel** (at the market) may initiate **quests**. Be specific in how these interactions play out.
+    - NPCs like **Don Luis, Marta the herb woman, and Tlacaelel** (a Nahuatl scholar descended from Aztec royalty who may approach Maria in market environments, especially later in the game) may initiate **quests**. Be specific in how these interactions play out.
     - For **generic NPCs** like soldiers or sailors, give them individualized names and descriptions. For example, a soldier could be "Eduardo, a tired infantryman," or a noblewoman might become "Doña Maria de Valparaiso."
 
     ### Important Narrative Events:
@@ -769,7 +731,7 @@ const contextSummary = `
 
     This final line must ALWAYS be in this **exact format** EXCEPT on turns when Maria buys or forages:
 
-    *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year]. Metadata_tags: [main NPC encountered, mood, setting]*
+    *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation: [emoji]. Time: #:## AM/PM, xx [month] [year].*
 
     **Purchases & Foraging**: On turns in which Maria is engaged in buying or foraging, ALWAYS use this format:
     - "*Maria has [integer] silver coins. Maria bought [itemname].*"
@@ -893,6 +855,7 @@ useEffect(() => {
     <div className="container">
               <NavMobile setIsDarkMode={setIsDarkMode} setIsAboutOpen={setIsAboutOpen} />
         <Header />
+        
         <PortraitSection 
         npcImage={npcImage}
         npcCaption={npcCaption}
@@ -900,6 +863,7 @@ useEffect(() => {
         pcCaption="Playing as Maria de Lima"
         isEmoji={isEmoji}  
         status={mariaStatus}  
+        npcData={{ description: npcInfo }}
       />
         <div className="main-content">
           <div className="history-agent">

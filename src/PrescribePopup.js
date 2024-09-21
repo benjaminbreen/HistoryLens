@@ -3,6 +3,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import './PrescribePopup.css';
 
+import oralImage from './assets/oral.jpg';
+import inhaledImage from './assets/inhaled.jpg';
+import topicalImage from './assets/topical.jpg';
+import enemaImage from './assets/enema.jpg';
+
 function PrescribePopup({
   gameState = {},
   updateInventory,
@@ -28,6 +33,20 @@ function PrescribePopup({
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [simulatedOutput, setSimulatedOutput] = useState('');
   const [prescriptionPrompt, setPrescriptionPrompt] = useState('');
+   const [selectedRoute, setSelectedRoute] = useState('');
+
+   const handleRouteSelect = (route) => {
+    setSelectedRoute(route);
+  };
+
+  
+  const routeImages = {
+    Oral: oralImage,
+    Inhaled: inhaledImage,
+    Topical: topicalImage,
+    Enema: enemaImage
+  };
+
 
   // Update selectedItem when an item is dropped in
   useEffect(() => {
@@ -65,23 +84,29 @@ function PrescribePopup({
   });
 
   // Function to handle prescription
-const handlePrescribe = useCallback(async (item, amount, price) => {
-  if (!currentPatient) {
-    console.error("No patient or NPC selected for prescription");
-    setHistoryOutput("Error: No patient or NPC selected for prescription.");
-    return;
-  }
+ const handlePrescribe = useCallback(async (item, amount, price, route) => {
+    if (!currentPatient) {
+      console.error("No patient or NPC selected for prescription");
+      setHistoryOutput("Error: No patient or NPC selected for prescription.");
+      return;
+    }
 
-  const npcName = currentPatient.name;
-  const { location, time, date } = gameState;
-  let prescriptionPrompt = '';
+    if (!route) {
+      console.error("No route of administration selected");
+      setHistoryOutput("Error: Please select a route of administration.");
+      return;
+    }
+
+    const npcName = currentPatient.name;
+    const { location, time, date } = gameState;
+    let prescriptionPrompt = '';
 
   // patient picking logic 
   if (npcName === 'Inquisitor Santiago Valdez') {
   if (prescriptionType === 'treatment') {
     // Special treatment prompt for the Inquisitor
     prescriptionPrompt = `
-      Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez, attempting to treat his illness (syphilis). He has threatened violence if she fails or reveals his secret.
+      Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez via the ${route} route, attempting to treat his illness (syphilis). He has threatened violence if she fails or reveals his secret.
       This is a medical treatment rather than poison. Consider the appropriate dosage and the likely effects of the medicine.
       Using your extensive knowledge of early modern treatments and their effects, assess if the treatment will relieve his symptoms or cause dangerous side effects.
       Begin with a customized "headline" in h5 markdown font, either "Maria's treatment was successful. The condition of the Inquisitor improved." or "Maria's treatment failed. The condition of the Inquisitor worsened."
@@ -91,7 +116,7 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
   } else if (prescriptionType === 'poison') {
     // Special poison prompt for the Inquisitor
     prescriptionPrompt = `
-      Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez, treating his secret illness (syphilis). He has brought her to his residence under threat of violence if she fails or reveals his secret.
+      Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez via the ${route} route, treating his secret illness (syphilis). He has brought her to his residence under threat of violence if she fails or reveals his secret.
       This is an attempt to poison him rather than cure his illness. Consider the dosage and potential lethality of the poison.
       Using your extensive knowledge of early modern poisons and their effects, determine if the dose is sufficient to kill without causing suspicion.
       Begin with a customized "headline" in h5 markdown font, either "Maria's poison was successful. The Inquisitor has died." or "Maria's poison failed. The Inquisitor survived."
@@ -101,13 +126,13 @@ const handlePrescribe = useCallback(async (item, amount, price) => {
 } else if (prescriptionType === 'treatment' || currentPatient.type === 'patient') {
   // General treatment prompt for other NPCs
   prescriptionPrompt = `
-    Maria has prescribed ${amount} drachms of ${item.name} for ${price} silver coins to ${npcName}.
+    Maria has administered ${amount} drachms of ${item.name} via the ${route} route for ${price} silver coins to ${npcName}.
     The transaction occurred at ${time} on ${date}, in ${location}. (This is context and should not be restated to the player.)
     Maria's current wealth is ${currentWealth} silver coins.
 
     Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC.
 
-    Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. Add an emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
+    Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
     - **h3 markdown**: Use h3 markdown tags (###) for headlines where the effects are neutral, positive, or only slightly negative. For example, you might write: 
       ### Maria attempted an unconventional treatment that was somewhat ineffective ⚖️
@@ -245,13 +270,15 @@ setPrescriptionPrompt(prescriptionPrompt);
   }
 }, [currentPatient, conversationHistory, gameState, updateInventory, addJournalEntry, currentWealth, prescriptionType, handlePrescriptionOutcome]);
 
-  const handlePrescribeClick = async () => {
-    if (selectedItem) {
+ const handlePrescribeClick = async () => {
+    if (selectedItem && selectedRoute) {
       setIsLoading(true);
-      await handlePrescribe(selectedItem, amount, price);
+      await handlePrescribe(selectedItem, amount, price, selectedRoute);
       setIsLoading(false);
       onClose();
       setIsSummaryOpen(true);
+    } else if (!selectedRoute) {
+      alert("Please select a route of administration.");
     }
   };
 
@@ -279,44 +306,69 @@ const handleSummaryContinue = () => {
 };
 
 
-  return (
-    <>
-      {isOpen && !isSummaryOpen && (
-        <div className="prescribe-popup">
-          <div className="prescribe-content">
-            <h2>🧪 Prescribe a Medicine</h2>
-            <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
-              {selectedItem ? (
-                <div className="selected-item">
-                  <span className="emoji">{selectedItem.emoji || '❓'}</span>
-                  <span>{selectedItem.name}</span>
-                </div>
-              ) : (
-                <p>Drag an item here from the inventory to prescribe. And don't forget to set a price!</p>
-              )}
-            </div>
+ return (
+  <>
+    {isOpen && !isSummaryOpen && (
+      <div className="prescribe-popup">
+        <div className="prescribe-content">
+          <h2>🧪 Prescribe a Medicine</h2>
+          <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
+            {selectedItem ? (
+              <div className="selected-item">
+                <span className="emoji">{selectedItem.emoji || '❓'}</span>
+                <span>{selectedItem.name}</span>
+                {selectedRoute && <p><i>({selectedRoute})</i></p>}
+              </div>
+            ) : (
+              <p>Drag an item here from the inventory to prescribe. And don't forget to set a price!</p>
+            )}
+          </div>
             <div className="prescription-controls">
-              <label>
-                Amount (drachms):
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
-                  min="1"
-                />
-              </label>
-              <label>
-                Price (silver reales):
-                <input
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(Number(e.target.value))}
-                  min="0"
-                />
-              </label>
+       <div className="input-group">
+  <label htmlFor="amount">Amount (drachms)</label>
+  <input
+    id="amount"
+    type="number"
+    value={amount}
+    onChange={(e) => setAmount(Math.max(1, parseInt(e.target.value) || 1))}
+    min="1"
+  />
+</div>
+<div className="input-group">
+  <label htmlFor="price">Price (reales)</label>
+  <input
+    id="price"
+    type="number"
+    value={price}
+    onChange={(e) => setPrice(Math.max(0, parseInt(e.target.value) || 0))}
+    min="0"
+  />
+</div>
+      </div>
+              <div className="route-selection">
+              <label>Select a route of administration:</label>
+              <div className="route-buttons">
+                {Object.entries(routeImages).map(([route, image]) => (
+                  <button
+                    key={route}
+                    className={`route-button ${selectedRoute === route ? 'selected' : ''}`}
+                    onClick={() => handleRouteSelect(route)}
+                    style={{
+                      backgroundImage: `url(${image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  >
+                    <span>{route}</span>
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="prescription-buttons">
-              <button onClick={handlePrescribeClick} disabled={!selectedItem || isLoading}>
+              <button 
+                onClick={handlePrescribeClick} 
+                disabled={!selectedItem || !selectedRoute || isLoading}
+              >
                 {isLoading ? 'Prescribing...' : 'Prescribe'}
               </button>
               <button onClick={onClose}>Cancel</button>

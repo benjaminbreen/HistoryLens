@@ -7,6 +7,9 @@ function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
   const [status, setStatus] = useState('rested');  // Default starting status
   const [reputationEmoji, setReputationEmoji] = useState('😐');  // Default reputation emoji
 
+  // Define the allowed reputation emojis
+  const allowedEmojis = ['😡', '😠', '😐', '😶', '🙂', '😌', '😏', '😃', '😇', '👑'];
+
   useEffect(() => {
     // Extract wealth (either "reales" or "silver coins") from the LLM response
     const wealthMatch = llmResponse.match(/(?:Maria now has|You now have|Maria has|Your current wealth stands at|Your wealth stands at|You possess) (\d+) (?:silver coins|reales|coins)/i);
@@ -32,9 +35,12 @@ function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
       }
     }
 
-    // If any emoji is found, update the reputation emoji
+    // If any emoji is found, update the reputation emoji only if it is allowed
     if (emojiMatch && emojiMatch[1]) {
-      setReputationEmoji(emojiMatch[1].trim());
+      const foundEmoji = emojiMatch[1].trim();
+      if (allowedEmojis.includes(foundEmoji)) {
+        setReputationEmoji(foundEmoji);  // Only set the emoji if it's in the allowed list
+      }
     }
   }, [llmResponse, onStatusChange, onWealthChange]);
 

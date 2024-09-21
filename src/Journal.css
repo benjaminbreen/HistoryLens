@@ -28,6 +28,13 @@
   text-transform: uppercase;
 }
 
+.journal-divider {
+  border: 0;
+  height: 1px;
+  background: #ddd; /* Light gray color for the divider */
+  margin: 20px 0;   /* Space around the divider */
+}
+
 .container .journal-pane.open {
   right: 0 !important;
 }

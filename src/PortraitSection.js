@@ -83,7 +83,6 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
       <p>Maria is based on the real-life historical figure of Maria Coelho, who had a similar background and life history but who disappears from the historical record following her deportation from Portugal by the Inquisition in 1669. She was last recorded as bound for Brazil. You can read more about the real-life Maria <a href="https://recipes.hypotheses.org/4710" target="_blank" rel="noopener noreferrer">here</a> and by clicking the Content Guide button.</p>
       <img src={mariaCoelhoImage} alt="Maria Coelho" style={{ maxWidth: '100%', height: 'auto' }} />
       <div className="pdf-button-container">
-       
       </div>
     </div>
   );
@@ -91,6 +90,32 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
   const getNpcPDF = (npcName) => {
     const npc = EntityList.find((entity) => entity.name === npcName);
     return npc ? npc.pdf : null;
+  };
+
+  const getNpcInfo = (npcName) => {
+    const npc = EntityList.find((entity) => entity.name === npcName);
+    if (npc) {
+      return (
+        <div>
+          <p><strong>Age:</strong> {npc.age}</p>
+          <p><strong>Occupation:</strong> {npc.occupation}</p>
+          <p><strong>Birthplace:</strong> {npc.birthplace}</p>
+          <p><strong>Current Residence:</strong> {npc.currentResidence}</p>
+          <p><strong>Description:</strong> {npc.description}</p>
+          {npc.symptoms && (
+            <div>
+              <p><strong>Symptoms:</strong></p>
+              <ul>
+                {npc.symptoms.map((symptom, index) => (
+                  <li key={index}>{symptom.name}: "{symptom.quote}"</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      );
+    }
+    return <p>{npcInfo}</p>;
   };
 
   return (
@@ -104,7 +129,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
             />
           ) : (
             <img 
-              src={npcImage} 
+              src={npcImage}
               alt="NPC" 
               className={`npc-portrait-image ${fadeClass}`} 
               onError={(e) => {
@@ -144,7 +169,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
             <img src={npcImage} alt="NPC" className="popup-portrait-image" />
           )}
           <p><strong>{npcCaption.split(' ').slice(2).join(' ')}</strong></p>
-          <p className="popup-info">{isEmoji ? npcCaption : npcInfo}</p>
+          <div className="popup-info">{getNpcInfo(npcCaption.split(',')[0])}</div>
           <button onClick={closeNpcPopup} className="close-map-button">Close</button>
         </div>
       )}
@@ -172,3 +197,4 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
 }
 
 export default PortraitSection;
+

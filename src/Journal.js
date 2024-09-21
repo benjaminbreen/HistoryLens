@@ -79,17 +79,20 @@ function Journal({ journal, isOpen, toggleJournal, customJournalEntry, setCustom
 
       <h2>Journal</h2>
       {journal && journal.length > 0 ? (
-        journal.map((entry, index) => (
-          <div
-            key={index}
-            className={`journal-entry ${entry.type === 'human' ? 'human-entry' : 'auto-entry'}`}
-          >
-            <ReactMarkdown>{entry.content}</ReactMarkdown>
-          </div>
-        ))
-      ) : (
-        <p>No entries yet.</p>
-      )}
+  journal.map((entry, index) => (
+    <div key={index}>
+      <div
+        className={`journal-entry ${entry.type === 'human' ? 'human-entry' : 'auto-entry'}`}
+      >
+        <ReactMarkdown>{entry.content}</ReactMarkdown>
+      </div>
+      
+      {index < journal.length - 1 && <hr className="journal-divider" />}
+    </div>
+  ))
+) : (
+  <p>No entries yet.</p>
+)}
     </div>
   );
 }

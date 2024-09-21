@@ -81,8 +81,8 @@ function TipBox({ currentTurn }) {
         ×
       </button>
       <h2 style={{ fontSize: '1.05rem', fontWeight: '600', color: '#854d0e' }}>
-        Tips (click for more...)
-      </h2> 
+  Tips <span style={{ fontSize: '0.85rem', color: '#4a5568' }}>(click for more...)</span>
+</h2>
       <p style={{ fontSize: '1rem', color: '#4a5568' }}>
         {tips[currentTipIndex]}
       </p>
