@@ -12,6 +12,7 @@ import sugar from './assets/sugar.jpg';
 import honey from './assets/honey.jpg';
 import crab from './assets/crab.jpg';
 import sal from './assets/sal.jpg';
+import ginger from './assets/ginger.jpg';
 
 
 
@@ -240,13 +241,28 @@ const initialInventoryData = [
     pdf: '/assets/pdfs/salammoniacmedicinaluses.pdf',
     citation: 'Nicholas Culpeper, The English Physician Enlarged (1653)',
     image: sal
-}
+},
+ {
+id: 16, 
+        name: 'Ginger',
+        latinName: 'Zingiber officinale',
+        spanishName: 'Jengibre',
+        price: 5,
+        quantity: 4,
+        humoralQualities: 'Warm & Dry',
+        medicinalEffects: 'Stimulates digestion, relieves nausea, and soothes coughs.',
+        description: 'A pungent spice used widely to stimulate digestion and cure respiratory ailments.',
+        emoji: '🫚',
+    pdf: '/assets/pdfs/ginger.pdf',
+    citation: 'John Parkinson, *Theatrum Botanicum* (London, 1640), pg 1613',
+    image: ginger
+},
 ];
 
 // Define Mumia as a potential inventory item, but not part of initial inventory
 const potentialInventoryItems = {
     mumia: {
-        id: 15, 
+        id: 99, 
         name: 'Mumia',
         latinName: 'Mumia vera',
         spanishName: 'Mumia',

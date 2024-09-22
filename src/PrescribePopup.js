@@ -130,7 +130,7 @@ function PrescribePopup({
     The transaction occurred at ${time} on ${date}, in ${location}. (This is context and should not be restated to the player.)
     Maria's current wealth is ${currentWealth} silver coins.
 
-    Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC.
+    Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. 
 
     Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
@@ -142,8 +142,9 @@ function PrescribePopup({
 
     - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
       - If the patient **died**, always start with: ##### 💀 The patient has died! 💀
-      - For **severe complications** that are non-fatal, use something like:
-        ##### ⚠️ The prescription failed, resulting in severe complications ⚠️
+      - For more minor injuries, use something like:
+        ##### ⚠️ The prescription failed, resulting in severe complications ⚠️ 
+      - Remember that if a patient is likely to die in a turn, go with "The patient has died" as the headline. Be realistic and don't hold back.
 
     **Important:**
     - The headline must always appear as the first line of the output.
@@ -161,10 +162,11 @@ function PrescribePopup({
     ### Dosage & Effects:
     - One drachm of most medicines is usually safe, but two or more drachms of highly toxic substances (like quicksilver or laudanum) could lead to fatal outcomes. If the dose is fatal, show the NPC dying.
     - Angry reactions are common if the medicine is ineffective or causes discomfort, so show the patient's response accordingly.
+    - Consider the patient's presumed weight and health AND the route of administration in assessing whether a dose is fatal or highly toxic. For instance, even a single drachm of inhaled quicksilver (mercury) is instantly fatal, as is quicksilver as an enema. However, topical quicksilver is fine. Many drugs are more potent in enema or inhaled form; even one drachm of opium might be fatal in a weak or small patient, especially if inhaled. Likewise with many alchemical compounds. Topical doses are usually fine. 
+    - If a patient dies, Maria has to figure out what to do with the body, sending her storyline into a much darker direction. 
+    At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time in **this exact format** using markdown *italic* tags:
 
-    At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time in **this exact format** using markdown **bold** tags:
-
-    **Now Maria has ${currentWealth + price} silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
+    *Now Maria has ${currentWealth + price} silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
 
     **Reputation Emoji Guide:**
     - 😡 (1) : Extremely bad (e.g., patient dies)
@@ -257,7 +259,7 @@ setPrescriptionPrompt(prescriptionPrompt);
 
  // Safeguard before adding journal entry
     if (typeof addJournalEntry === 'function') {
-      addJournalEntry(`℞ Maria prescribed ${amount} drachms of **${item.name}** for **${price} reales** to **${npcName}**. ${journalSummary}`);
+      addJournalEntry(`℞ Maria prescribed ${amount} drachms of **${item.name}** for **${price} reales** to **${npcName}** via the ${route} route. ${journalSummary}`);
     } else {
       console.warn('addJournalEntry is not a function. Skipping journal entry.');
     }
@@ -320,71 +322,72 @@ const handleSummaryContinue = () => {
                 {selectedRoute && <p><i>({selectedRoute})</i></p>}
               </div>
             ) : (
-              <p>Drag an item here from the inventory to prescribe. And don't forget to set a price!</p>
+              <p>Drag an item here from the inventory to prescribe. And don't forget to set a price and select a route of administration!</p>
             )}
           </div>
-            <div className="prescription-controls">
-       <div className="input-group">
-  <label htmlFor="amount">Amount (drachms)</label>
+          <div className="prescription-controls">
+           <label>
+  Amount (drachms):
   <input
-    id="amount"
     type="number"
     value={amount}
-    onChange={(e) => setAmount(Math.max(1, parseInt(e.target.value) || 1))}
+    onChange={(e) => {
+      const newAmount = Number(e.target.value);
+      // Ensure the amount is never less than 1
+      setAmount(newAmount < 1 ? 1 : newAmount);
+    }}
     min="1"
   />
-</div>
-<div className="input-group">
-  <label htmlFor="price">Price (reales)</label>
-  <input
-    id="price"
-    type="number"
-    value={price}
-    onChange={(e) => setPrice(Math.max(0, parseInt(e.target.value) || 0))}
-    min="0"
-  />
-</div>
-      </div>
-              <div className="route-selection">
+</label>
+            <label>
+              Price (silver reales):
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                min="0"
+              />
+            </label>
+          </div>
+           <div className="route-selection">
               <label>Select a route of administration:</label>
-              <div className="route-buttons">
-                {Object.entries(routeImages).map(([route, image]) => (
-                  <button
-                    key={route}
-                    className={`route-button ${selectedRoute === route ? 'selected' : ''}`}
-                    onClick={() => handleRouteSelect(route)}
-                    style={{
-                      backgroundImage: `url(${image})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  >
-                    <span>{route}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="prescription-buttons">
-              <button 
-                onClick={handlePrescribeClick} 
-                disabled={!selectedItem || !selectedRoute || isLoading}
+          <div className="route-buttons">
+
+            {Object.entries(routeImages).map(([route, image]) => (
+              <button
+                key={route}
+                className={`route-button ${selectedRoute === route ? 'selected' : ''}`}
+                onClick={() => setSelectedRoute(route)}
+                style={{
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
               >
-                {isLoading ? 'Prescribing...' : 'Prescribe'}
+                <span>{route}</span>
               </button>
-              <button onClick={onClose}>Cancel</button>
-            </div>
+            ))}
+          </div>
+           </div>
+          <div className="prescription-buttons">
+            <button onClick={handlePrescribeClick} disabled={!selectedItem || isLoading}>
+              {isLoading ? 'Prescribing...' : 'Prescribe'}
+            </button>
+            <button onClick={onClose}>Cancel</button>
           </div>
         </div>
-      )}
+      </div>
+    )}
 
       {isSummaryOpen && (
-        <div className="popup-overlay">
-          <div className="popup-content summary-popup" onClick={(e) => e.stopPropagation()}>
-            <h2 className="summary-title">Prescription Summary</h2>
-            <p>
-              Maria prescribed {amount} drachms of {selectedItem?.name} for {price} reales.
-              She waits expectantly to see what effect it will have...
-            </p>
+         <div className="popup-overlay">
+    <div className="popup-content summary-popup" onClick={(e) => e.stopPropagation()}>
+      <h2 className="summary-title">Prescription Summary</h2>
+      <p>
+        Maria administered {amount} drachms of {selectedItem?.name} via the {selectedRoute} route for {price} reales.
+        She waits expectantly to see what effect her treatment will have...
+
+      </p>
 
             <h1 className="medieval-header">
               <span>{selectedItem?.name || 'Unknown Item'}</span>

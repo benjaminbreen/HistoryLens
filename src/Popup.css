@@ -234,6 +234,60 @@
 }
 
 /* map styling */
+
+.map-insets-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.static-map {
+  position: relative;
+  height: 450px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+
+}
+
+.static-map.mexico-city-map {
+  width: 38%; /* Narrower width for Mexico City map */
+    border-radius: 20px;
+}
+
+.static-map.world-map {
+  width: 60%; /* Wider width for world map */
+    border-radius: 20px;
+}
+
+.marker {
+  position: absolute;
+  background-color: red;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  z-index: 10000;
+   border: 2px solid white;
+}
+
+.divider {
+  border-top: 2px solid #ccc;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .map-insets-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .static-map {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+}
+
+
 .map-overlay {
   position: fixed;
   top: 0;
@@ -271,6 +325,7 @@
   color: #2d2d2d; /* Dark text for contrast */
   font-family: 'IM Fell English', serif;
 }
+
 
 .map-popup-content {
   text-align: left;

@@ -36,7 +36,7 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
               Respond in the following format:
               1. Selected Image: [exact key from imageMap OR a single unicode emoji]
               2. Caption: [A very short (6 words maximum) vivid description of the scene. ALWAYS include the full NPC name if appears in the narrative.]
-              3. Description: [A 3-4 sentence description of the NPC or scene, providing more context and detail - be as vivid, specific, and interesting as possible; perhaps a barbed observation or link to other events or characteristics of life in the 1680s.]
+              3. Description: [A four sentence elaboration on the caption, avoiding overwraught language. Write simply and succinctly and with an understated Hemmingway-esque flair, also listing at the end all sounds you imagine Maria can hear, rendered onomonopoetically as needed, in 1-2 sentences. Be extremely accurate and thoughtful in deciding what sounds are audible in this moment in the 1680s, emphasizing extreme fidelity to lived experience and historical accuracy and using real-life, unique, distinctive, specialized historical terms that distinctly evoke the specific setting in period language. KEEP IT SIMPLE. Be plainspoken. Think Cormac McCarthy. Then in a brief, fragmentary phrase evoke Maria's proprioception, her physical experience of this moment...]
               Choose the image that best matches the narrative context, using the tags as guidelines when available.
             `
           },

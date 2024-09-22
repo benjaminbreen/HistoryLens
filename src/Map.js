@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './Popup.css';
+import mmap from './assets/mexicomap.jpg';
+import wmap from './assets/worldmap.jpg';
 
-const Map = ({ isOpen, onClose, previousOutput, apiKey }) => {
+const Map = ({ isOpen, onClose, previousOutput, lat = 19.4326, lon = -99.1332 }) => {
   const [mapOutput, setMapOutput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // ASCII map generation
   useEffect(() => {
     if (isOpen && previousOutput) {
       generateMap(previousOutput);
@@ -38,10 +41,10 @@ const Map = ({ isOpen, onClose, previousOutput, apiKey }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
+          model: 'gpt-4o-mini',
           messages: [
             { role: 'system', content: 'You are an expert in creating detailed ASCII maps. Always format your map output as a code block by wrapping it in triple backticks (```).' },
             { role: 'user', content: mapPrompt },
@@ -70,8 +73,62 @@ const Map = ({ isOpen, onClose, previousOutput, apiKey }) => {
         <div className="map-popup">
           <div className="map-popup-content">
             <h2>Map</h2>
+
+            {/* Flexbox container for maps */}
+            <div className="map-insets-container">
+              {/* Static map for Mexico City closeup */}
+              <div className="static-map mexico-city-map">
+                <h3>Mexico City Area</h3>
+                <img
+                  src={mmap}
+                  alt="Map of Mexico City"
+                  
+                />
+                {/* Marker */}
+                <div
+                  className="marker"
+                  style={{
+                    position: 'absolute',
+                    top: `${lat}%`,
+                    left: `${lon}%`,
+                    width: '10px',
+                    height: '10px',
+                    backgroundColor: 'red',
+                    borderRadius: '50%',
+                  }}
+                ></div>
+              </div>
+
+              {/* Static map for World Map */}
+              <div className="static-map world-map">
+                <h3>World Map</h3>
+                <img
+                  src={wmap}
+                  alt="World Map"
+                  
+                />
+                {/* Marker */}
+                <div
+                  className="marker"
+                  style={{
+                    position: 'absolute',
+                    top: `${lat}%`,
+                    left: `${lon}%`,
+                    width: '10px',
+                    height: '10px',
+                    backgroundColor: 'red',
+                    borderRadius: '50%',
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Vertical divider between insets and ASCII map */}
+            <div className="divider"></div>
+
+            {/* ASCII map below the static maps */}
             {isLoading ? (
-              <p>Loading map...</p>
+              <p>Loading ASCII map...</p>
             ) : (
               <pre className="ascii-map">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{mapOutput}</ReactMarkdown>

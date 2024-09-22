@@ -2,7 +2,7 @@
   position: fixed;
   top: 1%;  /* Adjust this value to move it further down */
   left: 78%; /* Adjust if necessary */
-  z-index: 3000; /* Ensure it has a higher z-index */
+  z-index: 2; /* Ensure it has a higher z-index */
   padding: 5px;
 }
 
@@ -20,6 +20,7 @@
   cursor: pointer;
   border: 2px solid white; /* Added border to make the button more noticeable */
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1); /* Added shadow for visibility */
+  z-index: 0; 
 }
 
 .helper-panel {
