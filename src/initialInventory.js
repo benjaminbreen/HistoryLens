@@ -13,7 +13,10 @@ import honey from './assets/honey.jpg';
 import crab from './assets/crab.jpg';
 import sal from './assets/sal.jpg';
 import ginger from './assets/ginger.jpg';
-
+import bezoar from './assets/bezoar.jpg';
+import coral from './assets/coral.jpg';
+import mechoacan from './assets/mechoacan.jpg';
+import cochineal from './assets/cochineal.jpg';
 
 
 const initialInventoryData = [
@@ -118,7 +121,7 @@ const initialInventoryData = [
         quantity: 5,
         humoralQualities: 'Warm & Dry',
         medicinalEffects: 'Anti-inflammatory, diuretic, treats allergies and arthritis.',
-        description: 'It stings... but it also heals.',
+        description: 'It stings... but it also heals. Effective when used topically.',
         emoji: '🌾',
         pdf: 'nettle.pdf',
         image: nettle
@@ -253,9 +256,69 @@ id: 16,
         medicinalEffects: 'Stimulates digestion, relieves nausea, and soothes coughs.',
         description: 'A pungent spice used widely to stimulate digestion and cure respiratory ailments.',
         emoji: '🫚',
-    pdf: '/assets/pdfs/ginger.pdf',
+    pdf: 'ginger.pdf',
     citation: 'John Parkinson, *Theatrum Botanicum* (London, 1640), pg 1613',
     image: ginger
+},
+   {
+        id: 17, 
+        name: 'Bezoar Stone',
+        latinName: 'Bezoar',
+        spanishName: 'Piedra Bezoar',
+        price: 50,
+        quantity: 1,
+        humoralQualities: 'Cold & Dry',
+        medicinalEffects: 'Antidote to poisons, treats fevers, and balances the humors.',
+        description: 'A rare and prized stone found in the stomachs of certain animals, known for its use as a universal antidote.',
+        emoji: '🪨',
+        pdf: 'bezoar.pdf',
+        citation: 'José de Acosta, *Natural and Moral History of the Indies* (1604), p. 293. Link: https://www.google.com/books/edition/The_Natural_Moral_History_of_the_Indies/BXwRAwAAQBAJ?hl=en&gbpv=1&dq=bezoar&pg=PA293&printsec=frontcover',
+        image: bezoar
+    },
+      {
+        id: 18, 
+        name: 'Red Coral',
+        latinName: 'Corallium rubrum',
+        spanishName: 'Coral Rojo',
+        price: 12,
+        quantity: 1,
+        humoralQualities: 'Cold & Dry',
+        medicinalEffects: 'Used in tonics to treat palpitations, bleeding, and melancholy.',
+        description: 'Branches of red coral, prized for their ability to fortify the heart and calm nervous conditions.',
+        emoji: '🪸',
+        pdf: 'coral.pdf',
+        citation: 'Jean de Renou, *A Medicinal Dispensatory Containing the Whole Body of Physick* (1657), pg 55',
+        image: coral
+    },
+    {
+    id: 19, 
+    name: 'Mechoacan',
+    latinName: 'Convolvulus mechoacana',
+    spanishName: 'Mechoacán',
+    price: 6,
+    quantity: 3,
+    humoralQualities: 'Cold & Dry',
+    medicinalEffects: 'Powerful purgative, treats dropsy, and cleanses the bowels.',
+    description: 'A root from New Spain similar to Jalap, widely used as a strong purgative.',
+    emoji: '🍠',
+    pdf: 'mechoacan.pdf',
+    citation: 'make the citations be Pierre Pomet, *Complete History of Drugs*, London 1748, pg 32, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PT1&printsec=frontcover',
+    image: mechoacan
+},
+{
+    id: 20, 
+    name: 'Cochineal',
+    latinName: 'Dactylopius coccus',
+    spanishName: 'Cochinilla',
+    price: 8,
+    quantity: 2,
+    humoralQualities: 'Warm & Dry',
+    medicinalEffects: 'Used to treat fevers, sore throats, and to stop bleeding.',
+    description: 'Dried female cochineal insects, valued for their vibrant red dye and medicinal properties.',
+    emoji: '🐞',
+    pdf: 'cochineal.pdf',
+    citation: 'make the citations be Pierre Pomet, *omplete History of Drugs*, London 1748, pg 15, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PA14&printsec=frontcover',
+    image: cochineal
 },
 ];
 

@@ -2,6 +2,82 @@ const EntityList = [
 // Patients
 
 {
+  "type": "npc",
+  "name": "Sir Robert Southwell",
+  "age": 44,
+  "gender": "Male",
+  "occupation": "Diplomat",
+  "birthplace": "County Cork, Ireland",
+  "currentResidence": "King's Weston House, Bristol",
+  "casta": "Anglo-Irish",
+  "class": "Nobility",
+  "symptoms": [
+    { "name": "Intermittent fever", "location": "whole body", "quote": "The fever strikes in waves, leaving me shivering one moment and burning up the next." },
+    { "name": "Sweating and fatigue", "location": "whole body", "quote": "This infernal illness drains all the energy from my body. I feel as though I could sleep for days." },
+    { "name": "Headache", "location": "head", "quote": "A relentless pounding behind my eyes. It feels like my skull is being crushed." },
+    { "name": "Nausea", "location": "stomach", "quote": "Food turns my stomach, and the very thought of eating makes me sick." }
+  ],
+  "diagnosis": "Malaria",
+  "contemporaryTheory": "The disease is believed to arise from bad air (malaria) in swampy regions, causing fever, chills, and weakness due to the imbalance of the body's humors.",
+  "socialContext": "Sir Robert Southwell is a high-ranking diplomat sent to New Spain to negotiate crucial trade agreements. His illness is an unfortunate consequence of traveling through swampy regions where bad air lingers. His illness is worsening, and the success of his mission depends on his recovery. His English entourage is concerned about his ability to continue negotiations, and they are desperately seeking a cure to keep him well enough to fulfill his duties.",
+  "urgency": "High",
+  "image": "southwell",
+  "caption": "Sir Robert Southwell, English diplomat ",
+  "description": "Sir Robert Southwell, a seasoned diplomat, has contracted malaria during his travels through New Spain. He is suffering from fever, chills, and exhaustion, which threaten to derail his diplomatic mission.",
+  "astrologicalSign": "Capricorn",
+  "pdf": "southwell.pdf",
+  "citation": "Sir Robert Southwell was a real historical figure, as documented in multiple sources, including John Aubrey's *Brief Lives* and various records of the Royal Society. His mission to New Spain and illness from malaria are fictional adaptations for the game.",
+  "secret": "Despite his illness, Sir Robert is unwilling to show weakness in front of his French counterparts, and he pushes himself to continue the negotiations despite his worsening condition. He also secretly fears that his illness may be viewed as a bad omen for the success of his mission.",
+  "imgdescription": "A highly detailed pixel art portrait of Sir Robert Southwell, a 44-year-old diplomat in New Spain in 1680. His pale skin is flushed with fever, and beads of sweat are visible on his brow. He has dark circles under his eyes, and his normally sharp features are softened by exhaustion. He wears a fine dark coat with gold buttons, but it hangs loosely on his frame, as if the fever is draining the life from him.",
+  "treatment": "Maria may suggest quinine bark (cinchona) to help alleviate the fever and chills associated with malaria. She advises Sir Robert to rest as much as possible, drink infusions of chamomile and mint to calm his stomach, and take small doses of cinchona bark powder mixed with honey to reduce the fever. Cooling compresses soaked in rosewater can be applied to his forehead to relieve the headache.",
+  "ability": "If Maria offers a good prescription or engages him in conversation, he will invite her to return with him to England and speak before the Royal Society of London. If pursued, develop this as an experience for the player and depict 1680 London in detail."
+},
+
+{
+  "type": "patient",
+  "name": "Sor Juana Inés de la Cruz",
+  "age": 28,
+  "gender": "Female",
+  "occupation": "Nun, poet, writer, philosopher",
+  "birthplace": "San Miguel Nepantla, New Spain",
+  "currentResidence": "Convent of San Jerónimo, Mexico City",
+  "casta": "Criolla",
+  "class": "Elite",
+  "symptoms": [
+    { 
+      "name": "Vertigo", 
+      "location": "head", 
+      "quote": "At times, the world spins around me, as though I am on the deck of a ship. I must grasp the table to steady myself." 
+    },
+    { 
+      "name": "Fainting spells", 
+      "location": "whole body", 
+      "quote": "There are moments when my vision darkens, and I feel myself sinking as though into a void, only to awaken on the cold stone floor." 
+    },
+    { 
+      "name": "Palpitations", 
+      "location": "chest", 
+      "quote": "My heart races, sometimes with such force that I fear it might burst, as if something unseen tightens its grip on me." 
+    }
+  ],
+  "diagnosis": "Mild heart arrhythmia, possibly triggered by stress or anxiety, leading to episodes of vertigo and fainting spells. This could also be exacerbated by long periods of study without rest.",
+  "contemporaryTheory": "In the 17th century, heart palpitations and fainting spells were often attributed to an imbalance of the humors, particularly an excess of heat or dryness. Stress and anxiety, especially for someone engaged in constant intellectual work, were believed to contribute to these symptoms.",
+  "socialContext": "Sor Juana’s condition is a source of private concern, especially given her high intellectual and social status. Her reputation as a genius requires her to constantly maintain her mental acuity, and this illness threatens to undermine her ability to perform in the court and convent. She is wary of the illness becoming widely known, as it could be used by her critics to suggest that her intellectual pursuits are detrimental to her health and therefore unnatural for a woman.",
+  "urgency": "High",
+  "image": "sorjuanainesdelacruz",
+  "caption": "Sor Juana Inés de la Cruz, nun and intellectual",
+  "description": "Sor Juana, one of the brightest intellectuals of New Spain, has recently begun experiencing episodes of fainting and vertigo. She tries to hide the extent of her illness, fearing that it might tarnish her public image or give her critics ammunition against her.",
+  "astrologicalSign": "Scorpio",
+  "pdf": "sorjuana.pdf",
+  "citation": "Sor Juana Inés de la Cruz was a real historical figure. Her life and works are well documented, including in Octavio Paz's *Sor Juana: Or, the Traps of Faith* (1988).",
+  "secret": "Sor Juana suspects that her illness may have psychological roots—her anxieties about her writings, her position in the Church, and the constant pressure she faces to prove her intellect weigh heavily on her mind. She is secretly considering leaving the convent altogether.",
+  "imgdescription": "A highly detailed pixel art portrait of Sor Juana Inés de la Cruz, a 28-year-old nun and poet in Mexico City, 1680. She is dressed in the black and white habit of the Hieronymite order, her face pale and strained, though her eyes remain sharp with intellectual fervor. A quill rests in her hand, and open books surround her, though her posture suggests she is battling some unseen discomfort.",
+  "treatment": "Maria might prescribe **hawthorn berries** or **motherwort**, herbs known for their ability to regulate heart rhythms and calm nervous disorders. Additionally, **chamomile** or **lemon balm** could be recommended to ease the anxiety and tension that are likely contributing to her symptoms. Maria may also advise Sor Juana to moderate her study and writing to prevent further strain on her body.",
+  "ability": "If Maria successfully treats Sor Juana’s symptoms and gains her trust, Sor Juana will compose a special poem or letter praising Maria’s skill and insight. This poem, circulated among the intellectual and courtly elites, can enhance Maria’s reputation dramatically within Mexico City. As a result, the player will be offered new quests involving high-ranking patrons or gain access to influential figures in the viceregal court."
+},
+
+
+{
   type: "patient",
   name: "Pancho Rodriguez",
   age: 50,

@@ -35,13 +35,16 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
         { name: 'Confection', image: confectionImage, activeImage: confectionActiveImage, caption: "Confectioning involves mixing powders with honey or syrup to create palatable pastes, pills, or lozenges." }
     ];
 
-    const handleDrop = (item, method) => {
-        setSelectedSimples((prev) => ({
-            ...prev,
-            [method.name]: (prev[method.name] || []).concat(item),
-        }));
-        setIsMixButtonEnabled(true);
-    };
+const handleDrop = (item, method) => {
+    setSelectedSimples((prev) => ({
+        ...prev,
+        [method.name]: (prev[method.name] || []).concat({
+            ...item,
+            emoji: item.emoji // Ensure the emoji is included
+        }),
+    }));
+    setIsMixButtonEnabled(true);
+};
     
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -344,7 +347,11 @@ setIsMixButtonEnabled(false);
 const InventoryItem = ({ simple, onHover, onLeave }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'simple',
-        item: { id: simple.id, name: simple.name }, // Include `id` if it's part of your data structure
+        item: { 
+            id: simple.id, 
+            name: simple.name, 
+            emoji: simple.emoji  // Explicitly include the emoji
+        },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         }),
@@ -358,7 +365,7 @@ const InventoryItem = ({ simple, onHover, onLeave }) => {
             onMouseEnter={() => onHover(simple)}
             onMouseLeave={onLeave}
         >
-            {simple.emoji} {simple.name}
+            <span className="inventory-item-emoji">{simple.emoji}</span> {simple.name}
         </div>
     );
 };
@@ -387,11 +394,11 @@ const MethodSquare = ({ method, onDrop, ingredients }) => {
                 {ingredients.length > 0 && (
                     <div className="ingredient-list">
                         {ingredients.map((ing, index) => (
-                            <span key={index}>{ing.emoji}</span>
+                            <span key={index} className="large-emoji">{ing.emoji}</span>
                         ))}
                     </div>
                 )}
-                
+
                 <div className="method-hover-box">
                     <small><i>{method.caption}</i></small>
                 </div>

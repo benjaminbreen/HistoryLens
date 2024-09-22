@@ -16,6 +16,16 @@ body:not(.dark-mode) .prescribe-popup {
   color: #4a4a4a;
 }
 
+.selected-route {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  margin-top: 20px; /* Adjust spacing as needed */
+  color: #4a4a4a; /* Same dark gray as other text */
+  text-align: center; /* Ensure it is centered under the item name */
+
+}
+
 .route-selection {
   margin-top: 20px;
 }

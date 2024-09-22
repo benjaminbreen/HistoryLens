@@ -316,11 +316,14 @@ const handleSummaryContinue = () => {
           <h2>🧪 Prescribe a Medicine</h2>
           <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
             {selectedItem ? (
-              <div className="selected-item">
-                <span className="emoji">{selectedItem.emoji || '❓'}</span>
-                <span>{selectedItem.name}</span>
-                {selectedRoute && <p><i>({selectedRoute})</i></p>}
-              </div>
+             <div className="selected-item">
+               <span className="emoji">{selectedItem.emoji || '❓'}</span>
+               <span>{selectedItem.name}</span>
+               {selectedRoute && (
+                 <p className="selected-route"><i>{selectedRoute}</i></p>
+               )}
+             </div>
+
             ) : (
               <p>Drag an item here from the inventory to prescribe. And don't forget to set a price and select a route of administration!</p>
             )}

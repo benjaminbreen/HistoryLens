@@ -7,13 +7,21 @@ const imageMap = {
     src: require('./assets/apothecary.jpeg'),
     tags: ['shop', 'apothecary', 'interior']
   },
+  southwell: {
+    src: require('./assets/southwell.jpg'),
+    tags: ['patient', 'Sir Robert Southwell', 'man', 'English', 'foreign', 'diplomat']
+  },
+   sorjuanainesdelacruz: {
+    src: require('./assets/sorjuanainesdelacruz.jpg'),
+    tags: ['patient', 'nun', 'woman', 'scholar', 'genius', 'writer']
+  },
   franciscodiasdearaujo: {
     src: require('./assets/franciscodiasdearaujo.jpg'),
-    tags: ['patient', 'Francisco Dias de Araujo', 'man']
+    tags: ['patient', 'Francisco Dias de Araujo', 'man', 'merchant']
   },
   carlosenriquez: {
     src: require('./assets/carlosenriquez.jpg'),
-    tags: ['patient', 'Carlos Enriquez', 'man']
+    tags: ['patient', 'Carlos Enriquez', 'man', 'attorney']
   },
   countryside: {
     src: require('./assets/countryside.jpeg'),
