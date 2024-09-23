@@ -93,24 +93,43 @@ Maria's Inquisition file is available here: [Processo de Maria Coelho, Tribunal 
 ## Further Reading
 
 #### Primary Sources
-- João Curvo Semedo, *Observaçoens medicas doutrinaes de cem casos gravissimos* [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707). [Link to text](https://archive.org/details/bub_gb_qCVH54Hs2i0C)
-- Juan de Esteyneffer, *Florilegia Medicinal* (Mexico, 1712). [Link to text](https://archive.org/details/b20389097)
-- Juan Santos, *Lauros panegiricos, aclamaciones reales, y festiuos aplausos* (1693). [Link to text](https://www.google.com/books/edition/Lauros_panegiricos_aclamaciones_reales_y/g5Ym-Af2uK0C?hl=en&gbpv=1)
-- Antonio de Solis, *Historia de la conquista de Mexico* (Madrid, 1684). [Link to text](https://www.google.com/books/edition/Historia_de_la_conquista_de_Mexico_pobla/kTKqrymXooIC?hl=en&gbpv=1&dq=Historia+de+la+conquista+de+Mexico+1684&printsec=frontcover)
-- Francisco Sanz de Dios y Guadalupe, *Medicina practica de Guadalupe* (1734). [Link to text](https://www.google.com/books/edition/Medicina_practica_de_Guadalupe/nLkNFq4qFaQC?gbpv=1)
+- • João Curvo Semedo, *Observaçoens medicas doutrinaes de cem casos gravissimos* [Medical Observations of One Hundred Very Grave Cases] (Lisbon, 1707). [Link to text](https://archive.org/details/bub_gb_qCVH54Hs2i0C)
+- • Juan de Esteyneffer, *Florilegia Medicinal* (Mexico, 1712). [Link to text](https://archive.org/details/b20389097)
+- • Juan Santos, *Lauros panegiricos, aclamaciones reales, y festiuos aplausos* (1693). [Link to text](https://www.google.com/books/edition/Lauros_panegiricos_aclamaciones_reales_y/g5Ym-Af2uK0C?hl=en&gbpv=1)
+- • Antonio de Solis, *Historia de la conquista de Mexico* (Madrid, 1684). [Link to text](https://www.google.com/books/edition/Historia_de_la_conquista_de_Mexico_pobla/kTKqrymXooIC?hl=en&gbpv=1&dq=Historia+de+la+conquista+de+Mexico+1684&printsec=frontcover)
+- • Francisco Sanz de Dios y Guadalupe, *Medicina practica de Guadalupe* (1734). [Link to text](https://www.google.com/books/edition/Medicina_practica_de_Guadalupe/nLkNFq4qFaQC?gbpv=1)
 
 #### Secondary Sources
-- Antonio Barrera-Osorio, *Experiencing Nature: The Spanish American Empire and the Early Scientific Revolution* (2006). [Link to text](https://www.google.com/books/edition/Experiencing_Nature/n2OMCgAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
-- Ralph Bauer, *The Alchemy of Conquest: Science, Religion, and the Secrets of the New World* (2019). [Link to text](https://www.google.com/books/edition/The_Alchemy_of_Conquest/GeKNDwAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
-- Daniela Bleichmar, *Visible Empire: Botanical Expeditions and Visual Culture in the Hispanic Enlightenment* (2012). [Link to text](https://www.google.com/books/edition/Visible_Empire/RmCFDtp11lAC?hl=en&gbpv=1&printsec=frontcover)
-- Harold J. Cook, *Matters of Exchange: Commerce, Medicine, and Science in the Dutch Golden Age* (2007). [Link to text](https://www.google.com/books/edition/Matters_of_Exchange/aNBWudWBOsQC?hl=en&gbpv=1&printsec=frontcover)
-- Paula De Vos, *Compound Remedies: Galenic Pharmacy in Colonial Mexico* (2010). [Link to text](https://www.google.com/books/edition/Compound_Remedies/jv0LEAAAQBAJ?gbpv=1)
-- Paula De Vos, "From Herbs to Alchemy: The Introduction of Chemical Medicine to Mexican Pharmacies in the Seventeenth and Eighteenth Centuries," *Journal of Spanish Cultural Studies* 8:2 (2007), 135-168. DOI: [10.1080/14636200701430984](https://doi.org/10.1080/14636200701430984)
-- Pablo F. Gómez, *The Experiential Caribbean: Creating Knowledge and Healing in the Early Modern Atlantic* (2017). [Link to text](https://www.google.com/books/edition/The_Experiential_Caribbean/AfMxDgAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
-- Matthew James Crawford, *The Andean Wonder Drug: Cinchona Bark and Imperial Science in the Spanish Atlantic* (2016). [Link to text](https://www.google.com/books/edition/The_Andean_Wonder_Drug/HkwUDQAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
-- Juan Pimentel, *The Rhinoceros and the Megatherium: An Essay in Natural History* (2017). [Link to text](https://www.google.com/books/edition/The_Rhinoceros_and_the_Megatherium/6uAZDgAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
-- Adriana Rodríguez Delgado, "El goce del cuerpo. La impecabilidad entre los alumbrados de la Nueva España." In *Presencias y miradas del cuerpo en la Nueva España,* edited by Estela Roselló Soberón, 79-108. México: Universidad Nacional Autónoma de México Instituto de Investigaciones Históricas, 2011. [Link to text](http://www.historicas.unam.mx/publicaciones/publicadigital/libros/555/mira_das_cuerpo.html).    
- 
+- • Barrera-Osorio, Antonio, *Experiencing Nature: The Spanish American Empire and the Early Scientific Revolution* (Johns Hopkins University Press, 2006). [Link to text](https://www.google.com/books/edition/Experiencing_Nature/n2OMCgAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
+- • Bauer, Ralph, *The Alchemy of Conquest: Science, Religion, and the Secrets of the New World* (University of Virginia Press, 2019). [Link to text](https://www.google.com/books/edition/The_Alchemy_of_Conquest/GeKNDwAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
+- • Bleichmar, Daniela, *Visible Empire: Botanical Expeditions and Visual Culture in the Hispanic Enlightenment* (University of Chicago Press, 2012). [Link to text](https://www.google.com/books/edition/Visible_Empire/RmCFDtp11lAC?hl=en&gbpv=1&printsec=frontcover)
+- • Breen, Benjamin, *The Age of Intoxication: Origins of the Global Drug Trade* (University of Pennsylvania Press, 2019)
+- • Cagle, Hugh, *Assembling the Tropics: Science and Medicine in Portugal's Empire, 1450–1700* (Cambridge University Press, 2018)
+- • Cook, Harold J., *Matters of Exchange: Commerce, Medicine, and Science in the Dutch Golden Age* (Yale University Press, 2007). [Link to text](https://www.google.com/books/edition/Matters_of_Exchange/aNBWudWBOsQC?hl=en&gbpv=1&printsec=frontcover)
+- • Cooley, Mackenzie, *The Perfection of Nature: Animals, Breeding, and Race in the Renaissance* (University of Chicago Press, 2022)
+- • Crawford, Matthew James, *The Andean Wonder Drug: Cinchona Bark and Imperial Science in the Spanish Atlantic* (University of Pittsburgh Press, 2016). [Link to text](https://www.google.com/books/edition/The_Andean_Wonder_Drug/HkwUDQAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
+- • De Vos, Paula, *Compound Remedies: Galenic Pharmacy in Colonial Mexico* (University of Pittsburgh Press, 2010). [Link to text](https://www.google.com/books/edition/Compound_Remedies/jv0LEAAAQBAJ?gbpv=1)
+- • De Vos, Paula, "From Herbs to Alchemy: The Introduction of Chemical Medicine to Mexican Pharmacies in the Seventeenth and Eighteenth Centuries," *Journal of Spanish Cultural Studies* 8:2 (2007), 135-168. DOI: [10.1080/14636200701430984](https://doi.org/10.1080/14636200701430984)
+- • Earle, Rebecca, *The Body of the Conquistador: Food, Race, and the Colonial Experience in Spanish America, 1492-1700* (Cambridge University Press, 2012)
+- • Ferreira Furtado, Júnia, *Tropical Empiricism: Making Medical Knowledge in Colonial Brazil* (Cambridge University Press, 2016)
+- • Gómez, Pablo F., *The Experiential Caribbean: Creating Knowledge and Healing in the Early Modern Atlantic* (University of North Carolina Press, 2017). [Link to text](https://www.google.com/books/edition/The_Experiential_Caribbean/AfMxDgAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
+- • Leong, Elaine, *Recipes and everyday knowledge: Medicine, science, and the household in early modern England.* (University of Chicago Press, 2019)
+- • Leong, Elaine and Alisha Rankin, eds. *Secrets and knowledge in medicine and science, 1500–1800.* (Routledge, 2016)
+- • Mundy, Barbara, *The Death of Aztec Tenochtitlan, the Life of Mexico City* (University of Texas Press, 2015)
+- • Norton, Marcy, *Sacred Gifts, Profane Pleasures: A History of Tobacco and Chocolate in the Atlantic World* (Cornell University Press, 2008)
+- • Pardo-Tomás, José, *Ciencia y censura: la Inquisición española y los libros científicos en los siglos XVI y XVII* (CSIC, 1991)
+- • Pardo-Tomás, José, *El tesoro natural de América: Oviedo, Monardes, Hernández: colonialismo y ciencia en el siglo XVI* (Nivola, 2002)
+- • Pimentel, Juan, *The Rhinoceros and the Megatherium: An Essay in Natural History* (Harvard University Press, 2017). [Link to text](https://www.google.com/books/edition/The_Rhinoceros_and_the_Megatherium/6uAZDgAAQBAJ?hl=en&gbpv=1&printsec=frontcover)
+- • Portuondo, María M., *Secret Science: Spanish Cosmography and the New World* (University of Chicago Press, 2009)
+- • Rankin, Alisha, *The Poison Trials: Wonder Drugs, Experiment, and the Battle for Authority in Renaissance Science* (University of Chicago Press, 2021)
+- • Rodríguez Delgado, Adriana, "El goce del cuerpo. La impecabilidad entre los alumbrados de la Nueva España." In *Presencias y miradas del cuerpo en la Nueva España,* edited by Estela Roselló Soberón, 79-108. México: Universidad Nacional Autónoma de México Instituto de Investigaciones Históricas, 2011. [Link to text](http://www.historicas.unam.mx/publicaciones/publicadigital/libros/555/mira_das_cuerpo.html).    
+- • Safier, Neil, *Measuring the New World: Enlightenment Science and South America* (University of Chicago Press, 2008)
+- • Schiebinger, Londa, *Plants and Empire: Colonial Bioprospecting in the Atlantic World* (Harvard University Press, 2004)
+- • Slater, John, Maríaluz López-Terrada, and José Pardo-Tomás, eds. *Medical Cultures of the Early Modern Spanish Empire.* (Routledge, 2014)
+- • Smith, Pamela, *From Lived Experience to the Written Word: Reconstructing Practical Knowledge in the Early Modern World* (University of Chicago Press, 2022)
+- • Smith, Pamela, *The business of alchemy: Science and culture in the Holy Roman Empire* (Princeton University Press, 2016)
+- • Twinam, Ann, Purchasing Whiteness: Pardos, Mulattos, and the Quest for Social Mobility in the Spanish Indies (Stanford University Press, 2015)
+- • Wear, Andrew, *Knowledge and Practice in English Medicine, 1550-1680* (Cambridge University Press, 2000)
 `;
 
   return (

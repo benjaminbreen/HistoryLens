@@ -159,7 +159,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
       </div>
 
       {showNpcPopup && (
-        <div className="portrait-popup">
+        <div className="npc-portrait-popup">
           {isEmoji ? (
             <div 
               className="emoji-image popup-portrait-image"
@@ -175,7 +175,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
       )}
 
       {showPcPopup && (
-        <div className="portrait-popup">
+        <div className="pc-portrait-popup">
           <img src={mariaPortrait} alt="Maria" className="popup-portrait-image" />
           <p><strong>Maria de Lima</strong></p>
           <div className="popup-info">{pcInfoContent}</div>

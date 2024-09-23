@@ -1,5 +1,99 @@
 
-/* Portrait Section styling */
+/* Portrait Popup Styles */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001; /* Make sure it's below the prescribe-popup z-index */
+}
+
+
+
+
+
+.popup-portrait-image {
+  max-width: 100%;
+  max-height: 60vh; /* Ensure image doesn't exceed viewport height */
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.8); /* White glow effect */
+ box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8);
+}
+
+.popup-info {
+  color: black;
+  margin-top: 10px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.portrait-popup
+{
+
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8); /* Shadow for popup effect */
+    text-align: center;
+    max-width: 700px; /* Increased max-width for wider popup */
+    width: 100%;
+    color: #333;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    max-height: 95vh; /* Limit height to 80% of viewport */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    z-index: 1001; /* Ensure it's above other content */
+}
+
+
+/* Optional: Add padding inside the popup for better readability */
+.portrait-popup-content {
+    padding: 20px;
+}
+
+/* To improve the appearance of the scrollbar (optional) */
+.portrait-popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.portrait-popup::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.portrait-popup::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-portrait-image {
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 20px auto;
+}
+
+.portrait-popup-info {
+    font-size: 1rem;
+    color: #2d3748;
+    text-align: left;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+
+
+
 .portrait-section {
   display: flex;
   justify-content: space-between;
@@ -17,6 +111,24 @@
   cursor: pointer;
   margin: 0 7px;
 
+}
+
+.portrait-popup {
+
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8); /* Shadow for popup effect */
+    text-align: center;
+    max-width: 600px; /* Increased max-width for wider popup */
+    width: 100%;
+    color: #333;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    max-height: 95vh; /* Limit height to 80% of viewport */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    z-index: 1001; /* Ensure it's above other content */
 }
 
 .npc-portrait-container {
@@ -103,6 +215,197 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
+.npc-portrait-popup {
+  background: floralwhite; /* Soft light background for readability */
+  padding: 30px;
+  border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.85); /* Shadow for popup effect */
+  text-align: left;
+  max-width: 850px; /* A bit wider for larger popups */
+  width: 100%;
+  color: #333;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 85vh; /* Ensure it doesn't go offscreen */
+  overflow-y: auto; /* Allow scrolling if the content is large */
+  z-index: 1001; /* Make sure it's above other content */
+
+  font-size: 1.8rem; /* Bigger, more readable font */
+  line-height: 1.6; /* Space between lines for readability */
+  font-style: italic;
+        text-align: center;
+          font-family: 'IM Fell English', serif;
+}
+
+.popup-info strong {
+  font-size: 1.3rem; /* Increase this value to make the text larger */
+      text-align: center;
+  line-height: 1.4; /* Increase line-height for better readability with larger text */
+  margin-bottom: 4px; /* Adjust spacing between paragraphs */
+    font-style: strong;
+}
+
+.popup-info p {
+  font-size: 1.3rem; /* Increase this value to make the text larger */
+  line-height: 1.4; /* Increase line-height for better readability with larger text */
+  margin-bottom: 4px; /* Adjust spacing between paragraphs */
+    font-style: normal;
+
+}
+
+.popup-info li {
+  font-size: 1.2rem; /* Larger list item text */
+  line-height: 1.4; /* Adjust line height to match paragraph */
+ 
+  list-style-type: disc; /* Optional: change the list style */
+}
+
+
+  .pc-portrait-popup {
+    background: floralwhite;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8); /* Shadow for popup effect */
+    text-align: center;
+    max-width: 650px; /* Increased max-width for wider popup */
+    width: 100%;
+    color: #333;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    max-height: 80vh; /* Limit height to 80% of viewport */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    z-index: 1001; /* Ensure it's above other content */
+    
+}
+
+/* Dark Mode for Portrait Section and Popups */
+body.dark-mode {
+  background-color: #1a202c; /* Dark background */
+  color: #e2e8f0; /* Light text color */
+}
+
+body.dark-mode .popup-overlay {
+  background-color: rgba(0, 0, 0, 0.85); /* Darker overlay background */
+}
+
+/* Portrait Popup Styles */
+body.dark-mode .portrait-popup {
+  background-color: #2d3748; /* Dark background for the popup */
+  color: #e2e8f0; /* Light text color */
+  border: 1px solid #4a5568; /* Subtle border for dark mode */
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.9); /* Darker shadow effect */
+}
+
+body.dark-mode .popup-portrait-image {
+  box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.1); /* Subtle white glow */
+  border: 1px solid #4a5568; /* Subtle border for image */
+}
+
+body.dark-mode .popup-info {
+  color: #cbd5e0; /* Light gray for popup text */
+}
+
+body.dark-mode .popup-info strong {
+  color: #edf2f7; /* Slightly brighter for strong text */
+}
+
+body.dark-mode .portrait-medieval-header {
+  color: #e2e8f0; /* Light color for the medieval header */
+  border-bottom: 2px solid #718096; /* Lighter border in dark mode */
+}
+
+body.dark-mode .npc-portrait-image,
+body.dark-mode .pc-portrait-image {
+  border: 3px solid #4a5568; /* Darker border for portrait images */
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4); /* Stronger shadow effect */
+}
+
+body.dark-mode .npc-portrait-image:hover,
+body.dark-mode .pc-portrait-image:hover {
+  transform: scale(1.05); /* Slightly larger scaling on hover */
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+body.dark-mode .portrait-caption {
+  color: #a0aec0; /* Lighter text for caption */
+}
+
+body.dark-mode .npc-portrait-popup,
+body.dark-mode .pc-portrait-popup {
+  background-color: #2d3748; /* Dark background for NPC and PC popups */
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.85); /* Stronger shadow effect */
+  color: #e2e8f0; /* Light text color */
+}
+
+body.dark-mode .portrait-popup-content {
+  background-color: #2d3748; /* Darker background for popup content */
+  padding: 20px;
+}
+
+body.dark-mode .emoji-image {
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2); /* White glow effect for emojis */
+}
+
+body.dark-mode .npc-portrait-wrapper .emoji-image {
+  background-color: #4a5568; /* Darker background for emoji container */
+}
+
+body.dark-mode .popup-info p {
+  color: #e2e8f0; /* Light text for popup paragraphs */
+}
+
+/* Scrollbar styling for dark mode */
+body.dark-mode .portrait-popup::-webkit-scrollbar {
+  background-color: #4a5568; /* Dark background for scrollbar */
+}
+
+body.dark-mode .portrait-popup::-webkit-scrollbar-thumb {
+  background-color: #718096; /* Lighter scrollbar thumb */
+}
+
+body.dark-mode .portrait-popup::-webkit-scrollbar-thumb:hover {
+  background-color: #a0aec0; /* Slightly lighter on hover */
+}
+
+body.dark-mode .popup-portrait-image {
+  max-width: 100%;
+  max-height: 60vh; /* Ensure image doesn't exceed viewport height */
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.1); /* Subtle white glow effect */
+  border: 1px solid #4a5568; /* Border for dark mode */
+}
+
+@media (max-width: 768px) {
+  body.dark-mode .npc-portrait-image,
+  body.dark-mode .pc-portrait-image {
+    width: 170px; /* Adjust portrait size for mobile */
+    height: 80px;
+    margin: 5px;
+    border: 2px solid #4a5568; /* Subtle border for mobile */
+  }
+
+  body.dark-mode .npc-portrait-popup,
+  body.dark-mode .pc-portrait-popup {
+    background: #2d3748;
+    color: #e2e8f0; /* Ensure popup text is light in dark mode */
+    max-width: 650px;
+    padding: 20px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.85);
+  }
+
+  body.dark-mode .emoji-image {
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2);
+    border: 2px solid #4a5568;
+  }
+}
+
+
 @media (max-width: 768px) {
 
     .npc-portrait-image,
@@ -112,6 +415,25 @@
     margin: 5px;
 
   } 
+
+  .pc-portrait-popup {
+    background: floralwhite;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8); /* Shadow for popup effect */
+    text-align: center;
+    max-width: 600px; /* Increased max-width for wider popup */
+    width: 100%;
+    color: #333;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    max-height: 80vh; /* Limit height to 80% of viewport */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    z-index: 1001; /* Ensure it's above other content */
+
+}
 
 .npc-portrait-wrapper .emoji-image {
   font-size: 14vw;  /* Make the emoji larger to overflow the box */
@@ -126,6 +448,27 @@
 
 
 }
+
+  .npc-portrait-popup {
+    background: floralwhite;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8); /* Shadow for popup effect */
+    text-align: center;
+    max-width: 650px; /* Increased max-width for wider popup */
+    width: 100%;
+    color: #333;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    max-height: 85vh; /* Limit height to 80% of viewport */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    z-index: 1001; /* Ensure it's above other content */
+    
+}
+
+
 .emoji-image {
   font-size: 8vw;  /* Make the emoji larger to overflow the box */
   display: flex;
@@ -144,4 +487,5 @@
 
 }
 }
+
 

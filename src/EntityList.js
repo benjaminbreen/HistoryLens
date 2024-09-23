@@ -2,7 +2,7 @@ const EntityList = [
 // Patients
 
 {
-  "type": "npc",
+  "type": "patient",
   "name": "Sir Robert Southwell",
   "age": 44,
   "gender": "Male",
@@ -344,7 +344,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   },
   {
     type: "patient",
-    name: "Ana María de Soto",
+    name: "Ana de Soto",
     age: 22,
     gender: "Female",
     occupation: "Weaver",
@@ -362,9 +362,9 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
     contemporaryTheory: "Imbalance of humors in the lungs, possibly aggravated by poor diet",
     socialContext: "Her illness has caused fear among her coworkers, leading to social isolation and financial hardship due to her inability to work",
     urgency: "Medium",
-    image: "anamariadesoto",
-    caption: "Ana María de Soto, a young weaver",
-    description: "Ana María de Soto, weakened by tuberculosis, struggles to breathe and finds herself increasingly isolated and fearful of her future.",
+    image: "anadesoto",
+    caption: "Ana de Soto, a young weaver",
+    description: "Ana de Soto, weakened by tuberculosis, struggles to breathe and finds herself increasingly isolated and fearful of her future.",
     astrologicalSign: "Pisces",
         pdf: "anamariadesoto.pdf",
     secret: "Ana María fears that her illness is a punishment for a past sin, and she is desperate for a cure that will not draw attention to her plight.",

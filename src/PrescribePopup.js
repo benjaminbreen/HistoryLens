@@ -130,7 +130,7 @@ function PrescribePopup({
     The transaction occurred at ${time} on ${date}, in ${location}. (This is context and should not be restated to the player.)
     Maria's current wealth is ${currentWealth} silver coins.
 
-    Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. 
+    Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. Be unsparing, detailed, and blunt in your descriptions of effects, which can at times be harrowing. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. This is an educational game about history of medicine so pull no punches.
 
     Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
@@ -152,8 +152,8 @@ function PrescribePopup({
     - Do not restate the markdown tags or explain the headline in your output—just present the headline with the appropriate markdown tag.
 
     ### Patient Reactions:
-    After the headline, describe the patient's experience in 3 highly detailed paragraphs which emphasize vivid, historically authentic characterization and finely observed details:
-    - Focus on the **sensory characteristics** of the medicine (e.g., taste, smell, texture).
+    After the headline, describe the patient's experience over a period of three hours in 3 highly detailed paragraphs which emphasize vivid, historically authentic characterization and finely observed details:
+    - Focus on the **sensory characteristics** of the medicine (e.g., taste, smell, texture). Always mention the route of administration and give specifics about how it was applied.
     - Show how the patient reacts to the prescribed dose, including the price. This might range from a miraculous cure to mild discomfort to violent reactions like vomiting or even death.
     - Describe the **perceived effects** of the medicine on the patient's health.
     - If the dose is toxic or fatal, be explicit about the timeline of how the patient worsens or dies.
@@ -164,9 +164,14 @@ function PrescribePopup({
     - Angry reactions are common if the medicine is ineffective or causes discomfort, so show the patient's response accordingly.
     - Consider the patient's presumed weight and health AND the route of administration in assessing whether a dose is fatal or highly toxic. For instance, even a single drachm of inhaled quicksilver (mercury) is instantly fatal, as is quicksilver as an enema. However, topical quicksilver is fine. Many drugs are more potent in enema or inhaled form; even one drachm of opium might be fatal in a weak or small patient, especially if inhaled. Likewise with many alchemical compounds. Topical doses are usually fine. 
     - If a patient dies, Maria has to figure out what to do with the body, sending her storyline into a much darker direction. 
-    At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time in **this exact format** using markdown *italic* tags:
 
-    *Now Maria has ${currentWealth + price} silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
+    Following the description, in italic markdown tags *like this*, give a short pithy historically authentic quote or proverb from the 17th century which relates to the prescription, if its a non-English original give the original language then translation in brackets. For instance: "The soul and body are like a house divided against itself." — Thomas Browne, "Religio Medici" (1643); "Mentre c'è vita, c'è speranza" -Italian proverb [Where there is life, there is hope]; "Omnia venena sunt, nec sine veneno quicquam existit" - Quintilian; "Hambre y frío curan cada desvarío."
+Translation: Hunger and cold cure every madness.
+Translation: All things are poison, and nothing is without poison.
+Translation: While there is life, there is hope.
+    At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least three hours and possibly more have passed) in **this exact format** using markdown *italic* tags:
+
+    **Now Maria has ${currentWealth + price} silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
     **Reputation Emoji Guide:**
     - 😡 (1) : Extremely bad (e.g., patient dies)
@@ -230,7 +235,7 @@ setPrescriptionPrompt(prescriptionPrompt);
 
     // Now make a second API call to generate a summary with distinctive flavor
     const summaryPrompt = `
-      Please summarize the following text with an overall summary of "Result: [emoji] [single word summing it up." Then add one sentence with a succinct, basic summary of what happened, but with vivid details for instance it should say exactly what the complications or impact was. Then a final short pithy sentence with a sardonic, biting wit and wisdom characteristic of Samuel Johnson or Mark Twain - but not too over the top. It should be 
+      Please summarize the following text with an overall summary of "Result: [emoji] [single word summing it up." Then add one sentence with a succinct, basic summary of what happened, but with vivid details for instance it should say exactly what the complications or impact was. 
       Emoji guidance: use one of the following emojis as appropriate to represent the result (💀 for death, 🩸 for injury, ✨ for miraculous cure, 😡 for a patient walking out due to price, 🤢 for marked nauseau or disgust or minor toxicity, 😐 if ineffective, 💸 for an extremely valuable prescription, 🚪 for when a patient leaves unhappy.). The summary should reflect the patient's response:
       ${simulatedOutput}
     `;
@@ -311,7 +316,7 @@ const handleSummaryContinue = () => {
  return (
   <>
     {isOpen && !isSummaryOpen && (
-      <div className="prescribe-popup">
+       <div className={`prescribe-popup ${isLoading ? 'loading' : ''}`}>
         <div className="prescribe-content">
           <h2>🧪 Prescribe a Medicine</h2>
           <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>

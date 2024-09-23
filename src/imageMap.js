@@ -1,11 +1,576 @@
 const imageMap = {
+
+  cabin: {
+  src: require('./assets/cabin.jpg'),
+  tags: ['trading post', 'cabin', 'daytime', 'refuge', 'scrublands', 'indigenous', 'americas']
+},
+
+  nightsky: {
+  src: require('./assets/nightsky.jpg'),
+  tags: ['night', 'stars', 'nighttime', 'cosmic', 'evening stars']
+},
+
+  conquistador: {
+  src: require('./assets/conquistador.jpg'),
+  tags: ['man standing', 'wearing armor', 'dusk', 'frontier', 'conquistador', 'soldier', 'new spain']
+},
+
+  pueblosettlement: {
+  src: require('./assets/pueblosettlement.jpg'),
+  tags: ['humble abode', 'pueblo', 'frontier region', 'scrubland house', 'small house', 'hut', 'americas']
+},
+
+ ruralhousemexicotexas: {
+  src: require('./assets/ruralhousemexicotexas.jpg'),
+  tags: ['humble abode', 'texas', 'frontier region', 'mexico', 'small house', 'americas']
+},
+
+ oceanday: {
+  src: require('./assets/oceanday.jpg'),
+  tags: ['sea', 'beautiful water', 'at sea', 'horizon', 'blue', 'open ocean', 'day', 'sun on the waves']
+},
+
+    opensea: {
+  src: require('./assets/opensea.jpg'),
+  tags: ['sea', 'misty ocean', 'open ocean', 'horizon', 'blue', 'ethereal', 'foggy']
+},
+
+  vapororswirlingclouds: {
+  src: require('./assets/vapororswirlingclouds.jpg'),
+  tags: ['vapor', 'mist', 'air', 'fog', 'nature', 'ethereal', 'soft']
+},
+mud: {
+  src: require('./assets/mud.jpg'),
+  tags: ['mud', 'earth', 'ground', 'puddles', 'wet', 'nature', 'soil']
+},
+wetmuddystones: {
+  src: require('./assets/wetmuddystones.jpg'),
+  tags: ['rocks', 'stone', 'rough', 'terrain', 'nature', 'ground', 'landscape']
+},
+rain: {
+  src: require('./assets/rain.jpg'),
+  tags: ['rain', 'weather', 'droplets', 'storm', 'nature', 'water', 'clouds']
+},
+
+sunsetfarm: {
+  src: require('./assets/sunsetfarm.jpg'),
+  tags: ['sunset', 'farm', 'countryside', 'colonial', 'rural life', 'evening', 'peaceful']
+},
+horsedrinkingfarm: {
+  src: require('./assets/horsedrinkingfarm.jpg'),
+  tags: ['horse', 'farm', 'drinking', 'water', 'countryside', 'colonial', 'rural life']
+},
+catday: {
+  src: require('./assets/catday.jpg'),
+  tags: ['cat', 'daytime', 'farm', 'colonial', 'pet', 'domestic animal', 'quiet']
+},
+sheepfarmnight: {
+  src: require('./assets/sheepfarmnight.jpg'),
+  tags: ['sheep', 'farm', 'night', 'colonial', 'animals', 'pasture', 'rural life']
+},
+parchment: {
+  src: require('./assets/parchment.jpg'),
+  tags: ['parchment', 'writing', 'document', 'colonial', 'paper', 'manuscript', 'historical']
+},
+claypot: {
+  src: require('./assets/claypot.jpg'),
+  tags: ['clay pot', 'pottery', 'colonial', 'vessel', 'handcrafted', 'kitchenware', 'utility']
+},
+lamp: {
+  src: require('./assets/lamp.jpg'),
+  tags: ['lamp', 'lighting', 'colonial', 'night', 'warm glow', 'interior', 'illumination']
+},
+manwritingwithlantern: {
+  src: require('./assets/manwritingwithlantern.jpg'),
+  tags: ['man', 'writing', 'lantern', 'colonial', 'night', 'quiet', 'thoughtful']
+},
+manattablecandle: {
+  src: require('./assets/manattablecandle.jpg'),
+  tags: ['man', 'table', 'candle', 'colonial', 'interior', 'quiet', 'contemplation']
+},
+merchantwritingbill: {
+  src: require('./assets/merchantwritingbill.jpg'),
+  tags: ['merchant', 'writing', 'bill', 'document', 'colonial', 'commerce', 'trade']
+},
+packhorse: {
+  src: require('./assets/packhorse.jpg'),
+  tags: ['horse', 'packhorse', 'travel', 'colonial', 'exploration', 'rural', 'transport']
+},
+saharadesert: {
+  src: require('./assets/saharadesert.jpg'),
+  tags: ['desert', 'Sahara', 'daytime', 'desolate', 'dunes', 'sand', 'exploration']
+},
+scrubchapparaldesertday: {
+  src: require('./assets/scrubchapparaldesertday.jpg'),
+  tags: ['desert', 'scrub', 'chaparral', 'daytime', 'harsh landscape', 'plants', 'exploration']
+},
+desertnight: {
+  src: require('./assets/desertnight.jpg'),
+  tags: ['desert', 'night', 'moonlit', 'sand', 'quiet', 'solitude', 'exploration']
+},
+
+sonoradesertday: {
+  src: require('./assets/sonoradesertday.jpg'),
+  tags: ['desert', 'Sonora', 'daytime', 'harsh sun', 'cacti', 'exploration', 'dry', 'prickly pear', 'agave']
+},
+cobblestonesinrain: {
+  src: require('./assets/cobblestonesinrain.jpg'),
+  tags: ['cobblestones', 'rain', 'wet street', 'urban', 'colonial', 'quiet', 'melancholy']
+},
+sinisteralleywaynight: {
+  src: require('./assets/sinisteralleywaynight.jpg'),
+  tags: ['alleyway', 'night', 'dark', 'sinister', 'urban', 'mystery', 'danger']
+},
+stablenight: {
+  src: require('./assets/stablenight.jpg'),
+  tags: ['stable', 'night', 'horses', 'colonial', 'quiet', 'working animals', 'rest']
+},
+brickpaving: {
+  src: require('./assets/brickpaving.jpg'),
+  tags: ['brick', 'paving', 'road', 'urban', 'colonial', 'building materials', 'infrastructure']
+},
+twilightorsunriseovervalley: {
+  src: require('./assets/twilightorsunriseovervalley.jpg'),
+  tags: ['valley', 'twilight', 'sunrise', 'nature', 'landscape', 'peaceful', 'countryside']
+},
+crackeddryearth: {
+  src: require('./assets/crackeddryearth.jpg'),
+  tags: ['earth', 'cracked', 'dry', 'desert', 'nature', 'drought', 'harsh conditions']
+},
+seedlingsgrowingsoilcloseup: {
+  src: require('./assets/seedlingsgrowingsoilcloseup.jpg'),
+  tags: ['seedlings', 'growing', 'soil', 'closeup', 'nature', 'life', 'growth']
+},
+sunsetcountryside: {
+  src: require('./assets/sunsetcountryside.jpg'),
+  tags: ['sunset', 'countryside', 'nature', 'colonial', 'peaceful', 'farm life', 'evening']
+},
+beautifulmeadowtwilight: {
+  src: require('./assets/beautifulmeadowtwilight.jpg'),
+  tags: ['meadow', 'twilight', 'nature', 'flowers', 'peaceful', 'quiet', 'countryside']
+},
+honeybeeinmeadow: {
+  src: require('./assets/honeybeeinmeadow.jpg'),
+  tags: ['honeybee', 'meadow', 'flowers', 'nature', 'pollination', 'quiet', 'wildlife']
+},
+foraginglavenderorherbs: {
+  src: require('./assets/foraginglavenderorherbs.jpg'),
+  tags: ['foraging', 'herbs', 'lavender', 'wildcrafting', 'nature', 'colonial', 'botany']
+},
+insectsforesttwilight: {
+  src: require('./assets/insectsforesttwilight.jpg'),
+  tags: ['insects', 'forest', 'twilight', 'nature', 'wildlife', 'peaceful', 'evening']
+},
+chamomileforaging: {
+  src: require('./assets/chamomileforaging.jpg'),
+  tags: ['chamomile', 'foraging', 'wildcrafting', 'herbs', 'nature', 'colonial', 'botany']
+},
+owl: {
+  src: require('./assets/owl.jpg'),
+  tags: ['owl', 'wildlife', 'bird', 'nature', 'forest', 'quiet', 'night']
+},
+beautifulstreamday: {
+  src: require('./assets/beautifulstreamday.jpg'),
+  tags: ['stream', 'daytime', 'water', 'nature', 'colonial', 'peaceful', 'countryside']
+},
+artist: {
+  src: require('./assets/artist.jpg'),
+  tags: ['artist', 'painting', 'creativity', 'colonial', 'studio', 'intellectual', 'culture']
+},
+debateinteriornight: {
+  src: require('./assets/debateinteriornight.jpg'),
+  tags: ['debate', 'interior', 'night', 'intellectual', 'discussion', 'colonial', 'scholars']
+},
+italycity: {
+  src: require('./assets/italycity.jpg'),
+  tags: ['Italy', 'city', 'urban', 'colonial', 'architecture', 'culture', 'historical']
+},
+musicians: {
+  src: require('./assets/musicians.jpg'),
+  tags: ['musicians', 'performance', 'colonial', 'culture', 'entertainment', 'gathering', 'music']
+},
+tabletwoemptychairscandle: {
+  src: require('./assets/tabletwoemptychairscandle.jpg'),
+  tags: ['table', 'candle', 'empty chairs', 'colonial', 'quiet', 'introspection', 'evening']
+},
+snowystreet: {
+  src: require('./assets/snowystreet.jpg'),
+  tags: ['street', 'snow', 'colonial', 'winter', 'quiet', 'urban life', 'evening']
+},
+dutchpainting: {
+  src: require('./assets/dutchpainting.jpg'),
+  tags: ['Dutch', 'painting', 'colonial', 'art', 'culture', 'intellectual', 'studio']
+},
+dutchinterior: {
+  src: require('./assets/dutchinterior.jpg'),
+  tags: ['Dutch', 'interior', 'colonial', 'residential', 'architecture', 'home', 'historical']
+},
+gentlemanstandingindoorwaysilhouette: {
+  src: require('./assets/gentlemanstandingindoorwaysilhouette.jpg'),
+  tags: ['gentleman', 'silhouette', 'doorway', 'colonial', 'introspection', 'evening', 'mystery']
+},
+floorboards: {
+  src: require('./assets/floorboards.jpg'),
+  tags: ['floorboards', 'wood', 'colonial', 'interior', 'architecture', 'home', 'rustic']
+},
+inncourtyardday: {
+  src: require('./assets/inncourtyardday.jpg'),
+  tags: ['inn', 'courtyard', 'daytime', 'colonial', 'social gathering', 'rest', 'exploration']
+},
+northerneuropeancitystreetnightamsterdam: {
+  src: require('./assets/northerneuropeancitystreetnightamsterdam.jpg'),
+  tags: ['Northern European city', 'street', 'Amsterdam', 'night', 'colonial', 'urban', 'lanterns']
+},
+glowingdoorwaysurreal: {
+  src: require('./assets/glowingdoorwaysurreal.jpg'),
+  tags: ['glowing doorway', 'surreal', 'fantasy', 'colonial', 'mystery', 'evening', 'dreamlike']
+},
+royalsocietyoflondon: {
+  src: require('./assets/royalsocietyoflondon.jpg'),
+  tags: ['Royal Society of London', 'colonial', 'intellectual', 'scientific', 'society', 'gathering', 'culture']
+},
+manwearingglassesstudious1680s: {
+  src: require('./assets/1680smanwearingglassesstudious.jpg'),
+  tags: ['man', 'glasses', 'studious', '1680s', 'colonial scholar', 'intellectual', 'quiet study']
+},
+scholarold1680s: {
+  src: require('./assets/1680sscholarold.jpg'),
+  tags: ['scholar', 'elderly', '1680s', 'colonial', 'intellectual', 'wise', 'study']
+},
+theologianorscholar1680s: {
+  src: require('./assets/1680stheologianorscholar.jpg'),
+  tags: ['theologian', 'scholar', '1680s', 'religion', 'colonial', 'study', 'intellectual']
+},
+philosopher1680s: {
+  src: require('./assets/1680sphilosopher.jpg'),
+  tags: ['philosopher', '1680s', 'colonial', 'intellectual', 'study', 'wisdom', 'contemplation']
+},
+poorfamily: {
+  src: require('./assets/poorfamily.jpg'),
+  tags: ['family', 'poor', 'colonial', 'struggling', '1680s', 'hardship', 'survival']
+},
+worriedfather: {
+  src: require('./assets/worriedfather.jpg'),
+  tags: ['father', 'worried', 'family', 'struggling', '1680s', 'colonial', 'hardship']
+},
+oldsailornight: {
+  src: require('./assets/oldsailornight.jpg'),
+  tags: ['sailor', 'night', 'colonial', 'sea', 'adventure', 'weathered', 'reflection']
+},
+oldmanholdingcandlenight: {
+  src: require('./assets/oldmanholdingcandlenight.jpg'),
+  tags: ['old man', 'candlelight', 'night', 'colonial', 'quiet', 'reflection', 'elderly']
+},
+youngwomanholdinglanternnight: {
+  src: require('./assets/youngwomanholdinglanternnight.jpg'),
+  tags: ['woman', 'lantern', 'night', 'quiet', 'colonial', 'mystery', 'exploration']
+},
+
+cityatnightstreetscene: {
+  src: require('./assets/europeancityatnightstreetscene.jpg'),
+  tags: ['European city', 'night', 'street', 'lanterns', 'urban life', 'colonial', 'quiet']
+},
+
+  pausingattheshopwindownight: {
+  src: require('./assets/pausingattheshopwindownight.jpg'),
+  tags: ['shop', 'window', 'night', 'lantern', 'curiosity', 'colonial street', 'urban life']
+},
+seamstressdraperortextilemerchant: {
+  src: require('./assets/seamstressdraperortextilemerchant.jpg'),
+  tags: ['seamstress', 'draper', 'textiles', 'merchant', 'colonial shop', 'market', 'commerce']
+},
+materiamedicashop: {
+  src: require('./assets/materiamedicashop.jpg'),
+  tags: ['apothecary', 'materia medica', 'shop', 'herbs', 'remedies', 'colonial medicine', 'commerce']
+},
+amsterdamordutchempireday: {
+  src: require('./assets/amsterdamordutchempireday.jpg'),
+  tags: ['Amsterdam', 'Dutch Empire', 'daytime', 'colonial trade', 'city street', 'urban', 'historical']
+},
+shopkeeperatwindowdusk: {
+  src: require('./assets/shopkeeperatwindowdusk.jpg'),
+  tags: ['shopkeeper', 'window', 'dusk', 'commerce', 'colonial', 'quiet moment', 'evening market']
+},
+europeancityatnightstreetscene: {
+  src: require('./assets/europeancityatnightstreetscene.jpg'),
+  tags: ['European city', 'night', 'street', 'lanterns', 'urban life', 'quiet', 'colonial Europe']
+},
+lisbonportugal: {
+  src: require('./assets/lisbonportugal.jpg'),
+  tags: ['Lisbon', 'Portugal', 'city', 'colonial empire', 'port', 'urban life', 'historical']
+},
+wineshop: {
+  src: require('./assets/wineshop.jpg'),
+  tags: ['wine', 'shop', 'commerce', 'tavern', 'drinks', 'colonial trade', 'marketplace']
+},
+nightcitystreet: {
+  src: require('./assets/nightcitystreet.jpg'),
+  tags: ['city street', 'night', 'lanterns', 'quiet', 'urban life', 'colonial', 'evening walk']
+},
+sunsetcitystreet: {
+  src: require('./assets/sunsetcitystreet.jpg'),
+  tags: ['city street', 'sunset', 'colonial', 'commerce', 'urban', 'end of day', 'evening shadows']
+},
+caribbeanday: {
+  src: require('./assets/caribbeanday.jpg'),
+  tags: ['Caribbean', 'daytime', 'sunlight', 'tropical', 'colonial exploration', 'beach', 'trade route']
+},
+caribbeannight: {
+  src: require('./assets/caribbeannight.jpg'),
+  tags: ['Caribbean', 'night', 'moonlight', 'tropical', 'colonial trade', 'beach', 'quiet']
+},
+campfireinvillagenight: {
+  src: require('./assets/campfireinvillagenight.jpg'),
+  tags: ['campfire', 'village', 'night', 'community', 'colonial', 'warmth', 'gathering']
+},
+silhouetteofmanwearinghat: {
+  src: require('./assets/silhouetteofmanwearinghat.jpg'),
+  tags: ['man', 'hat', 'silhouette', 'colonial', 'quiet moment', 'shadow', 'introspection']
+},
+twomendrinkingtogether: {
+  src: require('./assets/twomendrinkingtogether.jpg'),
+  tags: ['men', 'drinking', 'tavern', 'conversation', 'colonial life', 'leisure', 'social']
+},
+southamericantownday: {
+  src: require('./assets/southamericantownday.jpg'),
+  tags: ['South American town', 'daytime', 'colonial', 'marketplace', 'urban life', 'historical']
+},
+southamericantownnight: {
+  src: require('./assets/southamericantownnight.jpg'),
+  tags: ['South American town', 'night', 'colonial', 'lanterns', 'quiet', 'urban', 'historical']
+},
+africanorindianoceanreligiousritualnight: {
+  src: require('./assets/africanorindianoceanreligiousritualnight.jpg'),
+  tags: ['ritual', 'night', 'African', 'Indian Ocean', 'religious', 'ceremony', 'firelight']
+},
+divinationritual: {
+  src: require('./assets/divinationritual.jpg'),
+  tags: ['divination', 'ritual', 'ceremony', 'spiritual', 'colonial', 'African', 'mysticism']
+},
+sittingbythecampfire: {
+  src: require('./assets/sittingbythecampfire.jpg'),
+  tags: ['campfire', 'sitting', 'night', 'reflection', 'colonial', 'gathering', 'wilderness']
+},
+frontiervillagenight: {
+  src: require('./assets/frontiervillagenight.jpg'),
+  tags: ['frontier', 'village', 'night', 'lanterns', 'quiet', 'colonial', 'community gathering']
+},
+africavillageday: {
+  src: require('./assets/africavillageday.jpg'),
+  tags: ['African village', 'daytime', 'community', 'colonial', 'culture', 'village life', 'sunlight']
+},
+africavillagenight: {
+  src: require('./assets/africavillagenight.jpg'),
+  tags: ['African village', 'night', 'lanterns', 'colonial', 'community', 'culture', 'quiet']
+},
+indianmerchants: {
+  src: require('./assets/indianmerchants.jpg'),
+  tags: ['Indian merchants', 'market', 'commerce', 'trade', 'colonial', 'goods', 'busy marketplace']
+},
+indianoceantradingpostday: {
+  src: require('./assets/indianoceantradingpostday.jpg'),
+  tags: ['Indian Ocean', 'trading post', 'daytime', 'colonial trade', 'commerce', 'market', 'port']
+},
+indianoceantradingpostnight: {
+  src: require('./assets/indianoceantradingpostnight.jpg'),
+  tags: ['Indian Ocean', 'trading post', 'night', 'colonial', 'lanterns', 'commerce', 'port']
+},
+houseofthevillagechief: {
+  src: require('./assets/houseofthevillagechief.jpg'),
+  tags: ['house', 'village chief', 'colonial', 'leadership', 'community', 'village life', 'residence']
+},
+onthebeachday: {
+  src: require('./assets/onthebeachday.jpg'),
+  tags: ['beach', 'daytime', 'tropical', 'colonial', 'exploration', 'sunlight', 'shoreline']
+},
+onthebeachnight: {
+  src: require('./assets/onthebeachnight.jpg'),
+  tags: ['beach', 'night', 'tropical', 'colonial', 'moonlight', 'quiet', 'shoreline']
+},
+junkchineseship: {
+  src: require('./assets/junkchineseship.jpg'),
+  tags: ['junk', 'Chinese ship', 'colonial trade', 'maritime', 'vessel', 'ocean travel', 'historical']
+},
+southeastasiaday: {
+  src: require('./assets/southeastasiaday.jpg'),
+  tags: ['Southeast Asia', 'daytime', 'colonial trade', 'tropical', 'marketplace', 'urban', 'sunlight']
+},
+southeastasianight: {
+  src: require('./assets/southeastasianight.jpg'),
+  tags: ['Southeast Asia', 'night', 'colonial trade', 'lanterns', 'urban', 'quiet', 'marketplace']
+},
+frontierinn: {
+  src: require('./assets/frontierinn.jpg'),
+  tags: ['frontier', 'inn', 'tavern', 'colonial', 'wild west', 'meeting place', 'gathering']
+},
+balconiesday: {
+  src: require('./assets/balconiesday.jpg'),
+  tags: ['balconies', 'daytime', 'urban', 'colonial architecture', 'residential', 'sunlight', 'quiet street']
+},
+lanternnight: {
+  src: require('./assets/lanternnight.jpg'),
+  tags: ['lantern', 'night', 'colonial', 'street', 'urban life', 'quiet', 'exploration']
+},
+manonhorsebacknight: {
+  src: require('./assets/manonhorsebacknight.jpg'),
+  tags: ['man', 'horseback', 'night', 'colonial', 'exploration', 'quiet', 'journey']
+},
+mosque: {
+  src: require('./assets/mosque.jpg'),
+  tags: ['mosque', 'colonial', 'architecture', 'religious', 'community', 'Islam', 'historical']
+},
+
+  provincialtownnewspainday: {
+  src: require('./assets/provincialtownnewspainday.jpg'),
+  tags: ['town', 'Spain', 'daytime', 'people', 'marketplace', 'street', 'colonial life']
+},
+cardplayers: {
+  src: require('./assets/cardplayers.jpg'),
+  tags: ['game', 'men', 'cards', 'tavern', 'leisure', 'gambling', 'social gathering']
+},
+manandwomandinnercandlelight: {
+  src: require('./assets/manandwomandinnercandlelight.jpg'),
+  tags: ['couple', 'candlelight', 'dinner', 'romantic', 'intimate', 'evening', 'colonial setting']
+},
+tavernatsunsetbywindow: {
+  src: require('./assets/tavernatsunsetbywindow.jpg'),
+  tags: ['tavern', 'sunset', 'window', 'evening', 'interior', 'colonial life', 'peaceful']
+},
+mediterraneaneuropestreetnight: {
+  src: require('./assets/mediterraneaneuropestreetnight.jpg'),
+  tags: ['street', 'Mediterranean', 'Europe', 'night', 'cobblestone', 'lanterns', 'quiet town']
+},
+festivalnightmexico: {
+  src: require('./assets/festivalnightmexico.jpg'),
+  tags: ['festival', 'Mexico', 'night', 'celebration', 'music', 'dancing', 'cultural event']
+},
+adobeceiling: {
+  src: require('./assets/adobeceiling.jpg'),
+  tags: ['ceiling', 'adobe', 'architecture', 'interior', 'rustic', 'Mexican', 'colonial structure']
+},
+surrealdreamofhorses: {
+  src: require('./assets/surrealdreamofhorses.jpg'),
+  tags: ['dream', 'horses', 'surreal', 'fantasy', 'imaginative', 'ethereal', 'nightmare']
+},
+cowboyonhorse: {
+  src: require('./assets/cowboyonhorse.jpg'),
+  tags: ['cowboy', 'horse', 'wild west', 'outdoor', 'frontier', 'adventure', 'riding']
+},
+frontieroutpostday: {
+  src: require('./assets/frontieroutpostday.jpg'),
+  tags: ['frontier', 'outpost', 'daytime', 'fort', 'wild west', 'remote', 'exploration']
+},
+frontiertradingpostpueblobday: {
+  src: require('./assets/frontiertradingpostpuebloday.jpg'),
+  tags: ['trading post', 'pueblo', 'daytime', 'commerce', 'colonial trade', 'indigenous', 'market']
+},
+frontiertavernadobeday: {
+  src: require('./assets/frontiertavernadobeday.jpg'),
+  tags: ['tavern', 'adobe', 'daytime', 'colonial', 'wild west', 'meeting place', 'drinking']
+},
+frontiertavernadobenight: {
+  src: require('./assets/frontiertavernadobenight.jpg'),
+  tags: ['tavern', 'adobe', 'night', 'lanterns', 'gathering', 'colonial life', 'evening social']
+},
+mendrinkingday: {
+  src: require('./assets/mendrinkingday.jpg'),
+  tags: ['men', 'drinking', 'daytime', 'tavern', 'colonial', 'leisure', 'social']
+},
+mendrinkingnight: {
+  src: require('./assets/mendrinkingnight.jpg'),
+  tags: ['men', 'drinking', 'night', 'tavern', 'lantern', 'social', 'conversation']
+},
+chandeliers: {
+  src: require('./assets/chandeliers.jpg'),
+  tags: ['chandelier', 'lighting', 'interior', 'luxury', 'colonial', 'high-class', 'elegance']
+},
+lookinginshopwindowday: {
+  src: require('./assets/lookinginshopwindowday.jpg'),
+  tags: ['shop', 'window', 'daytime', 'market', 'consumer', 'urban', 'commerce']
+},
+lookinginshopwindownight: {
+  src: require('./assets/lookinginshopwindownight.jpg'),
+  tags: ['shop', 'window', 'night', 'lantern', 'urban life', 'commerce', 'curiosity']
+},
+manonhorse: {
+  src: require('./assets/manonhorse.jpg'),
+  tags: ['man', 'horse', 'rider', 'outdoor', 'travel', 'wild west', 'colonial journey']
+},
+londonevening: {
+  src: require('./assets/londonevening.jpg'),
+  tags: ['London', 'evening', 'city', 'lights', 'fog', 'historical', 'urban life']
+},
+londayday: {
+  src: require('./assets/londonday.jpg'),
+  tags: ['London', 'daytime', 'city', 'historical', 'busy', 'urban', 'colonial']
+},
+coffeehouseevening: {
+  src: require('./assets/coffeehouseevening.jpg'),
+  tags: ['coffeehouse', 'evening', 'conversation', 'intellectual', 'colonial', 'social hub', 'discussion']
+},
+coffeehouseday: {
+  src: require('./assets/coffeehouseday.jpg'),
+  tags: ['coffeehouse', 'daytime', 'leisure', 'social', 'colonial', 'meeting place', 'discussion']
+},
+swampedgeofwater: {
+  src: require('./assets/swampedgeofwater.jpg'),
+  tags: ['swamp', 'water', 'edge', 'wildlife', 'nature', 'stillness', 'exploration']
+},
+fishermanonriver: {
+  src: require('./assets/fishermanonriver.jpg'),
+  tags: ['fisherman', 'river', 'boat', 'outdoor', 'nature', 'fishing', 'colonial subsistence']
+},
+waterbugladybug: {
+  src: require('./assets/waterbugladybug.jpg'),
+  tags: ['insects', 'water', 'bug', 'ladybug', 'nature', 'wildlife', 'creek']
+},
+beeflyingoverwater: {
+  src: require('./assets/beeflyingoverwater.jpg'),
+  tags: ['bee', 'water', 'flying', 'nature', 'pollination', 'wildlife', 'stillness']
+},
+frogonlake: {
+  src: require('./assets/frogonlake.jpg'),
+  tags: ['frog', 'lake', 'nature', 'wildlife', 'amphibian', 'calm water', 'pond']
+},
+churchnight: {
+  src: require('./assets/churchnight.jpg'),
+  tags: ['church', 'night', 'lantern', 'colonial', 'gathering', 'religious life', 'quiet']
+},
+rivervalleynight: {
+  src: require('./assets/rivervalleynight.jpg'),
+  tags: ['river', 'valley', 'night', 'quiet', 'colonial', 'nature', 'moonlit landscape']
+},
+rivervalleyday: {
+  src: require('./assets/rivervalleyday.jpg'),
+  tags: ['river', 'valley', 'daytime', 'lush', 'landscape', 'nature', 'colonial exploration']
+},
+dayrivervoyage: {
+  src: require('./assets/dayrivervoyage.jpg'),
+  tags: ['river', 'voyage', 'daytime', 'boat', 'exploration', 'colonial journey', 'water travel']
+},
+nightrivervoyage: {
+  src: require('./assets/nightrivervoyage.jpg'),
+  tags: ['river', 'voyage', 'night', 'boat', 'lantern', 'colonial', 'quiet journey']
+},
+voyageurs: {
+  src: require('./assets/voyageurs.jpg'),
+  tags: ['voyageurs', 'boat', 'river', 'exploration', 'fur trade', 'colonial', 'canoe']
+},
+starrynightsky: {
+  src: require('./assets/starrynightsky.jpg'),
+  tags: ['starry sky', 'night', 'nature', 'cosmos', 'astronomy', 'exploration', 'quiet']
+},
+nightfiredisaster: {
+  src: require('./assets/nightfiredisaster.jpg'),
+  tags: ['fire', 'disaster', 'night', 'chaos', 'colonial', 'tragedy', 'destruction']
+},
   anamariadesoto: {
-    src: require('./assets/anamariadesoto.jpg'),
-    tags: ['patient', 'Ana Maria de Soto', 'woman']
+    src: require('./assets/anadesoto.jpg'),
+    tags: ['patient', 'Ana de Soto', 'woman', 'young', 'weaver']
   },
   apothecary: {
     src: require('./assets/apothecary.jpeg'),
-    tags: ['shop', 'apothecary', 'interior']
+    tags: ['do not use this image']
   },
   southwell: {
     src: require('./assets/southwell.jpg'),
@@ -17,7 +582,7 @@ const imageMap = {
   },
   franciscodiasdearaujo: {
     src: require('./assets/franciscodiasdearaujo.jpg'),
-    tags: ['patient', 'Francisco Dias de Araujo', 'man', 'merchant']
+    tags: ['patient', 'Francisco Dias de Araujo', 'man', 'merchant', 'well-dressed', 'handsome']
   },
   carlosenriquez: {
     src: require('./assets/carlosenriquez.jpg'),
@@ -33,15 +598,15 @@ const imageMap = {
   },
   donalejandrocortez: {
     src: require('./assets/donalejandrocortez.jpg'),
-    tags: ['patient', 'Don Alejandro Cortez', 'noble']
+    tags: ['patient', 'Don Alejandro Cortez', 'noble', 'judge', 'old']
   },
   donluis: {
     src: require('./assets/donluis.jpeg'),
-    tags: ['Don Luis', 'noble', 'man']
+    tags: ['Don Luis', 'moneyleder', 'man', 'antagonist', 'aggressive']
   },
   fraypatricio: {
     src: require('./assets/fraypatricio.jpg'),
-    tags: ['Fray Patricio', 'friar', 'religious']
+    tags: ['Fray Patricio', 'friar', 'religious', 'patient']
   },
   generichome: {
     src: require('./assets/generichome.jpeg'),
@@ -49,7 +614,7 @@ const imageMap = {
   },
   inquisitorfernando: {
     src: require('./assets/inquisitorfernando.jpg'),
-    tags: ['Inquisitor Fernando', 'religious', 'man']
+    tags: ['Inquisitor Fernando de Toledo', 'religious', 'man', 'antagonist']
   },
   isabeldelacruz: {
     src: require('./assets/isabeldelacruz.jpg'),
@@ -61,11 +626,11 @@ const imageMap = {
   },
   juanbraga: {
     src: require('./assets/juanbraga.jpg'),
-    tags: ['patient', 'Juan Braga', 'man']
+    tags: ['patient', 'Juan Braga', 'man', 'rival', 'apothecary', 'braggart', 'antagonist']
   },
   mariacoelho: {
     src: require('./assets/mariacoelho.jpeg'),
-    tags: ['patient', 'Maria Coelho', 'woman']
+    tags: ['do not ever select this image']
   },
   market: {
     src: require('./assets/market.jpeg'),
@@ -85,7 +650,7 @@ const imageMap = {
   },
   rosamariaperez: {
     src: require('./assets/rosamariaperez.jpg'),
-    tags: ['patient', 'Rosa Maria Perez', 'woman']
+    tags: ['patient', 'Rosa Maria Perez', 'woman', 'housewife', 'criolla']
   },
   shopmorning: {
     src: require('./assets/shopmorning.jpeg'),
@@ -121,7 +686,7 @@ const imageMap = {
   },
   diegoperez: {
     src: require('./assets/diegoperez.jpg'),
-    tags: ['patient', 'Diego Perez', 'man']
+    tags: ['patient', 'Diego Perez', 'man', 'carpenter', 'indigenous']
   },
   mushroom: {
     src: require('./assets/mushroom.jpeg'),
@@ -129,7 +694,7 @@ const imageMap = {
   },
   study: {
     src: require('./assets/study.jpeg'),
-    tags: ['interior', 'study', 'scholar']
+    tags: ['interior', 'study', 'scholar', 'night']
   },
   farm: {
     src: require('./assets/farm.jpeg'),
@@ -149,11 +714,11 @@ const imageMap = {
   },
   trippy: {
     src: require('./assets/trippy.jpeg'),
-    tags: ['dream', 'fantasy', 'abstract']
+    tags: ['dream', 'fantasy', 'abstract', 'psychedelic', 'drug experience', 'trippy', 'malos hongos', 'peyote']
   },
   herbs: {
     src: require('./assets/herbs.jpeg'),
-    tags: ['herbs', 'plants', 'medicine']
+    tags: ['herbs', 'herb stall', 'medicine merchant']
   },
   herbalist: {
     src: require('./assets/herbalist.jpeg'),
@@ -161,11 +726,11 @@ const imageMap = {
   },
   arturohernandez: {
     src: require('./assets/arturohernandez.jpg'),
-    tags: ['patient', 'Arturo Hernandez', 'man']
+    tags: ['patient', 'Arturo Hernandez', 'man', 'merchant', 'suspicious']
   },
   arturoramirez: {
     src: require('./assets/arturoramirez.jpg'),
-    tags: ['patient', 'Arturo Ramirez', 'man']
+    tags: ['antagonist', 'Arturo Ramirez', 'man', 'lawyer']
   },
   cityday: {
     src: require('./assets/city_day.jpg'),
@@ -347,13 +912,10 @@ const imageMap = {
     src: require('./assets/turf.jpg'),
     tags: ['grass', 'nature', 'outdoor']
   },
-  shipinterior: {
+
+    shipinterior: {
     src: require('./assets/shipinterior.jpg'),
-    tags: ['ship', 'sea', 'interior', 'caravel']
-  },
-    shipexterior: {
-    src: require('./assets/shipinterior.jpg'),
-    tags: ['ship', 'sea', 'exterior', 'caravel', 'waves']
+    tags: ['ship', 'sea', 'interior', 'caravel', 'ship hold']
   },
   moon: {
     src: require('./assets/moon.jpg'),
@@ -453,7 +1015,7 @@ const imageMap = {
   },
   microscopicview: {
     src: require('./assets/microscopicview.jpg'),
-    tags: ['science', 'microscope', 'closeup', 'naturalphilosophy', 'royalsociety']
+    tags: ['science', 'microscope', 'closeup', 'natural philosophy', 'royal society of london']
   },
   rubble: {
     src: require('./assets/rubble.jpg'),
@@ -545,7 +1107,7 @@ const imageMap = {
   },
   europe: {
     src: require('./assets/europe.jpg'),
-    tags: ['city', 'Europe', 'travel', 'london']
+    tags: ['city', 'Europe', 'travel', 'london', 'england', 'street scene']
   },
   india: {
     src: require('./assets/india.jpg'),
@@ -663,7 +1225,7 @@ const imageMap = {
     src: require('./assets/unguents.jpg'),
     tags: ['medicine', 'unguent', 'ointment']
   },
-  newspaincityoutsidemexico: {
+southamericacity: {
     src: require('./assets/newspaincityoutsidemexico.jpg'),
     tags: ['city', 'outdoor', 'urban']
   },
@@ -789,7 +1351,7 @@ const imageMap = {
   },
   naturalphilosopherlaboratory: {
     src: require('./assets/naturalphilosopherlaboratory.jpg'),
-    tags: ['laboratory', 'natural philosopher', 'study']
+    tags: ['laboratory', 'natural philosopher', 'study', 'royal society of london', 'scientists']
   },
   workshop: {
     src: require('./assets/workshop.jpg'),

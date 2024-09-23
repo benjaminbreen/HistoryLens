@@ -26,7 +26,20 @@ Andrew Wear, Knowledge and Practice in English Medicine, 1550-1680 (2000)
 Harold J. Cook, Matters of Exchange: Commerce, Medicine, and Science in the Dutch Golden Age (2007)
 Ralph Bauer, The Alchemy of Conquest: Science, Religion, and the Secrets of the New World (2019)
 Daniela Bleichmar, Visible Empire: Botanical Expeditions and Visual Culture in the Hispanic Enlightenment (2012)
-Juan Pimentel, The Rhinoceros and the Megatherium: An Essay in Natural History (2017), José Pardo-Tomás, Science and Empire in the Atlantic World (2017); María M. Portuondo, Secret Science: Spanish Cosmography and the New World (2009); Marcy Norton, Sacred Gifts, Profane Pleasures: A History of Tobacco and Chocolate in the Atlantic World (2008); Karen Ordahl Kupperman, Indians and English: Facing Off in Early America (2000); Júnia Ferreira Furtado, Tropical Empiricism: Making Medical Knowledge in Colonial Brazil (2016); Ann Twinam, Purchasing Whiteness: Pardos, Mulattos, and the Quest for Social Mobility in the Spanish Indies (2015); John Slater, Medicine and Empire: Learned Medicine and Colonial Knowledge in the Spanish Empire (2011)
+Mackenzie Cooley, The Perfection of Nature: Animals, Breeding, and Race in the Renaissance (2022), 
+Rebecca Earle, The Body of the Conquistador: Food, Race, and the Colonial Experience in Spanish America, 1492-1700 (2012), 
+Barbara Mundy, The Death of Aztec Tenochtitlan, the Life of Mexico City (2015), 
+Neil Safier, Measuring the New World: Enlightenment Science and South America (2008), 
+José Pardo-Tomás, Ciencia y censura: la Inquisición española y los libros científicos en los siglos XVI y XVII (1991)
+José Pardo-Tomás, El tesoro natural de América: Oviedo, Monardes, Hernández: colonialismo y ciencia en el siglo XVI (2002)
+Juan Pimentel, The Rhinoceros and the Megatherium: An Essay in Natural History (2017),
+ José Pardo-Tomás, Science and Empire in the Atlantic World (2017); 
+ María M. Portuondo, Secret Science: Spanish Cosmography and the New World (2009); 
+ Marcy Norton, Sacred Gifts, Profane Pleasures: A History of Tobacco and Chocolate in the Atlantic World (2008); 
+ Karen Ordahl Kupperman, Indians and English: Facing Off in Early America (2000); 
+ Júnia Ferreira Furtado, Tropical Empiricism: Making Medical Knowledge in Colonial Brazil (2016); 
+ Ann Twinam, Purchasing Whiteness: Pardos, Mulattos, and the Quest for Social Mobility in the Spanish Indies (2015); 
+ John Slater, Medicine and Empire: Learned Medicine and Colonial Knowledge in the Spanish Empire (2011)
                 `;
             } else if (narrativeType === 'Subjective POV') {
     // Dynamically get the NPC from currentPatient or historyOutput

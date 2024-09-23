@@ -93,7 +93,7 @@ const Sleep = ({
     // Access the current randomDream state
     const currentDream = randomDream;
     const dreamSummary = currentDream ? currentDream.summary : "No dream remembered";
-    const sleepMessage = `Maria is going to sleep at ${time} on ${date} in ${location}. She will wake up the following morning. A summary of her dream: "${dreamSummary}". Please advance the simulation to the next morning and briefly describe what happens when Maria wakes up in the same location, incorporating the dream if possible. Present a numbered list of three possible next steps after this.`;
+    const sleepMessage = `Maria is going to sleep at ${time} on ${date} in ${location}. She will wake up the following morning. A summary of her dream: "${dreamSummary}". Please advance the simulation to the next morning and briefly describe what happens when Maria wakes up in the same location, incorporating the dream if possible. Present a numbered list of three possible next steps after this. At the end of your response, remember to include a status line at the end in this exact format: "**Maria slept and awoke the following day. She is feeling [single word status]. Time: 7:00 AM, xx [month] [year].**" Maria always wakes up the day after she sleeps, i.e. if Maria sleeps on 9:00 pm on August 24, 1680, she awakens at 7:00 AM on August 25, 1680.`;
 
     setSleepPrompt(sleepMessage);
 

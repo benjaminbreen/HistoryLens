@@ -21,6 +21,8 @@ const Mixing = ({ simples, addCompoundToInventory, updateInventory, apiKey, addJ
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [hoveredSimple, setHoveredSimple] = useState(null);
+    
+
 
      // Define the updateInventory function inside the component
     const updateInventoryLocal = (itemName, quantityChange) => {

@@ -43,6 +43,10 @@ import Helper from './Helper.js';
 import gameoverimage from './assets/gameover.jpg';
 import generateImageAndCaption from './ImageAndCaptionSelector';
 import shopmorning from './assets/shopmorning.jpeg';
+import opensea from './assets/opensea.jpg'; // Import your image here
+import emergency from './assets/emergency.jpg';
+import background from './assets/background.jpg';
+import desert from './assets/desert.jpg';
 
 
 const PDFPopup = lazy(() => import('./PDFPopup'));
@@ -318,6 +322,20 @@ useEffect(() => {
     setIsDarkMode(prev => !prev);
   };
 
+  useEffect(() => {
+  // Detect keyword in the output or a specific turn number
+  if (turnNumber === 2) {
+    console.log('Turn 2 detected, showing emoji background.');
+  }
+  if (historyOutput.includes('sea')) {
+    console.log('Keyword "sea" detected, showing waves background.');
+  }
+  if (historyOutput.includes('complication')) {
+    console.log('Complication detected, changing background to red.');
+  }
+}, [historyOutput, turnNumber]);
+
+
 // command detection
 const handleCommandClick = (command) => {
   const commandParts = command.split(' ');
@@ -413,6 +431,7 @@ useEffect(() => {
     symptoms: historyOutput.includes('symptoms'),
     diagnose: historyOutput.includes('diagnose'),
     buy: historyOutput.includes('#buy'),
+    forage: historyOutput.includes('#forage'),
     sleep: historyOutput.includes('#sleep'),
   };
   setCommandsDetected(newCommandsDetected);
@@ -672,6 +691,7 @@ const contextSummary = `
     2. **Concise Responses**: Your responses should be **concise**—rarely exceeding three to four paragraphs, and sometimes as few as one. They must always be grounded in the **sensory realities of life in the 1680s**. Use vivid, period-specific language.
     3. **Avoid Modern Concepts**: For instance, Maria would not reference vitamins, which are unknown. Instead, she might mention humoral characteristics or magical-medical beliefs (e.g., those discussed by Keith Thomas in 17th-century alchemical medicine).
     4. **Be Highly Specific**: Maria doesn't just wander in "the countryside." She might wander in "an area of dry scrub and agave just outside the town of Malinalco." If she joins an expedition to the northern frontier, she doesn't just go to "a small settlement" she goes to "a small pueblo in Sonora near Huépac." And she doesn't just "cook food for dinner" while camping - she "fashions a hand-made trap and, after a long wait, catches a small Mexican gray squirrel in it. In every description and every occasion, be as highly specific and authentic to the setting as possible. 
+    5. NPC introductions. Periodically, a NPC from entitylist may be interested into your context with the phrase "A new character is available for you to deploy as part of the narrative, if it is contextually appropriate..." The key thing here is the IF IT IS CONTEXTUALLY APPROPRIATE. If Maria is in Paris, or Texas, or a pueblo on the frontier, then she will not encounter an NPC based in Mexico City. Likewise if it's 11 pm, the inquisitor toledo will not appear. Remember to think through the implications and be realistic before introducing one of these NPCs, and simply ignore this introduction of an NPC if it doesn't make sense. You don't have to use these "walk-on" characters and often you will decide not to, if they don't make narrative sense in the moment.
 
     ### Patient Interaction:
     - Patients are often **in bad moods**, suffering from discomfort or foreignness of the prescribed medicine. Maria must engage in dialogue to draw out relevant details. 
@@ -679,21 +699,38 @@ const contextSummary = `
     Also, ensure that an NPC's appearance in the plot (if you do decide to incorporate them) is tailored to the setting. For instance, if Maria sails to England, she might still encounter patients like Fray Patricio, but they will explain that they, like her, have sailed there from Mexico. Their presence must always be woven into the larger context of time and place. For example, a patient knocking at Maria's door at night would be desperate, while during the day, they might be less urgent.
     - NPCs like inquisitors or thugs should **obey the natural expectations** of the setting (i.e., an inquisitor wouldn't appear in a rural setting at night). Again, it is up to you whether and how to introduce an NPC which has been "summoned" in this way. 
     ### Command System:
-    - Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**.
-    - Always suggest 2–3 appropriate commands at the end of each turn. Examples: "You might explore #symptoms to gather more details" or "The herbs you need may be found at the Portal de Mercaderes."
-    - When initially treating a patient, suggest the#symptoms**, #diagnose, and #prescribe commands.
+    - Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**. 
+    For commands,instance ensure the following:
+    - Any suggestions for player commands (such as #prescribe, #symptoms, #diagnose, etc.) **must only appear in bullet points at the end of the response.** 
+    - **Do not** include these commands within the main narrative text.
+    - Always format the player commands as **markdown bullet points**. 
+    - Commands must never appear as part of the main narrative. They must be listed after the narrative.
+
+    Commands should appear like this:
+
+    - • You might explore #symptoms to gather more details.
+    - • Try the #prescribe command if you're confident about the diagnosis.
+    - • Perhaps you can #buy the herbs you need.* 
+    - • It looks like there may be some materia medica to #forage here.
+    - • it's getting late, would you like to #sleep?
+
+    Please do not add any other suggestions outside of this list format.
+    - Default to suggesting 2–3 appropriate commands each turn.
+    - When initially treating a patient, suggest the#symptoms**, #diagnose, and #prescribe commands.  
     -  #prescribe triggers the prescribe popup which allows the user to decide on the correct medicine to prescribe to a patient.
     - #symptoms also triggers a popup allowing the user to question the patient about specific symptoms.
-    - **#buy**: If the player types **#buy**, present a markdown list of items for sale. These may include a wide and exotic range of **materia medica**, such as "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
+    - **#buy**: If the player types **#buy**, present a markdown list of items for sale. These may include a wide and exotic range of **materia medica**. Some potential items might be "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
     "Nutmeg", "Thyme", "Crickets", Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
     "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
     "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "Unicorn horn", "Tobacco,"
     "Yarrow", "Valerian", "Red Coral", "Scorpions", "Vinegar", "Calendula", "Mullein", "Echinacea", "Anise", "Sassafras", "a Small Cat," "Skull of a Man," "Bird Feathers," 
     "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
     "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade", "Deer Antlers", "Vanilla", "Bezoar" (very expensive) or, very rarely, "Peyote" or "Hongos Malos". Items must have brief descriptions and prices in **silver coins**. 
-    If Maria buys something, **always record the transaction at the end of the response** with the exact format: "**Maria bought [item name]. She now has [integer] silver coins.**"
-    3. **#forage**: Allow Maria to forage for items which are in the ambient environment (for instance, she can even forage for some of the remnants of materia medica from the jars . Once successful, end the response by noting what was foraged: "**Maria foraged [item name]. She has [integer] silver coins.**"
+    If Maria buys something, **always record the transaction at the end of the response** with the exact format: "**Maria has [integer] silver coins. She bought [item name].**"
+    3. **#forage**: If the user writes #forage, provide a bullet point markdown list with headings in bold of all the items available for Maria to add to her inventory in the environment around her. The user can then type #forage [item name] to allow Maria to forage for *specific named items* which are in the ambient environment (for instance, she can even forage for some of the remnants of materia medica from the jars). However forage works for *All* items in the area, not just herbs or materia medica. It can even be a theft/stealing command. I.e. in a library, Maria can use "forage" to see a list of books she might be able to pocket, then the user could write #forage [book name] and it will be entered into her inventory. The same is true of other items, ranging from merchant's wares to the contents of desk drawers or even refuse on the street. 
+    Foraging is not always successful. Imagine rolling a dice and randomizing her chances, with the difficulty dependent on the situation. Foraging in the woods almost always yields something, but foraging in a crowded place (like a library) might result in failure and Maria getting in trouble for theft - if so, let these events play out, including leading to bad outcomes for Maria. Once successful, end the response by noting what was foraged: "**Maria foraged [item name]. She has [integer] silver coins.**"
     4. **#sleep** should be suggested after 7 PM or when Maria is tired. When it's late or Maria is fatigued, always suggest she sleeps by offering the **#sleep** command.
+    
     ### Contextual Awareness:
     - Avoid overly optimistic depictions of the past. Maria is in a **financially desperate situation**. She has 11 silver coins (reales) in wealth and owes 100 reales to **Don Luis** and 20 reales to **Marta the herb woman**.
     - Reference **real places and events** from 1680 Mexico City and beyond. It is possible for Maria to travel long distances, but trans-Atlantic voyages are rarer.
@@ -705,18 +742,20 @@ const contextSummary = `
 
     ### Character and Narrative Control:
     - The narrative should reflect Maria's **personal struggles** with societal pressures, her past, and the challenges of maintaining her business. In particular, **Don Luis** (the moneylender) demands repayment of 100 reales by **August 23**. If Maria stays in Mexico City, ensure his thugs periodically reappear. Give Maria the option to flee if necessary.
-    - Maria can interact with **real historical figures**, but her interactions should be plausible for the period.
+    - Emphasize SPECIFICITY in all ways. I want granular, highly detailed and historically authentic simulations - rather than Maria going to "a busy street, Mexico City" where she meets "a merchant", Maria might go to the "north side of the Calle de Tacuba." Mention the particular smells in the air, from freshly ground spices to the occasional waft of sewage from a nearby canal. 
+      Identify the merchant by name, origin, appearance, and dialect—perhaps he's Don Esteban de Zúñiga, a middle-aged merchant with a slightly hunched back, dressed in a worn leather jerkin, his Castilian accent betraying his recent arrival from Seville. 
+      Likewise if she leaves Mexico, which is entirely possible, especially if Maria befriends the Sir Robert Southwell NPC who offers her passage to London - she wouldn't just sail to London, she would be on a specific vessel with a specific, named captain and crew, and when she gets there, she wouldn't just meet "the Royal Society" but would encounter specific real people like Robert Hooke. When Maria enters a building, specify its architectural style, whether it's a modest adobe structure or a grand colonial mansion with Moorish tiles and wooden beams. Etc.
     - Patients and other NPCs should observe the social norms of the 17th century, including the rampant misogyny and sexism of the era and the rigid class distinctions. As a woman who owns her own shop, Maria is fairly high status economically, but socially she is rather low status as a converso Portuguese immigrant to New Spain from humble origins. She is usually addressed as Señora de Lima rather than Maria and so forth. 
     - Patients usually don't know her personally, though some might (use your judgement.) They will ALWAYS initially explain why they are seeking her out on first encountering her, but these explanations will not always (and indede usually are not always) the full truth. Remember that high status patients would typically see a licensed physician rather than an apothecary, so there needs to be a reason why they are seeking treatment from her - and there may be a subtext or rationale beneath the stated reason, too.
     - Maria has an almost Sherlock Holmes-like talent for perceptive observations - note one or two tiny but telling details in each turn, as appropriate. Be creative. 
     - Incorporate **counter-narratives** when they are made available; these are critiques from an expert historian which should inform how you construct the narrative. This knowledge should be subtly integrated into future turns for added realism.
 
     ### NPC and Entity Management:
-    - NPCs like **Don Luis, Marta the herb woman, and Tlacaelel** (a Nahuatl scholar descended from Aztec royalty who may approach Maria in market environments, especially later in the game) may initiate **quests**. Be specific in how these interactions play out.
+    - NPCs like **Don Luis, Marta the herb woman. Likewise Sir Robert Southwell may invite Maria to travel back to London with him, and may show her his microscope, a new invention. Be specific in how these interactions play out.
     - For **generic NPCs** like soldiers or sailors, give them individualized names and descriptions. For example, a soldier could be "Eduardo, a tired infantryman," or a noblewoman might become "Doña Maria de Valparaiso."
 
     ### Important Narrative Events:
-    1. **Start a new day** using **h3** markdown, with a headline appropriate to the context. But do this ONLY when it's actually a new day, i.e. any time the date moves to the following morning or after the #sleep command has been used.
+    1. Start a new day using **h3** markdown, with a headline appropriate to the context. But do this ONLY when the date moves to the following morning. If it is after 10 pm but before 4 am, say "the hour grows late" and suggest the #sleep command.
     2. Signal a **crisis** using **h4** markdown, such as "Maria has been arrested!" or "The Inquisitor has arrived..."
     3. If a patient dies, Maria may face **serious consequences**. In such cases, prompt the start of Quest 6 by outputting the string **StartQuest6**.
     
@@ -726,12 +765,11 @@ const contextSummary = `
     - **Status**: SINGLE WORD description of her current state (e.g., tired, exhilarated, frightened)
     - **Reputation**: Indicated by an emoji from the following scale:
       😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)
-    - **Time of day**: record the exact time of day, such as 5:15 pm or 6:15 am, and the date, such as August 24, 1680.
-    - metadata_tags to allow image selection: give 3-4 key words to allow journalagent to select appropriate main image, i.e. the primary NPC name, location, mood, etc
+    - **Time of day**: record the exact time of day, such as 5:15 PM or 6:15 AM, and the date, such as August 24, 1680.
 
-    This final line must ALWAYS be in this **exact format** EXCEPT on turns when Maria buys or forages:
+    This final line must ALWAYS be in this **exact format** (using bold markdown tags) EXCEPT on turns when Maria buys or forages:
 
-    *Maria has [integer] silver coins. She is feeling [single word status]. Her reputation: [emoji]. Time: #:## AM/PM, xx [month] [year].*
+    **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation: [emoji]. Location: [country or city]. Time: #:## AM/PM, [month] [day], [year].**
 
     **Purchases & Foraging**: On turns in which Maria is engaged in buying or foraging, ALWAYS use this format:
     - "*Maria has [integer] silver coins. Maria bought [itemname].*"
@@ -852,6 +890,27 @@ useEffect(() => {
  // JSX 
      return (
   <DndProvider backend={HTML5Backend}>
+<div
+  className={`background-container ${
+    (historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i)) ? 'desert-active' : ''
+  } ${(historyOutput.includes('complications') || historyOutput.includes('patient has died')) ? 'complication' : ''}
+  ${historyOutput.match(/at sea|the waves|the ocean|the sea/i) ? 'waves-active' : ''}
+  ${(turnNumber === 1 || turnNumber === 2 || historyOutput.includes('Mexico')) && !historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i) ? 'background-active' : ''}
+  `}
+  style={
+    historyOutput.match(/at sea|the waves|the ocean|the sea/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${opensea})` }
+      : historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${desert})` }
+      : (historyOutput.includes('complications') || historyOutput.includes('patient has died'))
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${emergency})` }
+      : (turnNumber === 1 || turnNumber === 2 || historyOutput.includes('Mexico'))
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${background})` }
+      : {}
+  }
+/>
+
+
     <div className="container">
               <NavMobile setIsDarkMode={setIsDarkMode} setIsAboutOpen={setIsAboutOpen} />
         <Header />
@@ -942,6 +1001,7 @@ useEffect(() => {
           MAP
         </button>
       )}
+
  {commandsDetected.buy && (
         <button
           className="command-button buy-button"
@@ -950,6 +1010,16 @@ useEffect(() => {
           BUY
         </button>
         )}
+
+         {commandsDetected.forage && (
+        <button
+          className="command-button buy-button"
+          onClick={() => handleCommandClick('#forage')}
+        >
+          FORAGE
+        </button>
+        )}
+
          {commandsDetected.sleep && (
         <button
           className="command-button sleep-button"
@@ -958,6 +1028,7 @@ useEffect(() => {
           SLEEP
         </button>
       )}
+
     </div>
 
 
@@ -990,7 +1061,7 @@ useEffect(() => {
 
   {/* PDF links with slide effect */}
  <div className={`pdf-links ${showPdfButtons ? 'show' : ''}`}>
-          <h3>Available Documents:</h3>
+          <h2>Available Documents:</h2>
           {EntityList.filter(entity => entity.pdf).map(entity => (
             <button
               key={entity.name}
@@ -1128,17 +1199,17 @@ useEffect(() => {
         <footer className="footer">
 
   
-                <p style={{ fontSize: '13px', color: 'gray', textAlign: 'center', marginTop: '20px' }}>
+                <p style={{ fontSize: '13px', color: 'black', textAlign: 'center', marginTop: '10px' }}>
                      Made in Santa Cruz by <a 
             href="https://benjaminpbreen.com" 
             target="_blank" 
             rel="noopener noreferrer" 
-            style={{ color: 'gray', textDecoration: 'underline' }}>
+            style={{ color: 'black', textDecoration: 'underline' }}>
             Benjamin Breen
         </a>, © 2024. &nbsp;   
                     <span 
                         onClick={toggleColophon} 
-                        style={{ color: 'gray', textDecoration: 'underline', cursor: 'pointer' }}>
+                        style={{ color: 'black', textDecoration: 'underline', cursor: 'pointer' }}>
                         See the Colophon for more info.
                     </span>
                 </p>

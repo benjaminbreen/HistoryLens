@@ -4,6 +4,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap'); /* New font for buttons */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap');
 
+.background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 160%;
+  z-index: -1; /* Ensure it's behind other content */
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+
+}
+
+
+.background-container.waves {
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  width: 100%;
+  height: 160%;
+    background-repeat: no-repeat; /* Do not repeat the image */
+  background-attachment: fixed; /* Keep the background fixed while content scrolls */
+}
+
+
+
+.background-container.complication {
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  width: 100%;
+  height: 160%;
+  z-index: -1; /* Ensure it's behind other content */
+  background-size: cover; /* Ensure the image covers the entire area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-attachment: fixed; /* Keep the background fixed while content scrolls */
+}
+
 /* General body styling */
 body {
   margin: 0;
@@ -11,7 +47,7 @@ body {
   color: #2d3748;
   height: 100vh;
   overflow-y: auto !important;
-  transition: background-color 10s ease, color 10s ease; /* Add this line */
+  transition: background-color 2s ease, color 2s ease; /* Add this line */
 }
 
 .fade-transition {
@@ -25,8 +61,9 @@ html, body {
 
 h2 {
   margin-top: 0;
-  font-size: 1.8em;
+  font-size: 1.6em;
   font-weight: bold;
+
 
 }
 
@@ -67,6 +104,7 @@ h4 {
   padding: 4px;
   min-height: 100vh;
   width: 100%; /* Ensure the container takes full width */
+
 }
 
 
@@ -75,7 +113,7 @@ h4 {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  margin-bottom: -14px;
+  margin-bottom: -16px;
 }
 
 /* Title Styling */
@@ -104,8 +142,9 @@ h4 {
   width: 120px;
   height: 2px;
   background-color: #e0d5b8;
-  margin: 3px auto 0;
+  margin: 0px auto 0;
   border-radius: 2px;
+   margin-bottom: -1px;
 }
 
 /* Hover effect for title: more vibrant gradient */
@@ -127,7 +166,8 @@ h4 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   /* Transition for smooth gradient change */
-  transition: background 1s ease, color 4s ease;
+  transition: background 1s ease, color 2s ease;
+
 }
 
 
@@ -140,17 +180,19 @@ h4 {
 
 
 .description-container {
-padding: 5px;
+padding: 2px;
 
   text-align: center;
+
 }
 
 .description {
-  font-size: 1rem;
+  font-size: 1.04rem;
   font-style: italic;
   color: #718096; /* Tailwind gray-600 */
   margin: 0;
-
+    margin-bottom: -1px;
+      margin-top: -1px;
 }
 
 h2 {
@@ -167,14 +209,15 @@ h2 {
   overflow-y: auto
 }
 
-.history-agent {
+body:not(.dark-mode) .history-agent {
   width: 70%;
   padding: 15px;
   background: rgba(70, 30, 00, 0.04);
+    background-color: rgba(255, 255, 255, 0.7); /* 50% white transparency */
   border-radius: 12px;
-  box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.20);
+  box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.25);
   border: 2px solid #e0d5b8; /* Subtle border */
-   margin-bottom: 10px;
+   margin-bottom: 25px;
   height: auto; /* Allow the container to adjust its height based on contents */
   overflow: visible;
 }
@@ -191,6 +234,7 @@ h2 {
 }
 
 
+
 .output-box {
   background-color: #ffffff ; /* Light gray */
   padding: 10px;
@@ -205,14 +249,41 @@ h2 {
 }
 
 .output-box p {
-  line-height: 1.5;  /* Reduce line height for manual breaks */
-  font-size: 1.2rem;
+  line-height: 1.45;  /* Reduce line height for manual breaks */
+  font-size: 1.22rem;
 }
+.output-box li {
+    font-size: 1.15rem;
+    margin-left: 15px;
+    font-weight: 700;
+
+}
+
 
 
 .output-box br {
   line-height: 0.5;  /* Reduce line height for manual breaks */
 }
+
+.footer {
+  background-color: rgba(255, 255, 255, 0.65); /* 60% white transparency */
+  border-radius: 10px; /* Creates the rounded tablet/oval shape */
+  padding: 5px 40px; /* Add padding for spacing inside the footer */
+  text-align: center; /* Center align the text */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  width: fit-content; /* Makes the width fit the content inside */
+  margin: 0px auto; /* Center the footer horizontally and add space from the bottom */
+   boxshadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow effect for text */
+
+}
+
+.footer p {
+  font-size: 14px; /* Adjust the font size */
+  line-height: 1.5rem; /* Add appropriate line height for readability */
+  color: black; /* Dark text color for contrast */
+ 
+}
+
 
 .button-container {
   display: flex;
@@ -246,13 +317,14 @@ margin-left: 0px;
 }
 
 .pdf-links.show {
-  max-height: 500px; /* Adjust based on content height */
+  max-height: 410px; /* Adjust based on content height */
   transition: max-height 0.5s ease-in-out;
+   overflow-y: auto; 
 }
 
 .pdf-link-button {
   padding: 8px;
-  background-color: #e0e0e0;
+  background-color: #d0d0d0;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -260,7 +332,7 @@ margin-left: 0px;
 }
 
 .pdf-link-button:hover {
-  background-color: #d0d0d0;
+  background-color: whitesmoke;
 
 }
 
@@ -290,7 +362,7 @@ margin-left: 0px;
 }
 
 .pdf-link-button {
-  background: linear-gradient(145deg, rgba(245, 245, 245, 0.5), rgba(224, 224, 224, 0.5)); /* 50% translucent background */
+  background: linear-gradient(145deg, rgba(245, 245, 245, 0.7), rgba(224, 224, 224, 0.8)); /* 50% translucent background */
   border: 1px solid #ccc;
   color: #333; /* Slightly darker text for readability */
   text-decoration: none; /* Remove underline to make it more like a button */
@@ -315,8 +387,7 @@ margin-left: 0px;
   display: flex;
   flex-wrap: wrap;
   gap: 6px; 
-  padding-top: -2px; /* Space above buttons */
-  margin-bottom: 1px; /* Adjust bottom margin */
+  padding-top: 12px; /* Space above buttons */
   font-size: 1rem;
 
 }
@@ -336,7 +407,7 @@ margin-left: 0px;
   justify-content: space-around;
   width: 45%;
  overflow: auto;
-  transition: background-color 12s ease, color 12s ease;
+  transition: background-color 3s ease, color 3s ease;
 
 }
 
@@ -353,7 +424,7 @@ margin-left: 0px;
   box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
    margin-top: 5px;
-     transition: background-color 12s ease, color 12s ease;
+     transition: background-color 3s ease, color 3s ease;
 }
 
 
@@ -400,6 +471,15 @@ margin-left: 0px;
 }
 
 .command-button.buy-button:hover {
+  background: linear-gradient(30deg, #c17a00, #cc7474); /* More intense golden and ruby with a reflective quality */
+  box-shadow: 0 3px 3px rgba(193, 122, 0, 0.5), 0 0 8px rgba(204, 116, 116, 0.7), 0 0 10px rgba(255, 165, 0, 0.3) inset; /* Iridescent gold and ruby glow */
+}
+
+.command-button.forage-button {
+  background: linear-gradient(30deg, #cc9400, #d98b8b); /* Original gradient */
+}
+
+.command-button.forage-button:hover {
   background: linear-gradient(30deg, #c17a00, #cc7474); /* More intense golden and ruby with a reflective quality */
   box-shadow: 0 3px 3px rgba(193, 122, 0, 0.5), 0 0 8px rgba(204, 116, 116, 0.7), 0 0 10px rgba(255, 165, 0, 0.3) inset; /* Iridescent gold and ruby glow */
 }
@@ -472,7 +552,7 @@ button:hover {
 .emoji {
   font-size: 1.15rem; /* Increase emoji size */
   margin-right: 10px; /* Add extra space between the emoji and text */
-  text-shadow: 0px 2px 10px rgba(255, 255, 255, 0.7); /* White glow effect */
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.7); /* White glow effect */
   transition: text-shadow 0.3s ease, font-size 0.3s ease; /* Smooth transition */
 }
 
@@ -829,46 +909,55 @@ button:hover .emoji {
 /* Dark Mode Styling */
 body.dark-mode {
   background-color: #1a202c; /* Tailwind's Gray-900 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
-  transition: background-color 12s ease, color 12s ease; /* Add this line */
+  color: #e2e8f0; /* Light gray text */
+  transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transitions */
 }
 
-.user-input.dark-mode {
-    font-weight: bold;
-    color: black; /* Darker text color */
-    font-size: 1.2rem;
-  }
-
-/* Adjustments for the dark mode toggle in dark mode */
-body.dark-mode .hamburger-icon span {
-    background-color: #e0e0e0;
+.fade-transition.dark-mode {
+  transition: background-color 2s ease, color 2s ease;
 }
 
-body.dark-mode .menu-pane {
-    background-color: rgba(255, 255, 255, 0.1);
+body.dark-mode .output-box {
+  background-color: #2d3748; /* Darker background for dark mode */
+  color: #e2e8f0; /* Lighter text color */
+  padding: 15px; /* Add padding for more space */
+  border-radius: 10px; /* Smoother corners */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  max-height: 70vh; /* Ensure it doesn’t overflow vertically */
+  overflow-y: auto; /* Enable scrolling */
+  font-size: 1.1rem; /* Slightly bigger font for better readability */
+  line-height: 1.6; /* Increase line height for clarity */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+  border: 1px solid #4a5568; /* Subtle border for dark mode */
 }
-
-body.dark-mode .menu-pane ul li a,
-body.dark-mode .menu-pane ul li button {
-    color: #e0e0e0;
-}
-
-
-/* Dark Mode */
-body.dark-mode {
-  background-color: #1a202c; /* Tailwind's Gray-900 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
+body.dark-mode .background-container {
+  display: none; /* Completely hide the background container in dark mode */
 }
 
 
-
-body.dark-mode .main-content, 
-body.dark-mode .interaction-section {
-  background-color: #2d3748; /* Tailwind's Gray-800 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
-  transition: background-color 12s ease, color 12s ease; /* Add this line */
+/* History Content Section */
+body.dark-mode .history-content {
+  background-color: #2d3748; /* Darker background to match dark mode */
+  color: #e2e8f0; /* Lighter text for better contrast */
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); /* Shadow to elevate the content */
 }
 
+/* Paragraphs inside history-content for dark mode */
+body.dark-mode .history-content p {
+  color: #e2e8f0;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+h1.dark-mode, h2.dark-mode, h3.dark-mode, h4.dark-mode, h5.dark-mode {
+  color: #e2e8f0; /* Ensure heading texts are readable in dark mode */
+}
 
 body.dark-mode .title, 
 body.dark-mode .subtitle {
@@ -877,147 +966,151 @@ body.dark-mode .subtitle {
   -webkit-text-fill-color: transparent;
 }
 
-body.dark-mode .description {
-  color: #a0aec0; /* Tailwind's Gray-500 */
+.container.dark-mode {
+  background-color: #1a202c;
+}
+
+.main-content.dark-mode, 
+.interaction-section.dark-mode {
+  background-color: #2d3748; /* Tailwind's Gray-800 */
+  color: #e2e8f0; /* Light gray text */
+  border-color: #4a5568; /* Subtle darker border */
 }
 
 body.dark-mode .history-agent {
-  background-color: #2d3748; /* Tailwind's Gray-800 */
-  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.5);
+  width: 70%;
+  padding: 15px;
+  background-color: rgba(45, 55, 72, 0.8); /* Dark background with 80% opacity */
+  border-radius: 12px;
+  box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark mode */
+  border: 2px solid #4a5568; /* Dark gray border */
+  color: #e2e8f0; /* Light text color for readability */
+  margin-bottom: 10px;
+  height: auto; /* Allow the container to adjust its height based on contents */
+  overflow: visible;
 }
 
-body.dark-mode .output-box {
+.output-box.dark-mode {
   background-color: #4a5568; /* Tailwind's Gray-700 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
+  color: #e2e8f0;
+  border: 1px solid #4a5568; /* Subtle border for dark mode */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark mode */
 }
 
-body.dark-mode .command-button {
-  background: linear-gradient(45deg, #0072ff, #00c6ff); /* Invert the colors for dark mode */
-  color: #1a202c; /* Tailwind's Gray-900 */
-  transition: background-color 12s ease, color 12s ease; /* Add this line */
+.output-box.dark-mode p {
+  color: #e2e8f0;
 }
 
-body.dark-mode .command-button:hover {
-  background: linear-gradient(45deg, #005bb5, #00c6ff); /* Adjust hover effect */
+button.dark-mode,
+.pdf-link-button.dark-mode,
+.command-button.dark-mode {
+  background: linear-gradient(45deg, #0072ff, #00c6ff); /* Blue gradient for dark mode */
+  color: #1a202c; /* Dark gray text color */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5); /* Shadow for buttons */
 }
 
-body.dark-mode .command-button.prescribe-button {
+button.dark-mode:hover,
+.command-button.dark-mode:hover {
+  background: linear-gradient(45deg, #005bb5, #00c6ff); /* Darker hover effect */
+}
+
+.button-container.dark-mode {
+  background-color: #2d3748; /* Darker button container */
+}
+
+.bottom-buttons.dark-mode {
+  background-color: #2d3748;
+}
+
+/* PDF link button styling */
+.pdf-link-button.dark-mode {
+  background: linear-gradient(145deg, rgba(45, 55, 72, 0.8), rgba(74, 85, 104, 0.8)); /* Darker background */
+  color: #e2e8f0;
+  border: 1px solid #4a5568;
+}
+
+.pdf-link-button.dark-mode:hover {
+  background: linear-gradient(145deg, rgba(45, 55, 72, 0.9), rgba(74, 85, 104, 0.9)); /* Brighter on hover */
+}
+
+/* Command buttons dark mode */
+.command-button.dark-mode.prescribe-button {
   background: linear-gradient(30deg, #005bb5, #e57272); /* Adjusted gradient */
 }
 
-body.dark-mode .command-button.symptoms-button {
+.command-button.dark-mode.symptoms-button {
   background: linear-gradient(200deg, #b794f4, #805ad5); /* Adjusted gradient */
 }
 
-body.dark-mode .command-button.diagnose-button {
+.command-button.dark-mode.diagnose-button {
   background: linear-gradient(90deg, #ecc94b, #d69e2e); /* Adjusted gradient */
 }
 
-body.dark-mode .command-button.buy-button {
+.command-button.dark-mode.buy-button {
   background: linear-gradient(30deg, #68d391, #48bb78); /* Adjusted gradient */
 }
 
-body.dark-mode .command-button.map-button {
-  background: linear-gradient(80deg, #9f7aea, #6b46c1); /* Adjusted gradient */
+/* Title and subtitle dark mode */
+.title-container.dark-mode .title,
+.title-container.dark-mode .subtitle {
+  background: linear-gradient(45deg, #4A90E2, #00c6ff); /* Gradient for dark mode */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    color: floralwhite;
+
 }
 
-body.dark-mode .portrait-section {
-
+.title.dark-mode {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; 
+  font-weight: 700;
+  letter-spacing: 0.04rem;
+  text-align: center;
+  margin: 0;
+  padding: 12px 0 1px;
+  margin-right: 0.5rem;
+  text-transform: none; 
+  position: relative;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  color: floralwhite;
 }
 
-body.dark-mode .npc-portrait-image, 
-body.dark-mode .pc-portrait-image {
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5); /* Darker shadow for images */
+/* Dark mode for descriptions */
+.description.dark-mode {
+  color: #a0aec0; /* Light gray for descriptions */
 }
 
-body.dark-mode .portrait-caption {
+/* Popup Dark Mode */
+.portrait-popup.dark-mode, 
+.portrait-section.dark-mode {
+  background-color: #2d3748;
+  color: #e2e8f0;
+}
+
+.portrait-caption.dark-mode {
   color: #a0aec0; /* Tailwind's Gray-500 */
 }
 
-body.dark-mode .portrait-popup, 
-body.dark-mode .journal-entry-box {
-  background-color: #2d3748; /* Tailwind's Gray-800 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
+.popup-info.dark-mode {
+  color: #e2e8f0;
 }
 
-body.dark-mode .popup-info {
-  color: #e2e8f0; /* Tailwind's Gray-200 */
+.portrait-popup.dark-mode .popup-info p {
+  color: #cbd5e0; /* Slightly lighter text in popups */
 }
 
-
-
-body.dark-mode .close-button:hover {
-  background-color: #c53030; /* Darker red on hover */
+.portrait-popup.dark-mode .popup-portrait-image {
+  box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.1); /* Subtle white glow */
+  border: 1px solid #4a5568; /* Subtle border */
 }
 
-body.dark-mode .end-game-button {
-  background-color: #f56565; /* Adjusted to a lighter red */
-  box-shadow: 0 0 15px rgba(229, 62, 62, 0.75); /* Adjusted glow effect */
+/* Footer in dark mode */
+.footer.dark-mode {
+  background-color: #1a202c;
+  color: #e2e8f0;
+  border-top: 1px solid #4a5568;
 }
 
-body.dark-mode .end-game-button:hover {
-  background-color: #c53030; /* Darker red on hover */
-}
-
-body.dark-mode .view-counter-button {
-  background-color: #3b82f6; /* Adjusted blue */
-}
-
-body.dark-mode .view-counter-button:hover {
-  background-color: #2c5282; /* Darker blue on hover */
-}
-
-body.dark-mode .mix-drugs-button {
-  background-color: #f6ad55; /* Lighter amber */
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.75); /* Adjusted glow effect */
-}
-
-body.dark-mode .mix-drugs-button:hover {
-  background-color: #dd6b20; /* Darker amber on hover */
-}
-
-body.dark-mode .journal-pane, 
-body.dark-mode .inventory-pane, 
-body.dark-mode .simulation-history-pane {
-  background-color: #2d3748; /* Tailwind's Gray-800 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
-  border-left: 1px solid #4a5568; /* Darker gray border */
-  z-index:100;
-}
-
-body.dark-mode .journal-entry, 
-body.dark-mode .inventory-item {
-  border-bottom: 1px solid #4a5568; /* Darker border for entries */
-}
-
-body.dark-mode .auto-entry {
-  color: #cbd5e0; /* Tailwind's Gray-400 */
-}
-
-body.dark-mode .human-entry {
-  color: #e2e8f0; /* Tailwind's Gray-200 */
-}
-
-body.dark-mode .critique-agent-container {
-  background-color: #2d3748; /* Tailwind's Gray-800 */
-}
-
-body.dark-mode .critique-agent-container .output-box {
-  background-color: #4a5568; /* Tailwind's Gray-700 */
-}
-
-body.dark-mode .counter {
-  color: #cbd5e0; /* Tailwind's Gray-400 */
-}
-
-body.dark-mode .loading-dots span {
-  color: #e2e8f0; /* Tailwind's Gray-200 */
-}
-
-body.dark-mode .simulation-history.open {
-  background-color: #2d3748; /* Tailwind's Gray-800 */
-  color: #e2e8f0; /* Tailwind's Gray-200 */
-}
 
 
 
@@ -1112,10 +1205,8 @@ padding: 3px;
 .history-content {
       background-color: white;
 } 
-.output-box p {
-  line-height: 1.3;  /* Reduce line height for manual breaks */
-  font-size: .9rem;
-}
+
+
 
   .output-box {
     
@@ -1242,7 +1333,6 @@ padding: 3px;
   }
 
 
-
    .output-box {
 
     padding: 6px; /* Reduce padding */
@@ -1367,10 +1457,22 @@ padding: 3px;
     overflow-anchor: none;
   }
 
-  .footer {
-    padding-bottom: 20px;
-    line-height: .5rem;
-  }
+.footer {
+  background-color: rgba(255, 255, 255, 0.5); /* 50% white transparency */
+  border-radius: 50px; /* Creates the rounded tablet/oval shape */
+  padding: 20px 30px; /* Add padding for spacing inside the footer */
+  text-align: center; /* Center align the text */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  width: fit-content; /* Makes the width fit the content inside */
+  margin: 20px auto; /* Center the footer horizontally and add space from the bottom */
+}
+
+.footer p {
+  font-size: 14px; /* Adjust the font size */
+  line-height: 1.5rem; /* Add appropriate line height for readability */
+  color: #333; /* Dark text color for contrast */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow effect for text */
+}
 
 
 

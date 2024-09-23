@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './TipBox.css';
 
 function TipBox({ currentTurn }) {
   const tips = [
@@ -23,12 +23,15 @@ function TipBox({ currentTurn }) {
     "Be aware of potential spies or rivals who might sabotage your work. Not everyone is who they seem."
   ];
 
+  
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (isVisible) {
-      setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length);
+      setTimeout(() => {
+        setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length);
+      }, 600); // Delay between tips for smooth animation
     }
   }, [currentTurn, isVisible]);
 
@@ -42,18 +45,7 @@ function TipBox({ currentTurn }) {
 
   return (
     <div
-    className="tip-box"
-      style={{
-        width: '100%',
-        maxWidth: '640px',
-        backgroundColor: '#FEF3C7',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        borderRadius: '10px',
-        padding: '9px',
-        position: 'relative',
-        cursor: 'pointer',
-        maxHeight: '400px'
-      }}
+      className="tip-box"
       onClick={() => setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length)}
     >
       <button
@@ -61,33 +53,14 @@ function TipBox({ currentTurn }) {
           e.stopPropagation();
           handleClose();
         }}
-        style={{
-          position: 'absolute',
-          top: '4px',
-          right: '4px',
-          color: '#854d0e',
-          fontWeight: 'bold',
-          opacity: 0.75,
-          fontSize: '1rem',
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          transition: 'opacity 0.3s',
-        }}
-        onMouseOver={(e) => (e.target.style.opacity = 1)}
-        onMouseOut={(e) => (e.target.style.opacity = 0.75)}
         aria-label="Close"
       >
         ×
       </button>
-      <h2 style={{ fontSize: '1.05rem', fontWeight: '600', color: '#854d0e' }}>
-  Tips <span style={{ fontSize: '0.85rem', color: '#4a5568' }}>(click for more...)</span>
-</h2>
-      <p style={{ fontSize: '1rem', color: '#4a5568' }}>
-        {tips[currentTipIndex]}
-      </p>
-      {/* Small note at the bottom */}
-
+      <h2>
+        Tips <span>(click for more...)</span>
+      </h2>
+      <p>{tips[currentTipIndex]}</p>
     </div>
   );
 }

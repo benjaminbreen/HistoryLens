@@ -257,7 +257,7 @@ Responses:
         <button className="submit-questions-button" onClick={handleQuestionSubmit}>
           {isLoading ? 'Submitting...' : 'Submit Questions'}
         </button>
-        <button className="close-button" onClick={onClose}>
+        <button className="symptoms-popup-close" onClick={onClose}>
           Close
         </button>
       </div>
