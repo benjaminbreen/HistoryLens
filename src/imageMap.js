@@ -564,7 +564,7 @@ nightfiredisaster: {
   src: require('./assets/nightfiredisaster.jpg'),
   tags: ['fire', 'disaster', 'night', 'chaos', 'colonial', 'tragedy', 'destruction']
 },
-  anamariadesoto: {
+  anadesoto: {
     src: require('./assets/anadesoto.jpg'),
     tags: ['patient', 'Ana de Soto', 'woman', 'young', 'weaver']
   },
@@ -574,19 +574,19 @@ nightfiredisaster: {
   },
   southwell: {
     src: require('./assets/southwell.jpg'),
-    tags: ['patient', 'Sir Robert Southwell', 'man', 'English', 'foreign', 'diplomat']
+    tags: ['specific patient', 'Sir Robert Southwell', 'man', 'English', 'foreign', 'diplomat']
   },
    sorjuanainesdelacruz: {
     src: require('./assets/sorjuanainesdelacruz.jpg'),
-    tags: ['patient', 'nun', 'woman', 'scholar', 'genius', 'writer']
+    tags: ['specific patient', 'nun', 'woman', 'scholar', 'genius', 'writer', 'Sor Juana Ines de la Cruz']
   },
   franciscodiasdearaujo: {
     src: require('./assets/franciscodiasdearaujo.jpg'),
-    tags: ['patient', 'Francisco Dias de Araujo', 'man', 'merchant', 'well-dressed', 'handsome']
+    tags: ['specific patient', 'Francisco Dias de Araujo', 'man', 'merchant', 'well-dressed', 'handsome']
   },
   carlosenriquez: {
     src: require('./assets/carlosenriquez.jpg'),
-    tags: ['patient', 'Carlos Enriquez', 'man', 'attorney']
+    tags: ['specific patient', 'Carlos Enriquez', 'man', 'attorney']
   },
   countryside: {
     src: require('./assets/countryside.jpeg'),
@@ -594,11 +594,11 @@ nightfiredisaster: {
   },
   default: {
     src: require('./assets/default.jpeg'),
-    tags: ['default', 'fallback', 'generic']
+    tags: ['never use this image, pick a different one']
   },
   donalejandrocortez: {
     src: require('./assets/donalejandrocortez.jpg'),
-    tags: ['patient', 'Don Alejandro Cortez', 'noble', 'judge', 'old']
+    tags: ['specific patient', 'Don Alejandro Cortez', 'noble', 'judge', 'old']
   },
   donluis: {
     src: require('./assets/donluis.jpeg'),
@@ -666,7 +666,7 @@ nightfiredisaster: {
   },
   tejedora: {
     src: require('./assets/tejedora.jpeg'),
-    tags: ['woman', 'weaver', 'artisan']
+    tags: ['woman', 'weaver', 'artisan', 'generic female character']
   },
   paisano: {
     src: require('./assets/paisano.jpeg'),
@@ -674,7 +674,7 @@ nightfiredisaster: {
   },
   dona: {
     src: require('./assets/dona.jpg'),
-    tags: ['woman', 'noble', 'dona']
+    tags: ['woman', 'noble', 'dona', 'generic female character']
   },
   caballero: {
     src: require('./assets/caballero.jpg'),
@@ -818,7 +818,7 @@ nightfiredisaster: {
   },
   spanishnoble: {
     src: require('./assets/spanishnoble.jpg'),
-    tags: ['noble', 'man', 'wealthy']
+    tags: ['noble', 'man', 'wealthy', 'generic male character', 'aristocrat']
   },
   mestizo: {
     src: require('./assets/mestizo.jpg'),
@@ -830,11 +830,11 @@ nightfiredisaster: {
   },
   merchantman: {
     src: require('./assets/merchantman.jpg'),
-    tags: ['merchant', 'man', 'market']
+    tags: ['merchant', 'man', 'market', 'generic male character']
   },
   laborer: {
     src: require('./assets/laborer.jpg'),
-    tags: ['worker', 'laborer', 'man']
+    tags: ['worker', 'laborer', 'man', 'farmer', 'generic male character']
   },
   soldier: {
     src: require('./assets/soldier.jpg'),
@@ -842,7 +842,7 @@ nightfiredisaster: {
   },
   ranchero: {
     src: require('./assets/ranchero.jpg'),
-    tags: ['rancher', 'man', 'landowner']
+    tags: ['rancher', 'man', 'landowner', 'farmer', 'generic male character']
   },
   curandera: {
     src: require('./assets/curandera.jpg'),
@@ -874,7 +874,7 @@ nightfiredisaster: {
   },
   peasantwoman: {
     src: require('./assets/peasantwoman.jpg'),
-    tags: ['peasant', 'woman', 'worker']
+    tags: ['peasant', 'woman', 'worker', 'generic female character']
   },
   dons: {
     src: require('./assets/dons.jpg'),
@@ -967,7 +967,7 @@ nightfiredisaster: {
   },
   panchorodriguez: {
     src: require('./assets/panchorodriguez.jpg'),
-    tags: ['patient', 'Pancho Rodriguez', 'man']
+    tags: ['specific patient', 'Pancho Rodriguez', 'man']
   },
   university: {
     src: require('./assets/university.jpg'),
@@ -979,11 +979,11 @@ nightfiredisaster: {
   },
   frayjordanes: {
     src: require('./assets/frayjordanes.jpg'),
-    tags: ['Fray Jordanes', 'religious', 'friar']
+    tags: ['Fray Jordanes', 'religious', 'friar', 'specific patient']
   },
   antoniadeochoa: {
     src: require('./assets/antoniadeochoa.jpg'),
-    tags: ['patient', 'Antonia de Ochoa', 'woman']
+    tags: ['specific patient', 'Antonia de Ochoa', 'woman']
   },
   compounding: {
     src: require('./assets/compounding.jpg'),

@@ -15,25 +15,31 @@ body:not(.dark-mode) .prescribe-popup {
   pointer-events: auto;
   color: #4a4a4a;
 }
+
 @keyframes glow-green {
   0% {
-    box-shadow: 0 0 10px rgba(144, 238, 144, 0.2); /* Light green */
+    box-shadow: 
+      0 0 10px rgba(0, 100, 0, 0.1),   /* Darker green */
+      0 20px 52px rgba(0, 0, 0, 0.74); /* Keep original box shadow */
   }
   50% {
     box-shadow: 
-      0 0 30px rgba(60, 179, 113, 0.7),  /* Medium sea green */
-      0 0 60px rgba(144, 238, 144, 0.5),  /* Light green */
-      0 0 80px rgba(34, 139, 34, 0.3);   /* Forest green */
+      0 0 40px rgba(0, 128, 128, 0.8), /* Greenish blue */
+      0 0 80px rgba(34, 139, 34, 0.5), /* Forest green */
+      0 0 100px rgba(0, 100, 0, 0.3),   /* Dark green */
+      0 20px 52px rgba(0, 0, 0, 0.74); /* Keep original box shadow */
   }
   100% {
-    box-shadow: 0 0 10px rgba(144, 238, 144, 0.2); /* Light green */
+    box-shadow: 
+      0 0 10px rgba(0, 100, 0, 0.1),   /* Dark green */
+      0 20px 52px rgba(0, 0, 0, 0.74); /* Keep original box shadow */
   }
 }
 
 .prescribe-popup.loading {
   animation: glow-green 4s infinite ease-in-out;
   background-color: rgba(45, 45, 45, 0.9); /* Adjust as needed */
-   box-shadow: 0 20px 52px rgba(0, 0, 0, 0.74);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.74); /* Original box shadow */
 }
 
 

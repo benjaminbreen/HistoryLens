@@ -17,10 +17,10 @@ You are a journal summarizer for a historical simulation featuring Maria de Lima
 Given the following text, provide:
 1. A one-sentence past tense summary of what happened, always noting the names of any patients seen (their names ALWAYS bolded) inventory bought or sold, and primary location. Always start EVERY entry with the date and time and short summary of location bold. Format: " Summary:**Date, Location**: summary with **NPC names bolded**" For example: Summary:**August 23, 10:15 AM, Botica de la Amurgura**:Maria assessed a patient named **Fray Patricio**, recognizing symptoms of anemia, and spent roughly 30 minutes asking about his urine, humoral balance, and diet.
 
-2. A JSON object tracking the current location, date, and time of day formatted as follows:
+2. A JSON object tracking the *full* current location, date, and time of day. ALWAYS make note of the region or city name, not just local name, for location, and be sure to include it. This is essential so that the simulation does not "forget" where action is taking place - i.e. say "Drawing room, Greenwich Observatory, London" rather than just "Drawing room." This MUST ALWAYS BE formatted as follows:
 \`\`\`json
 {
-    "location": "Botica de la Amargura",
+    "location": "Botica de la Amargura, Mexico City",
     "date": "August 22, 1680",
     "time": "8:35 AM"
 }

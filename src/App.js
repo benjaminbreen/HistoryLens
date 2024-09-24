@@ -1199,7 +1199,7 @@ useEffect(() => {
         <footer className="footer">
 
   
-                <p style={{ fontSize: '13px', color: 'black', textAlign: 'center', marginTop: '10px' }}>
+                <p style={{ fontSize: '15px', color: 'black', textAlign: 'center', marginTop: '10px' }}>
                      Made in Santa Cruz by <a 
             href="https://benjaminpbreen.com" 
             target="_blank" 

@@ -250,7 +250,7 @@ body:not(.dark-mode) .history-agent {
 
 .output-box p {
   line-height: 1.45;  /* Reduce line height for manual breaks */
-  font-size: 1.22rem;
+  font-size: 1.20rem;
 }
 .output-box li {
     font-size: 1.15rem;
@@ -266,21 +266,21 @@ body:not(.dark-mode) .history-agent {
 }
 
 .footer {
-  background-color: rgba(255, 255, 255, 0.65); /* 60% white transparency */
-  border-radius: 10px; /* Creates the rounded tablet/oval shape */
-  padding: 5px 40px; /* Add padding for spacing inside the footer */
+  background-color: rgba(255, 255, 255, 0.55); /* 50% white transparency */
+  border-radius: 50px; /* Creates the rounded tablet/oval shape */
+  padding: 10px 30px; /* Add padding for spacing inside the footer */
   text-align: center; /* Center align the text */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
   width: fit-content; /* Makes the width fit the content inside */
-  margin: 0px auto; /* Center the footer horizontally and add space from the bottom */
-   boxshadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow effect for text */
+  margin: 1px auto; /* Center the footer horizontally and add space from the bottom */
 
 }
 
 .footer p {
-  font-size: 14px; /* Adjust the font size */
+  
   line-height: 1.5rem; /* Add appropriate line height for readability */
   color: black; /* Dark text color for contrast */
+font-size: 22px; /* Adjust the font size */
  
 }
 
@@ -317,7 +317,7 @@ margin-left: 0px;
 }
 
 .pdf-links.show {
-  max-height: 410px; /* Adjust based on content height */
+  max-height: 320px; /* Adjust based on content height */
   transition: max-height 0.5s ease-in-out;
    overflow-y: auto; 
 }
@@ -549,7 +549,7 @@ button:hover {
 }
 
 /* Add white glow effect to emojis */
-.emoji {
+button .emoji {
   font-size: 1.15rem; /* Increase emoji size */
   margin-right: 10px; /* Add extra space between the emoji and text */
   text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.7); /* White glow effect */
@@ -1116,6 +1116,22 @@ button.dark-mode:hover,
 
 @media (max-width: 768px) {
 
+  .command-button.map-button {
+  
+  font-size: .7rem;
+}
+
+
+
+.simulation-history-button {
+  
+  font-size: .7rem;
+ 
+  margin-top: -4px;
+ 
+}
+
+
 .title-container {
     display: flex;
     flex-direction: row; /* Stack title and subtitle vertically */
@@ -1124,6 +1140,16 @@ button.dark-mode:hover,
     margin-bottom: -10px; /* Less margin for tighter spacing */
   }
 
+.output-box p {
+  line-height: 1.35;  /* Reduce line height for manual breaks */
+  font-size: .9rem;
+}
+.output-box li {
+    font-size: .8rem;
+    margin-left: 15px;
+    font-weight: 700;
+
+}
   /* Title styling for smaller screens */
   .title {
     font-size: 1.01rem !important; /* Slightly larger but still compact */
@@ -1143,6 +1169,27 @@ button.dark-mode:hover,
   border-radius: 2px;
   margin-right: 5px;
 }
+
+.background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 190%;
+  z-index: -1; /* Ensure it's behind other content */
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+
+}
+
+/* Add white glow effect to emojis */
+button .emoji {
+  font-size: .8rem; /* Increase emoji size */
+  margin-right: 3px; /* Add extra space between the emoji and text */
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.7); /* White glow effect */
+  transition: text-shadow 0.3s ease, font-size 0.3s ease; /* Smooth transition */
+}
+
+
 
   /* Subtitle styling for smaller screens */
   .subtitle {
@@ -1186,7 +1233,7 @@ padding: 3px;
   }
 
   .interaction-section {
-    width: 25% !important; /* Take 20% of the width */
+    width: 22% !important; /* Take 20% of the width */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1238,14 +1285,14 @@ padding: 3px;
     justify-content: center;
     align-items: center;
     display: flex;
-    font-size: .70rem;
+    font-size: .60rem;
     padding-left: 2px;
     padding-right: 2px
   }
 
   
  .input, textarea, select {
-    font-size: 16px; /* Ensure minimum font size of 16px to prevent zoom */
+    font-size: 17px; /* Ensure minimum font size of 16px to prevent zoom */
   }
 
   .tip-box {
@@ -1263,9 +1310,9 @@ padding: 3px;
 .inventory-pane,
 .simulation-history-pane {
   position: fixed;
-  right: -210px;
+  right: -151px;
   top: 0;
-  width: 200px;
+  width: 150px;
   height: 100%;
   opacity: 95%;
   background-color: #FAF9F6; /* Light gray background */
@@ -1279,23 +1326,36 @@ padding: 3px;
 }
 
 
-
-  .counter-and-map {
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    align-items: flex-start;
-      font-size: 7px;
-  }
-
-
 .counter {
-  font-size: 8px;
-  color: #4A5568; /* Tailwind gray */
-  font-weight: 600; /* Bold the text to make it stand out */
-  letter-spacing: 0.01rem; /* Add some letter spacing for a cleaner look */
-  text-transform: uppercase; /* Make the text uppercase for a more prominent appearance */
-  padding-left: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: black;
+  font-weight: 700;
+  letter-spacing: 0.04rem;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 40px;
+  background-color: #f8f8f8;
+  border: 1px solid #e0d5b8;
+  text-align: center;
+  opacity: .6; 
+    box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.10);
+    margin-bottom: 2px;
+
+
+}
+
+/* Target the p element inside the .counter specifically */
+.counter p {
+  margin: 0; /* Remove any default margins */
+  line-height: 1.1; /* Adjust line height to make the text fit better */
+  padding: 2px; /* Make sure there's no extra padding on the text */
+  display: inline-block; /* Ensure it’s treated as inline for centering */
+  background-color: #fff;
+   border-radius: 1px;
+   
 }
 
 
@@ -1313,10 +1373,10 @@ padding: 3px;
     align-items: center; /* Center-align on mobile */
     text-align: center; /* Center-align text on mobile */
     margin-bottom: -16px;
-    margin-top: -2px;
+    margin-top: -5px;
   }
-  .portrait-caption {
-        font-size: 0.5rem;
+  p.portrait-caption {
+        font-size: 0.6rem;
   }
 
   .popup-info {
@@ -1342,6 +1402,7 @@ padding: 3px;
     max-height: 70vh; /* Increase max-height to show more content */
     overflow-y: auto;
     font-size: .9rem; /* Keep font size manageable */
+
   }
 
    .main-content, .interaction-section {
@@ -1433,7 +1494,7 @@ padding: 3px;
   }
 
   .mix-drugs-button {
-    font-size: 1rem; /* Slightly reduce the size of the Mix Drug button */
+    font-size: .7rem; /* Slightly reduce the size of the Mix Drug button */
   }
 
   .commonplace-book-container {
@@ -1451,20 +1512,16 @@ padding: 3px;
     margin: 5px 0; /* Space buttons out vertically */
   }
 
-  /* Smaller Font Overall */
-  body {
-    font-size: 0.9rem; /* Reduce the base font size slightly for mobile */
-    overflow-anchor: none;
-  }
+
 
 .footer {
   background-color: rgba(255, 255, 255, 0.5); /* 50% white transparency */
   border-radius: 50px; /* Creates the rounded tablet/oval shape */
-  padding: 20px 30px; /* Add padding for spacing inside the footer */
+  padding: 10px 30px; /* Add padding for spacing inside the footer */
   text-align: center; /* Center align the text */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
   width: fit-content; /* Makes the width fit the content inside */
-  margin: 20px auto; /* Center the footer horizontally and add space from the bottom */
+  margin: 1px auto; /* Center the footer horizontally and add space from the bottom */
 }
 
 .footer p {
