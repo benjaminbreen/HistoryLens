@@ -166,13 +166,28 @@
   
 }
 
+
+
+.mixing-instructions {
+  font-family: 'IM Fell English', serif;
+  font-size: 1rem;
+  color: floralwhite;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+  margin-bottom: 2px; /* Adjust spacing between title and square */
+  text-align: center; /* Center the title */
+  padding-left: 10%;
+    padding-right: 10%;
+    font-style: italic;
+}
 .method-title {
   font-family: 'IM Fell English', serif;
   font-size: 1.2rem;
   color: #e1cfa5;
-  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
   margin-bottom: 5px; /* Adjust spacing between title and square */
-  text-align: left; /* Center the title */
+  text-align: center; /* Center the title */
+  font-weight: 900;
+  letter-spacing: .05rem;
 }
 
 .method-square {
@@ -223,17 +238,18 @@
 /* Inventory Grid */
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 10px;
-  padding: 10px;
+  gap: 8px;
+  padding: 8px;
   margin-top: 5px;
   background-color: rgba(68, 68, 68, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 14px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
    height: auto; /* Set a fixed height for the grid */
   overflow-y: auto; /* Enable vertical scrollbar */
+   overflow-x: auto;
 }
 
 .mixing-inventory-item {
@@ -285,20 +301,20 @@
 
 .mixing-hover-popup {
   position: fixed;
-  top: 60%;
-  left: 50%;
+  top: 50%;
+  left: 92%;
   transform: translate(-50%, -50%);
   background-color: rgba(45, 45, 45, 0.9);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
   font-family: 'IM Fell English', serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #eaeaea;
   text-align: left;
   text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
   z-index: 1000;
-  max-width: 600px;
+  max-width: 230px;
   pointer-events: none;
 }
 
@@ -317,6 +333,8 @@
     margin-right: auto;
       font-family: 'IM Fell English', serif;
       margin-bottom: 10px;
+      border: 2px solid #e0d5b8;
+
 }
 
 .compound-item {
@@ -328,9 +346,9 @@
 
 
 .compound-item .emoji {
-  font-size: 5rem;
-  margin-right: 10px;
-  margin-left: 10px;
+  font-size: 6rem;
+
+  margin-left: 10%;
   text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
   padding: 2px;
   flex-shrink: 0;

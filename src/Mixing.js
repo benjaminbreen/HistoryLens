@@ -73,7 +73,7 @@ const handleDrop = (item, method) => {
             setError(null);
 
             const systemPrompt = `
-                You are a 1680s iatrochemist tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." Some potential compound drug names: Balsamum Lucatelli, Elixir Proprietatis, Theriac, Sal Volatile Oleosum, Aurum Potabile, Gascon's Powder, Tinctura Antimonii, Elixir de Paracelso, Balsamo Peruviano, Aqua Vitae, Tinctura Opii Crocata, Plague Water, Mercurius Dulcis, Balsam of Sulphur, Aqua Mercurialis, Camphorated Oil, Quicksilver Liniment, Mithridate.
+                You are a 1680s iatrochemist tasked with simulating the process of creating compound drugs based on real principles of "chymical medicine." Some potential compound drug names: Balsamum Lucatelli, Elixir Proprietatis, Theriac, Sal Volatile Oleosum, Aurum Potabile, Gascon's Powder, Tinctura Antimonii, Elixir de Paracelso, Balsamo Peruviano, Salt of Mallow, Pulvis Cephalico, Hysteric Water, Cinnamon Water, Aqua Celestis, Camphorated Wine Spirit, Volatile Spirit, Aqua Vitae, Tinctura Opii Crocata, Plague Water, Mercurius Dulcis, Balsam of Sulphur, Aqua Mercurialis, Camphorated Oil, Quicksilver Liniment, Mithridate.
                 When provided with two or more simple ingredients (materia medica) and a compounding method, you must generate a historically plausible compound drug. Mention if it is toxic in the description. Toxic drugs can either be unusuable sludge or can be usable purgatives (classified as "Vomitorios").
                 Guide for mixing (other combos work too - this is just a guide to general logic):
                 Quicksilver: Calcination of quicksilver ALWAYS yields toxic but highly valuable red precipitate of mercury (used in ointments); distillation yields distilled quicksilver, other methods nothing, as quicksilver is volatile and not suited for these methods. Distillation yields Distilled Quicksilver which is toxic and usually produces toxic compounds (not unusuable sludge - actual named compounds with toxic properties) when mixed.
@@ -277,8 +277,19 @@ setIsMixButtonEnabled(false);
       
    };
     return (
-        <div className={`mixing-container ${isLoading ? 'loading' : ''}`}>
+         <div className={`mixing-container ${isLoading ? 'loading' : ''}`}>
             <h1 className="mixing-header">Mix a New Drug</h1>
+            
+            {/* Conditional rendering for instructions */}
+            {!compoundResult ? (
+            <p className="mixing-instructions">
+                Drag and drop inventory items into one of the four method options below and then click the Mix Drug button to create new compound remedies.
+            </p>
+             ) : (
+            <p className="mixing-instructions">
+                A new compound drug has been created! You can read about its properties below, and try prescribing it using the #prescribe command.
+            </p>
+        )}
 
             {error && <div className="error-message">{error}</div>}
 
@@ -290,8 +301,8 @@ setIsMixButtonEnabled(false);
                             <strong>{compoundResult.name}</strong><br />
                             <strong>Price:</strong> {compoundResult.price} silver<br />
                             <strong>Humoral Qualities:</strong> {compoundResult.humoralQualities}<br />
-                            <strong>Effects:</strong> {compoundResult.effects}<br />
-                            <small>{compoundResult.description}</small>
+                            <strong>Effects:</strong> {compoundResult.effects}
+                            <em>{compoundResult.description}</em>
                         </div>
                     </div>
                 </div>
@@ -322,12 +333,12 @@ setIsMixButtonEnabled(false);
             {hoveredSimple && (
                 <div className="mixing-hover-popup">
                     <strong>{hoveredSimple.name}</strong><br />
-                    <i>{hoveredSimple.latinName} ({hoveredSimple.spanishName})</i><br />
+
                     <strong>Price:</strong> {hoveredSimple.price} silver<br />
                     <strong>Quantity:</strong> {hoveredSimple.quantity} drachms<br />
-                    <strong>Humoral Qualities:</strong> {hoveredSimple.humoralQualities}<br />
-                    <strong>Medicinal Effects:</strong> {hoveredSimple.medicinalEffects}<br />
-                    <small>{hoveredSimple.description}</small>
+                    <strong></strong> {hoveredSimple.humoralQualities}<br />
+                    <strong>Effects:</strong> {hoveredSimple.medicinalEffects}<br />
+      
                 </div>
             )}
 

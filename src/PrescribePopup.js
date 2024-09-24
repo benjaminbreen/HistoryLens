@@ -34,6 +34,7 @@ function PrescribePopup({
   const [simulatedOutput, setSimulatedOutput] = useState('');
   const [prescriptionPrompt, setPrescriptionPrompt] = useState('');
    const [selectedRoute, setSelectedRoute] = useState('');
+   const [basePrice, setBasePrice] = useState(0); 
 
    const handleRouteSelect = (route) => {
     setSelectedRoute(route);
@@ -56,6 +57,8 @@ function PrescribePopup({
       );
       if (updatedItem) {
         setSelectedItem(updatedItem); // Ensuring the updated item is set properly
+        setBasePrice(updatedItem.price || 0); // Set the base price per drachm
+        setPrice(updatedItem.price || 0); 
       }
     }
   }, [inventory, selectedItem]);
@@ -67,21 +70,28 @@ function PrescribePopup({
     }
   }, [isOpen, toggleInventory]);
 
+    // Automatically update the price when the amount changes
+  useEffect(() => {
+    setPrice(basePrice * amount);
+  }, [amount, basePrice]);
+
   // Handle drop of item into prescription area
-  const [{ isOver }, drop] = useDrop({
-    accept: ['inventoryItem', 'compoundItem'],
-    drop: (item) => {
-      const updatedItem = inventory.find(i => i.name.toLowerCase() === item.name.toLowerCase());
-      if (updatedItem) {
-        setSelectedItem(updatedItem);
-      } else {
-        console.warn('Dropped item not found in inventory:', item);
-      }
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  });
+const [{ isOver }, drop] = useDrop({
+  accept: ['inventoryItem', 'compoundItem'],
+  drop: (item) => {
+    const updatedItem = inventory.find(i => i.name.toLowerCase() === item.name.toLowerCase());
+    if (updatedItem) {
+      setSelectedItem(updatedItem);
+      setBasePrice(updatedItem.price || 0); 
+      setPrice(updatedItem.price || 0);  // Auto-populate the price based on the dropped item's price
+    } else {
+      console.warn('Dropped item not found in inventory:', item);
+    }
+  },
+  collect: (monitor) => ({
+    isOver: !!monitor.isOver(),
+  }),
+});
 
   // Function to handle prescription
  const handlePrescribe = useCallback(async (item, amount, price, route) => {
@@ -131,20 +141,24 @@ function PrescribePopup({
     Maria's current wealth is ${currentWealth} silver coins.
 
     Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. 
-    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it's a miracle cure, show an exuberant reaction of joy. This is an educational game about history of medicine so pull no punches. However, also be realistic: oral delivery of chamomile, or topical application of sugar, will never cause real complications, it simply won't work. Others like saffron or wine might be pleasant but mostly ineffective. Same with relatively benign but odd things like crab's eyes. It's really in the realm of things like mercury (and other minerals) or opiates (and other narcotics or poisonous plants) that it becomes dangerous. Think carefully and draw on your knowledge before assessing the outcome. Make it highly realistic.
+    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it does nothing, show disappointment (a patient might say "I should go to a real physician and be bled - that will fix it"). Or if it's a miracle cure, show an exuberant reaction of joy. This is an educational game about history of medicine so pull no punches if a prescription is truly toxic. However, also be realistic: oral delivery of chamomile, or topical application of sugar, will never cause real complications, it simply won't work. Others like saffron or wine might be pleasant but mostly ineffective. Same with relatively benign but odd things like crab's eyes. It's really in the realm of things like mercury (and other minerals) or opiates (and other narcotics or poisonous plants) that it becomes dangerous. Think carefully and draw on your knowledge before assessing the outcome. Make it highly realistic.
 
     Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
     - **h3 markdown**: Use h3 markdown tags (###) for headlines where the effects are neutral, positive, or only slightly negative. For example, you might write: 
-      ### Maria attempted an unconventional treatment that was somewhat ineffective ⚖️
+      ### Maria attempted an unconventional treatment that was somewhat effective ⚖
       or
       ### The prescription was revolting and led to minor complications 🤢
+      or 
+         ### The prescription was unpleasant but highly effective
       or ### The patient balked at the high price and walked out without paying 💸
+      or ### The patient had a miraculous recovery! 🍀
+      or ### The patient felt neutral effects ⚖️
 
     - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
       - If the patient **died**, always start with: ##### 💀 The patient has died! 💀
       - For more minor injuries, use something like:
-        ##### ⚠️ The prescription failed, resulting in severe complications ⚠️ 
+        ##### The prescription seems to have failed... 
       - Remember that if a patient is likely to die in a turn, go with "The patient has died" as the headline. Be realistic and don't hold back.
 
     **Important:**
@@ -165,6 +179,7 @@ function PrescribePopup({
     - Angry reactions are common if the medicine is ineffective or causes discomfort, so show the patient's response accordingly.
     - Consider the patient's presumed weight and health AND the route of administration in assessing whether a dose is fatal or highly toxic. For instance, even a single drachm of inhaled quicksilver (mercury) is instantly fatal, as is quicksilver as an enema. However, topical quicksilver is fine. Many drugs are more potent in enema or inhaled form; even one drachm of opium might be fatal in a weak or small patient, especially if inhaled. Likewise with many alchemical compounds. Topical doses are usually fine. 
     - If a patient dies, Maria has to figure out what to do with the body, sending her storyline into a much darker direction. 
+    - Usually a cure will be ineffective or mildly effective. Benign things like wine, rose water, treacles, other sugared medicines, and aguas/distilled waters, plus camphor or herbs, are typically mildly effective. 
 
     Following the description, in italic markdown tags *like this*, give a short pithy historically authentic quote or proverb from the 17th century which relates to the prescription, if its a non-English original give the original language then translation in brackets. For instance: "The soul and body are like a house divided against itself." — Thomas Browne, "Religio Medici" (1643); "Mentre c'è vita, c'è speranza" -Italian proverb [Where there is life, there is hope]; "Omnia venena sunt, nec sine veneno quicquam existit" - Quintilian; "Hambre y frío curan cada desvarío."
 Translation: Hunger and cold cure every madness.
@@ -172,7 +187,7 @@ Translation: All things are poison, and nothing is without poison.
 Translation: While there is life, there is hope.
     At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least three hours and possibly more have passed) in **this exact format** using markdown *italic* tags:
 
-    **Now Maria has ${currentWealth + price} silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
+    **Now Maria has ${currentWealth + price} silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
     **Reputation Emoji Guide:**
     - 😡 (1) : Extremely bad (e.g., patient dies)
@@ -316,52 +331,54 @@ const handleSummaryContinue = () => {
 
  return (
   <>
-    {isOpen && !isSummaryOpen && (
-       <div className={`prescribe-popup ${isLoading ? 'loading' : ''}`}>
-        <div className="prescribe-content">
-          <h2>🧪 Prescribe a Medicine</h2>
-          <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
-            {selectedItem ? (
-             <div className="selected-item">
-               <span className="emoji">{selectedItem.emoji || '❓'}</span>
-               <span>{selectedItem.name}</span>
-               {selectedRoute && (
-                 <p className="selected-route"><i>{selectedRoute}</i></p>
-               )}
-             </div>
+   {isOpen && !isSummaryOpen && (
+  <>
+    {/* Add the darkened overlay */}
+    <div className="popup-overlay" />
 
-            ) : (
-              <p>Drag an item here from the inventory to prescribe. And don't forget to set a price and select a route of administration!</p>
-            )}
-          </div>
-          <div className="prescription-controls">
-           <label>
-  Amount (drachms):
-  <input
-    type="number"
-    value={amount}
-    onChange={(e) => {
-      const newAmount = Number(e.target.value);
-      // Ensure the amount is never less than 1
-      setAmount(newAmount < 1 ? 1 : newAmount);
-    }}
-    min="1"
-  />
-</label>
-            <label>
-              Price (silver reales):
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                min="0"
-              />
-            </label>
-          </div>
-           <div className="route-selection">
-              <label>Select a route of administration:</label>
+    <div className={`prescribe-popup ${isLoading ? 'loading' : ''}`}>
+      <div className="prescribe-content">
+        <h2>🧪 Prescribe a Medicine</h2>
+        <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
+          {selectedItem ? (
+            <div className="selected-item">
+              <span className="emoji">{selectedItem.emoji || '❓'}</span>
+              <span>{selectedItem.name}</span>
+              {selectedRoute && (
+                <p className="selected-route"><i>{selectedRoute}</i></p>
+              )}
+            </div>
+          ) : (
+            <p>Drag an item here from the inventory to prescribe. And don't forget to set a price and select a route of administration!</p>
+          )}
+        </div>
+        <div className="prescription-controls">
+          <label>
+            Amount (drachms):
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => {
+                const newAmount = Number(e.target.value);
+                // Ensure the amount is never less than 1
+                setAmount(newAmount < 1 ? 1 : newAmount);
+              }}
+              min="1"
+            />
+          </label>
+          <label>
+            Price (silver reales):
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              min="0"
+            />
+          </label>
+        </div>
+        <div className="route-selection">
+          <label>Select a route of administration:</label>
           <div className="route-buttons">
-
             {Object.entries(routeImages).map(([route, image]) => (
               <button
                 key={route}
@@ -377,16 +394,18 @@ const handleSummaryContinue = () => {
               </button>
             ))}
           </div>
-           </div>
-          <div className="prescription-buttons">
-            <button onClick={handlePrescribeClick} disabled={!selectedItem || isLoading}>
-              {isLoading ? 'Prescribing...' : 'Prescribe'}
-            </button>
-            <button onClick={onClose}>Cancel</button>
-          </div>
+        </div>
+        <div className="prescription-buttons">
+          <button onClick={handlePrescribeClick} disabled={!selectedItem || isLoading}>
+            {isLoading ? 'Prescribing...' : 'Prescribe'}
+          </button>
+          <button onClick={onClose}>Cancel</button>
         </div>
       </div>
-    )}
+    </div>
+  </>
+)}
+
 
       {isSummaryOpen && (
          <div className="popup-overlay">

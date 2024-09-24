@@ -9,23 +9,52 @@ const Diagnose = ({ isOpen, onClose, previousOutput, npcCaption }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPatient, setCurrentPatient] = useState(null);
 
+  // Helper: Fuzzy match function
+  const fuzzyMatch = (input, target) => {
+    if (!input || !target) return false;
+    const cleanedInput = input.toLowerCase().trim();
+    const cleanedTarget = target.toLowerCase().trim();
+    return cleanedTarget.includes(cleanedInput);
+  };
+
+  // Find matching NPC logic
+  const getMatchedNPC = (name) => {
+    let matchedNPC = EntityList.find(entity => fuzzyMatch(name, entity.name));
+
+    if (!matchedNPC && npcCaption) {
+      matchedNPC = EntityList.find(entity => fuzzyMatch(npcCaption, entity.description));
+    }
+
+    return matchedNPC || null; // Explicitly return null if no match is found
+  };
+
+  // UseEffect to handle NPC matching when popup opens
   useEffect(() => {
     if (isOpen && npcCaption) {
-      const patientName = npcCaption.split(',')[0];
-      const patient = EntityList.find(entity => 
-        entity.type === 'patient' && entity.name.toLowerCase().includes(patientName.toLowerCase())
-      );
-      setCurrentPatient(patient);
-      if (patient) {
-        generateDiagnosis(previousOutput, patient);
+      
+  const npcName = npcCaption.split('seeks')[0].split(',')[0].trim();
+
+      const matchedNpc = getMatchedNPC(npcName);
+
+      if (matchedNpc) {
+        setCurrentPatient(matchedNpc);
+      } else {
+        setCurrentPatient({
+          name: npcName,
+          age: 40,  // Default age
+          gender: 'Unknown',
+          occupation: 'Unknown',
+          currentResidence: 'Unknown',
+          image: 'defaultnpc', // Default image if none found
+          symptoms: [] // Empty symptoms to prevent crash
+        });
       }
     }
-  }, [isOpen, npcCaption, previousOutput]);
+  }, [isOpen, npcCaption]);
 
   const generateDiagnosis = async (previousOutput, patient) => {
+    if (!patient) return; // Don't attempt to generate a diagnosis without a valid patient
     setIsLoading(true);
-    console.log('Previous Output:', previousOutput);
-    console.log('Patient:', patient);
 
     try {
       const diagnosisPrompt = `
@@ -33,10 +62,12 @@ const Diagnose = ({ isOpen, onClose, previousOutput, npcCaption }) => {
         **Patient Information:**
         - Name: ${patient.name}
         - Age: ${patient.age}
-        - Symptoms: ${patient.symptoms.map(s => `${s.name} (${s.location}): "${s.quote}"`).join('; ')}
+        - Symptoms: ${patient.symptoms.length > 0 
+            ? patient.symptoms.map(s => `${s.name} (${s.location}): "${s.quote}"`).join('; ') 
+            : 'No symptoms available'}
         **Recent Observations:**
         ${previousOutput}
-        Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently (i.e. Avicenna, Pliny, Monardes), with materia medica she considers using in italic. Limit your response to three paragraphs. She is an eclectic apothecary and uses both New World and traditional drugs - i.e. she might prescribe guiacum, cinchona, bezoar, or mumia. 
+        Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Limit your response to three paragraphs.
       `;
 
       const response = await fetch(
@@ -62,17 +93,21 @@ const Diagnose = ({ isOpen, onClose, previousOutput, npcCaption }) => {
       }
 
       const data = await response.json();
-      console.log('API Response:', data);
-
       const diagnosisOutput = data.choices[0].message.content;
       setDiagnosis(diagnosisOutput);
     } catch (error) {
-      console.error("Error generating diagnosis:", error);
+      console.error('Error generating diagnosis:', error);
       setDiagnosis(`An error occurred while generating the diagnosis: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (currentPatient) {
+      generateDiagnosis(previousOutput, currentPatient);
+    }
+  }, [currentPatient, previousOutput]);
 
   if (!isOpen) return null;
 

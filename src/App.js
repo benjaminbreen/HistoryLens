@@ -47,6 +47,20 @@ import opensea from './assets/opensea.jpg'; // Import your image here
 import emergency from './assets/emergency.jpg';
 import background from './assets/background.jpg';
 import desert from './assets/desert.jpg';
+import success from './assets/success.jpg';
+import balked from './assets/balked.jpg';
+import revolting from './assets/revolting.jpg';
+import countryside from './assets/countryside.jpg';
+import neutral from './assets/neutral.jpg';
+import forage from './assets/forage.jpg';
+import europeancitybackground from './assets/europeancitybackground.jpg';
+import purchase from './assets/purchase.jpg';
+import river from './assets/river.jpg';
+import shop from './assets/shop.jpg';
+import judgement from './assets/judgement.jpg';
+import panic from './assets/panic.jpg';
+import rainy from './assets/rainy.jpg';
+import background2 from './assets/background2.jpg';
 
 
 const PDFPopup = lazy(() => import('./PDFPopup'));
@@ -143,7 +157,11 @@ const handleWealthChange = (newWealth) => {
     setNotificationPopup(null);
   };
 
-
+ // Helper function for fuzzy search (partial match)
+const fuzzyMatch = (input, target) => {
+  if (!input || !target) return false;
+  return target.toLowerCase().includes(input.toLowerCase());
+};
 
 const handleIncorporate = (content) => {
     setIncorporatedContent(content);
@@ -286,6 +304,51 @@ const handleEndGame = useCallback(async () => {
     }
   }, [turnNumber, currentWealth, gameState.inventory, journal, triggerNotificationPopup, assessGameplay]);
 
+useEffect(() => {
+  const handleKeyDown = (event) => {
+    const activeElement = document.activeElement;
+
+    // Check if the active element is not an input or textarea
+    if (activeElement.tagName.toLowerCase() !== 'input' && activeElement.tagName.toLowerCase() !== 'textarea') {
+      switch (event.key.toLowerCase()) {
+        case 'i':
+          toggleInventory(); // Toggle inventory when 'i' is pressed
+          break;
+        case 'm':
+          toggleMixingPopup(); // Toggle mixing panel when 'm' is pressed
+          break;
+        case 'j':
+          toggleJournal(); // Toggle journal when 'j' is pressed
+          break;
+        case 'c':
+          toggleContentGuide(); // Toggle content guide when 'c' is pressed
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  // Attach the event listener when the component mounts
+  window.addEventListener('keydown', handleKeyDown);
+
+  // Clean up the event listener when the component unmounts
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, [toggleInventory, toggleMixingPopup, toggleJournal, toggleContentGuide]);
+
+window.addEventListener('resize', () => {
+  const bgContainer = document.querySelector('.background-container');
+  bgContainer.style.height = `${document.body.scrollHeight}px`;
+});
+
+// Trigger this on page load to adjust the height dynamically
+document.addEventListener('DOMContentLoaded', () => {
+  const bgContainer = document.querySelector('.background-container');
+  bgContainer.style.height = `${document.body.scrollHeight}px`;
+});
+
 
 // Initial description of Maria and NPC image
 useEffect(() => {
@@ -336,22 +399,38 @@ useEffect(() => {
 }, [historyOutput, turnNumber]);
 
 
-// command detection
+// command handling logic
 const handleCommandClick = (command) => {
-  const commandParts = command.split(' ');
-  const commandType = commandParts[0].toLowerCase();
-  const targetName = commandParts.slice(1).join(' ');
-  let npcName;
+   const commandParts = command.split(' ');
+   const commandType = commandParts[0].toLowerCase();
+   const targetName = commandParts.slice(1).join(' ');
+   let npcName;
 
-  // Only check npcCaption for certain commands
-  if (commandType !== '#sleep' && npcCaption) {
-    npcName = npcCaption.split(',')[0];
+   if (commandType !== '#sleep' && npcCaption) {
+     npcName = npcCaption.split(',')[0].trim();
+   }
+
+   // Try fuzzy matching for NPC name in the caption and description (fallback)
+  const getMatchedNPC = (name) => {
+  console.log('Attempting to match NPC with name:', name); // Add this log for debugging
+  let matchedNPC = EntityList.find(entity => fuzzyMatch(name, entity.name));
+  
+  if (!matchedNPC && npcInfo) {
+    matchedNPC = EntityList.find(entity => fuzzyMatch(entity.name, npcInfo));
   }
+
+  // Log the result of the match
+  console.log('Matched NPC:', matchedNPC);
+  
+  return matchedNPC;
+};
+
 
   switch (commandType) {
     case '#symptoms':
-      if (npcName) {
-        setSelectedNpcName(npcName);
+      let matchedNPC = getMatchedNPC(npcName);
+      if (matchedNPC) {
+        setSelectedNpcName(matchedNPC.name);
         setShowSymptomsPopup(true);
       } else {
         setHistoryOutput('No NPC is currently selected.');
@@ -359,25 +438,7 @@ const handleCommandClick = (command) => {
       break;
 
     case '#prescribe':
-      let targetNPC;
-      if (targetName) {
-        targetNPC = EntityList.find(entity =>
-          entity.name.toLowerCase() === targetName.toLowerCase()
-        );
-      } else {
-        // First, check if there's an NPC in the current scene (from npcCaption)
-        const currentNPCName = npcCaption?.split(',')[0].trim();
-        targetNPC = EntityList.find(entity =>
-          entity.name.toLowerCase() === currentNPCName.toLowerCase()
-        );
-        
-        // If no NPC found in the caption, fall back to checking the history output
-        if (!targetNPC) {
-          targetNPC = EntityList.find(entity =>
-            historyOutput.toLowerCase().includes(entity.name.toLowerCase())
-          );
-        }
-      }
+      let targetNPC = getMatchedNPC(targetName || npcName);
       if (targetNPC) {
         setCurrentPatient(targetNPC);
         setIsPrescribing(true);
@@ -388,17 +449,20 @@ const handleCommandClick = (command) => {
       }
       break;
 
-    case '#diagnose':
-      const patientForDiagnosis = EntityList.find(entity =>
-        entity.type === 'patient' && historyOutput.toLowerCase().includes(entity.name.toLowerCase())
-      );
-      if (patientForDiagnosis) {
-        setCurrentPatient(patientForDiagnosis);
-        setIsDiagnoseOpen(true);
-      } else {
-        setHistoryOutput('No valid patient found for diagnosis. Make sure a patient is present in the current scene.');
-      }
-      break;
+   case '#diagnose':
+  let patientForDiagnosis = getMatchedNPC(npcName); 
+
+  console.log('Patient for diagnosis:', patientForDiagnosis);
+
+  if (patientForDiagnosis) {
+    // Set the current patient for diagnosis and open the diagnosis popup
+    setCurrentPatient(patientForDiagnosis);
+    setIsDiagnoseOpen(true); // Open the Diagnose popup
+  } else {
+    // If no patient was found, output an error message
+    setHistoryOutput('No valid patient found for diagnosis. Make sure a patient is present in the current scene.');
+  }
+  break;
 
     case '#map':
       toggleMap();
@@ -579,6 +643,8 @@ const handleSubmit = useCallback(async (e) => {
   const inventorySummary = gameState.inventory.map(item => 
     `${item.name} (Quantity: ${item.quantity}, Price: ${item.price} silver coins)`
   ).join('\n');
+
+ 
   
   // Helper function to determine if a quest should advance
 const shouldAdvanceQuest = (quest, actions) => {
@@ -675,7 +741,7 @@ const contextSummary = `
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
-          temperature: .3,
+          temperature: .2,
           messages: [
             {
   role: 'system',
@@ -749,11 +815,11 @@ const contextSummary = `
     - Patients usually don't know her personally, though some might (use your judgement.) They will ALWAYS initially explain why they are seeking her out on first encountering her, but these explanations will not always (and indede usually are not always) the full truth. Remember that high status patients would typically see a licensed physician rather than an apothecary, so there needs to be a reason why they are seeking treatment from her - and there may be a subtext or rationale beneath the stated reason, too.
     - Maria has an almost Sherlock Holmes-like talent for perceptive observations - note one or two tiny but telling details in each turn, as appropriate. Be creative. 
     - Incorporate **counter-narratives** when they are made available; these are critiques from an expert historian which should inform how you construct the narrative. This knowledge should be subtly integrated into future turns for added realism.
-
+    - Incorporate real time, dynamic weather events. It may begin to rain, or be swelteringly hot, or (rarely) an earthquake might occur. Interject this into the narrative to mix things up. 
     ### NPC and Entity Management:
     - NPCs like **Don Luis, Marta the herb woman. Likewise Sir Robert Southwell may invite Maria to travel back to London with him, and may show her his microscope, a new invention. Be specific in how these interactions play out.
     - For **generic NPCs** like soldiers or sailors, give them individualized names and descriptions. For example, a soldier could be "Eduardo, a tired infantryman," or a noblewoman might become "Doña Maria de Valparaiso."
-
+    - Use a wide variety of names and be mindful of 17th century practice of using last name rather than first name. Rather than every woman being Isabela or Rosa, how about Catalina Mendoza, Eulalia Muñoz, or Beatriz de la Concepción. For men, instead of Diego and Francisco, how bout Joaquin Alarcón or other similarly specfic names.
     ### Important Narrative Events:
     1. Start a new day using **h3** markdown, with a headline appropriate to the context. But do this ONLY when the date moves to the following morning. If it is after 10 pm but before 4 am, say "the hour grows late" and suggest the #sleep command.
     2. Signal a **crisis** using **h4** markdown, such as "Maria has been arrested!" or "The Inquisitor has arrived..."
@@ -892,23 +958,65 @@ useEffect(() => {
   <DndProvider backend={HTML5Backend}>
 <div
   className={`background-container ${
-    (historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i)) ? 'desert-active' : ''
+    historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i) ? 'desert-active' : ''
   } ${(historyOutput.includes('complications') || historyOutput.includes('patient has died')) ? 'complication' : ''}
   ${historyOutput.match(/at sea|the waves|the ocean|the sea/i) ? 'waves-active' : ''}
-  ${(turnNumber === 1 || turnNumber === 2 || historyOutput.includes('Mexico')) && !historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i) ? 'background-active' : ''}
+  ${(turnNumber === 1 || turnNumber === 2 || historyOutput.includes('Mexico')) && !historyOutput.match(/Mexico|Cuba|Brazil|Zocalo/i) ? 'background2-active' : ''}
+  ${historyOutput.match(/success|cure|miraculous recovery|patient is improving/i) ? 'success-active' : ''}
+  ${historyOutput.match(/balked|balked at the price|walked out|refused to pay/i) ? 'balked-active' : ''}
+  ${historyOutput.match(/revolting|disgusting|vomit|disgust|nauseous|prescription was revolting/i) ? 'revolting-active' : ''}
+  ${historyOutput.match(/farmlands|agricultural land|countryside|rural area|fields|pasture/i) ? 'countryside-active' : ''}
+  ${historyOutput.match(/neutral result|partial cure|neutral effects|was somewhat successful/i) ? 'neutral-active' : ''}
+  ${historyOutput.match(/purchased|transaction|bought/i) ? 'purchase-active' : ''}
+  ${historyOutput.match(/tradesman|store|storehouse|warehouse/i) ? 'shop-active' : ''}
+  ${historyOutput.match(/London|Paris|Madrid|Seville|Europe|Oxford|Boston|Philadelphia|Rome/i) ? 'europeancitybackground-active' : ''}
+  ${historyOutput.match(/river|Xochimilco|waterway/i) ? 'river-active' : ''}
+  ${historyOutput.match(/foraging|gathering herbs|collected plants|foraged|found herbs|looked for herbs/i) ? 'forage-active' : ''}
+  ${historyOutput.match(/judgement|difficult decision|decide/i) ? 'judgement-active' : ''}
+    ${historyOutput.match(/panic|desperation|flee/i) ? 'panic-active' : ''}
+        ${historyOutput.match(/rainy day|pouring rain|torrents of rain/i) ? 'rainy-active' : ''}
   `}
   style={
     historyOutput.match(/at sea|the waves|the ocean|the sea/i)
       ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${opensea})` }
       : historyOutput.match(/scrubland|scrub land|desert|deserted area|sand dunes|arid landscape/i)
       ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${desert})` }
+            : historyOutput.match(/revolting|disgusting|vomit|disgust|nauseous|prescription was revolting/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${revolting})` }
       : (historyOutput.includes('complications') || historyOutput.includes('patient has died'))
       ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${emergency})` }
+      : historyOutput.match(/prescription was a success|a miraculous cure|prescription was effective|miraculous recovery|patient is improving/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${success})` }
+      : historyOutput.match(/balked|balked at the price|walked out|refused to pay/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${balked})` }
+      : historyOutput.match(/farmlands|agricultural land|countryside|rural area|fields|pasture/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${countryside})` }
+      : historyOutput.match(/neutral result|partial cure|neutral effects|was somewhat successful/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${neutral})` }
+      : historyOutput.match(/purchase|transaction|exchange money/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${purchase})` }
+      : historyOutput.match(/tradesman|store|storehouse|warehouse/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${shop})` }
+      : historyOutput.match(/London|Paris|Madrid|Seville|Europe|Oxford|Boston|Philadelphia|Rome/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${europeancitybackground})` }
+      : historyOutput.match(/river|canals|waterway/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${river})` }
+      : historyOutput.match(/foraging|gathering herbs|collecting plants|searching for food/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${forage})` }
       : (turnNumber === 1 || turnNumber === 2 || historyOutput.includes('Mexico'))
-      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${background})` }
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${background2})` }
+      : historyOutput.match(/judgement|difficult decision|decide/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${judgement})` }
+      : historyOutput.match(/panic|desperation|flee/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${panic})` }
+      : historyOutput.match(/pouring rain|rainy day|torrents of rain/i)
+      ? { background: `linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url(${rainy})` }
       : {}
   }
 />
+
+
+
 
 
     <div className="container">
@@ -1088,6 +1196,9 @@ useEffect(() => {
   onClose={() => setIsDiagnoseOpen(false)} 
   previousOutput={historyOutput} 
   npcCaption={npcCaption} 
+  setHistoryOutput={setHistoryOutput}
+  setConversationHistory={setConversationHistory}
+  currentPatient={currentPatient} 
 />
 <Map 
   isOpen={isMapOpen} 
@@ -1194,6 +1305,12 @@ useEffect(() => {
           />
           )}
         </div>
+
+
+           {showCounterNarrative && (
+   <CounterNarrative historyOutput={historyOutput} handleIncorporate={handleIncorporate} />
+)}
+
 
 
         <footer className="footer">
@@ -1382,6 +1499,7 @@ useEffect(() => {
 </div>
 
 
+
          </footer>
             
             {showColophon && (
@@ -1389,10 +1507,6 @@ useEffect(() => {
             )}
 
         
-           {showCounterNarrative && (
-   <CounterNarrative historyOutput={historyOutput} handleIncorporate={handleIncorporate} />
-)}
-
 
 
        {showSymptomsPopup && (
@@ -1404,6 +1518,7 @@ useEffect(() => {
          conversationHistory={conversationHistory}
   setHistoryOutput={setHistoryOutput}
   setConversationHistory={setConversationHistory}
+  currentPatient={currentPatient} 
        />
        )}
 

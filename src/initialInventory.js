@@ -17,6 +17,8 @@ import bezoar from './assets/bezoar.jpg';
 import coral from './assets/coral.jpg';
 import mechoacan from './assets/mechoacan.jpg';
 import cochineal from './assets/cochineal.jpg';
+import dragonsblood from './assets/dragonsblood.jpg';
+import alum from './assets/alum.jpg';
 
 
 const initialInventoryData = [
@@ -302,7 +304,7 @@ id: 16,
     description: 'A root from New Spain similar to Jalap, widely used as a strong purgative.',
     emoji: '🍠',
     pdf: 'mechoacan.pdf',
-    citation: 'make the citations be Pierre Pomet, *Complete History of Drugs*, London 1748, pg 32, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PT1&printsec=frontcover',
+    citation: 'Pierre Pomet, *Complete History of Drugs*, London 1748, pg 32, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PT1&printsec=frontcover',
     image: mechoacan
 },
 {
@@ -317,8 +319,38 @@ id: 16,
     description: 'Dried female cochineal insects, valued for their vibrant red dye and medicinal properties.',
     emoji: '🐞',
     pdf: 'cochineal.pdf',
-    citation: 'make the citations be Pierre Pomet, *omplete History of Drugs*, London 1748, pg 15, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PA14&printsec=frontcover',
+    citation: 'Pierre Pomet, *omplete History of Drugs*, London 1748, pg 15, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PA14&printsec=frontcover',
     image: cochineal
+},
+{
+    id: 21, 
+    name: 'Alum',
+    latinName: 'Alumen',
+    spanishName: 'Alumbre',
+    price: 4,
+    quantity: 5,
+    humoralQualities: 'Cold & Dry',
+    medicinalEffects: 'Astringent, stops bleeding, treats ulcers, and strengthens the gums.',
+    description: 'Crystalline mineral used in various topical treatments, especially for wounds, eye problems, and mouth sores.',
+    emoji: '💎',
+    pdf: 'alum.pdf',
+    citation: 'Pierre Pomet, *Complete History of Drugs*, London 1748, pg 44, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PA44&printsec=frontcover',
+    image: alum
+},
+{
+    id: 22, 
+    name: 'Dragon\'s Blood',
+    latinName: 'Daemonorops draco',
+    spanishName: 'Sangre de Drago',
+    price: 10,
+    quantity: 1,
+    humoralQualities: 'Warm & Dry',
+    medicinalEffects: 'Used to heal wounds, stop bleeding, and as an astringent for ulcers.',
+    description: 'A bright red resin from tropical trees, prized for its powerful healing properties.',
+    emoji: '🩸',
+    pdf: 'dragonsblood.pdf',
+    citation: 'Pierre Pomet, *Complete History of Drugs*, London 1748, pg 191, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PA50&printsec=frontcover',
+    image: dragonsblood
 },
 ];
 

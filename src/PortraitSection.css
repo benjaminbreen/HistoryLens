@@ -249,7 +249,7 @@
 
 .popup-info p {
   font-size: 1.3rem; /* Increase this value to make the text larger */
-  line-height: 1.4; /* Increase line-height for better readability with larger text */
+  line-height: 1.5; /* Increase line-height for better readability with larger text */
   margin-bottom: 4px; /* Adjust spacing between paragraphs */
     font-style: normal;
 
@@ -264,21 +264,27 @@
 
 
   .pc-portrait-popup {
-    background: floralwhite;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.8); /* Shadow for popup effect */
-    text-align: center;
-    max-width: 650px; /* Increased max-width for wider popup */
-    width: 100%;
-    color: #333;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center the popup */
-    max-height: 80vh; /* Limit height to 80% of viewport */
-    overflow-y: auto; /* Enable scrolling if content overflows */
-    z-index: 1001; /* Ensure it's above other content */
+    background: floralwhite; /* Soft light background for readability */
+  padding: 30px;
+  border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.85); /* Shadow for popup effect */
+  text-align: left;
+  max-width: 850px; /* A bit wider for larger popups */
+  width: 100%;
+  color: #333;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 85vh; /* Ensure it doesn't go offscreen */
+  overflow-y: auto; /* Allow scrolling if the content is large */
+  z-index: 1001; /* Make sure it's above other content */
+
+  font-size: 1.8rem; /* Bigger, more readable font */
+  line-height: 1.6; /* Space between lines for readability */
+  font-style: italic;
+        text-align: center;
+          font-family: 'IM Fell English', serif;
     
 }
 

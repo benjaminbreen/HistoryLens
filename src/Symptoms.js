@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import EntityList from './EntityList';
 import SymptomLocator from './SymptomLocator';
 import './Symptoms.css';
+import defaultnpc from './assets/defaultnpc.jpg'; // Add a default image
 
 function Symptoms({ npcName, onClose, onPDFClick }) {
   const [npc, setNpc] = useState(null);
@@ -12,32 +13,68 @@ function Symptoms({ npcName, onClose, onPDFClick }) {
   const [patientResponse, setPatientResponse] = useState(''); // Store the patient's response
   const [isLoading, setIsLoading] = useState(false); // To handle loading state
 
-useEffect(() => {
-  const handleKeyDown = (event) => {
-    if (event.key === 'Escape') {
-      onClose(); // Trigger the close function when "Escape" is pressed
-    }
-  };
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose(); // Trigger the close function when "Escape" is pressed
+      }
+    };
 
-  document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
 
-  return () => {
-    document.removeEventListener('keydown', handleKeyDown);
-  };
-}, [onClose]);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
   useEffect(() => {
     const selectedNpc = EntityList.find(entity => entity.name === npcName);
+    
     if (selectedNpc) {
       setNpc(selectedNpc);
+    } else {
+      // Auto-generate NPC if not found in EntityList
+      setNpc({
+        name: npcName,
+        age: 40,  // Default age
+        gender: 'Unknown',
+        occupation: 'Unknown',
+        currentResidence: 'Unknown',
+        symptoms: generateRandomSymptoms(),  // Generate random symptoms if not defined
+        image: 'defaultnpc' // Default image if image is missing
+      });
     }
   }, [npcName]);
+
+
+
+  // Fallback to avoid crashing if an NPC doesn't have predefined symptoms
+  const generateRandomSymptoms = () => {
+    const possibleSymptoms = [
+      { name: 'Fever', location: 'head', quote: 'I feel hot all over, like a burning coal.' },
+      { name: 'Cough', location: 'chest', quote: 'I can’t stop coughing, my chest hurts.' },
+      { name: 'Fatigue', location: 'whole body', quote: 'I feel weak, like my limbs are made of lead.' },
+      { name: 'Nausea', location: 'stomach', quote: 'My stomach turns with every breath.' },
+    ];
+
+    return possibleSymptoms.slice(0, Math.floor(Math.random() * 3) + 1);  // Generate 1-3 random symptoms
+  };
+
+  // Fallback if an image is missing or incorrect
+   const getImage = (imageName) => {
+    try {
+      return require(`./assets/${imageName}.jpg`); // Try loading the specific image
+    } catch (error) {
+      console.warn(`Image ${imageName} not found, using default image.`); // Warn about missing image
+      return defaultnpc; // Return default image if specific one is not found
+    }
+  };
+
+  
 
   if (!npc) {
     return null;
   }
-
-
 
   // Define hyperlinks for specific Casta types
   const castaLinks = {
@@ -108,8 +145,8 @@ Secret (do not reveal unless directly asked, but drop hints throughout): ${npc.s
 
 Answer the following questions from the healer in first person, honestly, in one or two sentences per question. You may take offense at an impertinent or personal question, or be evasive, and frequently will break off without fully answering, in mid-sentence, perhaps to cough or moan, or perhaps just because you are embarrassed. 
 
-Be idiosyncratic and surprising in your responses, and keep them brief. Remember you are roleplaying as a real person who might not want to share some things. A person with secrets.
-
+Be idiosyncratic and surprising in your responses, and keep them brief. Remember you are roleplaying as a real person who might not want to share some things. A person with secrets. You should reference real ,specific details of your patients life in concrete and highly particular ways.
+If data is not available, invent it.
 Questions:
 ${additionalQuestions}
 
@@ -126,11 +163,11 @@ Responses:
         body: JSON.stringify({
           model: 'gpt-4o-mini', // Use the 'gpt-4o-mini' model as specified
           messages: [
-            { role: 'system', content: 'You are simulating the patient responding to the healer\'s questions.' },
+            { role: 'system', content: 'You are simulating the patient responding to the healer\'s questions. The year is 1680 and all your responses should ALWAYS be precisely hitorically accurate and true to the reality of life in the 1680s. This was a difficult and at times grim world and patients suffered from appalling ailments that left them wracked with torment. Your rsponses should reflect that. At the time, they also observed strict codes of social propriety and were often reluctant to share personal details, so be evasive and difficult. ' },
             { role: 'user', content: prompt }
           ],
           max_tokens: 150,
-          temperature: 0.7,
+          temperature: 0.2,
         }),
       });
 
@@ -161,12 +198,12 @@ Responses:
     <div className="symptoms-popup">
       <div className="symptoms-popup-content">
         <div className="npc-info">
-          <div className="npc-portrait-container">
-            <img src={require(`./assets/${npc.image}.jpg`)} alt={npc.name} />
+            <div className="npc-portrait-container">
+            <img src={getImage(npc.image)} alt={npc.name} />  {/* Updated to use getImage function */}
             <div 
-  className="astrology-symbol" 
-  data-sign-name={npc.astrologicalSign}  // This will pass the astrological sign name to the CSS
->
+              className="astrology-symbol" 
+              data-sign-name={npc.astrologicalSign}  // This will pass the astrological sign name to the CSS
+            >
   {astrologySymbols[npc.astrologicalSign]}
 </div>
           </div>

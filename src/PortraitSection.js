@@ -72,7 +72,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
 
   const mariaPortrait = useMemo(() => getStatusImage(status), [status]);
 
-  const pcInfoContent = (
+   const pcInfoContent = (
     <div>
       <h2 className="portrait-medieval-header">
         <span>NAME:</span> Maria de Lima<br/>
@@ -87,13 +87,14 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
     </div>
   );
 
-  const getNpcPDF = (npcName) => {
-    const npc = EntityList.find((entity) => entity.name === npcName);
-    return npc ? npc.pdf : null;
+  // Check if the NPC exists in EntityList
+  const getNpcFromEntityList = (npcName) => {
+    return EntityList.find((entity) => entity.name === npcName);
   };
 
+  // Get NPC info or use generated captions/description
   const getNpcInfo = (npcName) => {
-    const npc = EntityList.find((entity) => entity.name === npcName);
+    const npc = getNpcFromEntityList(npcName);
     if (npc) {
       return (
         <div>
@@ -114,10 +115,13 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           )}
         </div>
       );
+    } else {
+      // Fallback to using the caption or default NPC info
+      return <p>{npcInfo || 'No additional information available.'}</p>;
     }
-    return <p>{npcInfo}</p>;
   };
 
+  // Render the PortraitSection component
   return (
     <div className="portrait-section">
       <div className="npc-portrait-container" onClick={handleNpcClick}>
@@ -139,10 +143,10 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           )}
           <p className="portrait-caption">
             {npcCaption}{' '}
-            {getNpcPDF(npcCaption) && (
+            {getNpcFromEntityList(npcCaption.split(',')[0])?.pdf && (
               <span 
                 className="pdf-name" 
-                onClick={() => handlePDFClick(getNpcPDF(npcCaption))}
+                onClick={() => handlePDFClick(getNpcFromEntityList(npcCaption.split(',')[0]).pdf)}
               >
                 📄
               </span>
@@ -197,4 +201,3 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
 }
 
 export default PortraitSection;
-

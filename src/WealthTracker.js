@@ -11,38 +11,45 @@ function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
   const allowedEmojis = ['😡', '😠', '😐', '😶', '🙂', '😌', '😏', '😃', '😇', '👑'];
 
   useEffect(() => {
-    // Extract wealth (either "reales" or "silver coins") from the LLM response
-    const wealthMatch = llmResponse.match(/(?:Maria now has|You now have|Maria has|Your current wealth stands at|Your wealth stands at|You possess) (\d+) (?:silver coins|reales|coins)/i);
-    const statusMatch = llmResponse.match(/She is feeling ([\w\s]+)\./);
-    
-    // Regex to match any emoji in the response
-    const emojiMatch = llmResponse.match(/([\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}])/u);
+  console.log("LLM Response:", llmResponse);  // Log the LLM response for debugging
+  
+  const wealthMatch = llmResponse.match(/(?:Maria now has|You now have|Maria has|Your current wealth stands at|Your wealth stands at|You possess)\s+(\d{1,3}(?:,\d{3})*)\s+(?:silver coins|reales|coins)/i);
+  const statusMatch = llmResponse.match(/She is feeling ([\w\s]+)\./);
+  
+  // Regex to match any emoji in the response
+  const emojiMatch = llmResponse.match(/([\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}])/u);
 
-    // If wealth information is found
-    if (wealthMatch && wealthMatch[1]) {
-      const newWealth = parseInt(wealthMatch[1], 10);
-      setCurrentWealth(newWealth);
+  console.log("Wealth Match:", wealthMatch);
+  console.log("Status Match:", statusMatch);
+  console.log("Emoji Match:", emojiMatch);
+
+  if (wealthMatch && wealthMatch[1]) {
+    const newWealth = parseInt(wealthMatch[1].replace(/,/g, ''), 10);  // Handle commas
+    console.log("Parsed Wealth:", newWealth);
+    setCurrentWealth(newWealth);
+    if (onWealthChange) {
       onWealthChange(newWealth);  // Notify parent component of wealth change
     }
+  }
 
-    // If status information is found
-    if (statusMatch && statusMatch[1]) {
-      const newStatus = statusMatch[1].trim();
-      setStatus(newStatus);
-      // Notify the parent component of the status change
-      if (onStatusChange) {
-        onStatusChange(newStatus);
-      }
+  if (statusMatch && statusMatch[1]) {
+    const newStatus = statusMatch[1].trim();
+    console.log("Parsed Status:", newStatus);
+    setStatus(newStatus);
+    if (onStatusChange) {
+      onStatusChange(newStatus);  // Notify parent component of status change
     }
+  }
 
-    // If any emoji is found, update the reputation emoji only if it is allowed
-    if (emojiMatch && emojiMatch[1]) {
-      const foundEmoji = emojiMatch[1].trim();
-      if (allowedEmojis.includes(foundEmoji)) {
-        setReputationEmoji(foundEmoji);  // Only set the emoji if it's in the allowed list
-      }
+  if (emojiMatch && emojiMatch[1]) {
+    const foundEmoji = emojiMatch[1].trim();
+    if (allowedEmojis.includes(foundEmoji)) {
+      console.log("Parsed Emoji:", foundEmoji);
+      setReputationEmoji(foundEmoji);  // Update reputation emoji if it's in the allowed list
     }
-  }, [llmResponse, onStatusChange, onWealthChange]);
+  }
+}, [llmResponse, onStatusChange, onWealthChange]);
+
 
   return (
     <div className="wealth-tracker">

@@ -1,6 +1,83 @@
 const EntityList = [
 // Patients
 
+
+{
+  "type": "patient",
+  "name": "Gonzalo de Loanda",
+  "age": 38,
+  "gender": "Male",
+  "occupation": "Innkeeper",
+  "birthplace": "Loanda, Angola",
+  "currentResidence": "Mexico City, Calle de la Merced",
+  "casta": "African-born",
+  "class": "Freedman",
+  "symptoms": [
+    { 
+      "name": "Clouded vision", 
+      "location": "head", 
+      "quote": "My vision is fading—everything appears as if through a thick fog. I struggle to see the faces of my guests." 
+    },
+    { 
+      "name": "Eye pain", 
+      "location": "head", 
+      "quote": "The pain behind my eyes is constant, as if they are being squeezed in a vice." 
+    },
+  ],
+  "diagnosis": "Cataracts",
+  "contemporaryTheory": "In the 17th century, cataracts were often believed to be caused by a buildup of 'cold and phlegmatic' humors clouding the eyes. Treatments typically involved draining these excess humors or using salves made from herbs and minerals. Cataracts were often linked to aging or prolonged exposure to harsh conditions, including bright sunlight or dust.",
+  "socialContext": "Gonzalo, once enslaved and now a freedman innkeeper, has worked hard to establish his business in Mexico City. However, his declining vision threatens his livelihood, as he struggles to manage the inn and serve his guests. His status as a former slave makes seeking medical care difficult, and many of his peers view his condition as a sign of aging or fate. Gonzalo, once proud of his independence, is now dependent on others to navigate his daily tasks.",
+  "urgency": "Moderate",
+  "image": "gonzalodeloanda.jpg",
+  "caption": "Gonzalo de Loanda, a freedman innkeeper suffering from cataracts.",
+  "description": "Gonzalo, a 38-year-old freedman from Angola, now works as an innkeeper in Mexico City. After years of labor and exposure to harsh conditions, he developed cataracts, clouding his vision and leaving him with constant eye pain. His health is deteriorating, and his ability to manage the inn is at risk.",
+  "astrologicalSign": "Libra",
+  "pdf": "",
+  "citation": "Gonzalo is a fictionalized composite based partially on patients discussed in Pablo Gomez's book *The Experiential Caribbean.*",
+  "secret": "Gonzalo has secretly been using more and more opium to dull the pain in his eyes, despite knowing it might cloud his mind further.",
+  "imgdescription": "A highly detailed pixel art portrait of Gonzalo de Loanda, a 38-year-old African-born innkeeper in Mexico City, 1680. His once sharp eyes are now cloudy with cataracts, and his face shows signs of strain and fatigue. He wears a simple linen shirt, and his posture suggests someone used to hard work, though now burdened by his fading sight.",
+  "treatment": "Maria may suggest using a preparation of **rosewater** and **alum** as eye drops to reduce the inflammation and cloudiness. For pain relief, she might offer **poppy seeds** or **opium tincture** in controlled doses. She could also advise Gonzalo to rest his eyes and avoid bright lights, recommending a simple **linen blindfold** soaked in cool herbal infusions to soothe the irritation.",
+  "ability": "If Maria successfully relieves Gonzalo's symptoms, he will become a loyal ally and provide a safe place for her to stay when needed. He will also direct other clients her way, raising her reputation among freedmen and laborers in Mexico City."
+},
+{
+  "type": "patient",
+  "name": "Doña Michaela de la Sierra",
+  "age": 52,
+  "gender": "Female",
+  "occupation": "Wife of a wealthy hacendado",
+  "birthplace": "Mexico City, New Spain",
+  "currentResidence": "Hacienda San Rafael, outskirts of Mexico City",
+  "casta": "Criolla",
+  "class": "Elite",
+  "symptoms": [
+    { 
+      "name": "Chronic fatigue", 
+      "location": "whole body", 
+      "quote": "I feel as though the weight of the world presses down upon me, even simple tasks exhaust me." 
+    },
+    { 
+      "name": "Paralyzed legs", 
+      "location": "legs", 
+      "quote": "I have been unable to move my legs for some twenty years. I bear it, but it is difficult." 
+    },
+  
+  ],
+  "diagnosis": "Apoplexy and paralysis caused by an excess of thick, cold humors",
+  "contemporaryTheory": "The symptoms are believed to arise from a surplus of cold, phlegmatic humors in the body, which leads to melancholia, apoplexy, and paralysis.",
+  "socialContext": "Doña Michaela's condition has been a growing concern for her household and social circle. As the wife of a wealthy hacendado, she is expected to manage the domestic affairs of their estate, but her declining health has made it difficult for her to fulfill these responsibilities. There is fear among her family that her fainting spells and exhaustion may be perceived as signs of hysteria, a condition often associated with women of her status. Additionally, her inability to attend social gatherings has drawn unwanted attention, leading to rumors about her health and well-being.",
+  "urgency": "Medium",
+  "image": "michaeladelasierra.jpg",
+  "caption": "Doña Michaela de la Sierra, wife of a wealthy hacendado",
+  "description": "Doña Michaela, a distinguished lady in Mexico City, has been suffering from paralysis of the legs for twenty years. Frustrated by physicians' treatments, she seeks Maria's expertise in finding a remedy.",
+  "astrologicalSign": "Libra",
+  "pdf": "michaela.pdf",
+  "citation": "AGN/M Civil, Leg. 143, 2a Pte., Exp. 9/19 as cited in Paula de Vos, 'From herbs to alchemy: The introduction of chemical medicine to Mexican pharmacies in the seventeenth and eighteenth centuries,' Journal of Spanish Cultural Studies, 2007, 8:2, 135-168, DOI: 10.1080/14636200701430984.",
+  "secret": "Despite her outwardly dignified appearance, Doña Michaela secretly fears that her condition might be divine punishment for a secret affair she had many years ago, before her marriage. She has not confessed this to anyone, even her priest.",
+  "imgdescription": "A highly detailed pixel art portrait of Doña Michaela de la Sierra, a 52-year-old elite woman in Mexico City, 1680. Her face is pale, with dark circles under her eyes, and her posture hints at her exhaustion. She wears a finely embroidered gown, though her once bright expression now appears wearied and anxious.",
+  "treatment": "Maria may suggest a regimen of **Salt of Mallow** and **Hysteric Water** to dissolve the thick, cold humors clogging Doña Michaela’s body. Salt of Mallow can be given six grains at a time, administered with water to clear the phlegm from her lungs. To restore her strength and calm her nerves, Maria might recommend ten drops of **Hysteric Water**, a complex distillation of herbs like saffron, sage, and marjoram, combined with Volatile Salts of Amber and Deer Antlers. Cooling compresses soaked in **Water of the Queen of Hungary** can be applied to her forehead during fainting spells, while **Cinnamon Water** will help to strengthen her heart and stomach.",
+  "ability": "If Maria successfully treats Doña Michaela’s illness, she will recommend Maria’s services to other elite women in Mexico City. This can open up new opportunities for Maria to gain influence in the elite circles of the city and be invited to attend prestigious social gatherings, where additional quests may be found."
+},
+
 {
   "type": "patient",
   "name": "Sir Robert Southwell",

@@ -41,36 +41,39 @@ Juan Pimentel, The Rhinoceros and the Megatherium: An Essay in Natural History (
  Ann Twinam, Purchasing Whiteness: Pardos, Mulattos, and the Quest for Social Mobility in the Spanish Indies (2015); 
  John Slater, Medicine and Empire: Learned Medicine and Colonial Knowledge in the Spanish Empire (2011)
                 `;
-            } else if (narrativeType === 'Subjective POV') {
-    // Dynamically get the NPC from currentPatient or historyOutput
-    const npc = currentPatient || (historyOutput.npcName && EntityList.find(entity => entity.name === historyOutput.npcName));
-
-    if (npc) {
-        systemPrompt = `
-            From the perspective of ${npc.name}, a ${npc.age || 'unknown age'}-year-old ${npc.occupation || 'unknown occupation'} from ${npc.birthplace || 'unknown birthplace'}, write a highly subjective, brief, but thoughtful and surprisingly personal stream-of-consciousness narrative reflecting their thoughts and emotions during this encounter. Use first-person perspective and include references to the NPC's background, secrets, and fears as described in their character details.
-        `;
-    } else {
-        // Fallback: Write from the POV of a character in the current scenario
-        systemPrompt = `
-            From the perspective of a character involved in the current scenario described in the history agent output, write a subjective, stream-of-consciousness narrative reflecting their thoughts and emotions during the encounter. Use first-person perspective and incorporate the context and events provided in the output. Limit three paragraphs.
-        `;
-    }
+       } else if (narrativeType === 'Maria\'s Subjective POV') {
+    systemPrompt = `
+        From the perspective of Maria, a skilled apothecary in 1680s Mexico City, write a subjective, stream-of-consciousness narrative reflecting her thoughts and emotions during this encounter. Use first-person perspective and incorporate her experiences, concerns, and internal reflections. Limit to three paragraphs.
+    `;
+} else if (narrativeType === 'João\'s POV') {
+    systemPrompt = `
+        From the perspective of João, Maria's cat who was born on the streets, reflecting his true to life cat thoughts and emotions during the encounter. João's subjectivity resembles that of animal characters in CHARLOTTE'S WEB or Aesop tales - he thinks like an animal but has some awareness of human society. Three sentences max, fragmentary, animal-like.
+    `;
+} else if (narrativeType === 'Subaltern POV') {
+    systemPrompt = `
+        Pick another character in this world who may not be represented in historical narratives and who relates in some way to the action. Be creative about it (for instance, it could be the POV of a person who grew a given materia media mentioned in the turn on a different continent). Highlight their unique perspective, which might be absent from official records, and how they view the events happening around them. Limit to one paragraph. It should be from their particular POV and should be realistic - imagine a true to life, historically authentic situation that is plausible, i.e. it shouldn't be someone in the room who the other characters aren't aware of. Think SEA OF POPPIES by Amitav Ghosh. The POV here should NEVER be that of Maria de Lima, the Portuguese converso apothecary who is the main playable character of the game, but someone orthogonal to the narrative.  
+    `;
+} else {
+    // Fallback: Write from the POV of a character in the current scenario
+    systemPrompt = `
+        From the perspective of a character involved in the current scenario described in the history agent output, write a subjective, stream-of-consciousness narrative reflecting their thoughts and emotions during the encounter. Use first-person perspective and incorporate the context and events provided in the output. Limit three paragraphs.
+    `;
 }
 
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-                },
-                body: JSON.stringify({
-                    model: 'gpt-4o-2024-08-06',
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: historyOutput },
-                    ],
-                }),
-            });
+const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: historyOutput },
+        ],
+    }),
+});
 
             const data = await response.json();
             setContent(data.choices[0].message.content);
@@ -99,12 +102,14 @@ Juan Pimentel, The Rhinoceros and the Megatherium: An Essay in Natural History (
     return (
         <div className="counter-narrative-container">
             <div className="pane left-pane critique-agent-container">
-                <div className="dropdown-container">
-                    <select onChange={(e) => setLeftNarrative(e.target.value)}>
-                        <option value="Subjective POV">Subjective POV</option>
-                        {/* Add more options if needed */}
-                    </select>
-                </div>
+               <div className="dropdown-container">
+    <select onChange={(e) => setLeftNarrative(e.target.value)}>
+        <option value="Maria's Subjective POV">Maria's Subjective POV</option>
+        <option value="João's POV">João's POV</option>
+        <option value="Subaltern POV">Subaltern POV</option>
+    </select>
+</div>
+
                 <div className={`output-box ${isLoading ? 'loading' : ''}`}>
                     {isLoading ? (
                         <LoadingIndicator />

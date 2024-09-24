@@ -8,7 +8,7 @@
 /* Main Popup Container */
 .symptoms-root .symptoms-popup {
   position: fixed;
-  top: 5%;
+  top: 2%;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(34, 34, 34, 0.95); /* Dark semi-transparent background */
@@ -17,7 +17,7 @@
   z-index: 1000;
   width: 90%;
   max-width: 1200px;
-  max-height: 90vh;
+  max-height: 96vh;
   overflow-y: auto;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
@@ -41,14 +41,17 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.symptoms-root .npc-portrait-container img {
-  width: 50%;
-  height: auto;
-  border-radius: 10px;
-  padding: 10px;
-  text-align: center;
-  margin: auto;
+.symptoms-root .npc-portrait-container {
+  position: relative;
+  height: 50%; /* Make the portrait container smaller to leave space on the right */
+  margin-left: 10px; /* Shift the portrait slightly left */
+  display: flex;
+  flex-direction: column; /* Stack the portrait and astrology symbol vertically */
+  align-items: center; /* Center align the portrait and symbol */
 }
+
+
+
 
 /* Popup Content */
 .symptoms-popup-content {
@@ -91,6 +94,7 @@
   font-size: 14px;
   color: #ffe066;
   margin-top: 8px;
+
 }
 
 .npc-info ul {
@@ -153,7 +157,7 @@
    padding: 10px;
   border-radius: 8px;
   z-index: 1;
-  padding-top: 20px;
+  padding-top: 5px;
 }
 
 .symptoms-root .symptoms-popup .body-chart {
@@ -166,7 +170,7 @@
   z-index: 1;
   background-repeat: no-repeat;
   filter: grayscale(10%);
-  margin-bottom: 0px;
+  margin-bottom: -30px;
   transition: filter 0.3s ease;
     border-radius: 15px;
 }
@@ -221,7 +225,7 @@
 
 /* Symptom List */
 .symptom-list {
-  margin-top: 20px;
+  margin-top: -20px;
   padding: 0 10px;
   font-size: 22px;
   overflow-y: auto;
@@ -258,36 +262,58 @@
 }
 
 /* Astrology Image Popup */
+/* Popup Container Styling */
 .astrology-image-popup {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 10%;
+  left: 30%;
   transform: translate(-50%, -50%);
   background-color: rgba(34, 34, 34, 0.95); /* Dark semi-transparent background */
-  padding: 10px;
+  padding: 20px; /* Increased padding for more space */
   border-radius: 15px;
   z-index: 2000;
-  width: 800px;
-  overflow: auto;
+  width: auto; /* Automatically adjust based on image size */
+  max-width: 90%; /* Ensure the popup is responsive */
+  max-height: 90%; /* Make sure it doesn’t overflow the viewport */
+  overflow: hidden; /* Hide overflow, cleaner appearance */
+  pointer-events: none; /* Disable pointer events on the container */
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards; /* Add a smooth fade-in */
 }
 
+/* Popup Image Styling */
 .astrology-image-popup img {
-  width: 900px ;
+  width: 100%; /* Let the image take the full width of the container */
+  max-width: 1000px; /* Restrict the max image size */
+  max-height: 100%; /* Ensure the image fits within the viewport */
   z-index: 2000;
   border-radius: 10px;
+  pointer-events: auto; /* Ensure the image remains interactive */
+}
+
+/* Keyframes for Fade-in Effect */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8); /* Start smaller for a zoom-in effect */
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); /* End at normal size */
+  }
 }
 
 /* Buttons */
 .symptoms-buttons {
   display: flex;
 
-  margin-top: 20px;
-  padding: 12px
+  margin-top: 2px;
+  padding: 10px
 
 }
 
 .symptoms-buttons button {
-  padding: 12px 20px;
+  padding: 12px 0px;
   margin-left: 10px;
   font-size: 16px;
   border: none;

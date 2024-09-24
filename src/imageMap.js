@@ -1,5 +1,46 @@
 const imageMap = {
 
+ oldwoman: {
+    src: require('./assets/monk.jpg'),
+    tags: ['generic patient', 'old woman', 'woman', 'elderly', 'matron']
+  },
+ monk: {
+    src: require('./assets/monk.jpg'),
+    tags: ['generic patient', 'friar', 'religious', 'monk', 'monastery']
+  },
+      rainydaytown: {
+  src: require('./assets/rainydaytown.jpg'),
+  tags: ['rainy', 'cloudy', 'rain', 'town', 'city']
+},
+
+      twilight: {
+  src: require('./assets/twilight.jpg'),
+  tags: ['twilight', 'cloudy', 'dusk', 'beautiful sunset', 'clouds']
+},
+      purchase: {
+  src: require('./assets/purchase.jpg'),
+  tags: ['purchasing', 'buying', 'use this when maria buys an item', 'coins']
+},
+
+    marketvendors: {
+  src: require('./assets/marketvendors.jpg'),
+  tags: ['women', 'marketplace', 'selling', 'fruits', 'herbs']
+},
+
+  gonzalodeluanda: {
+  src: require('./assets/gonzalodeluanda.jpg'),
+  tags: ['specific patient', 'African', 'innkeeper', 'cataracts', 'middle aged']
+},
+
+ michaeladelasierra: {
+  src: require('./assets/michaeladelasierra.jpg'),
+  tags: ['specific patient', 'woman', 'wealthy', 'paralysis', 'middle aged']
+},
+  sickboy: {
+  src: require('./assets/sickboy.jpg'),
+  tags: ['generic patient', 'sick boy', 'mestizo', 'indigenous']
+},
+
   cabin: {
   src: require('./assets/cabin.jpg'),
   tags: ['trading post', 'cabin', 'daytime', 'refuge', 'scrublands', 'indigenous', 'americas']
@@ -566,7 +607,7 @@ nightfiredisaster: {
 },
   anadesoto: {
     src: require('./assets/anadesoto.jpg'),
-    tags: ['patient', 'Ana de Soto', 'woman', 'young', 'weaver']
+    tags: ['specific patient', 'Ana de Soto', 'woman', 'young', 'weaver']
   },
   apothecary: {
     src: require('./assets/apothecary.jpeg'),
@@ -650,7 +691,7 @@ nightfiredisaster: {
   },
   rosamariaperez: {
     src: require('./assets/rosamariaperez.jpg'),
-    tags: ['patient', 'Rosa Maria Perez', 'woman', 'housewife', 'criolla']
+    tags: ['specific patient', 'Rosa Maria Perez', 'woman', 'housewife', 'criolla']
   },
   shopmorning: {
     src: require('./assets/shopmorning.jpeg'),
@@ -686,7 +727,7 @@ nightfiredisaster: {
   },
   diegoperez: {
     src: require('./assets/diegoperez.jpg'),
-    tags: ['patient', 'Diego Perez', 'man', 'carpenter', 'indigenous']
+    tags: ['specific patient', 'Diego Perez', 'man', 'carpenter', 'indigenous']
   },
   mushroom: {
     src: require('./assets/mushroom.jpeg'),
