@@ -510,34 +510,53 @@ useEffect(() => {
 // Entity Selection
 
 const selectEntity = useCallback(() => {
-  // Check if the current turn is one of the specified turns
-  const specialTurns = [14, 19];
+  const specialTurns = [19, 29]; // your existing logic for special turns
   const isSpecialTurn = specialTurns.includes(turnNumber);
 
-  if (turnNumber === 1) {
-    // On the first turn, choose a random patient to visit.
-    const patients = EntityList.filter(entity => entity.type === 'patient');
-    return patients[Math.floor(Math.random() * patients.length)];
-  } else if (turnNumber === 2) {
-    // On turn 2, there's an 80% chance of a patient visit and 20% chance of a rival visit.
-    const patients = EntityList.filter(entity => entity.type === 'patient');
-    const rivals = EntityList.filter(entity => entity.type === 'rival');
-    
-    // Use Math.random() to determine whether to pick a patient or a rival.
-    const combinedList = Math.random() < 0.8 ? patients : rivals;
+  // Check for August 23, 1680 in the evening
+  const isEveningOnAugust23 = gameState.date === 'August 23, 1680' && gameState.time.includes('PM');
 
-    // Randomly pick from the selected list (either patients or rivals).
+  // Find Don Luis in the EntityList
+  const donLuis = EntityList.find(entity => entity.name === 'Don Luis (Moneylender)');
+
+  if (isEveningOnAugust23) {
+    // Don Luis will visit in the evening on August 23, 1680
+    return donLuis;
+  }
+
+  if (turnNumber === 13) {
+    // Don Luis will always visit on turn 13
+    return donLuis;
+  }
+
+  // Filter to only include allowed types
+  const validEntityTypes = ['npc', 'state', 'antagonist', 'patient'];
+  const filteredEntities = EntityList.filter(entity => validEntityTypes.includes(entity.type));
+
+  if (turnNumber === 1) {
+    // On the first turn, choose a random patient to visit from the filtered entities.
+    const patients = filteredEntities.filter(entity => entity.type === 'patient');
+    return patients[Math.floor(Math.random() * patients.length)];
+  } else if (turnNumber === 5) {
+    // Turn 5 logic: 80% chance patient visit, 20% chance rival visit
+    const patients = filteredEntities.filter(entity => entity.type === 'patient');
+    const rivals = filteredEntities.filter(entity => entity.type === 'rival');
+    const combinedList = Math.random() < 0.8 ? patients : rivals;
     return combinedList[Math.floor(Math.random() * combinedList.length)];
   } else if (isSpecialTurn && Math.random() < 0.4) {
     // On special turns, there's a 40% chance to summon the Inquisitor.
-    const inquisitor = EntityList.find(entity => entity.name === 'Assistant Inquisitor Fernando de Toledo');
+    const inquisitor = filteredEntities.find(entity => entity.name === 'Assistant Inquisitor Fernando de Toledo');
     return inquisitor;
   } else if (turnNumber > 1 && Math.random() < 0.15) {
-    // On subsequent turns, choose a random entity from the entire EntityList.
-    return EntityList[Math.floor(Math.random() * EntityList.length)];
+    // On subsequent turns, choose a random entity from the filtered entities.
+    return filteredEntities[Math.floor(Math.random() * filteredEntities.length)];
   }
+
   return null;
-}, [turnNumber]);
+}, [turnNumber, gameState.date, gameState.time, EntityList]);
+
+
+
 
 useEffect(() => {
   if (
@@ -644,7 +663,7 @@ const handleSubmit = useCallback(async (e) => {
     `${item.name} (Quantity: ${item.quantity}, Price: ${item.price} silver coins)`
   ).join('\n');
 
- 
+   const result = await generateJournalEntry(narrativeText, journal); // Pass the journal entries here
   
   // Helper function to determine if a quest should advance
 const shouldAdvanceQuest = (quest, actions) => {
@@ -741,7 +760,7 @@ const contextSummary = `
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
-          temperature: .2,
+          temperature: .7,
           messages: [
             {
   role: 'system',
@@ -754,7 +773,7 @@ const contextSummary = `
 
     ### Gameplay Guidelines:
     1. **Historical Frame**: Never allow the simulation to move outside the historical frame of the 1680s. For example, if the user inputs something like "give the patient a vaccine," respond with: "That is historically inaccurate. Please enter a new command that reflects the setting."
-    2. **Concise Responses**: Your responses should be **concise**—rarely exceeding three to four paragraphs, and sometimes as few as one. They must always be grounded in the **sensory realities of life in the 1680s**. Use vivid, period-specific language.
+    2. **Concise Responses**: Your responses should be **concise**—rarely exceeding three to four paragraphs, and sometimes as few as one. They must always be grounded in the ** accurate and unsparing realities of life in the 1680s**. Use vivid, period-specific language.
     3. **Avoid Modern Concepts**: For instance, Maria would not reference vitamins, which are unknown. Instead, she might mention humoral characteristics or magical-medical beliefs (e.g., those discussed by Keith Thomas in 17th-century alchemical medicine).
     4. **Be Highly Specific**: Maria doesn't just wander in "the countryside." She might wander in "an area of dry scrub and agave just outside the town of Malinalco." If she joins an expedition to the northern frontier, she doesn't just go to "a small settlement" she goes to "a small pueblo in Sonora near Huépac." And she doesn't just "cook food for dinner" while camping - she "fashions a hand-made trap and, after a long wait, catches a small Mexican gray squirrel in it. In every description and every occasion, be as highly specific and authentic to the setting as possible. 
     5. NPC introductions. Periodically, a NPC from entitylist may be interested into your context with the phrase "A new character is available for you to deploy as part of the narrative, if it is contextually appropriate..." The key thing here is the IF IT IS CONTEXTUALLY APPROPRIATE. If Maria is in Paris, or Texas, or a pueblo on the frontier, then she will not encounter an NPC based in Mexico City. Likewise if it's 11 pm, the inquisitor toledo will not appear. Remember to think through the implications and be realistic before introducing one of these NPCs, and simply ignore this introduction of an NPC if it doesn't make sense. You don't have to use these "walk-on" characters and often you will decide not to, if they don't make narrative sense in the moment.
@@ -824,6 +843,7 @@ const contextSummary = `
     1. Start a new day using **h3** markdown, with a headline appropriate to the context. But do this ONLY when the date moves to the following morning. If it is after 10 pm but before 4 am, say "the hour grows late" and suggest the #sleep command.
     2. Signal a **crisis** using **h4** markdown, such as "Maria has been arrested!" or "The Inquisitor has arrived..."
     3. If a patient dies, Maria may face **serious consequences**. In such cases, prompt the start of Quest 6 by outputting the string **StartQuest6**.
+    4. Remember that if Maria does something time consuming in a turn, like "travel to Veracruz to book passage on a ship" or "flee into the hills", you need to estimate a reasonable passage of time - several days to several weeks - and progress the date forward.
     
     ### Final Turn Formatting:
     At the **end of each turn**, **ALWAYS track Maria's updated**:
@@ -833,11 +853,11 @@ const contextSummary = `
       😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)
     - **Time of day**: record the exact time of day, such as 5:15 PM or 6:15 AM, and the date, such as August 24, 1680.
 
-    This final line must ALWAYS be in this **exact format** (using bold markdown tags) EXCEPT on turns when Maria buys or forages:
+    This final line must ALWAYS be in this **exact format** (using bold markdown tags) EXCEPT on turns when Maria buys or forages (on which see below):
 
     **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation: [emoji]. Location: [country or city]. Time: #:## AM/PM, [month] [day], [year].**
 
-    **Purchases & Foraging**: On turns in which Maria is engaged in buying or foraging, ALWAYS use this format:
+    **Purchases & Foraging**: IMPORTANT: On turns in which Maria buys or forages an item, ALWAYS use this format AT THE END OF THE OUTPUT:
     - "*Maria has [integer] silver coins. Maria bought [itemname].*"
     - "*Maria has [integer] silver coins. Maria foraged [itemname].*"
   `

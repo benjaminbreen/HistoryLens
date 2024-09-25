@@ -20,7 +20,7 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        temperature: 0.2,
+        temperature: 0.8,
         messages: [
           {
             role: 'system',
@@ -39,7 +39,7 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
               Respond in this format:
               1. Selected Image: [exact key from imageMap OR a single unicode emoji]
               2. Caption: [A short, vivid description beginning with the FULL NPC name if relevant. No more than 6-7 words]
-              3. Description: [A more detailed, highly specific and historically accurate explanation of what Maria is experiencing in this precise moment. ALWAYS include any NPC names from the narrativeText here if any appear. List specific things visible to Maria in the setting, and describe vividly what she is hearing, smelling, and feeling - tactile sensations, proprioception, even subconscious moods are all fair game.]
+              3. Description: [A more detailed, highly specific and historically accurate explanation of what Maria is experiencing in this precise moment. ALWAYS include any NPC names from the narrativeText here if any appear. List specific things visible to Maria in the setting, and describe vividly what she is hearing, smelling, and feeling - tactile sensations, proprioception, even subconscious moods are all fair game. Maximum four sentences.]
             `
           },
           { role: 'user', content: narrativeText },

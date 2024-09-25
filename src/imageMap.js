@@ -4,6 +4,11 @@ const imageMap = {
     src: require('./assets/monk.jpg'),
     tags: ['generic patient', 'old woman', 'woman', 'elderly', 'matron']
   },
+
+   alonsogarcia: {
+    src: require('./assets/alonso_garcia.jpg'),
+    tags: ['patient', 'Alonso Garcia', 'man', 'rival', 'sign painter', 'handsome', 'antagonist']
+  },
  monk: {
     src: require('./assets/monk.jpg'),
     tags: ['generic patient', 'friar', 'religious', 'monk', 'monastery']
@@ -471,7 +476,7 @@ cardplayers: {
 },
 manandwomandinnercandlelight: {
   src: require('./assets/manandwomandinnercandlelight.jpg'),
-  tags: ['couple', 'candlelight', 'dinner', 'romantic', 'intimate', 'evening', 'colonial setting']
+  tags: ['couple', 'candlelight', 'dinner', 'romantic', 'intimate', 'evening', 'colonial setting', 'flame']
 },
 tavernatsunsetbywindow: {
   src: require('./assets/tavernatsunsetbywindow.jpg'),
@@ -1228,7 +1233,7 @@ nightfiredisaster: {
   },
   candle: {
     src: require('./assets/candle.jpg'),
-    tags: ['candle', 'light', 'interior']
+    tags: ['candle', 'light', 'interior', 'flame']
   },
   palace: {
     src: require('./assets/palace.jpg'),

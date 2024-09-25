@@ -82,6 +82,7 @@ Rose Water: Distillation for Aqua Rosae (calming); Confectioning with improper i
 Opium: Distillation produces forms of Laudanum (for instance, opium distilled with saffron = Sydenham's Laudanum, while opium distilled with alchemical products like quicksilver produces Laudanum Paracelsi) or variant; Decoction makes ineffective solution, as opium must be distilled for potency. Opiate compound drugs are highly potent and can be toxic. Mixing opium with any spirits or alcohol creates laudanum.
 Powdered Millipedes: Confection for Pulvis Millepedum (skin treatment), decoction with any plant or herb for asthma treatment. 
 Powdered Crab’s Eyes: Calcination yields various valuable alchemical elemental products.
+Saffron distilled with other herbs makes valuable Hysteric Water.
 Sugar: Confectioning alone makes Syrupus Simplex; with other simples makes various juleps and treacles. Calcined sugar = molasses. Distillation makes an alcoholic spirit which varies depending on other ingredients; distilled sugar = rum, distilled wine = brandy, and so forth.
 Laudanum mixed with other simples can be toxic, especially when mixed with alcoholic simples. 
 Senna: Decoction for Decoctum Sennae (laxative); Confectioning weakens potency, creating ineffective cheap compound.
@@ -178,6 +179,7 @@ If your response doesn't meet these criteria, please correct it before returning
                 },
                 body: JSON.stringify({
                     model: 'gpt-4o-mini',
+                              temperature: .9,
                     messages: [
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: userInput }

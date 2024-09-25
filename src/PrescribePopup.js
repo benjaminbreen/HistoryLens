@@ -141,7 +141,10 @@ const [{ isOver }, drop] = useDrop({
     Maria's current wealth is ${currentWealth} silver coins.
 
     Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. 
-    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it does nothing, show disappointment (a patient might say "I should go to a real physician and be bled - that will fix it"). Or if it's a miracle cure, show an exuberant reaction of joy. This is an educational game about history of medicine so pull no punches if a prescription is truly toxic. However, also be realistic: oral delivery of chamomile, or topical application of sugar, will never cause real complications, it simply won't work. Others like saffron or wine might be pleasant but mostly ineffective. Same with relatively benign but odd things like crab's eyes. It's really in the realm of things like mercury (and other minerals) or opiates (and other narcotics or poisonous plants) that it becomes dangerous. Think carefully and draw on your knowledge before assessing the outcome. Make it highly realistic.
+    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it does nothing, show disappointment (a patient might say "I should go to a real physician and be bled - that will fix it"). Or if it's a miracle cure, show an exuberant reaction of joy. 
+    This is an educational game about history of medicine so pull no punches if a prescription is truly toxic. However, also be realistic: oral delivery of chamomile, or topical application of sugar, will never cause real complications, it simply won't work. Others like saffron or wine might be pleasant but mostly ineffective. 
+    Same with relatively benign but odd things like crab's eyes. It's really in the realm of things like mercury (and other minerals) or opiates (and other narcotics or poisonous plants) that it becomes dangerous. Think carefully and draw on your knowledge before assessing the outcome. Some pontial reactions would be things along the lines of:
+    "The cinchona powder burns as I drink it, but my headache fades soon after." "The poultice smells like earth, and the infection seems to be drawn out by it."  "The draught tastes foul, but I feel a bit better." ""The wine mixed with ground unicorn horn is bitter and expensive. I feel no result." "The bittersweet treacle sticks to my throat, and I fear it is worsening my humoral imbalance." "The smoke from this dried tobacco leaf is rather unpleasant, but I can breathe easier."
 
     Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
@@ -154,6 +157,8 @@ const [{ isOver }, drop] = useDrop({
       or ### The patient balked at the high price and walked out without paying 💸
       or ### The patient had a miraculous recovery! 🍀
       or ### The patient felt neutral effects ⚖️
+      or ### The patient feels better - the treatment worked well.
+      Or many others of your choice. 
 
     - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
       - If the patient **died**, always start with: ##### 💀 The patient has died! 💀
@@ -230,7 +235,7 @@ setPrescriptionPrompt(prescriptionPrompt);
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
-          temperature: .2,
+          temperature: .8,
           messages: [
              ...(conversationHistory || []), 
             { role: 'user', content: prescriptionPrompt }

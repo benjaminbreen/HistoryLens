@@ -73,7 +73,7 @@ const EntityList = [
   "pdf": "michaela.pdf",
   "citation": "AGN/M Civil, Leg. 143, 2a Pte., Exp. 9/19 as cited in Paula de Vos, 'From herbs to alchemy: The introduction of chemical medicine to Mexican pharmacies in the seventeenth and eighteenth centuries,' Journal of Spanish Cultural Studies, 2007, 8:2, 135-168, DOI: 10.1080/14636200701430984.",
   "secret": "Despite her outwardly dignified appearance, Doña Michaela secretly fears that her condition might be divine punishment for a secret affair she had many years ago, before her marriage. She has not confessed this to anyone, even her priest.",
-  "imgdescription": "A highly detailed pixel art portrait of Doña Michaela de la Sierra, a 52-year-old elite woman in Mexico City, 1680. Her face is pale, with dark circles under her eyes, and her posture hints at her exhaustion. She wears a finely embroidered gown, though her once bright expression now appears wearied and anxious.",
+  "imgdescription": "A highly detailed pixel art portrait of Doña Michaela de la Sierra, a 52-year-old elite woman in Mexico City, 1680. Her face is pale, with dark circles under her eyes, and her posture hints at her exhaustion. She wears a finely embroidered pearl white gown, though her once bright expression now appears wearied and anxious.",
   "treatment": "Maria may suggest a regimen of **Salt of Mallow** and **Hysteric Water** to dissolve the thick, cold humors clogging Doña Michaela’s body. Salt of Mallow can be given six grains at a time, administered with water to clear the phlegm from her lungs. To restore her strength and calm her nerves, Maria might recommend ten drops of **Hysteric Water**, a complex distillation of herbs like saffron, sage, and marjoram, combined with Volatile Salts of Amber and Deer Antlers. Cooling compresses soaked in **Water of the Queen of Hungary** can be applied to her forehead during fainting spells, while **Cinnamon Water** will help to strengthen her heart and stomach.",
   "ability": "If Maria successfully treats Doña Michaela’s illness, she will recommend Maria’s services to other elite women in Mexico City. This can open up new opportunities for Maria to gain influence in the elite circles of the city and be invited to attend prestigious social gatherings, where additional quests may be found."
 },
@@ -1133,7 +1133,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Tlacaelel wears a simple cotton tunic dyed in earthy tones, with a *tilmatli* cloak draped over one shoulder. His sandals, made of leather strips, are worn from travel, and a small leather pouch hangs at his waist, filled with plants and herbs gathered from the countryside. His demeanor is quiet and thoughtful, his movements deliberate."
 },
 {
-  type: "npc",
+  type: "rival",
   name: "Alonso García",
   age: 35,
   birthplace: "Mexico City",
@@ -1150,7 +1150,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   questDetails: {
     stages: 3
   },
-  imgdescription: "Alonso dresses in a neatly pressed linen shirt, with a broad belt securing his breeches, which are made of sturdy cloth suited to his profession. His leather apron is often spotted with traces of paint and wood shavings, a testament to his work as a sign maker. His appearance is humble, but his sharp eyes reveal a calculating nature."
+  imgdescription: "Alonso, a handsome man, dresses in a wrinkled linen shirt, with a string belt securing his breeches, which are made of sturdy cloth suited to his profession. His woven apron is often spotted with traces of paint and wood shavings, a testament to his work as a sign maker. His appearance is humble, but his sharp eyes reveal a calculating nature."
 },
 {
   type: "npc",

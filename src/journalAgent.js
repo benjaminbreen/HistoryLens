@@ -1,5 +1,8 @@
-export const generateJournalEntry = async (narrativeText) => {
+export const generateJournalEntry = async (narrativeText, journal = []) => {
     try {
+        // Combine the past journal entries (in markdown format) into one string.
+        const journalHistoryText = journal.map(entry => entry.content).join('\n\n');
+
         const journalAgentResponse = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -8,7 +11,7 @@ export const generateJournalEntry = async (narrativeText) => {
             },
             body: JSON.stringify({
                 model: 'gpt-4o-mini',
-                temperature: 0.2,
+                temperature: 0.7,
                 messages: [
                     {
                         role: 'system',
@@ -32,7 +35,7 @@ When updating the time and date, please follow these specific rules:
 - Always provide an exact time in the format "8:35 AM" or "11:45 PM". Never return vague times like "morning" or "evening".
 - If the current time passes midnight (12:00 AM), increment the date by one day. If the date changes due to significant time passage, clearly reflect this in the JSON output.
 - For example: If Maria treats a patient at 9:15 PM on August 23 and then travels for 4 hours, set the new time as 1:15 AM the next day, August 24.
-- Give the location as a short phrase which clearly indicates the setting - for instance, rather than just "street," you could say "Busy thoroughfare, Mexico City" or instead of "ship" you could say "Fisherman's trawler, mid-Atlantic"
+- Give the location as a short phrase which clearly indicates the setting - for instance, rather than just "street," you could say "Busy thoroughfare, Mexico City" or instead of "ship" you could say "Fisherman's trawler, mid-Atlantic." AVOID RETURNING TO BOTICA DE AMURGURA if Maria leaves - try very hard to preserve her location and track it in space, ensuring that if she goes somewhere far afield of her botica, you don't accidentally return her there out of habit. Pay very careful attention to her movements and think through logically where she might be based on past context. 
 
 3. A JSON object tracking any inventory changes:
 \`\`\`json
