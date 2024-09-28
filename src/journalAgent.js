@@ -1,17 +1,45 @@
-export const generateJournalEntry = async (narrativeText, journal = []) => {
-    try {
-        // Combine the past journal entries (in markdown format) into one string.
-        const journalHistoryText = journal.map(entry => entry.content).join('\n\n');
+import debounce from 'lodash/debounce'; 
 
-        const journalAgentResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-            },
-            body: JSON.stringify({
+let isApiCallInProgress = false; // Add a flag to track the API call status
+
+// Function to handle the turn logic
+export const handleTurn = (narrativeText, journal) => {
+  // Ensure narrativeText is present and valid before invoking
+  if (narrativeText && narrativeText.trim() !== "") {
+    if (!isApiCallInProgress) { // Only make the API call if one is not already in progress
+      debouncedGenerateJournalEntry(narrativeText, journal);
+    } else {
+      console.warn("API call already in progress. Skipping additional requests.");
+    }
+  } else {
+    console.warn("Narrative text is missing or incomplete. Skipping journal entry generation.");
+  }
+};
+
+// Main function to generate the journal entry
+export const generateJournalEntry = async (narrativeText, journal = []) => {
+  try {
+    isApiCallInProgress = true; // Set flag to indicate the API call is in progress
+
+    // Validate the presence of necessary input data
+    if (!narrativeText || narrativeText.trim() === "") {
+      console.error("Narrative text is missing or empty. Aborting journal entry generation.");
+      isApiCallInProgress = false; // Reset flag on error
+      return null;
+    }
+
+    // Combine past journal entries (in markdown format) into one string
+    const journalHistoryText = journal.map(entry => entry.content).join('\n\n');
+
+    // Debugging logs for data availability
+    console.log('Journal history:', journalHistoryText);
+    console.log('Narrative text:', narrativeText);
+
+
+        // Prepare the payload for the OpenAI API call
+        const payload = {
                 model: 'gpt-4o-mini',
-                temperature: 0.7,
+                temperature: 0.2,
                 messages: [
                     {
                         role: 'system',
@@ -30,7 +58,7 @@ Given the following text, provide:
 \`\`\`
 
 When updating the time and date, please follow these specific rules:
-- A turn typically lasts between 5 minutes and several hours/days. Use your judgement to determine the length. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within a 1-2 hour range. However, NEVER go backwards in time. If it is dusk, you can only go further into evening, or the morning of the following day if the turn calls for it.
+- A turn typically lasts between 15 minutes and several hours/days. Use your judgement to determine the length, but err toward 2-3 hours per turn. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within a 1-2 hour range. However, NEVER go backwards in time. If it is dusk, you can only go further into evening, or the morning of the following day if the turn calls for it.
 - If the action described spans multiple events (e.g., traveling to another town, treating multiple patients), increase the time accordingly—use hours, and if necessary, increment the date by a day or more.
 - Always provide an exact time in the format "8:35 AM" or "11:45 PM". Never return vague times like "morning" or "evening".
 - If the current time passes midnight (12:00 AM), increment the date by one day. If the date changes due to significant time passage, clearly reflect this in the JSON output.
@@ -51,47 +79,75 @@ When updating the time and date, please follow these specific rules:
 IMPORTANT: Provide a concise summary of the turn's events. Do not repeat the entire narrative. Focus on key actions, interactions, and changes in Maria's situation. Be witty when warranted, at times somewhat arch. 
 `
                     },
-                    { role: 'user', content: narrativeText }
-                ],
-            }),
-        });
-
-        const journalAgentData = await journalAgentResponse.json();
-        const journalOutput = journalAgentData.choices[0].message.content;
-
-        // Extract the summary from the output
-        const summaryMatch = journalOutput.match(/Summary:\s*(.*)/);
-        const summary = summaryMatch ? summaryMatch[1].trim() : "Error: Could not generate summary.";
-
-        // Extract JSON objects from the output
-        const jsonMatches = journalOutput.match(/```json([\s\S]*?)```/g);
-        const summaryData = jsonMatches && jsonMatches[0] 
-            ? JSON.parse(jsonMatches[0].replace(/```json|```/g, '').trim()) 
-            : { location: "", date: "", time: "" };
-        
-        const inventoryChanges = jsonMatches && jsonMatches[1] 
-            ? JSON.parse(jsonMatches[1].replace(/```json|```/g, '').trim()).inventoryChanges 
-            : [];
-
-        // Debugging: Console log outputs for verification
-        console.log('Journal Agent Output:', journalOutput);
-        console.log('Summary:', summary);
-        console.log('Summary Data:', summaryData);
-        console.log('Inventory Changes:', inventoryChanges);
-
-        // Return the parsed data
-        return { 
-            summary, 
-            summaryData, 
-            inventoryChanges 
+                    { role: 'user', content: narrativeText 
+                 }
+            ]
         };
 
-    } catch (error) {
-        console.error("Error generating journal entry:", error);
-        return { 
-            summary: "Error: Could not generate summary.", 
-            summaryData: { location: "", date: "", time: "" }, 
-            inventoryChanges: []
-        };
+   
+   // Fetch data from the journal agent API
+    const journalAgentResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    // Check if the request was successful
+    if (!journalAgentResponse.ok) {
+      throw new Error(`Failed to fetch from journal agent: ${journalAgentResponse.statusText}`);
     }
+
+    const journalAgentData = await journalAgentResponse.json();
+
+    // Extract the journal agent content
+    const journalOutput = journalAgentData.choices[0]?.message?.content;
+    if (!journalOutput) {
+      throw new Error("No content received from the journal agent.");
+    }
+
+    console.log('Journal Agent Output:', journalOutput);
+
+    // Extract the summary using regex
+    const summaryMatch = journalOutput.match(/Summary:\s*(.*)/);
+    const summary = summaryMatch ? summaryMatch[1].trim() : "Error: Could not generate summary.";
+
+    // Extract JSON objects for location and inventory changes
+    const jsonMatches = journalOutput.match(/```json([\s\S]*?)```/g);
+    const summaryData = jsonMatches && jsonMatches[0]
+      ? JSON.parse(jsonMatches[0].replace(/```json|```/g, '').trim())
+      : { location: "", date: "", time: "" };
+
+    const inventoryChanges = jsonMatches && jsonMatches[1]
+      ? JSON.parse(jsonMatches[1].replace(/```json|```/g, '').trim()).inventoryChanges
+      : [];
+
+    // Debugging logs for verification
+    console.log('Summary:', summary);
+    console.log('Summary Data:', summaryData);
+    console.log('Inventory Changes:', inventoryChanges);
+
+    isApiCallInProgress = false; // Reset flag after successful API call
+
+    // Return the parsed data in a structured format
+    return {
+      summary,
+      summaryData,
+      inventoryChanges,
+    };
+
+  } catch (error) {
+    console.error("Error generating journal entry:", error);
+    isApiCallInProgress = false; // Reset flag on error
+    return {
+      summary: "Error: Could not generate summary.",
+      summaryData: { location: "", date: "", time: "" },
+      inventoryChanges: [],
+    };
+  }
 };
+
+// Debounce the journal entry generation to avoid multiple rapid invocations
+const debouncedGenerateJournalEntry = debounce(generateJournalEntry, 100); // 300ms delay

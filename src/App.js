@@ -76,7 +76,7 @@ function App() {const { gameState, updateInventory, updateLocation, addCompoundT
   const [journal, setJournal] = useState([]);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [turnNumber, setTurnNumber] = useState(1);
-  const [setLocation] = useState('Mexico City');
+const [location, setLocation] = useState('Mexico City');
   const [isLoading, setIsLoading] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [showJournalEntryBox, setShowJournalEntryBox] = useState(false);
@@ -143,12 +143,12 @@ const handleIncorporate = (content) => {
 const togglePdfButtons = () => {
     setShowPdfButtons(prev => !prev);
   };
- const handlePDFClick = (pdfPath, citation) => {
-    console.log("PDF Clicked:", pdfPath);
-    setSelectedPDF(pdfPath); 
-    setSelectedCitation(citation); 
-    setIsPdfOpen(true);       
-  };
+const handlePDFClick = useCallback((pdfPath, citation) => {
+  console.log("PDF Clicked:", pdfPath);
+  setSelectedPDF(pdfPath);
+  setSelectedCitation(citation);
+  setIsPdfOpen(true);
+}, [setSelectedPDF, setSelectedCitation, setIsPdfOpen]);
 const closePdfPopup = () => {
     setIsPdfOpen(false);
     setSelectedPDF(null);
@@ -316,17 +316,6 @@ useEffect(() => {
   };
 }, [toggleInventory, toggleMixingPopup, toggleJournal, toggleContentGuide]);
 
-window.addEventListener('resize', () => {
-  const bgContainer = document.querySelector('.background-container');
-  bgContainer.style.height = `${document.body.scrollHeight}px`;
-});
-
-// triggered on page load to adjust the height dynamically
-document.addEventListener('DOMContentLoaded', () => {
-  const bgContainer = document.querySelector('.background-container');
-  bgContainer.style.height = `${document.body.scrollHeight}px`;
-});
-
 
 // Initial description of Maria and NPC image
 useEffect(() => {
@@ -362,19 +351,6 @@ useEffect(() => {
   const toggleDarkMode = () => {
     setIsDarkMode(prev => !prev);
   };
-
-  useEffect(() => {
-  // Detect keyword in the output or a specific turn number
-  if (turnNumber === 2) {
-    console.log('Turn 2 detected, showing emoji background.');
-  }
-  if (historyOutput.includes('sea')) {
-    console.log('Keyword "sea" detected, showing waves background.');
-  }
-  if (historyOutput.includes('complication')) {
-    console.log('Complication detected, changing background to red.');
-  }
-}, [historyOutput, turnNumber]);
 
 
 // command handling logic
@@ -600,25 +576,15 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
     // 3. **Set the narrative text in history output**
     setHistoryOutput(narrativeText);
 
-    // 4. **NEW CODE: Parse narrativeText for item acquisition lines**
-    // Define a regular expression to match the item acquisition line
-    const itemAcquisitionRegex = /Maria received (.+?)\. It has been added to her inventory\./g;
-    let match;
-    // Use a loop in case there are multiple items
-    while ((match = itemAcquisitionRegex.exec(narrativeText)) !== null) {
-      const itemName = match[1].trim();
 
-      // Generate item details and add to inventory
-      await generateNewItemDetails(itemName);
-    }
 
-    // 5. Generate journal entry
+   
     const { summary, summaryData, inventoryChanges } = await generateJournalEntry(narrativeText);
 
-    // 6. Log journal entry with the generated summary
+    // Log journal entry with the generated summary
     setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
-    // 7. Update game state with time, date, and location from summaryData
+    // Update game state with time, date, and location from summaryData
     if (summaryData.time && summaryData.date) {
       advanceTime(summaryData);
     }
@@ -632,6 +598,19 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
         updateInventory(change.item, change.quantity, change.action);
       });
     }
+
+     // 4. **NEW CODE: Parse narrativeText for item acquisition lines**
+    // Define a regular expression to match the item acquisition line
+    const itemAcquisitionRegex = /Maria received (.+?)\. It has been added to her inventory\./g;
+    let match;
+    // Use a loop in case there are multiple items
+    while ((match = itemAcquisitionRegex.exec(narrativeText)) !== null) {
+      const itemName = match[1].trim();
+
+      // Generate item details and add to inventory
+      await generateNewItemDetails(itemName);
+    }
+
 
   } catch (error) {
     console.error("Error in handleTurnEnd:", error);
@@ -681,8 +660,6 @@ const handleSubmit = useCallback(async (e) => {
   const inventorySummary = gameState.inventory.map(item => 
     `${item.name} (Quantity: ${item.quantity}, Price: ${item.price} silver coins)`
   ).join('\n');
-
-   const result = await generateJournalEntry(narrativeText, journal); // Pass the journal entries here
 
   
   // track user actions
@@ -779,8 +756,8 @@ const contextSummary = `
 Core Principles
 
 Historical Accuracy: Maintain strict adherence to 1680s context. Avoid anachronisms in language, concepts, or technology.
-Vivid Specificity: Provide rich, detailed descriptions of people, places, and events. Use period-specific terminology and reference real historical locations and figures when appropriate.
-Narrative Flexibility: Allow for player-driven story progression while maintaining historical plausibility.
+Vivid Specificity: Provide rich, detailed descriptions of people, places, and events. Use period-specific terminology and reference real historical locations and figures when appropriate. If the user says "go to the market" in Mexico City, send them to a *specific place* like La Merced Market or Portal de Mercederes. 
+Narrative Flexibility: Allow for player-driven story progression while maintaining historical plausibility. Suggest potential paths at key moments, for instance if a patient requires a certain materia medica, suggest places where the player might buy or forage it. 
 Educational Value: Subtly incorporate historical information to educate players about 17th-century life, medicine, and society.
 
 Setting and Character
@@ -825,6 +802,7 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 - Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**.
 - Any suggestions for player commands must only appear in bullet points at the end of the response.
 - Default to suggesting 2–3 appropriate commands each turn. For new patients always suggest #symptoms, #prescribe, and #diagnose.
+- the inventory summary is provided to you for context. don't share it with human user unless they ask about their inventory.
 
 **#buy**:
 
@@ -851,10 +829,11 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 - The narrative should reflect Maria's **personal struggles** with societal pressures, her past, and the challenges of maintaining her business.
 - Emphasize **SPECIFICITY** in all ways.
 - Patients and other NPCs should observe the social norms of the 17th century. They call one another by the last name (so "Señora de Lima" and not "Maria"), and people of lower or middle social ranks (including Maria) are treated mercilessly and arrogantly by all nobility, lords, or high religious figures like Abbots and Inquisitors.
+- Move time forward several hours per turn, and increment the date to the following day once midnight is reached. 
 
 ### Important Narrative Events:
 
-1. Start a new day using **h3** markdown, with a headline appropriate to the context, only when the date moves to the following morning (e.g., ### Dawn Breaks on August 23, 1680)
+1. Signal key events using **h3** markdown, with a headline appropriate to the context. 
 2. Signal a **crisis** using **h4** markdown.
 3. If a patient dies, Maria may face **serious consequences**.
 4. Adjust time appropriately for time-consuming actions (e.g., travel). A turn can be as short as an hour or as long as several weeks. 
@@ -885,7 +864,7 @@ This final status line must ALWAYS be in this **exact format** (using bold markd
 
 ### Item Acquisition:
 
-- **Automatic Inventory Updates**: Whenever Maria receives, finds, or is given an item BESIDES CURRENCY during the narrative (e.g., a patient gives her a letter of recommendation), automatically add the item to her inventory.
+- **Automatic Inventory Updates**: Whenever Maria receives, finds, or is given an item BESIDES CURRENCY during the narrative (e.g., a patient gives her a letter of recommendation or a lock of their hair, or a merchant sells Maria something, or she steals something), automatically add the item to her inventory.
 
 - **Reporting New Items**: At the **end of the turn**, always report any new items added to Maria's inventory using the following exact format:
 
@@ -923,6 +902,8 @@ const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
 setHistoryOutput(simulatedHistoryOutput);
 setConversationHistory([...newHistory, { role: 'assistant', content: simulatedHistoryOutput }]);
 setTurnNumber(turnNumber + 1);
+
+
 
 // Detect new item purchase
 const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|now owns|and bought|and purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
@@ -1731,4 +1712,5 @@ useEffect(() => {
 }
 
 export default App;
+
 

@@ -67,7 +67,8 @@ const Diagnose = ({ isOpen, onClose, previousOutput, npcCaption }) => {
             : 'No symptoms available'}
         **Recent Observations:**
         ${previousOutput}
-         Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently (i.e. Avicenna, Pliny, Monardes), with materia medica she considers using in italic. She is an eclectic apothecary and uses both New World and traditional drugs - i.e. she might prescribe guiacum, cinchona, bezoar, or mumia, or mechoacan, or tobacco. Limit your response to two paragraphs.
+         Use period-appropriate medical concepts to depict Maria de Lima's thought process as she diagnoses the patient. Portray her thoughts in a plainspoken, simple (no "hath" or "thou"!), stream of consciousness style, almost like notes to herself, blunt and to the point, unsparing, citing relevent 17th century and earlier authorities frequently (i.e. Avicenna, Pliny, Monardes), with materia medica she considers using in italic. 
+         She is an eclectic apothecary and uses both New World and traditional drugs - i.e. she might prescribe drugs/simples from "the Indies" and alchemical remedies, not just traditional herbs. Limit your response to two paragraphs.
       `;
 
       const response = await fetch(

@@ -76,11 +76,19 @@ const getImage = (imageName) => {
   }
 };
 
-
-  
-
   if (!npc) {
-    return null;
+    return (
+      <div className="symptoms-root">
+        <div className="symptoms-popup">
+          <p>
+            No NPC selected. If you want to check the symptoms of a character who is present, engage them in conversation first and see if they are willing to be your patient.
+          </p>
+          <button className="symptoms-popup-close" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
+    );
   }
 
   // Define hyperlinks for specific Casta types
@@ -204,101 +212,128 @@ Responses:
   <div className="symptoms-root">
     <div className="symptoms-popup">
       <div className="symptoms-popup-content">
-        <div className="npc-info">
-            <div className="npc-portrait-container">
-            <img src={getImage(npc.image)} alt={npc.name} />  {/* Updated to use getImage function */}
-            <div 
-              className="astrology-symbol" 
-              data-sign-name={npc.astrologicalSign}  // This will pass the astrological sign name to the CSS
-            >
-  {astrologySymbols[npc.astrologicalSign]}
-</div>
-          </div>
-
-          <ul>
-            <li>
-              <strong>
-                <span
-                  onClick={handlePDFLinkClick} // Trigger the PDF popup
-                 
+        {/* NPC Info Section */}
+        {npc ? (
+          <>
+            <div className="npc-info">
+              {/* NPC Portrait and Astrology Symbol */}
+              <div className="npc-portrait-container">
+                <img src={getImage(npc.image)} alt={npc.name} />  {/* Using getImage function */}
+                <div 
+                  className="astrology-symbol" 
+                  data-sign-name={npc.astrologicalSign}  // Pass the astrological sign name to the CSS
                 >
-                  {npc.name}
-                </span>
-              </strong>
-            </li>
-            <li><strong>Age:</strong> {npc.age}</li>
-            <li><strong>Gender:</strong> {npc.gender}</li>
-            <li><strong>Occupation:</strong> {npc.occupation}</li>
-            <li><strong>Birthplace:</strong> {npc.birthplace}</li>
-            <li><strong>Current Residence:</strong> {npc.currentResidence}</li>
-            <li><strong>Casta:</strong> {renderCastaLink(npc.casta)}</li>
-            <li>
-              <strong>Astrological Sign: </strong>
-              <span 
-                className="astrology-sign" 
-                onClick={handleAstrologyClick} 
-                onMouseEnter={() => { setAstrologyImage(astrologyImages[npc.astrologicalSign] || ''); setShowAstrologyImage(true); }} 
-                onMouseLeave={() => setShowAstrologyImage(false)}
-              >
-                {npc.astrologicalSign}
-              </span>
-              {showAstrologyImage && astrologyImage && (
-                <div className="astrology-image-popup">
-                  <img src={astrologyImage} alt={npc.astrologicalSign} />
+                  {astrologySymbols[npc.astrologicalSign]}
                 </div>
-              )}
-            </li>
-          </ul>
+              </div>
 
-          {/* Text entry for additional questions */}
-         <textarea
-           value={additionalQuestions}
-           onChange={(e) => setAdditionalQuestions(e.target.value)}
-           onKeyDown={(e) => {
-             if (e.key === 'Enter') {
-               e.preventDefault(); // Prevents newline in the textarea
-               handleQuestionSubmit(); // Triggers question submission
-             }
-           }}
-           placeholder="Ask additional questions about the patient's symptoms..."
-           className="additional-questions-input"
-         />
-
-          {/* Display the patient's response */}
-          {isLoading ? (
-            <p>Loading response...</p>
-          ) : patientResponse && (
-            <div className="patient-response">
-              <h3>Patient's Response:</h3>
-              <p>{patientResponse}</p>
-            </div>
-          )}
-        </div>
-
-        <div className="symptoms-chart">
-          <div className="body-chart">
-            <SymptomLocator symptoms={npc.symptoms} hoveredSymptom={hoveredSymptom} />
-          </div>
-          <div className="symptom-list">
-            <ul>
-              {npc.symptoms.map((symptom, index) => (
-                <li 
-                  key={index}
-                  onMouseEnter={() => setHoveredSymptom(symptom.name)}
-                  onMouseLeave={() => setHoveredSymptom(null)}
-                >
-                  <strong>{index + 1}.</strong> {symptom.name} ({symptom.location})<br/>
-                  <em>{symptom.quote}</em>
+              {/* NPC Details */}
+              <ul>
+                <li>
+                  <strong>
+                    <span onClick={handlePDFLinkClick}> {/* Trigger the PDF popup */}
+                      {npc.name}
+                    </span>
+                  </strong>
                 </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+                <li><strong>Age:</strong> {npc.age}</li>
+                <li><strong>Gender:</strong> {npc.gender}</li>
+                <li><strong>Occupation:</strong> {npc.occupation}</li>
+                <li><strong>Birthplace:</strong> {npc.birthplace || 'Unknown'}</li>
+                <li><strong>Current Residence:</strong> {npc.currentResidence || 'Unknown'}</li>
+                <li><strong>Casta:</strong> {renderCastaLink(npc.casta || 'Unknown')}</li>
+                <li>
+                  <strong>Astrological Sign: </strong>
+                  <span 
+                    className="astrology-sign" 
+                    onClick={handleAstrologyClick} 
+                    onMouseEnter={() => {
+                      setAstrologyImage(astrologyImages[npc.astrologicalSign] || ''); 
+                      setShowAstrologyImage(true);
+                    }} 
+                    onMouseLeave={() => setShowAstrologyImage(false)}
+                  >
+                    {npc.astrologicalSign}
+                  </span>
+                  {/* Display astrology image if hovered */}
+                  {showAstrologyImage && astrologyImage && (
+                    <div className="astrology-image-popup">
+                      <img src={astrologyImage} alt={npc.astrologicalSign} />
+                    </div>
+                  )}
+                </li>
+              </ul>
+
+              {/* Additional Questions Section */}
+              <textarea
+                value={additionalQuestions}
+                onChange={(e) => setAdditionalQuestions(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();  // Prevents newline in textarea
+                    handleQuestionSubmit();  // Submit the questions
+                  }
+                }}
+                placeholder="Ask additional questions about the patient's symptoms..."
+                className="additional-questions-input"
+              />
+
+              {/* Display Patient's Response */}
+              {isLoading ? (
+                <p>Loading response...</p>
+              ) : (
+                patientResponse && (
+                  <div className="patient-response">
+                    <h3>Patient's Response:</h3>
+                    <p>{patientResponse}</p>
+                  </div>
+                )
+              )}
+            </div>
+
+            {/* Symptoms Chart Section */}
+            <div className="symptoms-chart">
+              <div className="body-chart">
+                {npc.symptoms && npc.symptoms.length > 0 ? (
+                  <SymptomLocator symptoms={npc.symptoms} hoveredSymptom={hoveredSymptom} />
+                ) : (
+                  <p>No symptoms available for this NPC.</p>
+                )}
+              </div>
+
+              {/* Symptom List */}
+              <div className="symptom-list">
+                {npc.symptoms && npc.symptoms.length > 0 ? (
+                  <ul>
+                    {npc.symptoms.map((symptom, index) => (
+                      <li 
+                        key={index}
+                        onMouseEnter={() => setHoveredSymptom(symptom.name)}
+                        onMouseLeave={() => setHoveredSymptom(null)}
+                      >
+                        <strong>{index + 1}.</strong> {symptom.name} ({symptom.location})<br/>
+                        <em>{symptom.quote}</em>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No symptoms to display.</p>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <p>No NPC selected. If you want to check the symptoms of a character who is present, engage them in conversation first and see if they are willing to be your patient.</p>
+        )}
       </div>
 
-      {/* Buttons */}
+      {/* Action Buttons */}
       <div className="symptoms-buttons">
-        <button className="submit-questions-button" onClick={handleQuestionSubmit}>
+        <button 
+          className="submit-questions-button" 
+          onClick={handleQuestionSubmit}
+          disabled={isLoading}
+        >
           {isLoading ? 'Submitting...' : 'Submit Questions'}
         </button>
         <button className="symptoms-popup-close" onClick={onClose}>

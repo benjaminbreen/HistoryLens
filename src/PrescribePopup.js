@@ -211,9 +211,9 @@ Translation: While there is life, there is hope.
     Using your extensive knowledge of early modern poisons and their effects, determine if the dose is sufficient to kill without causing suspicion.
     Begin with a customized "headline" in h3 markdown font, such as "Maria successfully poisoned ${npcName}" or "The poison had unintended effects." If the poison kills the NPC, use h5 tags with "${npcName} has died!".
     Describe the sensory characteristics of the poison, the NPC's reaction, and the aftermath in 2-3 paragraphs. Ensure historical accuracy regarding the type and effects of the poison.
-    After documenting the effects, provide a final line tracking Maria's updated wealth, status, reputation, and the date and time at the VERY END of your response, displayed in bold, as explained below.
+    After documenting the effects, provide a final line tracking Maria's updated wealth, status, reputation, and the date and time at the VERY END of your response, displayed in bold, as explained below. ALWAYS PROGRESS TIME BY AT LEAST THREE TO FOUR HOURS.
 
-    *Now Maria has [integer] silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].*
+    *Now Maria has [integer] silver coins (${currentWealth} + ${price} = ${currentWealth + price}). She is feeling [single word status]. Her reputation is [emoji]. The time is now # AM (or PM), xx [month] [year].*
   `;
 } else {
   // Fallback prompt

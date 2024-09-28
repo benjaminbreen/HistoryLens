@@ -738,7 +738,7 @@ nightfiredisaster: {
   },
   tejedora: {
     src: require('./assets/tejedora.jpeg'),
-    tags: ['woman', 'weaver', 'artisan', 'generic female character', 'young woman', 'patient']
+    tags: ['woman', 'weaver', 'artisan', 'generic female character', 'young woman', 'patient', 'generic']
   },
   paisano: {
     src: require('./assets/paisano.jpeg'),
@@ -746,11 +746,11 @@ nightfiredisaster: {
   },
   dona: {
     src: require('./assets/dona.jpg'),
-    tags: ['patient', 'woman', 'noble', 'dona', 'generic female character']
+    tags: ['patient', 'woman', 'noble', 'dona', 'generic female character', 'generic']
   },
   caballero: {
     src: require('./assets/caballero.jpg'),
-    tags: ['man', 'noble', 'horseman']
+    tags: ['man', 'noble', 'horseman', 'generic', 'patient']
   },
   manual: {
     src: require('./assets/manual.jpeg'),
@@ -774,7 +774,7 @@ nightfiredisaster: {
   },
   merchant: {
     src: require('./assets/merchant.jpeg'),
-    tags: ['merchant', 'man', 'market']
+    tags: ['merchant', 'man', 'market', 'patient', 'generic']
   },
   street: {
     src: require('./assets/street.jpeg'),
@@ -794,7 +794,7 @@ nightfiredisaster: {
   },
   herbalist: {
     src: require('./assets/herbalist.jpeg'),
-    tags: ['herbalist', 'plants', 'woman']
+    tags: ['herbalist', 'plants', 'woman', 'patient', 'generic']
   },
   arturohernandez: {
     src: require('./assets/arturohernandez.jpg'),
@@ -870,7 +870,7 @@ nightfiredisaster: {
   },
   herbshop: {
     src: require('./assets/herbshop.jpg'),
-    tags: ['shop', 'herbs', 'interior']
+    tags: ['shop', 'herbs', 'interior', 'market stall', 'market']
   },
   citycenter: {
     src: require('./assets/citycenter.jpg'),
@@ -882,11 +882,11 @@ nightfiredisaster: {
   },
   taverna: {
     src: require('./assets/taverna.jpg'),
-    tags: ['tavern', 'interior', 'night']
+    tags: ['tavern', 'interior', 'night', 'socializing']
   },
   churchcourtyard: {
     src: require('./assets/churchcourtyard.jpg'),
-    tags: ['church', 'courtyard', 'religion']
+    tags: ['church', 'courtyard', 'religion', 'monks', 'nuns']
   },
   spanishnoble: {
     src: require('./assets/spanishnoble.jpg'),
@@ -894,79 +894,88 @@ nightfiredisaster: {
   },
   mestizo: {
     src: require('./assets/mestizo.jpg'),
-    tags: ['mestizo', 'man', 'worker']
+    tags: ['mestizo', 'man', 'worker', 'patient', 'generic']
   },
   friar: {
     src: require('./assets/friar.jpg'),
-    tags: ['friar', 'religious', 'man']
+    tags: ['friar', 'religious', 'man', 'patient', 'generic']
   },
   merchantman: {
     src: require('./assets/merchantman.jpg'),
-    tags: ['merchant', 'man', 'market', 'generic male character']
+    tags: ['merchant', 'man', 'market', 'generic male character', 'patient', 'generic']
   },
   laborer: {
     src: require('./assets/laborer.jpg'),
-    tags: ['worker', 'laborer', 'man', 'farmer', 'generic male character']
+    tags: ['worker', 'laborer', 'man', 'farmer', 'generic male character', 'patient', 'generic']
   },
-  soldier: {
-    src: require('./assets/soldier.jpg'),
-    tags: ['soldier', 'military', 'man']
+  frontiersoldier: {
+    src: require('./assets/frontiersoldier.jpg'),
+    tags: ['soldier', 'military', 'man', 'patient', 'generic', 'desert', 'frontier']
+  },
+
+    soldier: {
+    src: require('./assets/frontiersoldier.jpg'),
+    tags: ['soldier', 'military', 'man', 'patient', 'generic', 'city', 'armor']
+  },
+    soldiers: {
+    src: require('./assets/soldiers.jpg'),
+    tags: ['soldier', 'military', 'men', 'plural', 'guns']
   },
   ranchero: {
     src: require('./assets/ranchero.jpg'),
-    tags: ['rancher', 'man', 'landowner', 'farmer', 'generic male character']
+    tags: ['rancher', 'man', 'landowner', 'farmer', 'generic male character', 'patient', 'generic']
   },
   curandera: {
     src: require('./assets/curandera.jpg'),
-    tags: ['curandera', 'healer', 'woman']
+    tags: ['curandera', 'healer', 'woman', 'patient', 'generic']
   },
   scholar: {
     src: require('./assets/scholar.jpg'),
-    tags: ['scholar', 'study', 'student', 'man']
+    tags: ['scholar', 'study', 'student', 'man', 'patient', 'generic']
   },
   physician: {
     src: require('./assets/physician.jpg'),
-    tags: ['physician', 'doctor', 'man']
+    tags: ['physician', 'doctor', 'man', 'patient', 'generic']
   },
   shopkeeper: {
     src: require('./assets/shopkeeper.jpg'),
-    tags: ['shopkeeper', 'merchant', 'man']
+    tags: ['shopkeeper', 'merchant', 'man', 'patient', 'generic', 'market']
   },
   child: {
     src: require('./assets/child.jpg'),
-    tags: ['child', 'boy', 'girl']
+    tags: ['child', 'boy', 'girl', 'patient', 'generic']
   },
   priest: {
     src: require('./assets/priest.jpg'),
-    tags: ['priest', 'religion', 'man']
+    tags: ['priest', 'religion', 'man', 'patient', 'generic']
   },
   enslavedperson: {
     src: require('./assets/enslavedperson.jpg'),
-    tags: ['enslaved', 'laborer', 'person']
+    tags: ['enslaved', 'laborer', 'person', 'patient', 'generic']
   },
   peasantwoman: {
     src: require('./assets/peasantwoman.jpg'),
-    tags: ['peasant', 'woman', 'worker', 'generic female character']
+    tags: ['peasant', 'woman', 'worker', 'generic female character', 'patient', 'generic']
   },
   dons: {
     src: require('./assets/dons.jpg'),
-    tags: ['noble', 'group', 'men']
+    tags: ['noble', 'group', 'men', 'patient', 'generic']
   },
   sailor: {
     src: require('./assets/sailor.jpg'),
-    tags: ['sailor', 'ship', 'man']
+    tags: ['sailor', 'ship', 'man', 'patient', 'generic']
   },
   bandito: {
     src: require('./assets/bandito.jpg'),
-    tags: ['bandit', 'outlaw', 'man']
+    tags: ['bandit', 'outlaw', 'man', 'patient', 'generic']
   },
   frontierdweller: {
     src: require('./assets/frontierdweller.jpg'),
-    tags: ['settler', 'man', 'frontier']
+    tags: ['settler', 'man', 'frontier', 'patient', 'generic']
   },
   townsfolk: {
     src: require('./assets/townsfolk.jpg'),
-    tags: ['townsfolk', 'group', 'people']
+    tags: ['townsfolk', 'group', 'people', 'patient', 'generic']
   },
   cobblestones: {
     src: require('./assets/cobblestones.jpg'),
