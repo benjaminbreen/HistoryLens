@@ -60,15 +60,22 @@ function Symptoms({ npcName, onClose, onPDFClick }) {
     return possibleSymptoms.slice(0, Math.floor(Math.random() * 3) + 1);  // Generate 1-3 random symptoms
   };
 
-  // Fallback if an image is missing or incorrect
-   const getImage = (imageName) => {
+// Fallback if an image is missing or incorrect
+const getImage = (imageName) => {
+  try {
+    // Try loading the specific image with .jpg extension
+    return require(`./assets/${imageName}.jpg`);
+  } catch (errorJPG) {
     try {
-      return require(`./assets/${imageName}.jpg`); // Try loading the specific image
-    } catch (error) {
-      console.warn(`Image ${imageName} not found, using default image.`); // Warn about missing image
-      return defaultnpc; // Return default image if specific one is not found
+      // If .jpg is not found, try without the extension
+      return require(`./assets/${imageName}`);
+    } catch (errorWithoutExtension) {
+      console.warn(`Image ${imageName} not found with or without .jpg extension, using default image.`);
+      return defaultnpc; // Return default image if neither is found
     }
-  };
+  }
+};
+
 
   
 
@@ -140,7 +147,7 @@ function Symptoms({ npcName, onClose, onPDFClick }) {
     // Build the prompt
     const prompt = `
 You are ${npc.name}, a ${npc.age}-year-old ${npc.gender}, occupation: ${npc.occupation}, currently residing in ${npc.currentResidence}. 
-Your symptoms are: ${npc.symptoms.map(symptom => symptom.name).join(', ')}. You are seeking treatment from the apothecary Maria de Lima in Mexico City in 1680.
+Your symptoms are:  ${npc.symptoms?.map(symptom => symptom.name).join(', ') || 'No symptoms'}. You are seeking treatment from the apothecary Maria de Lima in Mexico City in 1680.
 Secret (do not reveal unless directly asked, but drop hints throughout): ${npc.secret || 'None'}.
 
 Answer the following questions from the healer in first person, honestly, in one or two sentences per question. You may take offense at an impertinent or personal question, or be evasive, and frequently will break off without fully answering, in mid-sentence, perhaps to cough or moan, or perhaps just because you are embarrassed. 
@@ -167,7 +174,7 @@ Responses:
             { role: 'user', content: prompt }
           ],
           max_tokens: 150,
-          temperature: 0.2,
+          temperature: 0.8,
         }),
       });
 

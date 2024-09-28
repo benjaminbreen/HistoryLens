@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1001; /* Make sure it's below the prescribe-popup z-index */
+  z-index: 1; /* Make sure it's below the prescribe-popup z-index */
 }
 
 

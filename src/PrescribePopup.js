@@ -141,7 +141,7 @@ const [{ isOver }, drop] = useDrop({
     Maria's current wealth is ${currentWealth} silver coins.
 
     Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. 
-    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it does nothing, show disappointment (a patient might say "I should go to a real physician and be bled - that will fix it"). Or if it's a miracle cure, show an exuberant reaction of joy. 
+    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it does nothing, show disappointment (a patient might say something like "I should go to a real physician and be bled - that will fix it" or "I should have stayed in bed" or "That was... well, it didn't kill me, at least."). Or if it's a miracle cure, show an exuberant reaction of joy. 
     This is an educational game about history of medicine so pull no punches if a prescription is truly toxic. However, also be realistic: oral delivery of chamomile, or topical application of sugar, will never cause real complications, it simply won't work. Others like saffron or wine might be pleasant but mostly ineffective. 
     Same with relatively benign but odd things like crab's eyes. It's really in the realm of things like mercury (and other minerals) or opiates (and other narcotics or poisonous plants) that it becomes dangerous. Think carefully and draw on your knowledge before assessing the outcome. Some pontial reactions would be things along the lines of:
     "The cinchona powder burns as I drink it, but my headache fades soon after." "The poultice smells like earth, and the infection seems to be drawn out by it."  "The draught tastes foul, but I feel a bit better." ""The wine mixed with ground unicorn horn is bitter and expensive. I feel no result." "The bittersweet treacle sticks to my throat, and I fear it is worsening my humoral imbalance." "The smoke from this dried tobacco leaf is rather unpleasant, but I can breathe easier."
@@ -182,7 +182,8 @@ const [{ isOver }, drop] = useDrop({
     ### Dosage & Effects:
     - One drachm of most medicines is usually safe, but two or more drachms of highly toxic substances (like quicksilver or laudanum) could lead to fatal outcomes. If the dose is fatal, show the NPC dying.
     - Angry reactions are common if the medicine is ineffective or causes discomfort, so show the patient's response accordingly.
-    - Consider the patient's presumed weight and health AND the route of administration in assessing whether a dose is fatal or highly toxic. For instance, even a single drachm of inhaled quicksilver (mercury) is instantly fatal, as is quicksilver as an enema. However, topical quicksilver is fine. Many drugs are more potent in enema or inhaled form; even one drachm of opium might be fatal in a weak or small patient, especially if inhaled. Likewise with many alchemical compounds. Topical doses are usually fine. 
+    - Consider the patient's presumed weight and health AND the route of administration in assessing whether a dose is fatal or highly toxic. For instance, even a single drachm of inhaled quicksilver (mercury) is instantly fatal, as is quicksilver as an enema. However, topical quicksilver is fine. Many drugs are more potent in enema or inhaled form; even one drachm of opium might be fatal in a weak or small patient, especially if inhaled. Likewise with many alchemical compounds. 
+    - Topical prescriptions are almost always successful (if applied to wounds or related ailments) and are never rejected or disliked by patients. 
     - If a patient dies, Maria has to figure out what to do with the body, sending her storyline into a much darker direction. 
     - Usually a cure will be ineffective or mildly effective. Benign things like wine, rose water, treacles, other sugared medicines, and aguas/distilled waters, plus camphor or herbs, are typically mildly effective. 
 
@@ -190,7 +191,7 @@ const [{ isOver }, drop] = useDrop({
 Translation: Hunger and cold cure every madness.
 Translation: All things are poison, and nothing is without poison.
 Translation: While there is life, there is hope.
-    At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least three hours and possibly more have passed) in **this exact format** using markdown *italic* tags:
+    Then rate the player's prescription with a score out of 10 (10=best possible prescription choice, 1=worst possible). At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least three hours and possibly more have passed) in **this exact format** using markdown *italic* tags:
 
     **Now Maria has ${currentWealth + price} silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
 
@@ -257,7 +258,7 @@ setPrescriptionPrompt(prescriptionPrompt);
     // Now make a second API call to generate a summary with distinctive flavor
     const summaryPrompt = `
       Please summarize the following text with an overall summary of "Result: [emoji] [single word summing it up." Then add one sentence with a succinct, basic summary of what happened, but with vivid details for instance it should say exactly what the complications or impact was. 
-      Emoji guidance: use one of the following emojis as appropriate to represent the result (💀 for death, 🩸 for injury, ✨ for miraculous cure, 😡 for a patient walking out due to price, 🤢 for marked nauseau or disgust or minor toxicity, 😐 if ineffective, 💸 for an extremely valuable prescription, 🚪 for when a patient leaves unhappy.). The summary should reflect the patient's response:
+      Emoji guidance: use one of the following emojis as appropriate to represent the result (💀 for death, 🩸 for injury, ✨ for miraculous cure, 😡 for a patient walking out due to price, 🤢 for marked nauseau or disgust or minor toxicity, 😐 if ineffective, 💸 for an extremely valuable prescription, 🚪 for when a patient leaves unhappy.). Also include the score out of 10. The summary should reflect the patient's response:
       ${simulatedOutput}
     `;
 

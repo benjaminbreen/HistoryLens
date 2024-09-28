@@ -1,5 +1,10 @@
 import imageMap from './imageMap';
 
+const isEmoji = (char) => {
+  return [...char].some(c => c.match(/\p{Emoji}/u));
+};
+
+
 const generateImageAndCaption = async (narrativeText, apiKey) => {
   try {
     // Create a description of available images based on the imageMap
@@ -39,7 +44,8 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
               Respond in this format:
               1. Selected Image: [exact key from imageMap OR a single unicode emoji]
               2. Caption: [A short, vivid description beginning with the FULL NPC name if relevant. No more than 6-7 words]
-              3. Description: [A more detailed, highly specific and historically accurate explanation of what Maria is experiencing in this precise moment. ALWAYS include any NPC names from the narrativeText here if any appear. List specific things visible to Maria in the setting, and describe vividly what she is hearing, smelling, and feeling - tactile sensations, proprioception, even subconscious moods are all fair game. Maximum four sentences.]
+              3. Description: [A historically accurate explanation of what Maria is experiencing in this precise moment. ALWAYS include any NPC names from the narrativeText here if any appear. 
+              List specific things visible to Maria in the setting, and describe one or two notable things she is hearing, smelling, or feeling - tactile sensations, proprioception, even subconscious moods are all fair game. Maximum three sentences, usually two.]
             `
           },
           { role: 'user', content: narrativeText },

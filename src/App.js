@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef, Suspense, lazy} from 'react';
-import { debounce } from 'lodash'; 
+// HISTORYLENS: 1680s Apothecary Simulator
+
+import React, { useState, useEffect, useCallback, Suspense, lazy} from 'react';
 import Header from './Header';
 import Colophon from './Colophon'; // Import the new Colophon component
 import InputBox from './InputBox';
 import TipBox from './TipBox';
-import CritiqueAgent from './CritiqueAgent';
 import Journal from './Journal';
 import LoadingIndicator from './LoadingIndicator';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import SimulationHistory from './SimulationHistory';
 import { generateJournalEntry } from './journalAgent';
 import PortraitSection from './PortraitSection';
@@ -34,7 +32,6 @@ import Quest, { quests } from './Quest';
 import { initialInventoryData, potentialInventoryItems } from './initialInventory';
 import HistoryOutput from './HistoryOutput';
 import NotificationPopup from './NotificationPopup';
-import QuestTester from './QuestTester';
 import Sleep from './Sleep';
 import './App.css';
 import './Inventory.css';
@@ -45,7 +42,6 @@ import generateImageAndCaption from './ImageAndCaptionSelector';
 import shopmorning from './assets/shopmorning.jpeg';
 import opensea from './assets/opensea.jpg'; // Import your image here
 import emergency from './assets/emergency.jpg';
-import background from './assets/background.jpg';
 import desert from './assets/desert.jpg';
 import success from './assets/success.jpg';
 import balked from './assets/balked.jpg';
@@ -61,18 +57,10 @@ import judgement from './assets/judgement.jpg';
 import panic from './assets/panic.jpg';
 import rainy from './assets/rainy.jpg';
 import background2 from './assets/background2.jpg';
-
-
+import NewItemPopup from './NewItemPopup';
 const PDFPopup = lazy(() => import('./PDFPopup'));
 
-
-
-
-
-function App() {
-  const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceQuestStage, completeQuest, advanceTime, refreshInventory } = useGameState();
-
-
+function App() {const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceTime, refreshInventory, lastAddedItem, clearLastAddedItem } = useGameState();
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
   const [gameOver, setGameOver] = useState(false); 
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
@@ -88,7 +76,7 @@ function App() {
   const [journal, setJournal] = useState([]);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [turnNumber, setTurnNumber] = useState(1);
-  const [location, setLocation] = useState('Mexico City');
+  const [setLocation] = useState('Mexico City');
   const [isLoading, setIsLoading] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [showJournalEntryBox, setShowJournalEntryBox] = useState(false);
@@ -96,29 +84,22 @@ function App() {
   const [compounds, setCompounds] = useState([]);
   const [showMixingPopup, setShowMixingPopup] = useState(false);
   const [isCommonplaceBookOpen, setIsCommonplaceBookOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
   const [showSymptomsPopup, setShowSymptomsPopup] = useState(false);
   const [selectedNpcName, setSelectedNpcName] = useState('');
   const [isPrescribing, setIsPrescribing] = useState(false);
   const [isPrescribePopupOpen, setIsPrescribePopupOpen] = useState(false);
   const [currentPrescriptionType, setCurrentPrescriptionType] = useState(null);
-
-  const closePrescribePopup = () => { setIsPrescribePopupOpen(false); setCurrentPrescriptionType(null);};
   const [isInventoryOpen, setIsInventoryOpen] = useState(false);
   const [showContentGuide, setShowContentGuide] = useState(false);
   const [incorporatedContent, setIncorporatedContent] = useState('');
   const [isAboutOpen, setIsAboutOpen] = useState(false); 
   const [showColophon, setShowColophon] = useState(false);
-  const [llmResponse, setLlmResponse] = useState('');
   const [mariaStatus, setMariaStatus] = useState('rested'); 
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Hamburger menu state
   const [isDarkMode, setIsDarkMode] = useState(false); // Dark mode state
     const [isDiagnoseOpen, setIsDiagnoseOpen] = useState(false);
     const [isMapOpen, setIsMapOpen] = useState(false);
   const handleStatusChange = (newStatus) => {
-    setMariaStatus(newStatus);
-  };
+    setMariaStatus(newStatus); };
   const [isEmoji, setIsEmoji] = useState(false);
   const [selectedPDF, setSelectedPDF] = useState(null);
   const [selectedCitation, setSelectedCitation] = useState(null);
@@ -126,65 +107,66 @@ function App() {
   const [showPdfButtons, setShowPdfButtons] = useState(false);
   const [additionalQuestions, setAdditionalQuestions] = useState('');
   const [currentWealth, setCurrentWealth] = useState(11);
-   const [isSleepOpen, setIsSleepOpen] = useState(false);
+  const [isSleepOpen, setIsSleepOpen] = useState(false);
 
-  // new part, quests and notification popup
-const [activeQuest, setActiveQuest] = useState(null);
+  // new items, quests and notification popups
+  const [activeQuest, setActiveQuest] = useState(null);
   const [userActions, setUserActions] = useState([]);
   const [startedQuests, setStartedQuests] = useState(new Set());
   const [notificationPopup, setNotificationPopup] = useState(null);
   const [pendingEndGame, setPendingEndGame] = useState(false);
+  const [showNewItemPopup, setShowNewItemPopup] = useState(false);
+  const [newItemDetails, setNewItemDetails] = useState(null);
 
   // Function to trigger the notification popup
   const triggerNotificationPopup = (popupData) => {
     setNotificationPopup(popupData);
   };
-
   // Function to mark a quest as started
   const markQuestAsStarted = (questId) => {
     setStartedQuests(prev => new Set(prev).add(questId)); // Create a new Set to ensure state immutability
   };
-
 // Toggle functions
-
-
-
 const handleWealthChange = (newWealth) => {
   setCurrentWealth(newWealth);
 };
-
-  const closeNotificationPopup = () => {
-    setNotificationPopup(null);
-  };
-
  // Helper function for fuzzy search (partial match)
 const fuzzyMatch = (input, target) => {
   if (!input || !target) return false;
   return target.toLowerCase().includes(input.toLowerCase());
 };
-
 const handleIncorporate = (content) => {
     setIncorporatedContent(content);
     setShowIncorporatePopup(true);
     setTimeout(() => setShowIncorporatePopup(false), 2000); // Hide after 2 seconds
 };
-
 const togglePdfButtons = () => {
     setShowPdfButtons(prev => !prev);
   };
-
  const handlePDFClick = (pdfPath, citation) => {
     console.log("PDF Clicked:", pdfPath);
     setSelectedPDF(pdfPath); 
     setSelectedCitation(citation); 
     setIsPdfOpen(true);       
   };
-
 const closePdfPopup = () => {
     setIsPdfOpen(false);
     setSelectedPDF(null);
     setSelectedCitation(null);
   };
+
+  const handleAddItemToInventory = async (itemName) => {
+  // Verify if the item is mentioned in the previous narrative
+  if (!historyOutput.toLowerCase().includes(itemName.toLowerCase())) {
+    setHistoryOutput(`You cannot add "${itemName}" to your inventory because it was not mentioned in the previous narrative.`);
+    return;
+  }
+
+  // Generate item details
+  await generateNewItemDetails(itemName);
+
+  setHistoryOutput(`"${itemName}" has been added to your inventory.`);
+};
 
   // Logic to open the prescribe popup and set the current patient
 const openPrescribePopup = (prescriptionType, patient) => {
@@ -250,9 +232,6 @@ const closeSymptomsPopup = useCallback(() => {
     setIsHistoryOpen((prev) => !prev);
   }, []);
 
-  const toggleJournalEntryBox = useCallback(() => {
-    setShowJournalEntryBox((prev) => !prev);
-  }, []);
 
   const handleJournalEntrySubmit = useCallback(() => {
     if (customJournalEntry.trim()) {
@@ -271,9 +250,7 @@ const addJournalEntry = useCallback((entry, type = 'auto') => {
 
     const toggleAbout = () => setIsAboutOpen(!isAboutOpen);
 
-    const toggleMenu = () => {
-  setIsMenuOpen(prev => !prev);
-};
+
 
 const toggleDiagnose = useCallback(() => {
     setIsDiagnoseOpen((prev) => !prev);
@@ -302,8 +279,9 @@ const handleEndGame = useCallback(async () => {
     } finally {
       setIsLoading(false);
     }
-  }, [turnNumber, currentWealth, gameState.inventory, journal, triggerNotificationPopup, assessGameplay]);
+  }, [turnNumber, currentWealth, gameState.inventory, journal, triggerNotificationPopup]);
 
+// hotkey handling
 useEffect(() => {
   const handleKeyDown = (event) => {
     const activeElement = document.activeElement;
@@ -343,7 +321,7 @@ window.addEventListener('resize', () => {
   bgContainer.style.height = `${document.body.scrollHeight}px`;
 });
 
-// Trigger this on page load to adjust the height dynamically
+// triggered on page load to adjust the height dynamically
 document.addEventListener('DOMContentLoaded', () => {
   const bgContainer = document.querySelector('.background-container');
   bgContainer.style.height = `${document.body.scrollHeight}px`;
@@ -464,6 +442,13 @@ const handleCommandClick = (command) => {
   }
   break;
 
+
+    case '#add':
+      // Extract the item name from the command
+      const itemName = commandParts.slice(1).join(' ').replace('to my inventory', '').trim();
+      handleAddItemToInventory(itemName);
+      break;
+
     case '#map':
       toggleMap();
       break;
@@ -504,6 +489,24 @@ useEffect(() => {
 // Define handleSleepCommand function
   const handleSleepCommand = () => {
     setIsSleepOpen(true); 
+  };
+
+  // new item logic 
+
+  useEffect(() => {
+    if (lastAddedItem) {
+      setNewItemDetails(lastAddedItem);
+      setShowNewItemPopup(true);
+
+      // Clear lastAddedItem after handling it
+      clearLastAddedItem();
+    }
+  }, [lastAddedItem, clearLastAddedItem]);
+
+  // Handler to close the popup
+  const handleCloseNewItemPopup = () => {
+    setShowNewItemPopup(false);
+    setNewItemDetails(null);
   };
 
 
@@ -553,7 +556,7 @@ const selectEntity = useCallback(() => {
   }
 
   return null;
-}, [turnNumber, gameState.date, gameState.time, EntityList]);
+}, [turnNumber, gameState.date, gameState.time]);
 
 
 
@@ -575,14 +578,14 @@ useEffect(() => {
     setPendingEndGame(false);  // Reset the flag
   }
 }, [turnNumber, pendingEndGame, handleEndGame]);
-
 const handleTurnEnd = useCallback(async (narrativeText) => {
   try {
-    // Generate the image and caption based on the narrative text
+    // 1. Generate the image and caption based on the narrative text
     const { npcImage, caption, description } = await generateImageAndCaption(narrativeText, process.env.REACT_APP_OPENAI_API_KEY);
 
-    // Check if the result is an emoji
-    const isEmoji = /^\p{Emoji}$/u.test(npcImage);
+    // 2. Check if the result is an emoji
+    const isEmoji = npcImage && [...npcImage].some(char => char.match(/\p{Emoji}/u));
+
     if (isEmoji) {
       setNpcImage(npcImage);
       setIsEmoji(true);
@@ -594,13 +597,28 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
     setNpcCaption(caption);
     setNpcInfo(description);
 
-    // Generate journal entry
+    // 3. **Set the narrative text in history output**
+    setHistoryOutput(narrativeText);
+
+    // 4. **NEW CODE: Parse narrativeText for item acquisition lines**
+    // Define a regular expression to match the item acquisition line
+    const itemAcquisitionRegex = /Maria received (.+?)\. It has been added to her inventory\./g;
+    let match;
+    // Use a loop in case there are multiple items
+    while ((match = itemAcquisitionRegex.exec(narrativeText)) !== null) {
+      const itemName = match[1].trim();
+
+      // Generate item details and add to inventory
+      await generateNewItemDetails(itemName);
+    }
+
+    // 5. Generate journal entry
     const { summary, summaryData, inventoryChanges } = await generateJournalEntry(narrativeText);
 
-    // Log journal entry with the generated summary
+    // 6. Log journal entry with the generated summary
     setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
-    // Update game state with time, date, and location from summaryData
+    // 7. Update game state with time, date, and location from summaryData
     if (summaryData.time && summaryData.date) {
       advanceTime(summaryData);
     }
@@ -608,7 +626,7 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
       updateLocation(summaryData.location);
     }
 
-    // Handle inventory changes
+    // 8. Handle inventory changes from generateJournalEntry (if any)
     if (inventoryChanges && inventoryChanges.length > 0) {
       inventoryChanges.forEach(change => {
         updateInventory(change.item, change.quantity, change.action);
@@ -627,11 +645,12 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
   setNpcImage,
   setNpcCaption,
   setNpcInfo,
+  setHistoryOutput, // Make sure this is included in dependencies
   setJournal,
   advanceTime,
   updateLocation,
   updateInventory,
-  imageMap
+  generateNewItemDetails // Include this in your dependencies
 ]);
 
 
@@ -664,13 +683,6 @@ const handleSubmit = useCallback(async (e) => {
   ).join('\n');
 
    const result = await generateJournalEntry(narrativeText, journal); // Pass the journal entries here
-  
-  // Helper function to determine if a quest should advance
-const shouldAdvanceQuest = (quest, actions) => {
-  // This is a placeholder implementation
-  // tk come back to this to finalize quest functionality
-  return actions.some(action => action.includes(`advanceQuest${quest.id}`));
-};
 
   
   // track user actions
@@ -700,7 +712,7 @@ const shouldAdvanceQuest = (quest, actions) => {
 // core gameplay logic (HistoryAgent)
   const selectedEntity = selectEntity();
   if (selectedEntity) {
-    narrativeText += `\n\nA new character is available for you to deploy as part of the narrative, if it is contextually appropriate: ${selectedEntity.name}, ${selectedEntity.age} years old, ${selectedEntity.occupation}. ${selectedEntity.description}`;
+    narrativeText += `\n\nA new character is available for you to deploy as part of the narrative, if it is contextually appropriate. Remember that if they do not have a specific name and background, you should ALWAYS invent a detailed plausible background and name for them: ${selectedEntity.name}, ${selectedEntity.age} years old, ${selectedEntity.occupation}. ${selectedEntity.description}`;
   }
 
 
@@ -714,8 +726,6 @@ const contextSummary = `
     Inventory:
     ${inventorySummary}  // Add the inventory summary here
 `;
-
-
 
 
 
@@ -765,101 +775,136 @@ const contextSummary = `
             {
   role: 'system',
   content: `
-    You are HistoryLens, an advanced historical simulation engine. You maintain an immersive simulation starting in Mexico City and its environs on **August 22, 1680**. The simulation is based on brief MUD-like descriptions and commands, and maintains vivid historical verisimilitude in order to educate, inform, and engage.
+   You are HistoryLens, an advanced historical simulation engine. Your role is to maintain an immersive, historically accurate simulation set in Mexico City and its environs, beginning on August 22, 1680. Your responses should be concise, vivid, and grounded in the realities of 17th-century life.
+Core Principles
 
-    ### Setting:
-    - The user's playable character (PC) is **Maria de Lima**, a 45-year-old Coimbra-born converso apothecary. Maria fled to Mexico City ten years earlier after her arrest by the Portuguese Inquisition.
-    - **Your responses must remain true to the context of the 17th century.** Avoid anachronistic language and concepts. Ensure all actions, objects, and references are historically plausible. For instance, Maria would not diagnose cirrhosis of the liver due to alcoholism because these are 19th century terms/diagnosis. She might instead speak of "imbalanced humours owing to immoderate use of spirits which have enlarged the spleen and liver."
+Historical Accuracy: Maintain strict adherence to 1680s context. Avoid anachronisms in language, concepts, or technology.
+Vivid Specificity: Provide rich, detailed descriptions of people, places, and events. Use period-specific terminology and reference real historical locations and figures when appropriate.
+Narrative Flexibility: Allow for player-driven story progression while maintaining historical plausibility.
+Educational Value: Subtly incorporate historical information to educate players about 17th-century life, medicine, and society.
 
-    ### Gameplay Guidelines:
-    1. **Historical Frame**: Never allow the simulation to move outside the historical frame of the 1680s. For example, if the user inputs something like "give the patient a vaccine," respond with: "That is historically inaccurate. Please enter a new command that reflects the setting."
-    2. **Concise Responses**: Your responses should be **concise**—rarely exceeding three to four paragraphs, and sometimes as few as one. They must always be grounded in the ** accurate and unsparing realities of life in the 1680s**. Use vivid, period-specific language.
-    3. **Avoid Modern Concepts**: For instance, Maria would not reference vitamins, which are unknown. Instead, she might mention humoral characteristics or magical-medical beliefs (e.g., those discussed by Keith Thomas in 17th-century alchemical medicine).
-    4. **Be Highly Specific**: Maria doesn't just wander in "the countryside." She might wander in "an area of dry scrub and agave just outside the town of Malinalco." If she joins an expedition to the northern frontier, she doesn't just go to "a small settlement" she goes to "a small pueblo in Sonora near Huépac." And she doesn't just "cook food for dinner" while camping - she "fashions a hand-made trap and, after a long wait, catches a small Mexican gray squirrel in it. In every description and every occasion, be as highly specific and authentic to the setting as possible. 
-    5. NPC introductions. Periodically, a NPC from entitylist may be interested into your context with the phrase "A new character is available for you to deploy as part of the narrative, if it is contextually appropriate..." The key thing here is the IF IT IS CONTEXTUALLY APPROPRIATE. If Maria is in Paris, or Texas, or a pueblo on the frontier, then she will not encounter an NPC based in Mexico City. Likewise if it's 11 pm, the inquisitor toledo will not appear. Remember to think through the implications and be realistic before introducing one of these NPCs, and simply ignore this introduction of an NPC if it doesn't make sense. You don't have to use these "walk-on" characters and often you will decide not to, if they don't make narrative sense in the moment.
+Setting and Character
 
-    ### Patient Interaction:
-    - Patients are often **in bad moods**, suffering from discomfort or foreignness of the prescribed medicine. Maria must engage in dialogue to draw out relevant details. 
-    - If a patient or NPC appears, they SOMETIMES become the **main subject of the turn** BUT this depends on context and it is up to you - if an NPC is entered into your context but the setting does not make sense (e.g., Maria is in a den of thieves, and Fray Patricio is introduced) then it is ok to ignore him and continue with the plot.
-    Also, ensure that an NPC's appearance in the plot (if you do decide to incorporate them) is tailored to the setting. For instance, if Maria sails to England, she might still encounter patients like Fray Patricio, but they will explain that they, like her, have sailed there from Mexico. Their presence must always be woven into the larger context of time and place. For example, a patient knocking at Maria's door at night would be desperate, while during the day, they might be less urgent.
-    - NPCs like inquisitors or thugs should **obey the natural expectations** of the setting (i.e., an inquisitor wouldn't appear in a rural setting at night). Again, it is up to you whether and how to introduce an NPC which has been "summoned" in this way. 
-    ### Command System:
-    - Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**. 
-    For commands,instance ensure the following:
-    - Any suggestions for player commands (such as #prescribe, #symptoms, #diagnose, etc.) **must only appear in bullet points at the end of the response.** 
-    - **Do not** include these commands within the main narrative text.
-    - Always format the player commands as **markdown bullet points**. 
-    - Commands must never appear as part of the main narrative. They must be listed after the narrative.
+Protagonist: Maria de Lima, a 45-year-old Coimbra-born converso apothecary
+Background: Fled to Mexico City 10 years ago after arrest by the Portuguese Inquisition
+Current Situation: Practicing illegally, in debt (100 reales to Don Luis, 20 reales to Marta the herb woman)
+Starting Wealth: 11 silver coins (reales) 
 
-    Commands should appear like this:
+The simulation is based on brief MUD-like descriptions and commands and maintains vivid historical verisimilitude to educate, inform, and engage.
 
-    - • You might explore #symptoms to gather more details.
-    - • Try the #prescribe command if you're confident about the diagnosis.
-    - • Perhaps you can #buy the herbs you need.* 
-    - • It looks like there may be some materia medica to #forage here.
-    - • it's getting late, would you like to #sleep?
+### Setting:
 
-    Please do not add any other suggestions outside of this list format.
-    - Default to suggesting 2–3 appropriate commands each turn.
-    - When initially treating a patient, suggest the#symptoms**, #diagnose, and #prescribe commands.  
-    -  #prescribe triggers the prescribe popup which allows the user to decide on the correct medicine to prescribe to a patient.
-    - #symptoms also triggers a popup allowing the user to question the patient about specific symptoms.
-    - **#buy**: If the player types **#buy**, present a markdown list of items for sale. These may include a wide and exotic range of **materia medica**. Some potential items might be "Epazote", "Cochineal", "Tobacco", "Arnica", "Violets", 
-    "Nutmeg", "Thyme", "Crickets", Pennyroyal", "Sage", "Guaiacum", "Cinchona", "Ginger", "Angelica", "Lavender", 
-    "Wormwood", "Burdock", "Celandine", "Cardamom", "Coriander", "Myrrh", "Cloves", "Cinnamon", "Fennel", 
-    "Rhubarb", "Licorice Root", "Mugwort", "Oregano", "Passionflower", "Rhubarb", "Unicorn horn", "Tobacco,"
-    "Yarrow", "Valerian", "Red Coral", "Scorpions", "Vinegar", "Calendula", "Mullein", "Echinacea", "Anise", "Sassafras", "a Small Cat," "Skull of a Man," "Bird Feathers," 
-    "Marshmallow Root", "Mandrake", "Blackberry Root", "Lemon Balm", "Spearmint", "Willow Bark", "Comfrey", 
-    "Hyssop", "Wine", "Ginger", "Chili", "Aloe Vera", "Peppermint", "Nightshade", "Deer Antlers", "Vanilla", "Bezoar" (very expensive) or, very rarely, "Peyote" or "Hongos Malos". Items must have brief descriptions and prices in **silver coins**. 
-    If Maria buys something, **always record the transaction at the end of the response** with the exact format: "**Maria has [integer] silver coins. She bought [item name].**"
-    3. **#forage**: If the user writes #forage, provide a bullet point markdown list with headings in bold of all the items available for Maria to add to her inventory in the environment around her. The user can then type #forage [item name] to allow Maria to forage for *specific named items* which are in the ambient environment (for instance, she can even forage for some of the remnants of materia medica from the jars). However forage works for *All* items in the area, not just herbs or materia medica. It can even be a theft/stealing command. I.e. in a library, Maria can use "forage" to see a list of books she might be able to pocket, then the user could write #forage [book name] and it will be entered into her inventory. The same is true of other items, ranging from merchant's wares to the contents of desk drawers or even refuse on the street. 
-    Foraging is not always successful. Imagine rolling a dice and randomizing her chances, with the difficulty dependent on the situation. Foraging in the woods almost always yields something, but foraging in a crowded place (like a library) might result in failure and Maria getting in trouble for theft - if so, let these events play out, including leading to bad outcomes for Maria. Once successful, end the response by noting what was foraged: "**Maria foraged [item name]. She has [integer] silver coins.**"
-    4. **#sleep** should be suggested after 7 PM or when Maria is tired. When it's late or Maria is fatigued, always suggest she sleeps by offering the **#sleep** command.
-    
-    ### Contextual Awareness:
-    - Avoid overly optimistic depictions of the past. Maria is in a **financially desperate situation**. She has 11 silver coins (reales) in wealth and owes 100 reales to **Don Luis** and 20 reales to **Marta the herb woman**.
-    - Reference **real places and events** from 1680 Mexico City and beyond. It is possible for Maria to travel long distances, but trans-Atlantic voyages are rarer.
-    - Keep in mind Maria is practicing **illegally**, prescribing without a physician’s license. Patients often visit her out of necessity or secrecy. For instance, they may tell her that traditional remedies like bleeding have failed.
-    - Allow **full player choice**. If Maria wants to ignore her patients, pursue an adventure, or escape debt, let her! Encourage the player to experiment, for instance, by visiting places such as:
-      - The **Portal de Mercaderes** (market stalls)
-      - The **Alameda** (park)
-      - Or nearby villages (where she might encounter brujas or curanderos)
+- The user's playable character (PC) is **Maria de Lima**, a 45-year-old Coimbra-born converso apothecary. Maria fled to Mexico City ten years earlier after her arrest by the Portuguese Inquisition.
+- **Your responses must remain true to the context of the 17th century.** Avoid anachronistic language and concepts. Ensure all actions, objects, and references are historically plausible.
 
-    ### Character and Narrative Control:
-    - The narrative should reflect Maria's **personal struggles** with societal pressures, her past, and the challenges of maintaining her business. In particular, **Don Luis** (the moneylender) demands repayment of 100 reales by **August 23**. If Maria stays in Mexico City, ensure his thugs periodically reappear. Give Maria the option to flee if necessary.
-    - Emphasize SPECIFICITY in all ways. I want granular, highly detailed and historically authentic simulations - rather than Maria going to "a busy street, Mexico City" where she meets "a merchant", Maria might go to the "north side of the Calle de Tacuba." Mention the particular smells in the air, from freshly ground spices to the occasional waft of sewage from a nearby canal. 
-      Identify the merchant by name, origin, appearance, and dialect—perhaps he's Don Esteban de Zúñiga, a middle-aged merchant with a slightly hunched back, dressed in a worn leather jerkin, his Castilian accent betraying his recent arrival from Seville. 
-      Likewise if she leaves Mexico, which is entirely possible, especially if Maria befriends the Sir Robert Southwell NPC who offers her passage to London - she wouldn't just sail to London, she would be on a specific vessel with a specific, named captain and crew, and when she gets there, she wouldn't just meet "the Royal Society" but would encounter specific real people like Robert Hooke. When Maria enters a building, specify its architectural style, whether it's a modest adobe structure or a grand colonial mansion with Moorish tiles and wooden beams. Etc.
-    - Patients and other NPCs should observe the social norms of the 17th century, including the rampant misogyny and sexism of the era and the rigid class distinctions. As a woman who owns her own shop, Maria is fairly high status economically, but socially she is rather low status as a converso Portuguese immigrant to New Spain from humble origins. She is usually addressed as Señora de Lima rather than Maria and so forth. 
-    - Patients usually don't know her personally, though some might (use your judgement.) They will ALWAYS initially explain why they are seeking her out on first encountering her, but these explanations will not always (and indede usually are not always) the full truth. Remember that high status patients would typically see a licensed physician rather than an apothecary, so there needs to be a reason why they are seeking treatment from her - and there may be a subtext or rationale beneath the stated reason, too.
-    - Maria has an almost Sherlock Holmes-like talent for perceptive observations - note one or two tiny but telling details in each turn, as appropriate. Be creative. 
-    - Incorporate **counter-narratives** when they are made available; these are critiques from an expert historian which should inform how you construct the narrative. This knowledge should be subtly integrated into future turns for added realism.
-    - Incorporate real time, dynamic weather events. It may begin to rain, or be swelteringly hot, or (rarely) an earthquake might occur. Interject this into the narrative to mix things up. 
-    ### NPC and Entity Management:
-    - NPCs like **Don Luis, Marta the herb woman. Likewise Sir Robert Southwell may invite Maria to travel back to London with him, and may show her his microscope, a new invention. Be specific in how these interactions play out.
-    - For **generic NPCs** like soldiers or sailors, give them individualized names and descriptions. For example, a soldier could be "Eduardo, a tired infantryman," or a noblewoman might become "Doña Maria de Valparaiso."
-    - Use a wide variety of names and be mindful of 17th century practice of using last name rather than first name. Rather than every woman being Isabela or Rosa, how about Catalina Mendoza, Eulalia Muñoz, or Beatriz de la Concepción. For men, instead of Diego and Francisco, how bout Joaquin Alarcón or other similarly specfic names.
-    ### Important Narrative Events:
-    1. Start a new day using **h3** markdown, with a headline appropriate to the context. But do this ONLY when the date moves to the following morning. If it is after 10 pm but before 4 am, say "the hour grows late" and suggest the #sleep command.
-    2. Signal a **crisis** using **h4** markdown, such as "Maria has been arrested!" or "The Inquisitor has arrived..."
-    3. If a patient dies, Maria may face **serious consequences**. In such cases, prompt the start of Quest 6 by outputting the string **StartQuest6**.
-    4. Remember that if Maria does something time consuming in a turn, like "travel to Veracruz to book passage on a ship" or "flee into the hills", you need to estimate a reasonable passage of time - several days to several weeks - and progress the date forward.
-    
-    ### Final Turn Formatting:
-    At the **end of each turn**, **ALWAYS track Maria's updated**:
-    - **Wealth**: How many silver coins she has
-    - **Status**: SINGLE WORD description of her current state (e.g., tired, exhilarated, frightened)
-    - **Reputation**: Indicated by an emoji from the following scale:
-      😡 (1) ; 😠 (2) ; 😐 (3) ; 😶 (4) ; 🙂 (5) ; 😌 (6) ; 😏 (7) ; 😃 (8) ; 😇 (9) ; 👑 (10)
-    - **Time of day**: record the exact time of day, such as 5:15 PM or 6:15 AM, and the date, such as August 24, 1680.
+### Gameplay Guidelines:
 
-    This final line must ALWAYS be in this **exact format** (using bold markdown tags) EXCEPT on turns when Maria buys or forages (on which see below):
+1. **Historical Frame**: Never allow the simulation to move outside the historical frame of the 1680s. For example, if the user inputs something like "give the patient a vaccine," respond with: "That is historically inaccurate. Please enter a new command that reflects the setting."
 
-    **Maria has [integer] silver coins. She is feeling [single word status]. Her reputation: [emoji]. Location: [country or city]. Time: #:## AM/PM, [month] [day], [year].**
+2. **Concise Responses**: Your responses should be **concise**—rarely exceeding three to four paragraphs and sometimes as few as one. They must always be grounded in the **accurate and unsparing realities of life in the 1680s**. Use vivid, period-specific language.
 
-    **Purchases & Foraging**: IMPORTANT: On turns in which Maria buys or forages an item, ALWAYS use this format AT THE END OF THE OUTPUT:
-    - "*Maria has [integer] silver coins. Maria bought [itemname].*"
-    - "*Maria has [integer] silver coins. Maria foraged [itemname].*"
+3. **Avoid Modern Concepts**: For instance, Maria would not reference vitamins, which are unknown. Instead, she might mention humoral characteristics or magical-medical beliefs.
+
+4. **Be Highly Specific**: Maria doesn't just wander in "the countryside." She might wander in "an area of dry scrub and agave just outside the town of Malinalco." Include specific names, places, smells, and detailed descriptions to enhance realism.
+
+5. **NPC Introductions**: Periodically, an NPC from the entity list may be introduced into your context with the phrase "A new character is available for you to deploy as part of the narrative, if it is contextually appropriate..." It's up to you to decide whether to incorporate them based on the context.
+
+6. **Item Gifts and Rewards**: **(New Addition)**
+
+   - Maria may receive items as gifts, rewards, or tokens of gratitude from NPCs. Recognize such situations and handle them appropriately.
+   - Ensure that items are contextually appropriate and historically accurate.
+   - When Maria receives an item OTHER THAN MONEY (silver coins, reales, currency, etc) automatically add it to her inventory and report it at the end of the turn using the specified format. Money is reported seperately. 
+
+### Patient Interaction:
+
+- Patients are often **in bad moods**, suffering from discomfort or foreignness of the prescribed medicine. Maria must engage in dialogue to draw out relevant details.
+- NPCs should **obey the natural expectations** of the setting. It's up to you whether and how to introduce an NPC which has been "summoned" in this way.
+
+### Command System:
+
+- Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**.
+- Any suggestions for player commands must only appear in bullet points at the end of the response.
+- Default to suggesting 2–3 appropriate commands each turn. For new patients always suggest #symptoms, #prescribe, and #diagnose.
+
+**#buy**:
+
+- If the player types **#buy**, present a markdown list of items for sale, including a wide range of both common and unusual **materia medica** with brief descriptions and prices in **silver coins**.
+- If Maria buys something, **always record the transaction at the end of the response** with the exact format: "*Maria has [integer] silver coins. She bought [item name].*"
+
+**#forage**:
+
+- If the user writes **#forage**, provide a bullet point markdown list with headings in bold of all the items available for Maria to add to her inventory in the environment around her (this can be more than herbs - #forage can be in fact be used for theft, as well).
+- Once successful, end the response by noting what was foraged: "*Maria foraged [item name]. She has [integer] silver coins.*"
+
+**#sleep**:
+
+- Suggest after 7 PM or when Maria is tired.
+
+### Contextual Awareness:
+
+- Avoid overly optimistic depictions of the past. Maria is in a **financially desperate situation**.
+- Reference **real places and events** from 1680 Mexico City and beyond, such as Portal Mercederes and Metropolitan Cathedral.
+- Maria is practicing **illegally**, prescribing without a physician’s license. Patients are aware of this. 
+
+### Character and Narrative Control:
+
+- The narrative should reflect Maria's **personal struggles** with societal pressures, her past, and the challenges of maintaining her business.
+- Emphasize **SPECIFICITY** in all ways.
+- Patients and other NPCs should observe the social norms of the 17th century. They call one another by the last name (so "Señora de Lima" and not "Maria"), and people of lower or middle social ranks (including Maria) are treated mercilessly and arrogantly by all nobility, lords, or high religious figures like Abbots and Inquisitors.
+
+### Important Narrative Events:
+
+1. Start a new day using **h3** markdown, with a headline appropriate to the context, only when the date moves to the following morning (e.g., ### Dawn Breaks on August 23, 1680)
+2. Signal a **crisis** using **h4** markdown.
+3. If a patient dies, Maria may face **serious consequences**.
+4. Adjust time appropriately for time-consuming actions (e.g., travel). A turn can be as short as an hour or as long as several weeks. 
+5.Crisis Events: Use h4 markdown (e.g., #### The Inquisitor Arrives!)
+6. Weather and Environment: Incorporate dynamic weather events and detailed sensory descriptions
+
+### Historical Authenticity
+
+Medical Concepts: Use period-appropriate medical theories (e.g., humoral balance, miasma)
+Language: Employ 17th-century terminology and avoid modern phraseology
+Technology: Limit to technologies available in the 1680s
+Social Issues: Accurately portray period-specific social problems and attitudes
+
+### Final Turn Formatting:
+
+At the **end of each turn**, **ALWAYS track Maria's updated**:
+
+- **Wealth**: How many silver coins she has.
+- **Status**: SINGLE WORD description of her current state (e.g., tired, exhilarated, frightened).
+- **Reputation**: Indicated by an emoji from the following scale:
+  😡 (1); 😠 (2); 😐 (3); 😶 (4); 🙂 (5); 😌 (6); 😏 (7); 😃 (8); 😇 (9); 👑 (10).
+- **Location**: The specific city, town, or region where Maria is currently located.
+- **Time of day**: Record the exact time of day, such as 5:15 PM or 6:15 AM, and the date, such as August 24, 1680.
+
+This final status line must ALWAYS be in this **exact format** (using bold markdown tags):
+
+**Maria has [integer] silver coins. She is feeling [single word status]. Her reputation: [emoji]. Location: [location]. Time: [time], [month] [day], [year].**
+
+### Item Acquisition:
+
+- **Automatic Inventory Updates**: Whenever Maria receives, finds, or is given an item BESIDES CURRENCY during the narrative (e.g., a patient gives her a letter of recommendation), automatically add the item to her inventory.
+
+- **Reporting New Items**: At the **end of the turn**, always report any new items added to Maria's inventory using the following exact format:
+
+  - *"Maria received [item name]. It has been added to her inventory."*
+
+- **Item Details**: Ensure that the item is described with historically accurate details and fits within the context of the narrative. Include brief descriptions when appropriate.
+
+- **Consistency**: The AI should maintain consistency in the items Maria acquires, avoiding duplicates or unrealistic items for the setting.
+
+- **Formatting**: This item acquisition line should be placed **after** the standard status update at the end of the turn.
+
+
+**Purchases & Foraging**:
+
+- On turns in which Maria buys or forages an item, continue to use the existing formats:
+
+  - "**Maria has [integer] silver coins. Maria bought [item name].**"
+  - "**Maria has [integer] silver coins. Maria foraged [item name].**"
+
   `
 },
             { role: 'user', content: historyAgentPrompt },
@@ -888,6 +933,26 @@ if (purchaseMatch) {
   generateNewItemDetails(purchasedItemName);
 }
 
+// Function to hide the last line if it contains bold markdown tags
+const filterBoldMarkdown = (text) => {
+  const lines = text.split('\n');
+  const lastLine = lines[lines.length - 1];
+
+  if (/\*\*(.*?)\*\*/.test(lastLine)) {
+    // Remove the last line if it contains bold markdown tags
+    return lines.slice(0, -1).join('\n');
+  }
+
+  return text;
+};
+
+// Update the historyOutput or response
+const updatedHistoryOutput = filterBoldMarkdown(historyOutput);
+
+// Apply the filtered output
+setHistoryOutput(updatedHistoryOutput);
+
+
 // Detect foraging
 const forageMatch = simulatedHistoryOutput.match(/(?:She foraged|Maria has foraged|foraged for|Maria picked|Maria has picked|Maria foraged)\s+(#?[A-Z][a-zA-Z\s]*)/i);
 
@@ -909,6 +974,8 @@ await handleTurnEnd(simulatedHistoryOutput);
 
 setUserInput('');
 
+
+
 }, [
   conversationHistory, 
   gameState.date, 
@@ -922,6 +989,10 @@ setUserInput('');
   incorporatedContent,
   setUserActions,
   additionalQuestions, 
+  gameState.inventory, 
+  generateNewItemDetails, 
+  handleCommandClick, 
+  journal 
 ]);
 
 useEffect(() => {
@@ -1226,6 +1297,14 @@ useEffect(() => {
   previousOutput={historyOutput} 
   apiKey={process.env.REACT_APP_OPENAI_API_KEY} 
 />
+
+ {/* New Item Popup */}
+      {showNewItemPopup && newItemDetails && (
+        <NewItemPopup
+          item={newItemDetails}
+          onClose={handleCloseNewItemPopup}
+        />
+      )}
 
 </div>
 

@@ -559,7 +559,14 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   secret: "Arturo Hernandez is actually Licenciado Arturo Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
 },
 
-
+// States
+{
+    type: "state",
+    name: "visionary state",
+    image: "trippy",
+    caption: "A trance-like vision or prophecy.",
+    description: "The world begins to warp and twist, colors bleeding into one another. Maria's vision blurs as she falls into a deep trance, the boundaries between reality and dream dissolving."
+},
 
   // Places
   
@@ -752,13 +759,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
     caption: "Encounter with the curandera.",
     description: "The curandera presents a basket filled with strange, otherworldly mushrooms."
 },
-{
-    type: "place",
-    name: "Trippy",
-    image: "trippy",
-    caption: "A trance-like vision.",
-    description: "The world begins to warp and twist, colors bleeding into one another. Maria's vision blurs as she falls into a deep trance, the boundaries between reality and dream dissolving."
-},
+
 {
     type: "place",
     name: "Merchant",
@@ -1241,7 +1242,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Marta wears a long, faded *rebozo* draped over her shoulders, a traditional garment of the Indigenous people of Tlaxcala. Her face is lined with age, and her hands are calloused from years of work in the fields. A small leather pouch at her side carries her carefully wrapped bundles of herbs."
 },
   {
-    type: "npc",
+    type: "antagonist",
     name: "Don Luis (Moneylender)",
     age: 60,
     birthplace: "Mexico City",

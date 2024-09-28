@@ -12,8 +12,12 @@ const shuffleArray = (array) => {
 
 // Function to get a random selection of 10 items from the full inventory
 const getRandomInventory = () => {
-  const shuffledInventory = shuffleArray([...initialInventoryData]); // Create a shuffled copy of the array
-  return shuffledInventory.slice(0, 10); // Return the first 10 items
+  const inventorySet = new Set();
+  while (inventorySet.size < 10) {
+    const randomIndex = Math.floor(Math.random() * initialInventoryData.length);
+    inventorySet.add(initialInventoryData[randomIndex]);
+  }
+  return Array.from(inventorySet);
 };
 
 // initial game state
@@ -26,10 +30,12 @@ export const useGameState = () => {
     date: 'August 22, 1680', 
     location: 'Botica de la Amurgura, Mexico City',
     turnNumber: 1,  
-    isGameOver: false,  // New property to track Game Over state
-    endQuestResult: null,  // Modular result for any quest, not just Valdez
-    assessmentTriggered: false,  // Track if EndGameAssessment is triggered
+    isGameOver: false,  
+    endQuestResult: null,  
+    assessmentTriggered: false,  
   });
+
+    const [lastAddedItem, setLastAddedItem] = useState(null);
 
   // Function to trigger the Game Over process based on the result of any quest
   const triggerGameOver = useCallback((result) => {
@@ -103,45 +109,54 @@ const startQuest = useCallback((newQuest) => {
   }, []);
 
   // Add compound to inventory logic
-const addCompoundToInventory = useCallback((compound) => {
-  if (!compound || typeof compound !== 'object' || !compound.name) {
-    console.error('Invalid compound:', compound);
-    return;
-  }
-
-  setGameState((prevState) => {
-    const updatedInventory = [...prevState.inventory]; // Create a new array for immutability
-    const existingItemIndex = updatedInventory.findIndex(
-      (item) => item.name.toLowerCase() === compound.name.toLowerCase()
-    );
-
-    if (existingItemIndex >= 0) {
-      updatedInventory[existingItemIndex].quantity += (compound.quantity || 1);
-    } else {
-      updatedInventory.push({ ...compound });
+  const addCompoundToInventory = useCallback((compound) => {
+    if (!compound || typeof compound !== 'object' || !compound.name) {
+      console.error('Invalid compound:', compound);
+      return;
     }
 
-    return {
-      ...prevState,
-      inventory: updatedInventory,
-      compounds: [...prevState.compounds, { ...compound }],
-    };
-  });
-}, []);
+    setGameState((prevState) => {
+      const updatedInventory = [...prevState.inventory]; // Create a new array for immutability
+      const existingItemIndex = updatedInventory.findIndex(
+        (item) => item.name.toLowerCase() === compound.name.toLowerCase()
+      );
+
+      if (existingItemIndex >= 0) {
+        updatedInventory[existingItemIndex].quantity += (compound.quantity || 1);
+      } else {
+        updatedInventory.push({ ...compound });
+      }
+
+      return {
+        ...prevState,
+        inventory: updatedInventory,
+        compounds: [...prevState.compounds, { ...compound }],
+      };
+    });
+
+    // NEW: Set the last added item
+    setLastAddedItem(compound);
+  }, []);
+
+  // NEW: Function to clear the last added item after it's handled
+  const clearLastAddedItem = useCallback(() => {
+    setLastAddedItem(null);
+  }, []);
+
 
 
   // Function to generate new item details
   const generateNewItemDetails = useCallback(async (itemName) => {
-    const prompt = `Generate details for a new materia medica named "${itemName}" in JSON format. Note that a wide range of plants, animals, and minerals can be materia medica - everything from cats and dogs and monkeys to medicinal cannibalism to spices. 
+    const prompt = `Generate details for an item named "${itemName}" in JSON format. The item could be anything appropriate to a 17th-century historical setting, such as a letter, tool, weapon, clothing, materia medica, animal, or any other object. Everything from cats and dogs and monkeys to clothing to food to spices is possible to be an item. 
     The following fields must be included in your output in exactly this format:
 
-name (string): The name of the materia medica in English.
-latinName (string): The Latin name of the materia medica.
-spanishName (string): The name of the materia medica in Spanish.
+name (string): The name of the item in English.
+latinName (string): The Latin name of the item.
+spanishName (string): The name of the item in Spanish.
 price (integer): The price in silver coins (range: 1-20).
 quantity (integer): The default quantity of the item (range: 1-5).
 humoralQualities (string): Describe its qualities according to humoral theory (e.g., "Warm & Moist").
-medicinalEffects (string): The specific effects it has on health and the body.
+medicinalEffects (string): The specific effects it has on health and the body; if it has none, say so. 
 description (string): A brief, historically plausible description of the item.
 emoji (single emoji character): Choose a SINGLE emoji to represent the item, for instance 🥃 for rum, ☄️ for red sulphur, or 🐌 for snailwater.
 Ensure the JSON is valid and uses double quotes for keys and string values.
@@ -318,5 +333,7 @@ const completeQuest = useCallback((questId) => {
     advanceTime,
     triggerGameOver,  
     resetGameOver,  
+    lastAddedItem,          
+    clearLastAddedItem,    
   };
 };

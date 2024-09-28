@@ -14,6 +14,7 @@ body:not(.dark-mode) .prescribe-popup {
   overflow-y: auto;
   pointer-events: auto;
   color: #4a4a4a;
+   z-index: 100; /* This stays below the text */
 }
 
 
@@ -148,7 +149,7 @@ body:not(.dark-mode) .route-selection label {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Add a high z-index to ensure it appears above other elements */
+    z-index: 10; /* Add a high z-index to ensure it appears above other elements */
 }
 
 .summary-popup {

@@ -47,6 +47,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
   const [selectedPDF, setSelectedPDF] = useState(null); 
   const [fadeClass, setFadeClass] = useState('fade-in');
 
+  // Handle fade transitions on image update
   useEffect(() => {
     setFadeClass('fade-out');
     const timeout = setTimeout(() => {
@@ -70,9 +71,10 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
     setSelectedPDF(null);
   };
 
+  // Memoize Maria's portrait image based on her status
   const mariaPortrait = useMemo(() => getStatusImage(status), [status]);
 
-   const pcInfoContent = (
+  const pcInfoContent = (
     <div>
       <h2 className="portrait-medieval-header">
         <span>NAME:</span> Maria de Lima<br/>
@@ -82,8 +84,6 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
       <p><strong>Biography:</strong> Maria, a skilled apothecary, has been living in Mexico City for the past 10 years after she was charged with heresy and deported from Portugal by the Inquisition. Born into a <i>converso</i> family, she is well-versed in the hybrid of alchemical and Galenic medicine practiced in mid-seventeenth-century Iberia.</p>
       <p>Maria is based on the real-life historical figure of Maria Coelho, who had a similar background and life history but who disappears from the historical record following her deportation from Portugal by the Inquisition in 1669. She was last recorded as bound for Brazil. You can read more about the real-life Maria <a href="https://recipes.hypotheses.org/4710" target="_blank" rel="noopener noreferrer">here</a> and by clicking the Content Guide button.</p>
       <img src={mariaCoelhoImage} alt="Maria Coelho" style={{ maxWidth: '100%', height: 'auto' }} />
-      <div className="pdf-button-container">
-      </div>
     </div>
   );
 
@@ -121,7 +121,6 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
     }
   };
 
-  // Render the PortraitSection component
   return (
     <div className="portrait-section">
       <div className="npc-portrait-container" onClick={handleNpcClick}>
@@ -129,8 +128,9 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           {isEmoji ? (
             <div 
               className={`emoji-image ${fadeClass}`}
-              dangerouslySetInnerHTML={{ __html: npcInfo }}
-            />
+            >
+              {npcInfo} {/* Directly render emoji or text here */}
+            </div>
           ) : (
             <img 
               src={npcImage}
@@ -165,10 +165,9 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
       {showNpcPopup && (
         <div className="npc-portrait-popup">
           {isEmoji ? (
-            <div 
-              className="emoji-image popup-portrait-image"
-              dangerouslySetInnerHTML={{ __html: npcInfo }}
-            />
+            <div className="emoji-image popup-portrait-image">
+              {npcInfo} {/* Direct emoji render */}
+            </div>
           ) : (
             <img src={npcImage} alt="NPC" className="popup-portrait-image" />
           )}

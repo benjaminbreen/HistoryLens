@@ -1,7 +1,28 @@
 const imageMap = {
 
+   antoniusphilalethes: {
+    src: require('./assets/antonius.jpg'),
+    tags: ['Antonius Philalethes', 'alchemist', 'man', 'questNPC', 'Greek', 'patient']
+  },
+
+
+   monasteryquadrangle: {
+    src: require('./assets/monasteryquadrangle.jpg'),
+    tags: ['water fountain', 'fountain', 'quadrangle', 'monastery', 'monks']
+  },
+
+  palacecourtyardfountain: {
+    src: require('./assets/fountain.jpg'),
+    tags: ['water fountain', 'fountain', 'palace', 'courtyard', 'wealthy home', 'inner sanctum']
+  },
+
+ fountain: {
+    src: require('./assets/fountain.jpg'),
+    tags: ['water fountain', 'fountain', 'water source', 'city', 'courtyard']
+  },
+
  oldwoman: {
-    src: require('./assets/monk.jpg'),
+    src: require('./assets/oldwoman.jpg'),
     tags: ['generic patient', 'old woman', 'woman', 'elderly', 'matron']
   },
 
@@ -32,8 +53,8 @@ const imageMap = {
   tags: ['women', 'marketplace', 'selling', 'fruits', 'herbs']
 },
 
-  gonzalodeluanda: {
-  src: require('./assets/gonzalodeluanda.jpg'),
+  gonzalodeloanda: {
+  src: require('./assets/gonzalodeloanda.jpg'),
   tags: ['specific patient', 'African', 'innkeeper', 'cataracts', 'middle aged']
 },
 
@@ -654,6 +675,11 @@ nightfiredisaster: {
     src: require('./assets/fraypatricio.jpg'),
     tags: ['Fray Patricio', 'friar', 'religious', 'patient']
   },
+
+  nun: {
+    src: require('./assets/nun.jpg'),
+    tags: ['generic nun', 'nun', 'abbess', 'religious', 'patient', 'nunnery', 'convent']
+  },
   generichome: {
     src: require('./assets/generichome.jpeg'),
     tags: ['interior', 'home', 'generic']
@@ -684,7 +710,7 @@ nightfiredisaster: {
   },
   marta: {
     src: require('./assets/marta.jpeg'),
-    tags: ['Marta', 'herbalist', 'woman']
+    tags: ['Marta', 'herbalist', 'woman', 'elderly']
   },
   outsideday: {
     src: require('./assets/outsideday.jpg'),
@@ -712,15 +738,15 @@ nightfiredisaster: {
   },
   tejedora: {
     src: require('./assets/tejedora.jpeg'),
-    tags: ['woman', 'weaver', 'artisan', 'generic female character']
+    tags: ['woman', 'weaver', 'artisan', 'generic female character', 'young woman', 'patient']
   },
   paisano: {
     src: require('./assets/paisano.jpeg'),
-    tags: ['peasant', 'worker', 'man']
+    tags: ['peasant', 'worker', 'generic male character', 'patient', 'indigenous', 'make sure to give him a real name']
   },
   dona: {
     src: require('./assets/dona.jpg'),
-    tags: ['woman', 'noble', 'dona', 'generic female character']
+    tags: ['patient', 'woman', 'noble', 'dona', 'generic female character']
   },
   caballero: {
     src: require('./assets/caballero.jpg'),
@@ -840,7 +866,7 @@ nightfiredisaster: {
   },
   square: {
     src: require('./assets/square.jpg'),
-    tags: ['square', 'outdoor', 'city']
+    tags: ['square', 'outdoor', 'city', 'Zocalo']
   },
   herbshop: {
     src: require('./assets/herbshop.jpg'),
@@ -999,9 +1025,9 @@ nightfiredisaster: {
     src: require('./assets/playamayor.jpg'),
     tags: ['plaza', 'outdoor', 'square']
   },
-  alamedacentral: {
-    src: require('./assets/alamedacentral.jpg'),
-    tags: ['park', 'outdoor', 'city']
+  alameda: {
+    src: require('./assets/alameda.jpg'),
+    tags: ['park', 'outdoor', 'city', 'alameda', 'alameda central']
   },
   sebastianathayde: {
     src: require('./assets/sebastianathayde.jpg'),
