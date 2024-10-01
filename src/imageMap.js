@@ -1,9 +1,105 @@
 const imageMap = {
 
+herbalflowers: {
+  src: require('./assets/herbalflowers.jpg'),
+  tags: ['herbal flowers', 'flowers', 'herbs', 'medicine', 'materia medica', 'market item', 'items bought']
+},
+
+cannabis: {
+  src: require('./assets/cannabis.jpg'),
+  tags: ['cannabis', 'herb', 'medicine', 'materia medica', 'market item', 'items bought']
+},
+
+galangal: {
+  src: require('./assets/galangal.jpg'),
+  tags: ['galangal', 'root', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+},
+
+oil: {
+  src: require('./assets/oil.jpg'),
+  tags: ['oil', 'liquid', 'medicine', 'materia medica', 'market item', 'items bought']
+},
+
+nuts: {
+  src: require('./assets/nuts.jpg'),
+  tags: ['nuts', 'seeds', 'food', 'materia medica', 'market item', 'items bought']
+},
+
+root: {
+  src: require('./assets/root.jpg'),
+  tags: ['root', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+},
+
+   cacao: {
+    src: require('./assets/cacao.jpg'),
+    tags: ['cacao', 'chocolate', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+  },
+
+   rabbit: {
+    src: require('./assets/rabbit.jpg'),
+    tags: ['rabbit', 'animal', 'pet', 'bunny', 'hare', 'items bought']
+  },
+ cilantro: {
+    src: require('./assets/cilantro.jpg'),
+    tags: ['herb', 'cilantro', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+  },
+ onions: {
+    src: require('./assets/onions.jpg'),
+    tags: ['food', 'onions', 'spices', 'materia medica', 'market item', 'items bought']
+  },
+  pinenuts: {
+    src: require('./assets/pinenuts.jpg'),
+    tags: ['herb', 'pine nuts', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+  },
+
+     staranise: {
+    src: require('./assets/staranise.jpg'),
+    tags: ['star shaped spice', 'star anise', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+  },
+
+  vanilla: {
+    src: require('./assets/mangos.jpg'),
+    tags: ['fruit', 'mango', 'food', 'delicious fruit', 'market item', 'items bought']
+  },
+vanilla: {
+    src: require('./assets/vanilla.jpg'),
+    tags: ['vanilla', 'spices', 'medicine', 'materia medica', 'market item', 'items bought']
+  },
+    fish: {
+    src: require('./assets/fish.jpg'),
+    tags: ['fish', 'seafood', 'food item', 'market item', 'items bought', 'nature']
+  },
+
+   chilis: {
+    src: require('./assets/chilis.jpg'),
+    tags: ['chili', 'spicy', 'food item', 'market item', 'items bought', 'chili pepper']
+  },
+
+   laurelleaves: {
+    src: require('./assets/laurelleaves.jpg'),
+    tags: ['plant', 'nature', 'leaf', 'market item', 'herbs bought', 'materia medica']
+  },
+
+     genericleavesorherbs: {
+    src: require('./assets/genericleavesorherbs.jpg'),
+    tags: ['plant', 'nature', 'generic leaves', 'market item', 'herbs bought', 'generic herbs', 'materia medica']
+  },
+
+  aloe: {
+    src: require('./assets/aloe.jpg'),
+    tags: ['plant', 'aloe', 'market item', 'herbs bought', 'materia medica']
+  },
+
    antoniusphilalethes: {
     src: require('./assets/antonius.jpg'),
     tags: ['Antonius Philalethes', 'alchemist', 'man', 'questNPC', 'Greek', 'patient']
   },
+
+    conventofsanfrancisco: {
+    src: require('./assets/conventofsanfrancisco.jpg'),
+    tags: ['convent of san francisco', 'convent', 'quadrangle', 'nunnery', 'nuns', 'christian', 'mexico city']
+  },
+
 
 
    monasteryquadrangle: {
@@ -14,6 +110,11 @@ const imageMap = {
   palacecourtyardfountain: {
     src: require('./assets/fountain.jpg'),
     tags: ['water fountain', 'fountain', 'palace', 'courtyard', 'wealthy home', 'inner sanctum']
+  },
+
+  courtyard: {
+    src: require('./assets/fountain.jpg'),
+    tags: ['water fountain', 'fountain', 'palace', 'courtyard', 'wealthy home', 'town']
   },
 
  fountain: {
@@ -599,6 +700,10 @@ frogonlake: {
   src: require('./assets/frogonlake.jpg'),
   tags: ['frog', 'lake', 'nature', 'wildlife', 'amphibian', 'calm water', 'pond']
 },
+sublimateactive: {
+  src: require('./assets/sublimate-active.jpg'),
+  tags: ['sublimation', 'alchemy', 'alchemical practice', 'magic', 'potions', 'apothecary methods life', 'magical']
+},
 churchnight: {
   src: require('./assets/churchnight.jpg'),
   tags: ['church', 'night', 'lantern', 'colonial', 'gathering', 'religious life', 'quiet']
@@ -639,8 +744,8 @@ nightfiredisaster: {
     src: require('./assets/apothecary.jpeg'),
     tags: ['do not use this image']
   },
-  southwell: {
-    src: require('./assets/southwell.jpg'),
+  sirrobertsouthwell: {
+    src: require('./assets/sirrobertsouthwell.jpg'),
     tags: ['specific patient', 'Sir Robert Southwell', 'man', 'English', 'foreign', 'diplomat']
   },
    sorjuanainesdelacruz: {
@@ -816,10 +921,7 @@ nightfiredisaster: {
     src: require('./assets/santiagovaldez.jpg'),
     tags: ['antagonist', 'Inquisitor', 'Santiago Valdez', 'man', 'questNPC']
   },
-  symptoms: {
-    src: require('./assets/symptoms.jpg'),
-    tags: ['diagnosis', 'patient', 'medicine']
-  },
+
   tlacaelel: {
     src: require('./assets/tlacaelel.jpg'),
     tags: ['Nahuatl', 'scholar', 'man', 'questNPC']
@@ -959,7 +1061,7 @@ nightfiredisaster: {
   },
   dons: {
     src: require('./assets/dons.jpg'),
-    tags: ['noble', 'group', 'men', 'patient', 'generic']
+    tags: ['noble', 'group', 'men', 'patient', 'generic', 'don', 'use this for any generic noble character']
   },
   sailor: {
     src: require('./assets/sailor.jpg'),
@@ -1080,7 +1182,7 @@ nightfiredisaster: {
   },
   spices: {
     src: require('./assets/spices.jpg'),
-    tags: ['herbs', 'spices', 'medicine']
+    tags: ['herbs', 'spices', 'medicine', 'materia medica', 'market items']
   },
   rocks: {
     src: require('./assets/rocks.jpg'),
@@ -1128,7 +1230,7 @@ nightfiredisaster: {
   },
   leaf: {
     src: require('./assets/leaf.jpg'),
-    tags: ['plant', 'nature', 'leaf']
+    tags: ['plant', 'nature', 'leaf', 'market items', 'herbs bought']
   },
   villagechurch: {
     src: require('./assets/villagechurch.jpg'),
@@ -1296,16 +1398,17 @@ nightfiredisaster: {
   },
   bark: {
     src: require('./assets/bark.jpg'),
-    tags: ['bark', 'cinchona', 'medicinal', 'medicinebark']
+    tags: ['bark', 'cinchona', 'medicinal', 'medicinebark', 'item bought', 'market item']
   },
    nutmeg: {
     src: require('./assets/nutmeg.jpg'),
-    tags: ['spice', 'ingredient', 'nutmeg']
+    tags: ['spice', 'ingredient', 'nutmeg', 'food item', 'materia medica', 'spice', 'item bought', 'market item']
   },
   unguents: {
     src: require('./assets/unguents.jpg'),
-    tags: ['medicine', 'unguent', 'ointment']
+    tags: ['medicine', 'unguent', 'ointment', 'materia medica']
   },
+
 southamericacity: {
     src: require('./assets/newspaincityoutsidemexico.jpg'),
     tags: ['city', 'outdoor', 'urban']

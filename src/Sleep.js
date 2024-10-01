@@ -15,6 +15,7 @@ const Sleep = ({
   setHistoryOutput,
   setConversationHistory,
   setTurnNumber,
+  advanceTime,
 }) => {
   const { time, date, location } = gameState;
   const [randomDream, setRandomDream] = useState(null);
@@ -25,6 +26,8 @@ const Sleep = ({
   const [selectedPdfPath, setSelectedPdfPath] = useState('');
   const [selectedCitation, setSelectedCitation] = useState('');
   const [dreamLoaded, setDreamLoaded] = useState(false);
+    // Set a flag to ensure time is only advanced once
+  const [timeAdvanced, setTimeAdvanced] = useState(false);  
 
   const dreams = [
   {
@@ -88,21 +91,49 @@ const Sleep = ({
     }
   }, [dreamLoaded, dreams]);
 
-  // Function to handle the sleep process
-  const handleSleep = useCallback(async () => {
-    // Access the current randomDream state
-    const currentDream = randomDream;
-    const dreamSummary = currentDream ? currentDream.summary : "No dream remembered";
-    const sleepMessage = `Maria is going to sleep at ${time} on ${date} in ${location}. She will wake up the following morning. A summary of her dream: "${dreamSummary}". Please advance the simulation to the next morning and briefly describe what happens when Maria wakes up in the same location, incorporating the dream if possible. Present a numbered list of three possible next steps after this. At the end of your response, remember to include a status line at the end in this exact format: "**Maria slept and awoke the following day. She is feeling [single word status]. Time: 7:00 AM, xx [month] [year].**" Maria always wakes up the day after she sleeps, i.e. if Maria sleeps on 9:00 pm on August 24, 1680, she awakens at 7:00 AM on August 25, 1680.`;
+ const getNextDate = (currentDate) => {
+  const date = new Date(currentDate);
+  date.setDate(date.getDate() + 1); // Advance the date by one day
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+};
 
-    setSleepPrompt(sleepMessage);
+// Function to handle the sleep process
+const handleSleep = useCallback(async () => {
 
-    try {
-      setIsLoading(true);
 
-      const messages = Array.isArray(conversationHistory)
-        ? [...conversationHistory, { role: 'user', content: sleepMessage }]
-        : [{ role: 'user', content: sleepMessage }];
+  if (timeAdvanced) {
+    console.warn("Time has already been advanced.");
+    return;
+  }
+
+  // Access the current randomDream state
+  const currentDream = randomDream;
+  const dreamSummary = currentDream ? currentDream.summary : "No dream remembered";
+
+  // Calculate the new date for the following morning
+  const currentDate = new Date(date);
+  currentDate.setDate(currentDate.getDate() + 1); // Advance the date by one day
+  const newDate = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  // Immediately update game state to reflect the morning after
+  advanceTime({ time: '7:00 AM', date: newDate });
+
+  // Set the flag to true so time can't advance multiple times
+  setTimeAdvanced(true);  // Set the flag here
+
+
+  // Create the sleep message for the history agent
+  const sleepMessage = `Maria is going to sleep at ${time} on ${date} in ${location}. She will wake up the following morning. A summary of her dream: "${dreamSummary}". Please advance the simulation to the next morning and briefly describe what happens when Maria wakes up in the same location, incorporating the dream if possible. Present a numbered list of three possible next steps after this. At the end of your response, remember to include a status line at the end in this exact format: "**Maria slept and awoke the following day. She is feeling [single word status]. Time: 7:00 AM, ${newDate}, 1680.**"`;
+
+  setSleepPrompt(sleepMessage);
+
+  try {
+    setIsLoading(true);
+
+
+    const messages = Array.isArray(conversationHistory)
+      ? [...conversationHistory, { role: 'user', content: sleepMessage }]
+      : [{ role: 'user', content: sleepMessage }];
 
       // Send the sleep command to the history agent to advance the turn
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -136,7 +167,7 @@ const Sleep = ({
     } finally {
       setIsLoading(false);
     }
-  }, [time, date, location, conversationHistory, addJournalEntry, setHistoryOutput, randomDream]);
+  }, [time, date, location, conversationHistory, addJournalEntry, setHistoryOutput, randomDream, advanceTime]);
 
   // When the popup opens, select a dream and handle the sleep process
   useEffect(() => {

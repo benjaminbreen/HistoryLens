@@ -4,9 +4,10 @@ import remarkGfm from 'remark-gfm';
 import EntityList from './EntityList';
 import { initialInventoryData } from './initialInventory';
 import PDFPopup from './PDFPopup';
+
 import './App.css';
 
-const HistoryOutput = React.memo(({ historyOutput, isLoading }) => {
+const HistoryOutput = React.memo(({ historyOutput, isLoading, }) => {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [selectedPdfPath, setSelectedPdfPath] = useState('');
   const [selectedCitation, setSelectedCitation] = useState('');
@@ -46,24 +47,29 @@ const HistoryOutput = React.memo(({ historyOutput, isLoading }) => {
     return processTextWithPDFLinks(trimmedOutput);
   }, [historyOutput, isLoading, processTextWithPDFLinks]);
 
+  // Memoize the PDF link to avoid re-rendering it unnecessarily
+  const PdfLink = React.memo(({ node, ...props }) => (
+    <span 
+      className="pdf-link" 
+      onClick={() => handlePDFClick(props.href, props.title)}
+    >
+      {props.children}
+    </span>
+  ));
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+
+
 
   return (
     <div className="history-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          a: React.memo(({node, ...props}) => (
-            <span 
-              className="pdf-link" 
-              onClick={() => handlePDFClick(props.href, props.title)}
-         
-            >
-              {props.children}
-            </span>
-          ))
+          a: PdfLink
         }}
       >
         {processedText}
@@ -90,5 +96,6 @@ const HistoryOutput = React.memo(({ historyOutput, isLoading }) => {
     </div>
   );
 });
+
 
 export default HistoryOutput;

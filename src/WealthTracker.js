@@ -1,8 +1,8 @@
-// WealthTracker.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import './WealthTracker.css';
 
-function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
+// Memoized WealthTracker component
+const WealthTracker = React.memo(({ llmResponse, onStatusChange, onWealthChange }) => {
   const [currentWealth, setCurrentWealth] = useState(11);  // Default starting wealth
   const [status, setStatus] = useState('rested');  // Default starting status
   const [reputationEmoji, setReputationEmoji] = useState('😐');  // Default reputation emoji
@@ -10,46 +10,45 @@ function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
   // Define the allowed reputation emojis
   const allowedEmojis = ['😡', '😠', '😐', '😶', '🙂', '😌', '😏', '😃', '😇', '👑'];
 
+  // Memoize the parsing of wealth
+  const parsedWealth = useMemo(() => {
+    const wealthMatch = llmResponse.match(/(?:Maria now has|You now have|Your current wealth is now|Maria has|Your current wealth stands at|Your wealth stands at|The current wealth of Maria is now|The wealth of Maria is now|You possess)\s+(\d{1,3}(?:,\d{3})*)\s+(?:silver coins|reales|coins)/i);
+    return wealthMatch ? parseInt(wealthMatch[1].replace(/,/g, ''), 10) : currentWealth;
+  }, [llmResponse, currentWealth]);
+
+  // Memoize the parsing of status
+  const parsedStatus = useMemo(() => {
+    const statusMatch = llmResponse.match(/She is feeling ([\w\s]+)\./);
+    return statusMatch ? statusMatch[1].trim() : status;
+  }, [llmResponse, status]);
+
+  // Memoize the parsing of emoji
+  const parsedEmoji = useMemo(() => {
+    const emojiMatch = llmResponse.match(/([\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}])/u);
+    const foundEmoji = emojiMatch ? emojiMatch[1].trim() : reputationEmoji;
+    return allowedEmojis.includes(foundEmoji) ? foundEmoji : reputationEmoji;
+  }, [llmResponse, reputationEmoji, allowedEmojis]);
+
+  // Use useEffect to update state values when the parsed data changes
   useEffect(() => {
-  console.log("LLM Response:", llmResponse);  // Log the LLM response for debugging
-  
-  const wealthMatch = llmResponse.match(/(?:Maria now has|You now have|Maria has|Your current wealth stands at|Your wealth stands at|You possess)\s+(\d{1,3}(?:,\d{3})*)\s+(?:silver coins|reales|coins)/i);
-  const statusMatch = llmResponse.match(/She is feeling ([\w\s]+)\./);
-  
-  // Regex to match any emoji in the response
-  const emojiMatch = llmResponse.match(/([\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}])/u);
-
-  console.log("Wealth Match:", wealthMatch);
-  console.log("Status Match:", statusMatch);
-  console.log("Emoji Match:", emojiMatch);
-
-  if (wealthMatch && wealthMatch[1]) {
-    const newWealth = parseInt(wealthMatch[1].replace(/,/g, ''), 10);  // Handle commas
-    console.log("Parsed Wealth:", newWealth);
-    setCurrentWealth(newWealth);
-    if (onWealthChange) {
-      onWealthChange(newWealth);  // Notify parent component of wealth change
+    if (parsedWealth !== currentWealth) {
+      setCurrentWealth(parsedWealth);
+      if (onWealthChange) {
+        onWealthChange(parsedWealth);  // Notify parent component of wealth change
+      }
     }
-  }
 
-  if (statusMatch && statusMatch[1]) {
-    const newStatus = statusMatch[1].trim();
-    console.log("Parsed Status:", newStatus);
-    setStatus(newStatus);
-    if (onStatusChange) {
-      onStatusChange(newStatus);  // Notify parent component of status change
+    if (parsedStatus !== status) {
+      setStatus(parsedStatus);
+      if (onStatusChange) {
+        onStatusChange(parsedStatus);  // Notify parent component of status change
+      }
     }
-  }
 
-  if (emojiMatch && emojiMatch[1]) {
-    const foundEmoji = emojiMatch[1].trim();
-    if (allowedEmojis.includes(foundEmoji)) {
-      console.log("Parsed Emoji:", foundEmoji);
-      setReputationEmoji(foundEmoji);  // Update reputation emoji if it's in the allowed list
+    if (parsedEmoji !== reputationEmoji) {
+      setReputationEmoji(parsedEmoji);
     }
-  }
-}, [llmResponse, onStatusChange, onWealthChange]);
-
+  }, [parsedWealth, parsedStatus, parsedEmoji, currentWealth, status, reputationEmoji, onWealthChange, onStatusChange]);
 
   return (
     <div className="wealth-tracker">
@@ -69,6 +68,6 @@ function WealthTracker({ llmResponse, onStatusChange, onWealthChange }) {
       </div>
     </div>
   );
-}
+});
 
 export default WealthTracker;

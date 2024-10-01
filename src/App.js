@@ -54,13 +54,16 @@ import purchase from './assets/purchase.jpg';
 import river from './assets/river.jpg';
 import shop from './assets/shop.jpg';
 import judgement from './assets/judgement.jpg';
+import sublimateactive from './assets/sublimate-active.jpg';
 import panic from './assets/panic.jpg';
 import rainy from './assets/rainy.jpg';
 import background2 from './assets/background2.jpg';
 import NewItemPopup from './NewItemPopup';
+import Buy from './Buy';
+
 const PDFPopup = lazy(() => import('./PDFPopup'));
 
-function App() {const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceTime, refreshInventory, lastAddedItem, clearLastAddedItem } = useGameState();
+function App() {const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceTime, refreshInventory, lastAddedItem, clearLastAddedItem, unlockMethod, unlockedMethods } = useGameState();
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
   const [gameOver, setGameOver] = useState(false); 
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
@@ -109,7 +112,7 @@ const [location, setLocation] = useState('Mexico City');
   const [currentWealth, setCurrentWealth] = useState(11);
   const [isSleepOpen, setIsSleepOpen] = useState(false);
 
-  // new items, quests and notification popups
+  // new items, quests, methods and notification popups
   const [activeQuest, setActiveQuest] = useState(null);
   const [userActions, setUserActions] = useState([]);
   const [startedQuests, setStartedQuests] = useState(new Set());
@@ -117,6 +120,9 @@ const [location, setLocation] = useState('Mexico City');
   const [pendingEndGame, setPendingEndGame] = useState(false);
   const [showNewItemPopup, setShowNewItemPopup] = useState(false);
   const [newItemDetails, setNewItemDetails] = useState(null);
+const [isBuyOpen, setIsBuyOpen] = useState(false);
+
+
 
   // Function to trigger the notification popup
   const triggerNotificationPopup = (popupData) => {
@@ -381,6 +387,14 @@ const handleCommandClick = (command) => {
 
 
   switch (commandType) {
+
+     case '#buy':
+  setIsBuyOpen(true); 
+  setUserInput(''); // Clear the input field
+  setIsLoading(false);
+  toggleInventory(true);
+  break;
+
     case '#symptoms':
       let matchedNPC = getMatchedNPC(npcName);
       if (matchedNPC) {
@@ -484,6 +498,10 @@ useEffect(() => {
     setShowNewItemPopup(false);
     setNewItemDetails(null);
   };
+
+  const handleCloseBuyPopup = () => {
+  setIsBuyOpen(false); // Close the Buy component
+};
 
 
 // Entity Selection
@@ -600,7 +618,6 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
     }
 
      // 4. **NEW CODE: Parse narrativeText for item acquisition lines**
-    // Define a regular expression to match the item acquisition line
     const itemAcquisitionRegex = /Maria received (.+?)\. It has been added to her inventory\./g;
     let match;
     // Use a loop in case there are multiple items
@@ -648,13 +665,19 @@ const handleSubmit = useCallback(async (e) => {
     return;
   }
 
-
   if (narrativeText === '#sleep') { // Handle #sleep command
     handleCommandClick('#sleep');
     setUserInput('');
     setIsLoading(false);
     return;
   }
+
+  if (userInput.trim().toLowerCase() === '#buy') {
+  setIsBuyOpen(true); // Open the Buy component
+  setUserInput(''); // Clear the input field
+  setIsLoading(false);
+  return;
+}
 
   // Prepare the inventory summary for the history agent
   const inventorySummary = gameState.inventory.map(item => 
@@ -691,6 +714,7 @@ const handleSubmit = useCallback(async (e) => {
   if (selectedEntity) {
     narrativeText += `\n\nA new character is available for you to deploy as part of the narrative, if it is contextually appropriate. Remember that if they do not have a specific name and background, you should ALWAYS invent a detailed plausible background and name for them: ${selectedEntity.name}, ${selectedEntity.age} years old, ${selectedEntity.occupation}. ${selectedEntity.description}`;
   }
+
 
 
 const contextSummary = `
@@ -801,12 +825,12 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 
 - Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**.
 - Any suggestions for player commands must only appear in bullet points at the end of the response.
-- Default to suggesting 2–3 appropriate commands each turn. For new patients always suggest #symptoms, #prescribe, and #diagnose.
+- Default to suggesting 2–3 appropriate commands each turn. For new patients ALWAYS suggest #symptoms, #prescribe, and #diagnose.
 - the inventory summary is provided to you for context. don't share it with human user unless they ask about their inventory.
 
 **#buy**:
 
-- If the player types **#buy**, present a markdown list of items for sale, including a wide range of both common and unusual **materia medica** with brief descriptions and prices in **silver coins**.
+- If the player types **#buy**, present a markdown list of items for sale, including a wide range of both common and unusual **materia medica** OR other items of all sorts, as best fits the context, with their name in bold, a brief description, their place of origin, and prices in **reales**.
 - If Maria buys something, **always record the transaction at the end of the response** with the exact format: "*Maria has [integer] silver coins. She bought [item name].*"
 
 **#forage**:
@@ -899,22 +923,19 @@ This final status line must ALWAYS be in this **exact format** (using bold markd
 const historyAgentData = await historyAgentResponse.json();
 const simulatedHistoryOutput = historyAgentData.choices[0].message.content;
 
+// setting history output and incrementing turn...
 setHistoryOutput(simulatedHistoryOutput);
 setConversationHistory([...newHistory, { role: 'assistant', content: simulatedHistoryOutput }]);
 setTurnNumber(turnNumber + 1);
 
-
-
-// Detect new item purchase
+// detecting new item purchase using text match
 const purchaseMatch = simulatedHistoryOutput.match(/(?:She bought|Maria has purchased|now owns|and bought|and purchased|Maria bought|She purchased|Maria has bought)\s+(#?[A-Z][a-zA-Z\s]*)/i);
-
-
 if (purchaseMatch) {
   const purchasedItemName = purchaseMatch[1].trim(); 
   generateNewItemDetails(purchasedItemName);
 }
 
-// Function to hide the last line if it contains bold markdown tags
+// function to hide the last line if it contains bold markdown tags, since this is not meant to the above
 const filterBoldMarkdown = (text) => {
   const lines = text.split('\n');
   const lastLine = lines[lines.length - 1];
@@ -1025,6 +1046,8 @@ useEffect(() => {
     }
   }, [turnNumber, userActions, gameState.location, gameState.time, quests, startedQuests, startQuest, setActiveQuest]);
 
+
+
  // JSX 
      return (
   <DndProvider backend={HTML5Backend}>
@@ -1124,13 +1147,34 @@ useEffect(() => {
     MAP
   </button>
 </div>
+
 <div className={`output-box ${isLoading ? 'loading' : ''}`}>
   {isLoading ? (
-    <LoadingIndicator />
+    <LoadingIndicator />  // Show loading indicator when isLoading is true
+  ) : isBuyOpen ? (
+    <Buy
+      isOpen={isBuyOpen}
+      onClose={() => {
+        setIsBuyOpen(false);  // Close the Buy popup
+        toggleInventory(false);  // Close the inventory panel
+      }}
+      gameState={gameState}
+      updateInventory={updateInventory}
+      setHistoryOutput={setHistoryOutput}
+      currentWealth={currentWealth}
+      handleWealthChange={handleWealthChange}
+      addJournalEntry={addJournalEntry}  // Passing the journal entry handler
+      conversationHistory={conversationHistory}  
+      setIsLoading={setIsLoading}  
+      handleTurnEnd={handleTurnEnd}  
+      
+    />
   ) : (
     <HistoryOutput historyOutput={historyOutput} isLoading={isLoading} />
   )}
 </div>
+
+
             {/* Incorporate Popup */}
           {showIncorporatePopup && (
             <div className="incorporate-popup">
@@ -1182,14 +1226,14 @@ useEffect(() => {
         </button>
       )}
 
- {commandsDetected.buy && (
-        <button
-          className="command-button buy-button"
-          onClick={() => handleCommandClick('#buy')}
-        >
-          BUY
-        </button>
-        )}
+{commandsDetected.buy && (
+  <button
+    className="command-button buy-button"
+    onClick={() => handleCommandClick('#buy')} // This triggers the buy popup
+  >
+    BUY
+  </button>
+)}
 
          {commandsDetected.forage && (
         <button
@@ -1223,6 +1267,7 @@ useEffect(() => {
         setHistoryOutput={setHistoryOutput}  
         setConversationHistory={setConversationHistory}
         setTurnNumber={setTurnNumber}
+        advanceTime={advanceTime}
       />
 
 
@@ -1375,6 +1420,8 @@ useEffect(() => {
     openPrescribePopup={openPrescribePopup}
     setIsPrescribePopupOpen={setIsPrescribePopupOpen}
     setCurrentPatient={setCurrentPatient}
+      unlockMethod={unlockMethod}
+      addJournalEntry={addJournalEntry} 
     />
     )}
 
@@ -1613,7 +1660,10 @@ useEffect(() => {
                 updateInventory={updateInventory}
                 apiKey={process.env.REACT_APP_OPENAI_API_KEY} 
                 addJournalEntry={addJournalEntry}
-                toggleMixingPopup={toggleMixingPopup}  // Pass the toggleMixingPopup function as a prop
+                toggleMixingPopup={toggleMixingPopup} 
+                 unlockMethod={unlockMethod} 
+                unlockedMethods={gameState.unlockedMethods} 
+
               />
               <button className="close-mixing-button" onClick={toggleMixingPopup}>Close</button>
             </div>

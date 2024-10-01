@@ -64,7 +64,7 @@ const quests = [
           'Shoo Joao away.'
         ],
         decisionPoint: true,
-        maxExchanges: 3,
+        maxExchanges: 4,
       },
       {
         type: 'decision',
@@ -126,7 +126,7 @@ const quests = [
         ],
         decisionPoint: true,
         inputType: 'text',
-        maxExchanges: 3,
+        maxExchanges: 1,
       },
       {
         type: 'decision',
@@ -481,6 +481,7 @@ const detailedQuestAssessment = async (quest, dialogueHistory) => {
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
+      temperature: .3,
       messages: [
         { role: 'system', content: 'You are a historical role-playing game assessment agent.' },
         { role: 'user', content: prompt },
@@ -516,7 +517,7 @@ const checkPlayerResponseQuality = async (userInput, quest, npc, stage) => {
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
-      temperature: .3,
+      temperature: .1,
       messages: [
         { role: 'system', content: 'You are a role-playing game judge for historical accuracy.' },
         { role: 'user', content: prompt },
@@ -538,7 +539,7 @@ const questAgent = async (quest, stage, userInput) => {
     Dialogue History: ${stage.text}
     Player Input: "${userInput}"
     NPC Dialogue: ${stage.npcResponses.join('\n')}
-    Using this material (inclduing the directions to you in brackets in NPCresponses which should not be reproduced for the end user) please generate a historically accurate response of no more than 2 paragraphs, and sometimes only one or two sentences. Avoid cliches and genre conventions. Example of WHAT TO AVOID: "I ask you, do the whispers of the ancients not have a call upon your own curiosity? What might we unearth together... if we dare?" That sounds like corny, cliched dialogue from a bad fantasy novel. EXAMPLE OF WHAT TO DO: "Señora, I have spoken enough. Let us begin now -- unless you have some reason to object?" 
+    Using this material (inclduing the directions to you in brackets in NPCresponses which should not be reproduced for the end user) please generate a historically accurate response of no more than 2 sentences. Avoid cliches and genre conventions. Example of WHAT TO AVOID: "I ask you, do the whispers of the ancients not have a call upon your own curiosity? What might we unearth together... if we dare?" That sounds like corny, cliched dialogue from a bad fantasy novel. EXAMPLE OF WHAT TO DO: "Señora, I have spoken enough. Let us begin now -- unless you have some reason to object?" 
     Your dialogue should sound like something a real person might've said. Remember that this is a conversation, not a monologue. At times the NPC might take offense, or get angry, or make an odd observation, or do some other surprising thing. They might even answer with a single sentence, like "I have no idea what you mean by that" if the user has inputted something perplexing or unimpressive. NPCs make specific hsitorical references relevent to their background and time period.
     Any questions should never be didactic or expected. NO EXCLAMATION POINTS! VARIED DIALOGUE, UNUSUAL OBSERVATIONS AND DETAILS. KEEP IT VERY SIMPLE AND SHORT - instead of "Ah, the game of life is a treacherous one, is it not?" perhaps just "Life is crazy, isn't it?" If you are asked to pretend to be "waves," respond only in odd single words or phrases.
     Quest id 6, the Dream of the Waves, is triggered when Maria dies in the game. It is a near-death experience. The waves should answer in ONLY single words or very short phrases. Think T.S. Eliot.
@@ -552,8 +553,9 @@ const questAgent = async (quest, stage, userInput) => {
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
+      temperature: .9,
       messages: [
-        { role: 'system', content: 'You are a historical role-playing engine for a 17th-century Mexico City simulation. Your job is to create interactive dialogue and events in a quest popup in this educational game which centers on a converso apothecary named Maria de Lima.' },
+        { role: 'system', content: 'You are a historical role-playing engine for a 17th-century Mexico City simulation. Your job is to create dialogue and events in a quest popup in this educational game which centers on a converso apothecary named Maria de Lima.' },
         { role: 'user', content: prompt },
       ],
     }),
@@ -582,9 +584,11 @@ const Quest = ({
   isPrescribePopupOpen,
   currentPrescriptionType,
   openPrescribePopup,
-  setCurrentPatient
+  setCurrentPatient,
+  addJournalEntry,
+  unlockMethod
 }) => {
-  const { gameState, advanceQuestStage, completeQuest, updateInventory, addCompoundToInventory,  addJournalEntry 
+  const { gameState, advanceQuestStage, completeQuest, updateInventory, addCompoundToInventory
 } = useGameState();
 const [currentStage, setCurrentStage] = useState(0);
   const [userInput, setUserInput] = useState('');
@@ -600,6 +604,7 @@ const [currentStage, setCurrentStage] = useState(0);
   const [amount, setAmount] = useState(1);
   const [price, setPrice] = useState(0);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [currentOutcome, setCurrentOutcome] = useState(null);
   const [npcPortrait, setNpcPortrait] = useState('default.jpg')
 
 // Helper function to handle Santiago Valdez as the patient
@@ -682,6 +687,11 @@ const [currentStage, setCurrentStage] = useState(0);
         type: 'questCompletion',
       });
     }
+
+       // Unlock sublimation when Quest 1 is completed
+    if (activeQuest.id === 1) {
+      unlockMethod('Sublimate');
+    }
     
     // Check for Quest 2 completion to update NPC portrait
     if (activeQuest && activeQuest.id === 2) {
@@ -706,6 +716,12 @@ const [currentStage, setCurrentStage] = useState(0);
   setIsLoading(true);
   const currentQuestStage = activeQuest.stages[currentStage];
 
+  // Reset dialogue history at the start of a new dialogue
+  if (currentQuestStage.type === 'dialogue' && dialogueHistory.length === 0) {
+    setDialogueHistory([]);
+  }
+
+  // Handle banners and decisions
   if (currentQuestStage.type === 'banner' || currentQuestStage.type === 'decision') {
     if (typeof buttonAction === 'object' && buttonAction.type === 'goToStage') {
       goToSpecificStage(buttonAction.stage);
@@ -719,61 +735,85 @@ const [currentStage, setCurrentStage] = useState(0);
         case 'proceed':
           advanceToNextStage();
           break;
+        case 'success':
+          handleSuccess();
+          break;
         case 'submit_excuse':
           setCurrentStage(activeQuest.stages.findIndex(s => s.type === 'dialogue' && s.text.includes('submit an excuse')));
           break;
         case 'provide_treatment':
-          openPrescribePopup('treatment', { name: 'Inquisitor Santiago Valdez', type: 'npc' }); // Use the active quest NPC for prescription
-          
-          // Immediately close the quest after prescription is provided
+          openPrescribePopup('treatment', { name: 'Inquisitor Santiago Valdez', type: 'npc' });
           markQuestAsCompleted();
           break;
         case 'provide_poison':
-          openPrescribePopup('poison', { name: 'Inquisitor Santiago Valdez', type: 'npc' }); // Use the active quest NPC for poisoning
-          
-          // Immediately close the quest after poison is provided
+          openPrescribePopup('poison', { name: 'Inquisitor Santiago Valdez', type: 'npc' });
           markQuestAsCompleted();
           break;
         default:
           console.error('Unknown action type:', buttonAction);
       }
     }
-  } else if (currentQuestStage.type === 'check_excuse') {
-    // Handle excuse validation via LLM
-    const isValid = await checkExcuse(input); // Implement this function to validate the excuse
-    if (isValid) {
-      // Proceed to outcome where Maria leaves
-      const outcomeStage = activeQuest.stages.find(s => s.type === 'outcome' && s.text.includes('return safely'));
-      if (outcomeStage) {
-        setCurrentStage(activeQuest.stages.indexOf(outcomeStage));
-      }
-    } else {
-      // Excuse not convincing, possibly force end quest or provide feedback
-      triggerNotificationPopup({
-        image: imageMap.quest2_invalid_excuse, // Ensure this image exists in imageMap
-        text: 'Your excuse was not convincing. The Inquisitor presses further, leaving you with no choice but to comply.',
-        type: 'questFailure',
-      });
-      // Proceed to the next stage or handle as needed
-      advanceToNextStage();
-    }
-  } else if (currentQuestStage.type === 'dialogue') {
+  }
+
+  // Handle dialogue stages
+  else if (currentQuestStage.type === 'dialogue') {
     try {
       const questResponse = await questAgent(activeQuest, currentQuestStage, input);
-      setDialogueHistory(prev => [...prev, { userInput: input, npcResponse: questResponse }]);
+      
+      setDialogueHistory((prev) => {
+        const updatedHistory = [...prev, { userInput: input, npcResponse: questResponse }];
+        
+        if (updatedHistory.length >= currentQuestStage.maxExchanges) {
+          setTimeout(() => advanceToNextStage(), 0);
+        }
 
-      if (dialogueHistory.length >= currentQuestStage.maxExchanges - 1) {
-        advanceToNextStage();
-      }
+        return updatedHistory;
+      });
     } catch (error) {
       console.error("Error fetching LLM response:", error);
     }
+  }
+
+  // Handle outcome stages
+  else if (currentQuestStage.type === 'outcome') {
+    if (typeof currentQuestStage.text === 'function') {
+      const outcomeText = currentQuestStage.text(buttonAction);
+      setDialogueHistory((prev) => [...prev, { npcResponse: outcomeText }]);
+    }
+    setTimeout(() => advanceToNextStage(), 0);
   }
 
   setIsLoading(false);
   setUserInput('');
 };
 
+const handleSuccess = () => {
+  if (activeQuest.id === 1) {
+    // Unlock the "Sublimate" method
+    if (typeof unlockMethod === 'function') {
+      unlockMethod('Sublimate');
+    } else {
+      console.warn('unlockMethod is not a function. Skipping method unlock.');
+    }
+    
+    // Add a journal entry about learning sublimation
+    if (typeof addJournalEntry === 'function') {
+      addJournalEntry('Maria has learned the art of sublimation from Antonius Philalethes.');
+    } else {
+      console.warn('addJournalEntry is not a function. Skipping journal entry.');
+    }
+
+    // Trigger the notification popup for unlocking sublimation
+    triggerNotificationPopup({
+      image: imageMap['sublimateIcon'], // Replace with the actual image key for sublimation
+      text: '**New Method Unlocked: Sublimate!** Maria has learned the art of sublimation from Antonius Philalethes. Click the **Mix Drugs** button to try it.',
+      type: 'methodUnlock', // Customize the type if needed
+    });
+  }
+
+  // Proceed to the next stage of the quest
+  advanceToNextStage();
+};
 
   // Implement 'checkExcuse' function
   const checkExcuse = async (excuse) => {
@@ -872,17 +912,26 @@ const [currentStage, setCurrentStage] = useState(0);
         </div>
         
         <div className="quest-content">
-          {activeQuest.id === 0 && stage.type === 'banner' ? (
-            <div className="initial-text">
-              {animatedText.map((line, index) => (
-                <ReactMarkdown key={index} remarkPlugins={[remarkGfm]} className="animated-line">{line}</ReactMarkdown>
-              ))}
-            </div>
-          ) : stage.type === 'outcome' ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{stage.text}</ReactMarkdown>
-          ) : (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{stage.text}</ReactMarkdown>
-          )}
+        {activeQuest.id === 0 && stage.type === 'banner' ? (
+          <div className="initial-text">
+            {animatedText.map((line, index) => (
+              <ReactMarkdown key={index} remarkPlugins={[remarkGfm]} className="animated-line">{line}</ReactMarkdown>
+            ))}
+          </div>
+
+         ) : stage.type === 'outcome' ? (
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {typeof stage.text === 'function' 
+              ? stage.text(currentOutcome) 
+              : stage.text}
+          </ReactMarkdown>
+        ) : (
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {typeof stage.text === 'function'
+              ? stage.text()
+              : stage.text}
+          </ReactMarkdown>
+        )}
 
           {stage.type === 'dialogue' && (
             <div className="quest-output">

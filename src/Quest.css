@@ -304,21 +304,15 @@
 
 /* Text Input for Dialogue */
 .dialogue-input input[type="text"] {
-  width: 80%;
-  padding: 15px; /* Set padding to define height */
-  height: auto; /* Automatically adjust based on padding */
-  border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-  background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark grey background */
-  color: #fff; /* White text for contrast */
-  font-size: 1em;
-  margin-top: 10px;
-  margin-bottom: 3px;
-  margin-right: 10px;
-  margin-left: 10px;
+  width: 90%; /* Make the input wider */
+  padding: 20px; /* Increase padding for a larger height */
+  font-size: 1.2em; /* Make the text larger */
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.7); /* Adjust the background */
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   outline: none;
-  transition: border .9s ease, box-shadow 0.9s ease;
-  box-sizing: border-box; /* Ensure padding is included in height calculation */
+  transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dialogue-entry {
@@ -328,10 +322,11 @@
 /* Focus state: Adds glowing effect when focused */
 .dialogue-input input[type="text"]:focus {
   border: 1px solid rgba(0, 255, 0, 0.2); /* Green glow on focus */
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.4); /* Full green glow around input */
   background: rgba(0, 0, 0, 0.9); /* Darker background on focus */
   color: #fff; /* White text for contrast */
   transition: box-shadow 4s ease-in-out, border 4s ease-in-out; /* Slower tempo */
+  border-color: rgba(0, 255, 0, 0.6);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 /* Jewel-like button styling */

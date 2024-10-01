@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+// gameState.js
+import React, { useState, useEffect, useCallback } from 'react';
 import { initialInventoryData, potentialInventoryItems } from './initialInventory';
 
 // Fisher-Yates shuffle function to shuffle the array
@@ -20,7 +21,7 @@ const getRandomInventory = () => {
   return Array.from(inventorySet);
 };
 
-// initial game state
+// Initial game state
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
     inventory: getRandomInventory(), // Initialize with a random selection of 10 items
@@ -33,9 +34,23 @@ export const useGameState = () => {
     isGameOver: false,  
     endQuestResult: null,  
     assessmentTriggered: false,  
+    unlockedMethods: ['Distill', 'Decoct', 'Calcinate', 'Confection'], // Initialize with default methods
   });
 
-    const [lastAddedItem, setLastAddedItem] = useState(null);
+  const [lastAddedItem, setLastAddedItem] = useState(null);
+
+  // Function to unlock a new mixing method
+ const unlockMethod = useCallback((methodName) => {
+  setGameState((prevState) => {
+    if (!prevState.unlockedMethods.includes(methodName)) {
+      return {
+        ...prevState,
+        unlockedMethods: [...prevState.unlockedMethods, methodName],
+      };
+    }
+    return prevState;
+  });
+}, []);
 
   // Function to trigger the Game Over process based on the result of any quest
   const triggerGameOver = useCallback((result) => {
@@ -66,25 +81,25 @@ export const useGameState = () => {
     }));
   }, []);
 
+  // Start a new quest
+  const startQuest = useCallback((newQuest) => {
+    setGameState((prevState) => {
+      // Check if the quest already exists
+      const existingQuest = prevState.quests.find(quest => quest.id === newQuest.id);
+      if (existingQuest) {
+        console.warn(`Quest with ID ${newQuest.id} already started.`);
+        return prevState; // Prevent adding the same quest twice
+      }
 
-const startQuest = useCallback((newQuest) => {
-  setGameState((prevState) => {
-    // Check if the quest already exists
-    const existingQuest = prevState.quests.find(quest => quest.id === newQuest.id);
-    if (existingQuest) {
-      console.warn(`Quest with ID ${newQuest.id} already started.`);
-      return prevState; // Prevent adding the same quest twice
-    }
+      // Add the new quest to the quests array
+      return {
+        ...prevState,
+        quests: [...prevState.quests, { ...newQuest, currentStage: 1, completed: false }],
+      };
+    });
+  }, []);
 
-    // Add the new quest to the quests array
-    return {
-      ...prevState,
-      quests: [...prevState.quests, { ...newQuest, currentStage: 1, completed: false }],
-    };
-  });
-}, []);
-
-   // Update inventory logic
+  // Update inventory logic
   const updateInventory = useCallback((updateItemName, quantityChange) => {
     setGameState((prevState) => {
       let updatedInventory = prevState.inventory.map((item) => {
@@ -143,8 +158,6 @@ const startQuest = useCallback((newQuest) => {
     setLastAddedItem(null);
   }, []);
 
-
-
   // Function to generate new item details
   const generateNewItemDetails = useCallback(async (itemName) => {
     const prompt = `Generate details for an item named "${itemName}" in JSON format. The item could be anything appropriate to a 17th-century historical setting, such as a letter, tool, weapon, clothing, materia medica, animal, or any other object. Everything from cats and dogs and monkeys to clothing to food to spices is possible to be an item. 
@@ -158,7 +171,7 @@ quantity (integer): The default quantity of the item (range: 1-5).
 humoralQualities (string): Describe its qualities according to humoral theory (e.g., "Warm & Moist").
 medicinalEffects (string): The specific effects it has on health and the body; if it has none, say so. 
 description (string): A brief, historically plausible description of the item.
-emoji (single emoji character): Choose a SINGLE emoji to represent the item, for instance 🥃 for rum, ☄️ for red sulphur, or 🐌 for snailwater.
+emoji (single emoji character): Choose a SINGLE emoji to represent the item, for instance 🥃 for rum, ☄️ for red sulphur, or 🐌 for snailwater. Be very creative here. 
 Ensure the JSON is valid and uses double quotes for keys and string values.
 
 Here are two examples of expected formatting:
@@ -189,8 +202,8 @@ Example 2: "Peyote" (Plant)
   "description": "A sacred cactus used in religious ceremonies by indigenous peoples, known for its hallucinogenic properties.",
   "emoji": "🌵"
 }
-    Ensure the JSON is valid and uses double quotes for keys and string values.
-    1. Start with an opening curly brace {
+Ensure the JSON is valid and uses double quotes for keys and string values.
+1. Start with an opening curly brace {
 2. End with a closing curly brace }
 3. Have all keys in double quotes
 4. Have all string values in double quotes
@@ -208,22 +221,23 @@ If your response doesn't meet these criteria, please correct it before returning
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
+          temperature: .4,
           messages: [
             {
               role: 'system',
-              content: `You are an assistant that generates JSON data for materia medica purchased in an educational game set in 1680 Mexico City. Use your historical knowledge to create accurate entries. Always return a valid JSON object with the exact fields specified, using double quotes for keys and string values. Here's an example of the expected format:
-              {
-                "name": "Saffron",
-                "latinName": "Crocus sativus",
-                "spanishName": "Azafrán",
-                "price": 15,
-                "quantity": 1,
-                "humoralQualities": "Warm & Dry",
-                "medicinalEffects": "Used to alleviate melancholy, improve digestion, and treat coughs.",
-                "description": "Highly valued spice derived from the stigmas of Crocus flowers, often mixed in compound drugs.",
-                "emoji": "🌸"
-              }
-              Ensure that the JSON is correctly formatted and includes all required fields.`
+              content: `You are an assistant that generates JSON data for items purchased in an educational game set in 1680 Mexico City. Use your historical knowledge to create accurate entries. Always return a valid JSON object with the exact fields specified, using double quotes for keys and string values. Here's an example of the expected format:
+{
+  "name": "Saffron",
+  "latinName": "Crocus sativus",
+  "spanishName": "Azafrán",
+  "price": 15,
+  "quantity": 1,
+  "humoralQualities": "Warm & Dry",
+  "medicinalEffects": "Used to alleviate melancholy, improve digestion, and treat coughs.",
+  "description": "Highly valued spice derived from the stigmas of Crocus flowers, often mixed in compound drugs.",
+  "emoji": "🌸"
+}
+Ensure that the JSON is correctly formatted and includes all required fields.`,
             },
             { role: 'user', content: prompt }
           ],
@@ -255,48 +269,56 @@ If your response doesn't meet these criteria, please correct it before returning
   }, [addCompoundToInventory]);
 
   // Function to ensure that inventory updates are immediately reflected in the game state
-const refreshInventory = useCallback(() => {
-  setGameState((prevState) => ({
-    ...prevState,
-    inventory: [...prevState.inventory],
-    compounds: [...prevState.compounds]  // Add this line to refresh compounds as well
-  }));
-}, []);
+  const refreshInventory = useCallback(() => {
+    setGameState((prevState) => ({
+      ...prevState,
+      inventory: [...prevState.inventory],
+      compounds: [...prevState.compounds]  // Add this line to refresh compounds as well
+    }));
+  }, []);
 
-
-  // time handling via summarydata from journal.agent JSON output
-
+// Time handling via summaryData from journal.agent JSON output with safeguard
 const advanceTime = useCallback((summaryData) => {
-    setGameState((prevState) => {
-      let newTime = prevState.time;
-      let newDate = prevState.date;
+  setGameState((prevState) => {
+    let newTime = prevState.time;
+    let newDate = prevState.date;
 
-      if (summaryData && summaryData.time && summaryData.date) {
-        // Use the exact time and date provided by journal agent
-        newTime = summaryData.time;
-        newDate = summaryData.date;
-      } else {
-        // Fallback logic to increment the time and date if journal output isn't available
-        const currentTime = new Date(`August 22, 1680 ${prevState.time}`);
-        currentTime.setHours(currentTime.getHours() + 1);
-        newTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (summaryData && summaryData.time && summaryData.date) {
+      const prevDate = new Date(prevState.date);
+      const newJournalDate = new Date(summaryData.date);
 
-        if (newTime === '12:00 AM') {
-          const currentDate = new Date(prevState.date);
-          currentDate.setDate(currentDate.getDate() + 1);
-          newDate = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-        }
+      // Safeguard: Ensure the new date is not earlier than the previous date
+      if (newJournalDate < prevDate) {
+        console.warn('JournalAgent returned an earlier date. Ignoring and requesting correction...');
+        // Log or handle the issue: You can decide to re-trigger a correction here
+        // return the previous date/time without updating
+        return prevState;
       }
 
-      return {
-        ...prevState,
-        time: newTime,
-        date: newDate,
-      };
-    });
+      // If the new date is valid, update the time and date
+      newTime = summaryData.time;
+      newDate = summaryData.date;
+    } else {
+      // Fallback logic: Increment the time by one hour if journal output is unavailable
+      const currentTime = new Date(`August 22, 1680 ${prevState.time}`);
+      currentTime.setHours(currentTime.getHours() + 1);
+      newTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // If it's midnight, increment the date
+      if (newTime === '12:00 AM') {
+        const currentDate = new Date(prevState.date);
+        currentDate.setDate(currentDate.getDate() + 1);
+        newDate = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      }
+    }
+
+    return {
+      ...prevState,
+      time: newTime,
+      date: newDate,
+    };
+  });
 }, []);
-
-
 
   // Advance quest to the next stage
   const advanceQuestStage = useCallback((questId) => {
@@ -304,22 +326,21 @@ const advanceTime = useCallback((summaryData) => {
       ...prevState,
       quests: prevState.quests.map(quest =>
         quest.id === questId ? { ...quest, currentStage: quest.currentStage + 1 } : quest
-    ),
+      ),
     }));
   }, []);
 
-// Complete a quest and mark it as completed without removing it
-const completeQuest = useCallback((questId) => {
-  setGameState(prevState => ({
-    ...prevState,
-    quests: prevState.quests.map(quest =>
-      quest.id === questId ? { ...quest, completed: true } : quest
-    ),
-  }));
-}, []);
+  // Complete a quest and mark it as completed without removing it
+  const completeQuest = useCallback((questId) => {
+    setGameState(prevState => ({
+      ...prevState,
+      quests: prevState.quests.map(quest =>
+        quest.id === questId ? { ...quest, completed: true } : quest
+      ),
+    }));
+  }, []);
 
-
- return {
+  return {
     gameState,
     updateInventory,
     setGameState,
@@ -335,5 +356,6 @@ const completeQuest = useCallback((questId) => {
     resetGameOver,  
     lastAddedItem,          
     clearLastAddedItem,    
+    unlockMethod,
   };
 };

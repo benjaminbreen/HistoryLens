@@ -1,6 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&family=MedievalSharp&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap');
 
+.mixing-popup {
+  transition: all 0.3s ease-in-out; /* Smooth entrance/exit */
+}
+
+.method-square {
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; /* Smooth hover effect */
+}
+
+.mix-button:hover {
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
 /* General Styles */
 .mixing-popup {
   position: fixed;
@@ -12,7 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1;
     border-radius: 12px;
     padding: 5px;
   backdrop-filter: blur(6px); /* Background blur for depth */
@@ -54,18 +66,20 @@
 
 
 .mixing-popup-content {
-  background-color: rgba(45, 45, 45, 0.8);
+ background-color: rgba(45, 45, 45, 0.9);
+  box-shadow: inset 0px 0px 8px rgba(255, 223, 186, 0.3), 0px 0px 10px rgba(0, 0, 0, 0.1); 
+  padding: 30px;
   padding: 20px;
   border-radius: 12px;
-  width: 80%;
+  width: 95%;
   height: 98%;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-right: 50px;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
-  max-width: 1400px;
+
+  max-width: 1620px;
 }
 
 .mixing-header {
@@ -85,7 +99,7 @@
 
 .close-mixing-button {
   position: absolute;
-    top: 20px;
+    top: 35px;
     right: 120px;
     padding: 10px 12px;
     background-color: #ff4d4f;
@@ -146,12 +160,12 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 10px 0;
+  margin: 1px 5px;
   padding: 10px;
-  background-color: rgba(58, 58, 58, 0.9);
-  border-radius: 12px;
+  background-color: rgba(58, 58, 58, 0.7);
+  border-radius: 14px;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
   max-width: 100%; /* Ensure the grid stays within the container */
   box-sizing: border-box;
@@ -162,7 +176,7 @@
   display: flex;
   flex-direction: column;
   padding: 2px;
-
+  margin-bottom: 10px;
   
 }
 
@@ -170,24 +184,24 @@
 
 .mixing-instructions {
   font-family: 'IM Fell English', serif;
-  font-size: 1rem;
+  font-size: 1.2rem !important;
   color: floralwhite;
   text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
   margin-bottom: 2px; /* Adjust spacing between title and square */
   text-align: center; /* Center the title */
-  padding-left: 10%;
-    padding-right: 10%;
+  padding-left: 20%;
+    padding-right: 20%;
     font-style: italic;
 }
 .method-title {
   font-family: 'IM Fell English', serif;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #e1cfa5;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
   margin-bottom: 5px; /* Adjust spacing between title and square */
-  text-align: center; /* Center the title */
+  text-align: left; /* Center the title */
   font-weight: 900;
-  letter-spacing: .05rem;
+  letter-spacing: .02rem;
 }
 
 .method-square {
@@ -205,7 +219,7 @@
 
 .method-square:hover {
   transform: scale(1.02);
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
 }
 
 /* Hover, Click Caption Box */
@@ -215,20 +229,22 @@
   bottom: 58%; /* Position the box at top of square */
   left: 50%;
   transform: translateX(-50%);
-  width: 220px; /* Adjust the width as needed */
+  width: 240px; /* Adjust the width as needed */
   background-color: rgba(45, 45, 45, 0.9);
   padding: 8px;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+box-shadow: 0 4px 15px rgba(255, 165, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.8);
   font-family: 'IM Fell English', serif;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #eaeaea;
   text-align: center;
   text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8);
   line-height: 1.1rem;
   z-index: 1001; /* Ensure it appears above other elements */
   pointer-events: none; /* Prevent the box from interfering with mouse events */
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
 
 .method-square:hover .method-hover-box,
 .method-square:focus .method-hover-box {
@@ -250,48 +266,54 @@
    height: auto; /* Set a fixed height for the grid */
   overflow-y: auto; /* Enable vertical scrollbar */
    overflow-x: auto;
+   width: 88%;
+   margin: 5px auto;
+
 }
 
 .mixing-inventory-item {
-  background-color: #555;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #4a4a4a, #666); /* Subtle gradient for depth */
+  color: #f2f2f2; /* Softer white for readability */
+  padding: 12px; /* Increased padding for better spacing */
+  border-radius: 10px; /* Slightly rounder corners */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  height: 100px; /* Slightly increase the height */
+  height: 110px; /* Slight height increase for comfort */
   text-align: left;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: inset 0 0 10px rgba(255, 223, 186, 0.1), 0 4px 10px rgba(0, 0, 0, 0.5); /* Enhanced depth */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
   font-family: 'Nunito Sans', sans-serif;
   text-transform: uppercase;
   position: relative;
-  overflow: visible; /* Ensure no content gets clipped */
+  overflow: visible;
 }
 
 .mixing-inventory-item:hover {
-  background-color: #666;
-  transform: scale(1.05);
-  box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+  background-color: #777; /* Darker shade on hover */
+  transform: scale(1.03); /* Slightly increased hover scale for a tactile feel */
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.6), 0 8px 20px rgba(0, 0, 0, 0.6); /* Softer glow and deeper shadow */
 }
 
 .inventory-item-emoji {
-  font-size: 2em; /* Make the emoji slightly larger */
-  margin-right: 10px; /* Ensure space between emoji and text */
-  line-height: 1.3; /* Increase line height to avoid clipping */
-  padding: 3px;
-  flex-shrink: 0; /* Prevent the emoji from shrinking */
+  font-size: 2.5em; /* Larger emoji size for emphasis */
+  margin-right: 12px; /* Added more space between emoji and text */
+  line-height: 1.3; 
+  padding: 5px; /* More padding around emoji for better alignment */
+  flex-shrink: 0;
+  text-shadow: 0 0 12px rgba(255, 223, 186, 0.5), 0 3px 6px rgba(0, 0, 0, 0.9); /* Added text shadow for glowing effect */
 }
+
 
 .inventory-item-text {
   flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
+  font-size: 1.1em; /* Slightly larger text for readability */
+  color: #eaeaea; /* Softer text color */
 }
 
 
@@ -322,18 +344,20 @@
 /* Compound Result */
 .compound-result {
     text-align: center;
-    margin-top: 10px; /* Adjust the space from the header */
+    margin-top: 5px; /* Adjust the space from the header */
     padding: 12px;
+    font-size: 1.2rem;
     background-color: rgba(58, 58, 58, 0.9);
     border-radius: 12px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
     color: floralwhite !important;
-    max-width: 85%;
+    max-width: 95%;
     margin-left: auto;
     margin-right: auto;
       font-family: 'IM Fell English', serif;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       border: 2px solid #e0d5b8;
+        height: 26%;
 
 }
 
@@ -341,6 +365,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+
 }
 
 
@@ -363,12 +388,11 @@
     padding: 10px 20px;
     margin-top: 0;  /* Adjusted margin to remove extra space */
     margin-bottom: 0; /* Adjusted margin to remove extra space */
-    width: 100%;
+
 }
 
 .mix-button {
-    background-color: #007bff; /* Blue color */
-    color: white;
+    background: linear-gradient(45deg, #3b82f6, #1d5a92);   
     border: none;
     padding: 12px 20px; /* Larger padding for glow effect */
     cursor: pointer;
@@ -381,6 +405,7 @@
 
 .mix-button.enabled {
     box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6); /* Glow effect */
+       background: linear-gradient(45deg, #3b82f6, #1d5a92);   
 }
 
 .reset-button {
@@ -406,8 +431,10 @@
     cursor: not-allowed;
 }
 
+
+
 .mixing-popup-content {
-    padding-bottom: 0; /* Removed padding */
+
 }
 
 
@@ -429,6 +456,18 @@
     justify-content: space-between;
     margin-right: 0; /* Ensure it fits within the screen */
   }
+
+  .mixing-instructions {
+  font-family: 'IM Fell English', serif;
+  font-size: .5rem;
+  color: floralwhite;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+  margin-bottom: 2px; /* Adjust spacing between title and square */
+  text-align: center; /* Center the title */
+  padding-left: 1%;
+    padding-right: 1%;
+    font-style: italic;
+}
 
   .large-emoji {
     font-size: 1.8em; /* Increased size */

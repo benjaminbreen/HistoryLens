@@ -399,7 +399,7 @@ margin-left: 0px;
 .command-buttons {
   display: flex;
   justify-content: space-around;
-  width: 45%;
+  width: 55%;
  overflow: auto;
   transition: background-color 3s ease, color 3s ease;
 
@@ -419,6 +419,7 @@ margin-left: 0px;
   margin-bottom: 5px;
    margin-top: 5px;
      transition: background-color 3s ease, color 3s ease;
+     font-size: .95rem;
 }
 
 
