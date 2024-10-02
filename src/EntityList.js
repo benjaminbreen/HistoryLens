@@ -558,6 +558,110 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
       pdf: "hysteria.pdf",
   secret: "Arturo Hernandez is actually Licenciado Arturo Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
 },
+{
+  type: "npc",
+  name: "Pablo the Goat",
+  age: 5,
+  gender: "Male",
+  occupation: "Farm Animal",
+  birthplace: "Farmland near Guadalajara",
+  currentResidence: "Rural outskirts of Mexico City",
+  casta: "goat",
+  class: "goat",
+  symptoms: [
+    { name: "Coughing", location: "throat", quote: "A deep, hacking cough echoes from his throat, each one a struggle that shakes his whole body." },
+    { name: "Labored breathing", location: "chest", quote: "His breath comes in wheezing gasps, as if every inhale is a battle against his own lungs." }
+  ],
+  diagnosis: "Lung infection",
+  contemporaryTheory: "A damp, cold environment has led to an imbalance in his lungs, filling them with moisture and causing difficulty breathing.",
+  socialContext: "Pablo is a beloved and valuable breeding goat, and his illness has caused concern for the future of the herd. His owner, a goatherd, accompanies him and explains to Maria.",
+  urgency: "High",
+  image: "pablogoat",
+  caption: "Pablo, a sick goat",
+  description: "Pablo struggles with each breath, his once strong body now wracked by a persistent cough that shows no sign of easing.",
+  astrologicalSign: "Leo",
+  pdf: "goat.pdf",
+  secret: "Pablo’s illness began after he was kept in a damp, cold barn during the rainy season, a fact his owner regrets not addressing sooner.",
+  imgdescription: "Pablo is a sturdy goat with dark brown fur, but his posture is hunched from the pain of his lung infection. His breaths come in slow, labored gasps."
+},
+{
+  "type": "patient",
+  "name": "Alfredo Jiménez",
+  "age": 47,
+  "gender": "Male",
+  "occupation": "Toymaker",
+  "birthplace": "Puebla",
+  "currentResidence": "Mexico City, Barrio de San Pablo",
+  "casta": "Indigenous",
+  "class": "Lower middle class",
+  "symptoms": [
+    { "name": "Severe back pain", "location": "lower back", "quote": "I feel as though my back is breaking under the weight of the years and the many hours bent over my workbench." },
+    { "name": "Blurred vision", "location": "eyes", "quote": "The small details of my work elude me, and my eyes strain to see what once was clear." },
+    { "name": "Stiff fingers", "location": "hands", "quote": "My fingers no longer move as they should, stiff and aching, and it is becoming harder to carve the delicate shapes." }
+  ],
+  "diagnosis": "Chronic joint pain and visual impairment due to aging and overwork",
+  "contemporaryTheory": "An imbalance of cold and dry humors, possibly worsened by prolonged sitting and poor lighting conditions",
+  "socialContext": "Alfredo's work is important for the children in his neighborhood, but his declining health is threatening his livelihood.",
+  "urgency": "High",
+  "image": "alfredojimenez",
+  "caption": "Alfredo Jiménez, a toymaker",
+  "description": "Alfredo Jiménez, a skilled toymaker, is struggling with the physical toll of his craft as his eyesight and joints deteriorate.",
+  "astrologicalSign": "Taurus",
+  "secret": "Alfredo fears he will have to give up his craft soon, and worries how he will survive if he can no longer work.",
+  "imgdescription": "A middle-aged man with a thick mustache, hunched over a workbench, carefully carving small toys. His hands are calloused, and his face shows signs of fatigue and strain."
+},
+{
+  "type": "patient",
+  "name": "Captain Rodrigo Duarte",
+  "age": 50,
+  "gender": "Male",
+  "occupation": "Sea Captain",
+  "birthplace": "Lisbon, Portugal",
+  "currentResidence": "Mexico City, near the harbor",
+  "casta": "Portuguese",
+  "class": "Upper middle class",
+  "symptoms": [
+    { "name": "Chronic seasickness", "location": "stomach", "quote": "Despite all my years at sea, the waves still churn my stomach, leaving me weak and nauseous." },
+    { "name": "Arthritis", "location": "joints", "quote": "The sea has taken its toll on my bones, every joint aching with the weight of countless voyages." },
+    { "name": "Cough", "location": "chest", "quote": "A cough has taken root in my chest, perhaps the sea air is no longer my friend." }
+  ],
+  "diagnosis": "Chronic seasickness and arthritis due to years at sea",
+  "contemporaryTheory": "An excess of cold, wet humors aggravated by the harsh conditions of maritime life",
+  "socialContext": "Despite his successful career, Captain Duarte's ailments have led him to consider retiring, though he fears the land may be as unforgiving as the sea.",
+  "urgency": "Medium",
+  "image": "rodrigoduarte",
+  "caption": "Rodrigo Duarte, a sea captain",
+  "description": "Captain Rodrigo Duarte, a veteran of countless voyages, finds himself battling seasickness and the effects of a life spent at sea.",
+  "astrologicalSign": "Sagittarius",
+  "secret": "Captain Duarte is considering one last voyage, but he knows his body may not survive it. He is in Mexico City to see his sister who married a Spanish conquistador.",
+  "imgdescription": "A weathered man in a 1680s naval uniform, his face lined with the toll of years at sea. His hands rest on a cane, and his eyes scan the horizon with a mixture of longing and weariness."
+},
+{
+  "type": "patient",
+  "name": "Juan de Vargas",
+  "age": 60,
+  "gender": "Male",
+  "occupation": "Philosopher",
+  "birthplace": "Toledo, Spain",
+  "currentResidence": "Mexico City, Academia de San Carlos",
+  "casta": "Criollo",
+  "class": "Upper class",
+  "symptoms": [
+    { "name": "Memory loss", "location": "head", "quote": "My mind once raced with ideas, but now it falters, the clarity of thought slipping away." },
+    { "name": "Trembling hands", "location": "hands", "quote": "My hands shake when I try to write, the ink smudging across the page as if mocking me." },
+    { "name": "Insomnia", "location": "whole body", "quote": "The nights are long and restless, my mind wandering in circles, never at peace." }
+  ],
+  "diagnosis": "Early signs of dementia, worsened by stress and lack of sleep",
+  "contemporaryTheory": "Caused by an imbalance of the humors, especially an excess of black bile, leading to melancholy and cognitive decline",
+  "socialContext": "As a respected philosopher, Juan's deteriorating mental state has caused concern among his peers, though few dare to confront him directly.",
+  "urgency": "High",
+  "image": "juandevargas",
+  "caption": "Juan de Vargas, a philosopher",
+  "description": "Juan de Vargas, once a brilliant philosopher, now struggles with memory loss and trembling hands, his once sharp mind slipping into confusion.",
+  "astrologicalSign": "Aquarius",
+  "secret": "Juan secretly fears that his decline is a divine punishment for challenging the Church in his philosophical writings.",
+  "imgdescription": "An elderly man in a dark robe, seated at a desk filled with scrolls and books. His hands tremble as he tries to write, his face lined with frustration and sorrow."
+},
 
 // States
 {
@@ -1211,7 +1315,54 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Fernando wears a black cassock with a simple white collar, his attire modest and appropriate for a man of his rank in the Church. His face is weathered, his expression impassive, but his eyes carry the intensity of a man used to power. A small wooden crucifix dangles from his neck, mostly tucked away beneath his garments."
   },
 
-
+{
+  type: "npc",
+  name: "Pig",
+  age: 3,
+  casta: "N/A",
+  class: "N/A",
+  occupation: "Farm Animal",
+  image: "pig",
+  caption: "A pig on the farm",
+  description: "A common farm animal raised for its meat.",
+  imgdescription: "The pig snuffles in the dirt, its pink skin slightly muddied from the pen."
+},
+{
+  type: "npc",
+  name: "Goat",
+  age: 4,
+  casta: "N/A",
+  class: "N/A",
+  occupation: "Farm Animal",
+  image: "goat",
+  caption: "A goat on the farm",
+  description: "A goat raised for milk and meat.",
+  imgdescription: "The goat chews lazily on a patch of grass, its eyes alert and horns curved."
+},
+{
+  type: "npc",
+  name: "Sheep",
+  age: 5,
+  casta: "N/A",
+  class: "N/A",
+  occupation: "Farm Animal",
+  image: "sheep",
+  caption: "A sheep on the farm",
+  description: "A sheep raised for wool and meat.",
+  imgdescription: "The sheep stands quietly, its wool thick and ready for shearing."
+},
+{
+  type: "npc",
+  name: "Dog",
+  age: 6,
+  casta: "N/A",
+  class: "N/A",
+  occupation: "Farm Dog",
+  image: "dog",
+  caption: "A farm dog",
+  description: "A loyal dog used for herding and guarding.",
+  imgdescription: "The dog barks energetically, its fur bristling as it watches over the flock."
+},
   {
     type: "npc",
     name: "João",
@@ -1226,6 +1377,78 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
     description: "João is a small, orange fluff ball who spends most of his time napping in the sun or playing with scraps of paper. His presence is a small comfort to Maria amid her daily struggles.",
   secret: "João was abandoned on the streets as a kitten and found his way to Maria’s shop. Though he provides comfort, his skittish behavior hints at the rough life he once led.",
   imgdescription: "João is a small, orange tabby kitten, his fur soft and slightly tousled from frequent naps. His large eyes and delicate whiskers give him a playful, curious appearance as he lounges in the warm sunlight."
+},
+{
+  type: "npc",
+  name: "Young Man [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 20,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Laborer",
+  image: "youngman",
+  caption: "A young laborer, looking for work",
+  description: "A young man, new to the city, looking for any work he can find. He is strong and capable, but inexperienced in the ways of the world.",
+  imgdescription: "The young man stands tall but unsure, his hands calloused from hard labor. His clothes are worn, and his face shows the marks of long days under the sun. He glances around, hoping for an opportunity, while the city buzzes with life around him."
+},
+{
+  type: "npc",
+  name: "Studious Man [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 40,
+  casta: "Criollo",
+  class: "Middle class",
+  occupation: "Scholar",
+  image: "manwearingglassesstudious1680s",
+  caption: "A studious man wearing glasses",
+  description: "A middle-class scholar, often seen poring over books and manuscripts in quiet study. His keen mind and thirst for knowledge are evident, though he remains humble in his pursuits.",
+  imgdescription: "The man sits at a wooden desk, adjusting his small round spectacles as he carefully copies a manuscript. His fingers are stained with ink, and the faint sound of quill scratching paper fills the air. The candlelight reflects off his glasses, creating a quiet, studious atmosphere."
+},
+{
+  type: "npc",
+  name: "Elder Scholar [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 70,
+  casta: "Criollo",
+  class: "Upper class",
+  occupation: "Scholar",
+  image: "scholarold1680s",
+  caption: "An elderly scholar",
+  description: "An elderly scholar, respected in the intellectual community for his vast knowledge and wisdom. Though his body may be frail, his mind remains sharp, and he often mentors younger students.",
+  imgdescription: "The elderly scholar leans heavily on his cane as he makes his way through the rows of books in his study. His long, grey beard and wrinkled hands tell of a life devoted to knowledge. The room smells faintly of old paper, and the scholar's worn robe brushes against the stone floor."
+},
+{
+  type: "npc",
+  name: "Theologian [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 55,
+  casta: "Criollo",
+  class: "Upper class",
+  occupation: "Theologian",
+  image: "theologianorscholar1680s",
+  caption: "A theologian deep in study",
+  description: "A respected theologian, often engaged in religious debate and the interpretation of scripture. His faith guides his work, and he is a key figure in local religious circles.",
+  imgdescription: "The theologian sits in deep contemplation, his hands folded over a heavy tome of scripture. The light from a nearby window illuminates the intricate carvings on his desk, and his face is calm but intense, lost in thought. The air is heavy with incense, and a soft murmur of prayer can be heard."
+},
+{
+  type: "npc",
+  name: "Philosopher [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 60,
+  casta: "Criollo",
+  class: "Middle class",
+  occupation: "Philosopher",
+  image: "philosopher1680s",
+  caption: "A philosopher lost in contemplation",
+  description: "A philosopher known for his ability to question the world around him, often challenging the norms of society with his ideas. His quiet demeanor hides a sharp intellect and a mind unafraid of difficult truths.",
+  imgdescription: "The philosopher sits in his study, a hand resting on his chin as he gazes thoughtfully at a collection of ancient texts. The smell of old parchment and ink fills the air, and the faint rustling of papers is the only sound. His eyes are distant, lost in deep thought."
+},
+{
+  type: "memory",
+  name: "Maria's Father [memory]",
+  age: 50,
+  casta: "Portuguese",
+  class: "Apothecary",
+  occupation: "Apothecary",
+  image: "lisbonportugal",
+  caption: "A memory of Maria's father on a trip with her in Lisbon",
+  description: "Maria's father was an apothecary outside Coimbra. His presence was commanding but kind, a man who understood the rhythms of the world beyond his homeland.",
+  imgdescription: "A tall, stern man stands by the port of Lisbon, his hands clasped behind his back as he surveys the ships docked at the harbor. The faint smell of salt and exotic spices lingers in the air, and the sound of waves lapping against the wooden docks mixes with the murmur of merchants."
 },
   {
     type: "npc",
@@ -1256,9 +1479,166 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   imgdescription: "Don Luis is dressed in a finely tailored wool coat with a high collar, his breeches made of dark, heavy fabric. His shoes are polished, and he carries a silver-headed walking cane, a symbol of his authority and status. His face is stern, and he exudes an air of control and power."
 },
 // Generic NPCs
+
 {
   type: "npc",
-  name: "Paisano",
+  name: "Nun [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 50,
+  casta: "Criollo",
+  class: "Religious",
+  occupation: "Nun",
+  image: "nun",
+  caption: "A nun from a convent",
+  description: "A devout nun, likely in charge of a convent. Her days are filled with prayer, reflection, and guiding younger sisters in religious matters.",
+  imgdescription: "Dressed in a black habit with a white coif, her face shows the deep lines of a life devoted to spiritual practice. A rosary hangs from her waist, and her hands are folded, a look of serene composure as she stands in front of a small altar."
+},
+{
+  type: "npc",
+  name: "Wealthy merchant [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 55,
+  casta: "Mestizo",
+  class: "Merchant",
+  occupation: "Merchant",
+  image: "merchantman",
+  caption: "A seasoned merchant at the market",
+  description: "An experienced merchant who has been trading goods for decades. He navigates the bustling marketplace with ease, handling both local produce and imported luxuries.",
+  imgdescription: "The merchant wears a wide-brimmed hat and a heavy cloak, his hands expertly negotiating prices. His sharp eyes scan the market, and beneath his cloak, a pouch of coins rests close to his body as he exchanges pleasantries with a buyer."
+},
+{
+  type: "npc",
+  name: "Embroidery Woman [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 30,
+  casta: "Indigenous",
+  class: "Lower class",
+  occupation: "Embroiderer",
+  image: "embroidering",
+  caption: "A woman embroidering",
+  description: "A woman skilled in embroidery, creating intricate patterns on fabric. Her work is admired by many, though she earns little for her long hours of labor.",
+  imgdescription: "The embroiderer sits on a simple stool, her fingers deftly pulling thread through a delicate cloth. Her eyes are focused on the intricate patterns taking shape, and the colorful threads create a beautiful contrast against the worn wooden walls of her humble workspace."
+},
+{
+  type: "npc",
+  name: "Female Scholar [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 35,
+  casta: "Criollo",
+  class: "Upper class",
+  occupation: "Scholar",
+  image: "femalescholar",
+  caption: "A female scholar at study",
+  description: "A well-educated woman who spends her days studying and writing. Despite societal expectations, she has carved out a space for intellectual pursuits.",
+  imgdescription: "The scholar sits at a large wooden desk, covered with parchment and ink pots. Her face is illuminated by a candle as she carefully copies down her thoughts. A quill rests lightly in her hand, and her gaze is focused on the manuscript before her."
+},
+{
+  type: "npc",
+  name: "Sea Captain [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 45,
+  casta: "Criollo",
+  class: "Upper class",
+  occupation: "Sea Captain",
+  image: "seacaptain",
+  caption: "A sea captain",
+  description: "A grizzled sea captain, experienced in navigating the oceans and commanding his crew. He carries the air of authority that comes with years of successful voyages.",
+  imgdescription: "The captain stands on the deck of his ship, the sea breeze ruffling his coat. His eyes squint into the distance as he grips the wheel with practiced ease. His face is weathered, and the confidence in his stance reflects a lifetime spent on the water."
+},
+{
+  type: "npc",
+  name: "Madman [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 40,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Unemployed",
+  image: "houseofamadman",
+  caption: "A madman inside his house",
+  description: "A man who has been driven mad by unknown forces. His erratic behavior and isolation make him a source of fear and intrigue in the community.",
+  imgdescription: "The man sits in the dark corner of his small, cluttered house, muttering incoherently to himself. His hair is disheveled, and his wild eyes dart around the room as if seeing things that aren’t there. Broken objects and scattered papers surround him."
+},
+{
+  type: "npc",
+  name: "Diviner [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 60,
+  casta: "African",
+  class: "Lower class",
+  occupation: "Diviner",
+  image: "divinationritual",
+  caption: "A diviner conducting a ritual",
+  description: "An African diviner, using mysticism and ritual to guide others or predict events. Their role in the community is both feared and respected.",
+  imgdescription: "The diviner moves slowly and deliberately, their hands tracing symbols in the air as smoke rises from a small fire. Beads and charms hang from their neck, and their eyes are closed in concentration. The atmosphere is heavy with incense and whispers of the unseen."
+},
+{
+  type: "npc",
+  name: "Forager [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 28,
+  casta: "Indigenous",
+  class: "Lower class",
+  occupation: "Forager",
+  image: "berries",
+  caption: "A forager gathering berries",
+  description: "A common forager, often gathering wild berries and herbs to sell at the market. They move quietly through the wilderness, eyes trained on nature’s bounty.",
+  imgdescription: "The forager crouches low, carefully plucking ripe berries from a bush. Their hands are stained with juice, and a small woven basket at their side slowly fills with the day’s haul. The smell of earth and greenery surrounds them as they work."
+},
+{
+  type: "npc",
+  name: "Child [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 8,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Child",
+  image: "childevening",
+  caption: "A child outdoors at dusk",
+  description: "A child playing in the streets as the sun sets. Their carefree nature contrasts with the struggles faced by their family.",
+  imgdescription: "The child runs barefoot through the dirt streets, a faint smile playing across their lips as they chase a stray dog. The fading light of the evening casts long shadows, and the distant chatter of adults signals the end of the day."
+},
+{
+  type: "npc",
+  name: "Toymaker [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 40,
+  casta: "Mestizo",
+  class: "Craftsman",
+  occupation: "Toymaker",
+  image: "toymaker",
+  caption: "A toymaker in his workshop",
+  description: "A skilled craftsman, creating simple wooden toys by hand. His work is appreciated by the children of the city, though he struggles to make a steady living.",
+  imgdescription: "The toymaker sits at a cluttered wooden workbench, surrounded by carved wooden figures and tools. His hands are rough, but his movements are delicate and precise as he smooths a new toy. His face is focused, and a small lantern casts a warm glow over his worn apron."
+},
+{
+  type: "npc",
+  name: "Juanito [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 10,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Street child",
+  image: "child",
+  caption: "A young street boy",
+  description: "A boy from the streets, often begging or helping with small chores to earn a few reales. His life is tough, but he survives through street smarts and grit.",
+  imgdescription: "The boy is barefoot, wearing simple, tattered clothing that shows the wear of his young but hard life. His hair is tousled, and his face is smudged with dirt. His eyes, however, are bright and alert as he watches the busy streets around him."
+},
+{
+  type: "npc",
+  name: "Father Miguel [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 50,
+  casta: "Criollo",
+  class: "Religious",
+  occupation: "Priest",
+  image: "priest",
+  caption: "A parish priest",
+  description: "A respected priest in the local parish. He is a fixture in the community, offering spiritual guidance to both the rich and the poor.",
+  imgdescription: "The priest wears the traditional black cassock of the clergy, a simple wooden cross hanging from his neck. His weathered face shows years of dedication to his parishioners, and he walks with a sense of purpose as he prepares for evening vespers."
+},
+{
+  type: "npc",
+  name: "Doctor Ignacio de la Cruz",
+  age: 60,
+  casta: "Criollo",
+  class: "Physician",
+  occupation: "Doctor",
+  image: "physician",
+  caption: "An experienced physician",
+  description: "A knowledgeable doctor who has treated many patients in Mexico City. He practices medicine using both traditional European methods and local herbal remedies.",
+  imgdescription: "The physician wears a dark wool doublet and a long cloak, his hands still stained from recent bloodletting. His eyes are sharp with intellect, and he carries a worn medical bag filled with the tools of his trade. His expression is one of authority as he prepares for his next patient."
+},
+{
+  type: "npc",
+  name: "Paisano [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
   age: 30,
   casta: "Indigenous",
   class: "Lower class",
@@ -1271,7 +1651,105 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Shopkeeper",
+  name: "Mounted soldier [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 38,
+  casta: "Criollo",
+  class: "Upper class",
+  occupation: "Landowner and Explorer",
+  image: "manonhorsebacknight",
+  caption: "A man on horseback at night",
+  description: "A well-to-do landowner or adventurer, traveling from his lands in the north. His journeys often take him across dangerous, unexplored terrain.",
+  imgdescription: "The caballero is mounted on a tall, sturdy horse, wrapped in a dark cloak. His wide-brimmed hat shields his face, though his sharp eyes survey the surroundings. A sword hangs from his saddle."
+},
+
+{
+  type: "npc",
+  name: "Card Player [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 50,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Gambler",
+  image: "cardplayers",
+  caption: "A gambler playing cards",
+  description: "A regular patron of local taverns, he spends his evenings gambling and drinking. He is well-versed in the tricks of the game and has a reputation for his luck, though some say he cheats.",
+  imgdescription: "The card player sits at a worn wooden table, eyes focused intently on the cards in his hand. His fingers twitch nervously as he considers his next move. His face is weathered, and a small smirk plays across his lips as he exchanges glances with his fellow players. A half-empty mug of ale rests by his side."
+},
+{
+  type: "npc",
+  name: "Vaquero [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 28,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Cowboy",
+  image: "cowboyonhorse",
+  caption: "A cowboy riding through the plains",
+  description: "A hardworking vaquero, often employed to tend cattle and manage herds on sprawling ranches. His life is spent mostly in the saddle, traversing wide open spaces under the sun.",
+  imgdescription: "The vaquero rides atop a sturdy horse, dressed in a broad-brimmed hat and a simple cotton shirt. A lasso hangs from his saddle, and his boots are caked with dust from the endless plains. His eyes are focused ahead, scanning the horizon as the wind whips through his hair."
+},
+{
+  type: "npc",
+  name: "Tavern Patron [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 40,
+  casta: "Mestizo",
+  class: "Lower class",
+  occupation: "Laborer",
+  image: "mendrinkingday",
+  caption: "A man drinking in a tavern during the day",
+  description: "A laborer enjoying a brief respite from work, spending his hard-earned wages on drinks at the local tavern. His days are long and hard, but for now, he finds solace in a cup of pulque.",
+  imgdescription: "The tavern patron leans back in his chair, raising a cup to his lips. His face is flushed from the drink, and he slouches slightly as the warmth of the pulque settles in his belly. His work clothes are still dirty, but he pays no mind as he chats animatedly with other patrons."
+},
+{
+  type: "npc",
+  name: "Tavern Patron [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
+  age: 35,
+  casta: "Indigenous",
+  class: "Lower class",
+  occupation: "Ranch Hand",
+  image: "mendrinkingnight",
+  caption: "A man drinking in a tavern at night",
+  description: "A ranch hand taking the evening to relax at a local tavern. His days are spent tending to cattle or working in the fields, and his nights often end with a quiet drink among friends.",
+  imgdescription: "The tavern is dimly lit by a few lanterns, casting a soft glow over the patron’s face. His rough hands grip a wooden mug, and his tired eyes stare into the fire flickering nearby. A low hum of conversation fills the air as he sits quietly, enjoying the stillness of the night."
+},
+{
+  type: "npc",
+  name: "Couple [this is a generic class descriptor, invent contextually appropriate names for both man and woman when adding to simulation]",
+  age: "Man: 40, Woman: 35",
+  casta: "Criollo",
+  class: "Upper class",
+  occupation: "Wealthy Merchant and Wife",
+  image: "manandwomandinnercandlelight",
+  caption: "A couple dining by candlelight",
+  description: "A wealthy merchant and his wife, sharing an intimate dinner in their grand home. They discuss matters of business and family, while savoring the luxuries of their well-appointed lifestyle.",
+  imgdescription: "The couple sits at a finely set table, the warm glow of candlelight reflecting off silverware and delicate porcelain plates. The merchant, dressed in a velvet coat, listens attentively to his wife, who wears an embroidered silk gown. The aroma of roasted meat and fresh bread fills the air as they enjoy their meal."
+},
+{
+  type: "npc",
+  name: "Bee [this is a generic class descriptor, use 'bee' for context]",
+  age: null,
+  casta: "N/A",
+  class: "Wildlife",
+  occupation: "Pollinator",
+  image: "beeflyingoverwater",
+  caption: "A bee flying over water",
+  description: "A small bee buzzing over a calm body of water, seeking flowers to pollinate. A quiet yet essential part of the natural cycle.",
+  imgdescription: "The bee’s wings blur as it hovers near the surface of the still pond, its reflection faintly visible in the clear water. Tiny ripples form beneath it, though the bee remains fixated on the blooms nearby, unaware of the peacefulness it adds to the serene environment."
+},
+{
+  type: "npc",
+  name: "Frog [this is a generic class descriptor, use 'frog' for context]",
+  age: null,
+  casta: "N/A",
+  class: "Wildlife",
+  occupation: "Amphibian",
+  image: "frogonlake",
+  caption: "A frog on a lake",
+  description: "A frog sits quietly on the edge of a calm lake, waiting patiently for prey. Its stillness mirrors the placid waters around it, blending seamlessly into the natural scene.",
+  imgdescription: "The frog’s green skin glistens as it perches near the lake’s edge, its wide eyes scanning the water for movement. The gentle lapping of the water against the shore is the only sound, and the frog’s small, steady breaths barely disturb the air around it."
+},
+
+{
+  type: "npc",
+  name: "Shopkeeper [this is a generic class descriptor, invent a contextually appropriate full name that fits this type of person when adding to simulation]",
   age: 45,
   casta: "Mestizo",
   class: "Middle class",
@@ -1283,7 +1761,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 },
 {
   type: "npc",
-  name: "Doña",
+  name: "Doña [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 35,
   casta: "Criollo",
   class: "Upper class",
@@ -1296,7 +1774,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Friar",
+  name: "Friar [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 50,
   casta: "Peninsular",
   class: "Clergy",
@@ -1308,7 +1786,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 },
 {
   type: "npc",
-  name: "Curandera",
+  name: "Curandera [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 50,
   casta: "Indigenous",
   class: "Lower middle class",
@@ -1320,7 +1798,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 },
 {
   type: "npc",
-  name: "Soldado",
+  name: "Soldado [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 30,
   casta: "Peninsular",
   class: "Military",
@@ -1333,7 +1811,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Tejedora",
+  name: "Tejedora [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 30,
   casta: "Indigenous",
   class: "Lower class",
@@ -1346,7 +1824,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Caballero",
+  name: "Caballero [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 45,
   casta: "Peninsular",
   class: "Upper class",
@@ -1359,7 +1837,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Bandito",
+  name: "Bandito [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 28,
   casta: "Mestizo",
   class: "Lower class",
@@ -1372,33 +1850,20 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Soldado",
+  name: "Frontier soldier",
   age: 35,
   casta: "Peninsular",
   class: "Military",
   occupation: "Soldier",
   image: "soldado",  // File path remains the same as term
   caption: "Soldado, a Spanish soldier",
-  description: "A seasoned soldier stationed in New Spain, tasked with maintaining order and protecting the colony from internal and external threats. He follows orders without question and is loyal to the crown.",
+  description: "A seasoned soldier stationed in the northern frontier of New Spain, tasked with maintaining order and protecting the colony. He follows orders without question and is loyal to the crown.",
   imgdescription: "The soldado wears a well-maintained breastplate over a red wool tunic, with a steel helmet and boots that have seen many battles. His sword hangs at his side, and his posture is rigid, as if always on guard for the next command."
 },
 
 {
   type: "npc",
-  name: "Curandera",
-  age: 50,
-  casta: "Indigenous",
-  class: "Lower middle class",
-  occupation: "Traditional healer",
-  image: "curandera",  // File path remains the same as term
-  caption: "Curandera, a traditional healer",
-  description: "A healer who uses herbal remedies and traditional rituals to cure ailments and ward off evil. She is respected by the Indigenous community and feared by some for her knowledge of potent herbs.",
-  imgdescription: "The curandera wears a simple cotton dress and carries a woven basket filled with dried herbs. Her face is lined with age and wisdom, her hair tied back with a piece of cloth. She moves with slow, deliberate steps, always careful in her craft."
-},
-
-{
-  type: "npc",
-  name: "Ranchero",
+  name: "Ranchero [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 40,
   casta: "Mestizo",
   class: "Lower middle class",
@@ -1413,10 +1878,10 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   type: "npc",
   name: "Dona",
   age: 35,
-  casta: "Criollo",
+  casta: "Criollo [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   class: "Upper class",
   occupation: "Noblewoman",
-  image: "dona",  // File path remains the same as term
+  image: "dona", 
   caption: "Doña, a noblewoman of New Spain",
   description: "A wealthy woman of high standing, often seen attending social events and overseeing the running of her household. She is refined and well-educated, playing an influential role in colonial society.",
   imgdescription: "The doña wears a luxurious silk gown with intricate embroidery at the hems, a lace veil over her hair. Her jewelry is subtle but valuable, with a pearl necklace and matching earrings. Her posture is graceful, and she carries herself with quiet authority."
@@ -1424,12 +1889,12 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Paisano",
+  name: "Paisano [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 32,
   casta: "Mestizo",
   class: "Lower class",
   occupation: "Tradesman",
-  image: "paisano",  // File path remains the same as term
+  image: "paisano",  
   caption: "Paisano, a common tradesman",
   description: "A simple tradesman who works in the markets or on the roads, often performing manual labor. He takes odd jobs to support his family and leads a humble life.",
   imgdescription: "The paisano wears a loose cotton shirt, tied at the waist with a simple rope belt, and sturdy sandals. His hands are rough from labor, and his face is sun-worn, marked by years of work in the outdoors."
@@ -1442,7 +1907,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   casta: "African",
   class: "Lower class",
   occupation: "Enslaved laborer",
-  image: "enslavedperson",  // File path remains the same as term
+  image: "enslavedperson",  
   caption: "Enslaved person in New Spain",
   description: "An enslaved person of African descent, forced to work in the fields or in homes under brutal conditions. Their life is marked by hardship and suffering, but they hold onto hope for a better future.",
   imgdescription: "The enslaved person wears ragged, plain cotton clothing, often torn or worn thin from years of labor. Their body bears the marks of physical toil, and their eyes reflect the weight of their difficult life."
@@ -1450,7 +1915,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 
 {
   type: "npc",
-  name: "Sailor",
+  name: "Sailor [this is a generic class descriptor, assign a contextually appropriate full name when adding to simulation]",
   age: 40,
   casta: "Mestizo",
   class: "Working class",

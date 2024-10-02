@@ -46,6 +46,8 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
   const [showPDFPopup, setShowPDFPopup] = useState(false); 
   const [selectedPDF, setSelectedPDF] = useState(null); 
   const [fadeClass, setFadeClass] = useState('fade-in');
+  const [showSecretPopup, setShowSecretPopup] = useState(false); // New state for showing secret popup
+  const [npcSecret, setNpcSecret] = useState(null); // New state to store NPC secret
 
   // Handle fade transitions on image update
   useEffect(() => {
@@ -69,6 +71,17 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
   const closePDFPopup = () => {
     setShowPDFPopup(false);
     setSelectedPDF(null);
+  };
+
+  // Handle showing the NPC secret
+  const handleRevealSecret = (secret) => {
+    setNpcSecret(secret);
+    setShowSecretPopup(true);
+  };
+
+  const closeSecretPopup = () => {
+    setShowSecretPopup(false);
+    setNpcSecret(null);
   };
 
   // Memoize Maria's portrait image based on her status
@@ -112,6 +125,12 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
                 ))}
               </ul>
             </div>
+          )}
+          {/* Add Reveal Secret Button if NPC has a secret */}
+          {npc.secret && (
+            <button onClick={() => handleRevealSecret(npc.secret)} className="reveal-secret-button">
+              Reveal their secret
+            </button>
           )}
         </div>
       );
@@ -194,6 +213,15 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
             pdfPath={selectedPDF}  
           />
         </Suspense>
+      )}
+
+      {showSecretPopup && (
+        <div className="secret-popup">
+          <div className="secret-popup-content">
+            <p><strong>Secret:</strong> {npcSecret}</p>
+            <button onClick={closeSecretPopup} className="close-secret-button">Close</button>
+          </div>
+        </div>
       )}
     </div>
   );

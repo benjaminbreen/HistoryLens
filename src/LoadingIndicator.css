@@ -18,7 +18,7 @@
   width: 350px;
   height: 350px;
   opacity: 0;
-  animation: fadeInWheel 3s forwards, rotate 30s infinite linear;
+  animation: fadeInWheel 3s forwards, rotate 40s infinite linear;
 filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
 }
 
@@ -53,7 +53,7 @@ filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
 .loading-phrase {
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #333;
   text-align: center;
   opacity: 0;
@@ -65,7 +65,7 @@ filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
   width: 80%;
   max-width: 600px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    padding-top: 20px;  /* Reserve space for the phrase */
+    padding-top: 50px;  /* Reserve space for the phrase */
 }
 
 
@@ -127,6 +127,34 @@ body.dark-mode .loading-container.fade-to-white {
   bottom: -100px;
   right: -100px;
   animation-delay: -7.5s;
+}
+
+@media (max-width: 768px) {
+  /* Adjust the container padding for small screens */
+  .loading-container {
+    padding-top: 80px;
+    padding-bottom: 50px;
+  }
+
+  /* Reduce the size of the wheel image for smaller screens */
+  .wheel-image {
+    width: 250px;
+    height: 250px;
+  }
+
+  /* Adjust the position and font size of the loading phrase */
+  .loading-phrase {
+    font-size: 1.2rem;
+    top: 10%; /* Move the text a bit lower on smaller screens */
+    width: 90%; /* Make sure it adapts to smaller screen widths */
+    max-width: 100%;
+    padding-top: 30px;
+  }
+
+  /* Slightly reduce the hover effect scale */
+  .wheel-image:hover {
+    transform: scale(1.02); /* Less drastic scaling */
+  }
 }
 
 

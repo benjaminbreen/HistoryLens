@@ -1,5 +1,152 @@
 const imageMap = {
 
+    fair: {
+  src: require('./assets/fair.jpg'),
+  tags: ['town', 'fair', 'marketplace', 'venders', 'people selling', 'street life', 'colonial life']
+},
+
+ignaciodelacruz: {
+    src: require('./assets/ignaciodelacruz.jpg'),
+    tags: ['rival', 'Ignacio de la Cruz', 'middle aged man', 'physician', 'doctor']
+  },
+  alfredojimenez: {
+    src: require('./assets/alfredojimenez.jpg'),
+    tags: ['specific patient', 'Alredo Jimenez', 'middle aged man', 'toymaker']
+  },
+
+    pablogoat: {
+    src: require('./assets/pablogoat.jpg'),
+    tags: ['specific patient', 'Pablo the Goat', 'goat', 'sick farm animal']
+  },
+ juandevargas: {
+    src: require('./assets/juandevargas.jpg'),
+    tags: ['specific patient', 'Juan de Vargas', 'older man', 'philosopher', 'dementia']
+  },
+sage: {
+  src: require('./assets/sage.jpg'),
+  tags: ['sage', 'herb', 'medicinal', 'apothecary', 'thyme', 'herbal remedy']
+},
+
+thyme: {
+  src: require('./assets/thyme.jpg'),
+  tags: ['thyme', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+lemonbalm: {
+  src: require('./assets/lemonbalm.jpg'),
+  tags: ['lemon balm', 'herb', 'medicinal', 'apothecary', 'calming', 'herbal remedy']
+},
+
+lemonbalm: {
+  src: require('./assets/lemon.jpg'),
+  tags: ['lemon', 'fruit', 'food', 'cuisine', 'juice', 'food item']
+},
+
+rosemary: {
+  src: require('./assets/rosemary.jpg'),
+  tags: ['rosemary', 'herb', 'medicinal', 'apothecary', 'aromatic', 'herbal remedy']
+},
+
+lavender: {
+  src: require('./assets/lavender.jpg'),
+  tags: ['lavender', 'herb', 'medicinal', 'apothecary', 'calming', 'aromatic']
+},
+
+basil: {
+  src: require('./assets/basil.jpg'),
+  tags: ['basil', 'herb', 'medicinal', 'apothecary', 'seasoning', 'aromatic']
+},
+
+mint: {
+  src: require('./assets/mint.jpg'),
+  tags: ['mint', 'herb', 'medicinal', 'apothecary', 'aromatic', 'refreshing']
+},
+
+oregano: {
+  src: require('./assets/oregano.jpg'),
+  tags: ['oregano', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+chamomile: {
+  src: require('./assets/chamomile.jpg'),
+  tags: ['chamomile', 'herb', 'medicinal', 'apothecary', 'calming', 'herbal tea']
+},
+
+dill: {
+  src: require('./assets/dill.jpg'),
+  tags: ['dill', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+parsley: {
+  src: require('./assets/parsley.jpg'),
+  tags: ['parsley', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+cilantro: {
+  src: require('./assets/cilantro.jpg'),
+  tags: ['cilantro', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+tarragon: {
+  src: require('./assets/tarragon.jpg'),
+  tags: ['tarragon', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+bayleaf: {
+  src: require('./assets/bayleaf.jpg'),
+  tags: ['bay leaf', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+fennel: {
+  src: require('./assets/fennel.jpg'),
+  tags: ['fennel', 'herb', 'medicinal', 'apothecary', 'seasoning', 'herbal remedy']
+},
+
+    sunsetshop: {
+    src: require('./assets/sunsetshop.jpg'),
+    tags: ['shop', 'apothecary shop', 'dawn', 'sunset', 'twilight', 'alchemy']
+  },
+
+   youngman: {
+    src: require('./assets/youngman.jpg'),
+    tags: ['young man', 'standing', 'man', 'worker', 'patient', 'unnammed young man']
+  },
+
+    rooster: {
+    src: require('./assets/rooster.jpg'),
+    tags: ['rooster', 'bird', 'chicken', 'farm', 'rural life', 'items bought']
+  },
+
+    rooster: {
+    src: require('./assets/rooster.jpg'),
+    tags: ['duck', 'bird', 'animal', 'farm', 'rural life', 'items bought']
+  },
+
+   cow: {
+    src: require('./assets/cow.jpg'),
+    tags: ['cattle', 'animal', 'cow', 'farm', 'rural life', 'items bought']
+  },
+
+    pig: {
+    src: require('./assets/pig.jpg'),
+    tags: ['pig', 'animal', 'pet', 'farm', 'rural life', 'items bought']
+  },
+
+ goat: {
+    src: require('./assets/goat.jpg'),
+    tags: ['goat', 'animal', 'livestock', 'farm', 'rural life', 'items bought']
+  },
+
+   sheep: {
+    src: require('./assets/sheep.jpg'),
+    tags: ['sheep', 'animal', 'livestock', 'farm', 'rural life', 'items bought']
+  },
+
+   dog: {
+    src: require('./assets/dog.jpg'),
+    tags: ['dog', 'animal', 'pet', 'farm', 'rural life', 'items bought']
+  },
+
 herbalflowers: {
   src: require('./assets/herbalflowers.jpg'),
   tags: ['herbal flowers', 'flowers', 'herbs', 'medicine', 'materia medica', 'market item', 'items bought']
@@ -173,16 +320,30 @@ vanilla: {
   tags: ['trading post', 'cabin', 'daytime', 'refuge', 'scrublands', 'indigenous', 'americas']
 },
 
+ dryscrub: {
+  src: require('./assets/dryscrub.jpg'),
+  tags: ['countryside', 'hot', 'daytime', 'desert', 'scrublands', 'dry land', 'agave']
+},
+
+scrub: {
+  src: require('./assets/scrub.jpg'),
+  tags: ['countryside', 'hot', 'daytime', 'scrublands', 'agave', 'cacti', 'bushes']
+},
+
   nightsky: {
   src: require('./assets/nightsky.jpg'),
   tags: ['night', 'stars', 'nighttime', 'cosmic', 'evening stars']
 },
 
-  conquistador: {
-  src: require('./assets/conquistador.jpg'),
+  conquistadorfrontier: {
+  src: require('./assets/conquistadorfrontier.jpg'),
   tags: ['man standing', 'wearing armor', 'dusk', 'frontier', 'conquistador', 'soldier', 'new spain']
 },
 
+ conquistador: {
+  src: require('./assets/conquistador.jpg'),
+  tags: ['man standing', 'wearing armor', 'city setting', 'knight', 'conquistador', 'soldier', 'new spain']
+},
   pueblosettlement: {
   src: require('./assets/pueblosettlement.jpg'),
   tags: ['humble abode', 'pueblo', 'frontier region', 'scrubland house', 'small house', 'hut', 'americas']
@@ -365,9 +526,13 @@ snowystreet: {
   src: require('./assets/snowystreet.jpg'),
   tags: ['street', 'snow', 'colonial', 'winter', 'quiet', 'urban life', 'evening']
 },
-dutchpainting: {
+painting: {
   src: require('./assets/dutchpainting.jpg'),
   tags: ['Dutch', 'painting', 'colonial', 'art', 'culture', 'intellectual', 'studio']
+},
+painting: {
+  src: require('./assets/tapestry.jpg'),
+  tags: ['tapestry', 'painting', 'weaving', 'art', 'culture', 'intellectual', 'beautiful artwork']
 },
 dutchinterior: {
   src: require('./assets/dutchinterior.jpg'),
@@ -385,6 +550,7 @@ inncourtyardday: {
   src: require('./assets/inncourtyardday.jpg'),
   tags: ['inn', 'courtyard', 'daytime', 'colonial', 'social gathering', 'rest', 'exploration']
 },
+
 northerneuropeancitystreetnightamsterdam: {
   src: require('./assets/northerneuropeancitystreetnightamsterdam.jpg'),
   tags: ['Northern European city', 'street', 'Amsterdam', 'night', 'colonial', 'urban', 'lanterns']
@@ -861,6 +1027,12 @@ nightfiredisaster: {
     src: require('./assets/manual.jpeg'),
     tags: ['document', 'book', 'instruction']
   },
+
+  rodrigoduarte: {
+    src: require('./assets/rodrigoduarte.jpg'),
+    tags: ['specific patient', 'Rodrigo Duarte', 'man', 'sea captain', 'Portuguese']
+  },
+
   diegoperez: {
     src: require('./assets/diegoperez.jpg'),
     tags: ['specific patient', 'Diego Perez', 'man', 'carpenter', 'indigenous']
@@ -996,7 +1168,7 @@ nightfiredisaster: {
   },
   mestizo: {
     src: require('./assets/mestizo.jpg'),
-    tags: ['mestizo', 'man', 'worker', 'patient', 'generic']
+    tags: ['mestizo', 'young man', 'worker', 'patient', 'generic']
   },
   friar: {
     src: require('./assets/friar.jpg'),
@@ -1008,7 +1180,7 @@ nightfiredisaster: {
   },
   laborer: {
     src: require('./assets/laborer.jpg'),
-    tags: ['worker', 'laborer', 'man', 'farmer', 'generic male character', 'patient', 'generic']
+    tags: ['worker', 'laborer', 'young man', 'farmer', 'generic male character', 'patient', 'generic']
   },
   frontiersoldier: {
     src: require('./assets/frontiersoldier.jpg'),
@@ -1079,6 +1251,7 @@ nightfiredisaster: {
     src: require('./assets/townsfolk.jpg'),
     tags: ['townsfolk', 'group', 'people', 'patient', 'generic']
   },
+  
   cobblestones: {
     src: require('./assets/cobblestones.jpg'),
     tags: ['street', 'cobblestones', 'outdoor']
@@ -1128,12 +1301,22 @@ nightfiredisaster: {
     src: require('./assets/tenochtitlan.jpg'),
     tags: ['Tenochtitlan', 'ruins', 'city']
   },
-  lamerced: {
-    src: require('./assets/lamerced.jpg'),
-    tags: ['church', 'religious', 'interior']
+  lamercedmarket: {
+    src: require('./assets/lamercedmarket.jpg'),
+    tags: ['market', 'Zocalo', 'marketplace', 'Mexico City', 'bustling', 'city center']
+  },
+
+  street: {
+    src: require('./assets/street.jpg'),
+    tags: ['city street', 'generic city', 'marketplace', 'urban', 'bustling', 'city center']
+  },
+
+   townmarket: {
+    src: require('./assets/townmarket.jpg'),
+    tags: ['market', 'town', 'marketplace', 'small town', 'indigenous vendors']
   },
   plazamayor: {
-    src: require('./assets/playamayor.jpg'),
+    src: require('./assets/plazamayor.jpg'),
     tags: ['plaza', 'outdoor', 'square']
   },
   alameda: {

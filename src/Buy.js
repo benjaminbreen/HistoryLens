@@ -51,7 +51,7 @@ function Buy({
           2. **description**: A brief description of the item.
           3. **origin**: Where the item is from. BE HIGHLY SPECIFIC.
           4. **price**: Price in reales (as an integer).
-          5. **emoji**: An appropriate emoji that symbolizes the item.
+          5. **emoji**: An appropriate emoji that symbolizes the item, such as 🫚 (for ginger) or 🍵🫖 (for teas) 
           
           Example 1:
           [
@@ -60,7 +60,7 @@ function Buy({
               "description": "Used to treat fevers, particularly malaria. Quite rare.",
               "origin": "Loxa, Peru",
               "price": 8,
-              "emoji": "🌿"
+              "emoji": "🪵"
             }
           ]
 
@@ -70,7 +70,7 @@ function Buy({
               "name": "Yucatan Honey",
               "description": "A common sweetener and medicinal ingredient.",
               "origin": "Yucatan Peninsula",
-              "price": 2,
+              "price": 1,
               "emoji": "🍯"
             },
             {
@@ -96,11 +96,12 @@ function Buy({
               "description": "A spice and medicinal ingredient.",
               "origin": "Malaku Islands, East Indies",
               "price": 4,
-              "emoji": "🌸"
+              "emoji": "🌰"
             }
           ]
 
           Ensure your response is formatted in strict JSON format, with no additional characters outside of the JSON object.
+          IMPORTANT: Use no backticks in your response. Include no additional text of any kind. ONLY JSON formatted as above.
         `;
 
         try {

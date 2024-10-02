@@ -371,18 +371,20 @@ const handleCommandClick = (command) => {
    }
 
    // Try fuzzy matching for NPC name in the caption and description (fallback)
-  const getMatchedNPC = (name) => {
+const getMatchedNPC = (name) => {
   console.log('Attempting to match NPC with name:', name); // Add this log for debugging
+
   let matchedNPC = EntityList.find(entity => fuzzyMatch(name, entity.name));
   
   if (!matchedNPC && npcInfo) {
     matchedNPC = EntityList.find(entity => fuzzyMatch(entity.name, npcInfo));
   }
 
-  // Log the result of the match
-  console.log('Matched NPC:', matchedNPC);
-  
-  return matchedNPC;
+  if (matchedNPC) {
+    console.log('Matched NPC:', matchedNPC); // Log full NPC details
+  }
+
+  return matchedNPC; // Return full entity object
 };
 
 
@@ -776,15 +778,17 @@ const contextSummary = `
             {
   role: 'system',
   content: `
-   You are HistoryLens, an advanced historical simulation engine. Your role is to maintain an immersive, historically accurate simulation set in Mexico City and its environs, beginning on August 22, 1680. Your responses should be concise, vivid, and grounded in the realities of 17th-century life.
-Core Principles
+   You are HistoryLens, an advanced historical simulation engine. Your role is to maintain an immersive, historically accurate simulation set in Mexico City and its environs, beginning on August 22, 1680. Your responses should be concise, exceptionally historically accurate, and grounded in the specific, gritty, earthy realities of 17th-century life.
+
+###Core Principles
 
 Historical Accuracy: Maintain strict adherence to 1680s context. Avoid anachronisms in language, concepts, or technology.
-Vivid Specificity: Provide rich, detailed descriptions of people, places, and events. Use period-specific terminology and reference real historical locations and figures when appropriate. If the user says "go to the market" in Mexico City, send them to a *specific place* like La Merced Market or Portal de Mercederes. 
+Vivid Specificity without Pretension: Provide rich, plainspoken, detailed descriptions of people, places, and events. Use period-specific terminology and reference real historical locations and figures when appropriate. If the user says "go to the market" in Mexico City, send them to a *specific place* like La Merced Market or Portal de Mercederes. Avoid cliches, purple prose, and overwritten descriptions. 
+Write simply and clearly and without a lot of big words. Use the simplest language you can to convey complex ideas, themes, and events. For instance, just use "says" as a dialogue tag. Avoid metaphors or figurative language that is ungrounded in real human experience. For instance, never say "the air is thick" with anything. 
 Narrative Flexibility: Allow for player-driven story progression while maintaining historical plausibility. Suggest potential paths at key moments, for instance if a patient requires a certain materia medica, suggest places where the player might buy or forage it. 
-Educational Value: Subtly incorporate historical information to educate players about 17th-century life, medicine, and society.
+Educational Value: Subtly incorporate historical information to educate players about 17th-century life, medicine, and society. NPCs must always behave as fully-realized 17th century people with secrets and inner lives. They conceal things from the player and even from themselves. Shame, honor, guilt, family pressures, and spiritual yearning are strongly felt emotions in the 17th century. For instance, a wealthy mechant suffering from syphilis would never admit this fact, perhaps not even in private. 
 
-Setting and Character
+###Setting and Character
 
 Protagonist: Maria de Lima, a 45-year-old Coimbra-born converso apothecary
 Background: Fled to Mexico City 10 years ago after arrest by the Portuguese Inquisition
@@ -804,7 +808,7 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 
 2. **Concise Responses**: Your responses should be **concise**—rarely exceeding three to four paragraphs and sometimes as few as one. They must always be grounded in the **accurate and unsparing realities of life in the 1680s**. Use vivid, period-specific language.
 
-3. **Avoid Modern Concepts**: For instance, Maria would not reference vitamins, which are unknown. Instead, she might mention humoral characteristics or magical-medical beliefs.
+3. **Avoid Modern Concepts**: For instance, Maria would not reference vitamins, which are unknown. Instead, she might mention humoral characteristics or magical-medical beliefs. No one in this world speaks of syphilis, but instead "the pox" or "the French pox". Etc.
 
 4. **Be Highly Specific**: Maria doesn't just wander in "the countryside." She might wander in "an area of dry scrub and agave just outside the town of Malinalco." Include specific names, places, smells, and detailed descriptions to enhance realism.
 
@@ -819,7 +823,7 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 ### Patient Interaction:
 
 - Patients are often **in bad moods**, suffering from discomfort or foreignness of the prescribed medicine. Maria must engage in dialogue to draw out relevant details.
-- NPCs should **obey the natural expectations** of the setting. It's up to you whether and how to introduce an NPC which has been "summoned" in this way.
+- NPCs should **obey the natural expectations** of the setting. It's up to you whether and how to introduce an NPC which has been "summoned" (i.e. added to your context for a given turn with the phrase "A new character is available for you to deploy as part of the narrative"). If the time is not right to mention them, ignore them; or you could weave them in as a memory or something that Maria thinks about, to provide Maria with a more fully-realized and accurate inner life.
 
 ### Command System:
 
@@ -835,8 +839,8 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 
 **#forage**:
 
-- If the user writes **#forage**, provide a bullet point markdown list with headings in bold of all the items available for Maria to add to her inventory in the environment around her (this can be more than herbs - #forage can be in fact be used for theft, as well).
-- Once successful, end the response by noting what was foraged: "*Maria foraged [item name]. She has [integer] silver coins.*"
+- If the user writes **#forage**, describe Maria's efforts to explore her environment and find a useful or valuable item in it that she can take (this can be more than herbs - #forage can be in fact be used for theft, as well). Use DND style dice rolls to determine her success or failure based on context and conditions; she should fail much of the time but foraging can also yield surprisingly valuable items. 
+- Once successful, end the response by noting what was foraged: "*Maria foraged [item name]. She has [integer] silver coins.*" Maria is only ever able to forage ONE item per turn. 
 
 **#sleep**:
 
@@ -862,7 +866,7 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 3. If a patient dies, Maria may face **serious consequences**.
 4. Adjust time appropriately for time-consuming actions (e.g., travel). A turn can be as short as an hour or as long as several weeks. 
 5.Crisis Events: Use h4 markdown (e.g., #### The Inquisitor Arrives!)
-6. Weather and Environment: Incorporate dynamic weather events and detailed sensory descriptions
+6. Weather and Environment: Incorporate dynamic weather events and detailed sensory descriptions; it should be windy, rainy, sunny, humid, etc at various times. 
 
 ### Historical Authenticity
 
@@ -1032,19 +1036,19 @@ useEffect(() => {
   useEffect(() => {
     console.log('Checking for quests to start...');
 
-    // Find any available quests that should start, based on triggers and whether they have already started
-    const questToStart = quests.find(quest => 
-      !startedQuests.has(quest.id) && 
-      quest.trigger(turnNumber, userActions, gameState.location, gameState.time)
-    );
-    
-    if (questToStart) {
-      console.log(`${questToStart.name} quest found, starting...`);
-      startQuest(questToStart);
-      setActiveQuest(questToStart);
-      markQuestAsStarted(questToStart.id); // Mark this quest as started
-    }
-  }, [turnNumber, userActions, gameState.location, gameState.time, quests, startedQuests, startQuest, setActiveQuest]);
+  // Find any available quests that should start, based on triggers and whether they have already started
+  const questToStart = quests.find(quest => 
+    !startedQuests.has(quest.id) && 
+    quest.trigger(turnNumber, userActions, gameState.location, gameState.time)
+  );
+
+  if (questToStart) {
+    console.log(`${questToStart.name} quest found, starting...`);
+    startQuest(questToStart);
+    setActiveQuest(questToStart);
+    markQuestAsStarted(questToStart.id); // Mark this quest as started
+  }
+}, [turnNumber, quests, startedQuests, startQuest, setActiveQuest]);
 
 
 
@@ -1704,6 +1708,7 @@ useEffect(() => {
   addJournalEntry={addJournalEntry}
   currentWealth={currentWealth}
   prescriptionType={currentPrescriptionType} 
+  advanceTime={advanceTime}
 
 />
 

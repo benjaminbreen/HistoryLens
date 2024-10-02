@@ -53,7 +53,7 @@ const quests = [
       },
       {
         type: 'dialogue',
-        image: 'quest0b', // Placeholder image of Joao the kitten
+        image: 'quest0b', // image of Joao the kitten
         text: `*Joao the kitten paws at you, meowing softly. It’s clear he doesn’t intend to let you go back to sleep.*`,
         npcResponses: [
           '[NOTE: Joao should NEVER speak and your responses for Joao should only record his actions. He only interacts in short actions of a few words, like *Joao purrs contentedly, seemingly satisfied that you’re awake*]. Give no other commentary, except perhaps a phrase or very short sentence.',
@@ -64,7 +64,7 @@ const quests = [
           'Shoo Joao away.'
         ],
         decisionPoint: true,
-        maxExchanges: 4,
+        maxExchanges: 1,
       },
       {
         type: 'decision',

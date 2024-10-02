@@ -58,7 +58,7 @@ Given the following text, provide:
 \`\`\`
 
 When updating the time and date, please follow these specific rules:
-- A turn typically lasts between 45 minutes and several hours/days. Use your judgement to determine the length, but almost always assign 2-3 hours per turn. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within a 1-2 hour range. However, NEVER go backwards in time. If it is dusk, you can only go further into evening, or the morning of the following day if the turn calls for it.
+- A turn typically lasts between 45 minutes and several hours/days. Use your judgement to determine the length, but usually assign 2-3 hours per turn. If there is no significant event in the narrative that suggests a large time jump, estimate the time passage to be within this 2-3 hour range. However, if a description involves several hours passing, progress time by more like 5-6 hours. NEVER go backwards in time. If it is dusk, you can only go further into evening, or the morning of the following day if the turn calls for it.
 - If the action described spans multiple events (e.g., traveling to another town, treating multiple patients), increase the time accordingly—use hours, and if necessary, increment the date by a day or more.
 - Always provide an exact time in the format "8:35 AM" or "11:45 PM". Never return vague times like "morning" or "evening".
 - If the current time passes midnight (12:00 AM), increment the date by one day. If the date changes due to significant time passage, clearly reflect this in the JSON output.

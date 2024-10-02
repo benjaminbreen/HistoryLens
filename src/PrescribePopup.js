@@ -23,7 +23,8 @@ function PrescribePopup({
   currentWealth,
   prescriptionType, 
   handlePrescriptionOutcome, 
-  onPrescriptionComplete
+  onPrescriptionComplete,
+   advanceTime
 }) {
   const { inventory = [] } = gameState;
   const [selectedItem, setSelectedItem] = useState(null);
@@ -109,6 +110,14 @@ const [{ isOver }, drop] = useDrop({
 
     const npcName = currentPatient.name;
     const { location, time, date } = gameState;
+
+     const diagnosis = currentPatient.diagnosis || 'Unknown diagnosis';
+  const socialContext = currentPatient.socialContext || 'Unknown social context';
+  const secret = currentPatient.secret || 'No known secret';
+
+  console.log(`Social Context: ${socialContext}`);
+  console.log(`Secret: ${secret}`);
+
     let prescriptionPrompt = '';
 
   // patient picking logic 
@@ -138,63 +147,58 @@ const [{ isOver }, drop] = useDrop({
   prescriptionPrompt = `
     Maria has administered ${amount} drachms of ${item.name} via the ${route} route for ${price} silver coins to ${npcName}.
     The transaction occurred at ${time} on ${date}, in ${location}. (This is context and should not be restated to the player.)
+    Diagnosis: ${diagnosis}
+    Social Context: ${socialContext}
+    Secret: ${secret}
     Maria's current wealth is ${currentWealth} silver coins.
 
-    Using your knowledge of early modern medicine and human biology, assess the safety and effectiveness of this prescription. Focus on the dosage, toxicity, and health condition of the NPC. Some prescriptions can cause an NPC to die or suffer disabling complications. 
-    Be unsparing, detailed, and blunt in your descriptions of effects. If a drug causes diarrhea, go into detail! If it causes vomiting, likewise. Or if it does nothing, show disappointment (a patient might say something like "I should go to a real physician and be bled - that will fix it" or "I should have stayed in bed" or "That was... well, it didn't kill me, at least."). Or if it's a miracle cure, show an exuberant reaction of joy. 
-    This is an educational game about history of medicine so pull no punches if a prescription is truly toxic. However, also be realistic: oral delivery of chamomile, or topical application of sugar, will never cause real complications, it simply won't work. Others like saffron or wine might be pleasant but mostly ineffective. 
-    Same with relatively benign but odd things like crab's eyes. It's really in the realm of things like mercury (and other minerals) or opiates (and other narcotics or poisonous plants) that it becomes dangerous. Think carefully and draw on your knowledge before assessing the outcome. Some pontial reactions would be things along the lines of:
-    "The cinchona powder burns as I drink it, but my headache fades soon after." "The poultice smells like earth, and the infection seems to be drawn out by it."  "The draught tastes foul, but I feel a bit better." ""The wine mixed with ground unicorn horn is bitter and expensive. I feel no result." "The bittersweet treacle sticks to my throat, and I fear it is worsening my humoral imbalance." "The smoke from this dried tobacco leaf is rather unpleasant, but I can breathe easier."
+    Using your knowledge of early modern medicine, humoral theory, and human biology (and incorporating information from the NPC's secret, social context, and diagnosis), assess the safety and effectiveness of this prescription. Consider both immediate and long-term effects of the medicine. Focus on the dosage, toxicity, and health condition of the NPC, ensuring the response is naturalistic and varied based on the substance and method of delivery. Some prescriptions can cause an NPC to die or suffer disabling complications, but not every instance should result in severe side effects such as nausea unless appropriate.
 
-    Always begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
+    Be unsparing, detailed, and realistic in your descriptions. Avoid excessive nausea or vomiting for relatively benign substances like wine, chamomile, or lightly infused herbal remedies unless administered in excess or combined with other dangerous factors. Instead, consider other common reactions in early modern medicine, such as mild discomfort, temporary relief, or no reaction at all. If a treatment is historically known for purging, do not shy away from those reactions, but balance it with other possibilities based on the patient's condition. 
+
+    Consider reactions like:
+    - If a drug causes purging (such as vomiting or diarrhea), describe it in vivid, unsparing and graphically realistic sensory detail, but ensure that only substances known for their toxicity or purgative qualities cause such effects.
+    - If a prescription causes discomfort or irritation (e.g., an unpleasant taste, slight dizziness), show those effects while emphasizing sensory characteristics like taste, smell, and texture.
+    - If the treatment is ineffective, focus on disappointment or resignation in the patient's response. Comments like "I should go to a real physician and be bled" or "I expected more from this treatment" could reflect their frustration. Directly utilize their ${socialContext} and ${secret} to craft their personalized reaction.
+
+    Always be realistic: 
+    - Substances like chamomile, sugar, rose water, or wine will not cause serious complications in normal doses. These should produce milder reactions (or no reaction) unless combined with other dangerous factors or taken in excessive amounts.
+    - Medications like saffron or wine might give a mildly pleasant or ineffective result, rather than cause harm. More dangerous substances like mercury, opium, and other potent compounds, especially in higher doses or certain delivery methods (like inhalation or enema), should be treated with the appropriate severity. Patients often proclaim opium or opioids and alcoholic cures to be far more effective than they actually are. Inhaled mercury (quicksilver) or mercury products ALWAYS kills a patient in ALL circumstances. 
+
+    Begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
 
     - **h3 markdown**: Use h3 markdown tags (###) for headlines where the effects are neutral, positive, or only slightly negative. For example, you might write: 
       ### Maria attempted an unconventional treatment that was somewhat effective ⚖
       or
-      ### The prescription was revolting and led to minor complications 🤢
-      or 
-         ### The prescription was unpleasant but highly effective
-      or ### The patient balked at the high price and walked out without paying 💸
-      or ### The patient had a miraculous recovery! 🍀
-      or ### The patient felt neutral effects ⚖️
-      or ### The patient feels better - the treatment worked well.
+      ### The prescription was unpleasant but highly effective
+      or
+      ### The patient felt neutral effects ⚖️
+      or ### The patient felt better - the treatment worked well.
       Or many others of your choice. 
 
     - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
       - If the patient **died**, always start with: ##### 💀 The patient has died! 💀
       - For more minor injuries, use something like:
         ##### The prescription seems to have failed... 
-      - Remember that if a patient is likely to die in a turn, go with "The patient has died" as the headline. Be realistic and don't hold back.
-
-    **Important:**
-    - The headline must always appear as the first line of the output.
-    - Ensure the markdown tags (### or #####) are correctly used at the start of the headline.
-    - Do not restate the markdown tags or explain the headline in your output—just present the headline with the appropriate markdown tag.
+      - Be realistic about death and harm: some outcomes should reflect mild discomfort, but not all treatments should lead to nausea or purging unless the medicine calls for it.
 
     ### Patient Reactions:
-    After the headline, describe the patient's experience over a period of three hours in 3 highly detailed paragraphs which emphasize vivid, historically authentic characterization and finely observed details:
+    After the headline, describe the patient's experience over a period of three hours in 2 highly detailed paragraphs that emphasize vivid, historically authentic characterization and finely observed details:
     - Focus on the **sensory characteristics** of the medicine (e.g., taste, smell, texture). Always mention the route of administration and give specifics about how it was applied.
-    - Show how the patient reacts to the prescribed dose, including the price. This might range from a miraculous cure to mild discomfort to violent reactions like vomiting or even death.
-    - Describe the **perceived effects** of the medicine on the patient's health.
-    - If the dose is toxic or fatal, be explicit about the timeline of how the patient worsens or dies.
-    - If the price is particularly high (over 10 coins, say - though some patients may be able to afford more than this, it depends on the specific NPC) they may walk out without paying or taking the prescription at all. If so, describe this and remember that Maria does not receive any new coins in such a situation.
+    - Show how the patient reacts to the prescribed dose, including the price. Reactions might range from a miraculous cure to mild discomfort, satisfaction, or a complete lack of effect. Purging, nausea, and more severe reactions should occur based on specific medicinal properties or improper dosage, but should not be the default response.
+    - Describe the **perceived effects** of the medicine on the patient's health, and when appropriate, consider early modern concepts like humoral balance (hot, cold, wet, dry qualities). For example, if the patient suffers from a cold, damp ailment, the medicine may dry or heat them, bringing relief.
+    - For toxic or fatal doses, be explicit about the timeline of worsening symptoms or death.
 
     ### Dosage & Effects:
     - One drachm of most medicines is usually safe, but two or more drachms of highly toxic substances (like quicksilver or laudanum) could lead to fatal outcomes. If the dose is fatal, show the NPC dying.
-    - Angry reactions are common if the medicine is ineffective or causes discomfort, so show the patient's response accordingly.
-    - Consider the patient's presumed weight and health AND the route of administration in assessing whether a dose is fatal or highly toxic. For instance, even a single drachm of inhaled quicksilver (mercury) is instantly fatal, as is quicksilver as an enema. However, topical quicksilver is fine. Many drugs are more potent in enema or inhaled form; even one drachm of inhaled opium might be fatal in a weak or small patient, or two drachms of oral. However, in any other situation patients are extremely enthusiastic about opium or opiates, declare themselves cured, and ask for more. Likewise with alcoholic spirits, which are almost always well received by patients but may not actually be a cure. Likewise with many alchemical compounds. 
-    - Topical prescriptions are almost always successful (if applied to wounds or related ailments) and are never rejected or disliked by patients. 
-    - If a patient dies, Maria has to figure out what to do with the body, sending her storyline into a much darker direction. 
-    - Usually a cure will be ineffective or mildly effective. Benign things like wine, rose water, treacles, other sugared medicines, and aguas/distilled waters, plus camphor or herbs, are typically mildly effective. 
+    - Benign things like wine, rose water, and other lightly infused or sugared medicines should not cause serious complications unless taken in excess or with aggravating factors.
+    - Topical prescriptions (e.g., poultices or salves) are almost always well tolerated and effective for external ailments like wounds. For internal ailments, their effectiveness might be limited but not harmful.
+    - Consider the patient's weight, health, and the route of administration in assessing whether a dose is fatal or highly toxic. Potent drugs like mercury, opium, or alchemical compounds should be dangerous in large doses, while other remedies are more likely to have mild effects.
 
-    Following the description, in italic markdown tags *like this*, give a short pithy historically authentic quote or proverb from the 17th century which relates to the prescription, if its a non-English original give the original language then translation in brackets. For instance: "The soul and body are like a house divided against itself." — Thomas Browne, "Religio Medici" (1643); "Mentre c'è vita, c'è speranza" -Italian proverb [Where there is life, there is hope]; "Omnia venena sunt, nec sine veneno quicquam existit" - Quintilian; "Hambre y frío curan cada desvarío."
-Translation: Hunger and cold cure every madness.
-Translation: All things are poison, and nothing is without poison.
-Translation: While there is life, there is hope.
-    Then rate the player's prescription with a score out of 10 (10=best possible prescription choice, 1=worst possible). At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least three hours and possibly more have passed) in **this exact format** using markdown *italic* tags:
+    Following the description, include a historically authentic quote or proverb that reflects the situation. Rate the prescription with a score out of 10 (10=best possible prescription choice, 1=worst possible). At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least four hours have passed) in **this exact format**:
 
-    **Now Maria has ${currentWealth + price} silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is # AM (or PM), xx [month] [year].**
-
+    *Now Maria has ${currentWealth + price} silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is now # AM (or PM), xx [month] [year].*
+    
     **Reputation Emoji Guide:**
     - 😡 (1) : Extremely bad (e.g., patient dies)
     - 😠 (2) : Very bad (e.g., severe complications)
@@ -218,8 +222,59 @@ Translation: While there is life, there is hope.
 } else {
   // Fallback prompt
   prescriptionPrompt = `
-    Maria has administered ${amount} drachms of ${item.name} to ${npcName}.
-    Describe the effects based on the type of prescription.
+   Maria has administered ${amount} drachms of ${item.name} via the ${route} route for ${price} silver coins to ${npcName}.
+    The transaction occurred at ${time} on ${date}, in ${location}. (This is context and should not be restated to the player.)
+    Diagnosis: ${diagnosis}
+    Social Context: ${socialContext}
+    Secret: ${secret}
+    Maria's current wealth is ${currentWealth} silver coins.
+
+    Using your knowledge of early modern medicine, humoral theory, and human biology (and incorporating information from the NPC's secret, social context, and diagnosis), assess the safety and effectiveness of this prescription. Consider both immediate and long-term effects of the medicine. Focus on the dosage, toxicity, and health condition of the NPC, ensuring the response is naturalistic and varied based on the substance and method of delivery. Some prescriptions can cause an NPC to die or suffer disabling complications, but not every instance should result in severe side effects such as nausea unless appropriate.
+
+    Be unsparing, detailed, and realistic in your descriptions. Avoid excessive nausea or vomiting for relatively benign substances like wine, chamomile, or lightly infused herbal remedies unless administered in excess or combined with other dangerous factors. Instead, consider other common reactions in early modern medicine, such as mild discomfort, temporary relief, or no reaction at all. If a treatment is historically known for purging, do not shy away from those reactions, but balance it with other possibilities based on the patient's condition. 
+
+    Consider reactions like:
+    - If a drug causes purging (such as vomiting or diarrhea), describe it in vivid, unsparing and graphically realistic sensory detail, but ensure that only substances known for their toxicity or purgative qualities cause such effects.
+    - If a prescription causes discomfort or irritation (e.g., an unpleasant taste, slight dizziness), show those effects while emphasizing sensory characteristics like taste, smell, and texture.
+    - If the treatment is ineffective, focus on disappointment or resignation in the patient's response. Comments like "I should go to a real physician and be bled" or "I expected more from this treatment" could reflect their frustration. Directly utilize their ${socialContext} and ${secret} to craft their personalized reaction.
+
+    Always be realistic: 
+    - Substances like chamomile, sugar, rose water, or wine will not cause serious complications in normal doses. These should produce milder reactions (or no reaction) unless combined with other dangerous factors or taken in excessive amounts.
+    - Medications like saffron or wine might give a mildly pleasant or ineffective result, rather than cause harm. More dangerous substances like mercury, opium, and other potent compounds, especially in higher doses or certain delivery methods (like inhalation or enema), should be treated with the appropriate severity. Patients often proclaim opium or opioids and alcoholic cures to be far more effective than they actually are. Inhaled mercury (quicksilver) or mercury products ALWAYS kills a patient in ALL circumstances. 
+
+    Begin your output with a clear and concise **headline** that summarizes your assessment of the prescription. For significant results, add a SINGLE emoji to symbolize the main message at the end. Use appropriate markdown formatting as follows:
+
+    - **h3 markdown**: Use h3 markdown tags (###) for headlines where the effects are neutral, positive, or only slightly negative. For example, you might write: 
+      ### Maria attempted an unconventional treatment that was somewhat effective ⚖
+      or
+      ### The prescription was unpleasant but highly effective
+      or
+      ### The patient felt neutral effects ⚖️
+      or ### The patient felt better - the treatment worked well.
+      Or many others of your choice. 
+
+    - **h5 markdown**: Use h5 markdown tags (#####) for headlines where the patient has suffered **serious harm** or a **fatal reaction**. When using h5:
+      - If the patient **died**, always start with: ##### 💀 The patient has died! 💀
+      - For more minor injuries, use something like:
+        ##### The prescription seems to have failed... 
+      - Be realistic about death and harm: some outcomes should reflect mild discomfort, but not all treatments should lead to nausea or purging unless the medicine calls for it.
+
+    ### Patient Reactions:
+    After the headline, describe the patient's experience over a period of three hours in 2 highly detailed paragraphs that emphasize vivid, historically authentic characterization and finely observed details:
+    - Focus on the **sensory characteristics** of the medicine (e.g., taste, smell, texture). Always mention the route of administration and give specifics about how it was applied.
+    - Show how the patient reacts to the prescribed dose, including the price. Reactions might range from a miraculous cure to mild discomfort, satisfaction, or a complete lack of effect. Purging, nausea, and more severe reactions should occur based on specific medicinal properties or improper dosage, but should not be the default response.
+    - Describe the **perceived effects** of the medicine on the patient's health, and when appropriate, consider early modern concepts like humoral balance (hot, cold, wet, dry qualities). For example, if the patient suffers from a cold, damp ailment, the medicine may dry or heat them, bringing relief.
+    - For toxic or fatal doses, be explicit about the timeline of worsening symptoms or death.
+
+    ### Dosage & Effects:
+    - One drachm of most medicines is usually safe, but two or more drachms of highly toxic substances (like quicksilver or laudanum) could lead to fatal outcomes. If the dose is fatal, show the NPC dying.
+    - Benign things like wine, rose water, and other lightly infused or sugared medicines should not cause serious complications unless taken in excess or with aggravating factors.
+    - Topical prescriptions (e.g., poultices or salves) are almost always well tolerated and effective for external ailments like wounds. For internal ailments, their effectiveness might be limited but not harmful.
+    - Consider the patient's weight, health, and the route of administration in assessing whether a dose is fatal or highly toxic. Potent drugs like mercury, opium, or alchemical compounds should be dangerous in large doses, while other remedies are more likely to have mild effects.
+
+    Following the description, include a historically authentic quote or proverb that reflects the situation. Rate the prescription with a score out of 10 (10=best possible prescription choice, 1=worst possible). At the end of the response, provide a summary of Maria's wealth, status, reputation, and the time (remember that at least four hours have passed) in **this exact format**:
+
+    *Now Maria has ${currentWealth + price} silver coins. She is feeling [single word status]. Her reputation is [emoji]. The time is now # AM (or PM), xx [month] [year].*
   `;
 }
 
@@ -255,7 +310,7 @@ setPrescriptionPrompt(prescriptionPrompt);
       // Handle inventory updates and journal entry
      updateInventory(item.name, -amount);
 
-    // Now make a second API call to generate a summary with distinctive flavor
+    // Now make a second API call to generate a journal summary 
     const summaryPrompt = `
       Please summarize the following text with an overall summary of "Result: [emoji] [single word summing it up." Then add one sentence with a succinct, basic summary of what happened, but with vivid details for instance it should say exactly what the complications or impact was. 
       Emoji guidance: use one of the following emojis as appropriate to represent the result (💀 for death, 🩸 for injury, ✨ for miraculous cure, 😡 for a patient walking out due to price, 🤢 for marked nauseau or disgust or minor toxicity, 😐 if ineffective, 💸 for an extremely valuable prescription, 🚪 for when a patient leaves unhappy.). Also include the score out of 10. The summary should reflect the patient's response:
@@ -276,7 +331,7 @@ setPrescriptionPrompt(prescriptionPrompt);
         ],
       }),
     });
-
+console.log("Current Patient Details:", currentPatient);
     if (!summaryResponse.ok) {
       throw new Error(`API Error: ${summaryResponse.statusText}`);
     }
@@ -315,6 +370,13 @@ setPrescriptionPrompt(prescriptionPrompt);
 const handleSummaryContinue = () => {
   setIsSummaryOpen(false);
   setHistoryOutput(simulatedOutput);
+
+   // Ensure journal agent gets the updated time from the prescription
+   const updatedTime = gameState.time; // Use the updated time after prescription
+   const updatedDate = gameState.date; // Make sure the date is also updated
+
+   // Pass this updated information to journalagent.js for processing
+   advanceTime({ time: updatedTime, date: updatedDate });
   
   // Notify the parent component that the prescription is complete
   if (typeof onPrescriptionComplete === 'function') {

@@ -277,7 +277,6 @@ Ensure that the JSON is correctly formatted and includes all required fields.`,
     }));
   }, []);
 
-// Time handling via summaryData from journal.agent JSON output with safeguard
 const advanceTime = useCallback((summaryData) => {
   setGameState((prevState) => {
     let newTime = prevState.time;
@@ -287,25 +286,19 @@ const advanceTime = useCallback((summaryData) => {
       const prevDate = new Date(prevState.date);
       const newJournalDate = new Date(summaryData.date);
 
-      // Safeguard: Ensure the new date is not earlier than the previous date
       if (newJournalDate < prevDate) {
         console.warn('JournalAgent returned an earlier date. Ignoring and requesting correction...');
-        // Log or handle the issue: You can decide to re-trigger a correction here
-        // return the previous date/time without updating
         return prevState;
       }
 
-      // If the new date is valid, update the time and date
       newTime = summaryData.time;
       newDate = summaryData.date;
     } else {
-      // Fallback logic: Increment the time by one hour if journal output is unavailable
       const currentTime = new Date(`August 22, 1680 ${prevState.time}`);
-      currentTime.setHours(currentTime.getHours() + 1);
+      currentTime.setHours(currentTime.getHours() + 3); // Increment by 3 hours
       newTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      // If it's midnight, increment the date
-      if (newTime === '12:00 AM') {
+      if (currentTime.getHours() === 0) {
         const currentDate = new Date(prevState.date);
         currentDate.setDate(currentDate.getDate() + 1);
         newDate = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
