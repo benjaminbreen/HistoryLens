@@ -80,7 +80,7 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        temperature: 0.9,
+        temperature: 0.3,
         messages: [
           {
             role: 'system',

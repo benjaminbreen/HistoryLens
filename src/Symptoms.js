@@ -12,6 +12,12 @@ function Symptoms({ npcName, onClose, onPDFClick }) {
   const [additionalQuestions, setAdditionalQuestions] = useState('');
   const [patientResponse, setPatientResponse] = useState(''); // Store the patient's response
   const [isLoading, setIsLoading] = useState(false); // To handle loading state
+const [isAstrologyHovered, setIsAstrologyHovered] = useState(false);
+ const handleDotHover = (symptomName) => {
+    setHoveredSymptom(symptomName);
+  };
+
+
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -85,6 +91,8 @@ const getImage = (imageName) => {
           </p>
           <button className="symptoms-popup-close" onClick={onClose}>
             Close
+
+
           </button>
         </div>
       </div>
@@ -158,9 +166,9 @@ You are ${npc.name}, a ${npc.age}-year-old ${npc.gender}, occupation: ${npc.occu
 Your symptoms are:  ${npc.symptoms?.map(symptom => symptom.name).join(', ') || 'No symptoms'}. You are seeking treatment from the apothecary Maria de Lima in Mexico City in 1680.
 Secret (do not reveal unless directly asked, but drop hints throughout): ${npc.secret || 'None'}.
 
-Answer the following questions from the healer in first person, honestly, in one or two sentences per question. You may take offense at an impertinent or personal question, or be evasive, and frequently will break off without fully answering, in mid-sentence, perhaps to cough or moan, or perhaps just because you are embarrassed. 
+Answer the following questions from the healer in first person, honestly, in one or two sentences per question. You may take offense at an impertinent or personal question, or be evasive, and frequently will break off without fully answering, in mid-sentence, perhaps to cough or moan or make some other utterance, or perhaps just because you are embarrassed. 
 
-Be idiosyncratic and surprising in your responses, and keep them brief. Remember you are roleplaying as a real person who might not want to share some things. A person with secrets. You should reference real ,specific details of your patients life in concrete and highly particular ways.
+Be idiosyncratic and surprising in your responses, and keep them brief. Remember you are roleplaying as a real person who might not want to share some things. A person with secrets. You should reference real, specific details of your life in concrete and highly particular ways. Make the secret somewhat obvious if questioned. Keep in mind social class - wealthy or VIP characters will be extremely arrogant and look down on Maria, esepcially if her questions are not phrased respectfully. 
 If data is not available, invent it.
 Questions:
 ${additionalQuestions}
@@ -178,7 +186,8 @@ Responses:
         body: JSON.stringify({
           model: 'gpt-4o-mini', // Use the 'gpt-4o-mini' model as specified
           messages: [
-            { role: 'system', content: 'You are simulating the patient responding to the healer\'s questions. The year is 1680 and all your responses should ALWAYS be precisely hitorically accurate and true to the reality of life in the 1680s. This was a difficult and at times grim world and patients suffered from appalling ailments that left them wracked with torment. Your rsponses should reflect that. At the time, they also observed strict codes of social propriety and were often reluctant to share personal details, so be evasive and difficult. ' },
+            { role: 'system', content: 
+            'You are simulating the patient responding to the healer\'s questions. The year is 1680 and all your responses should ALWAYS be precisely hitorically accurate and true to the reality of life in the 1680s. This was a difficult and at times grim world and patients suffered from appalling ailments that left them wracked with torment. Your rsponses should reflect that. At the time, they also observed strict codes of social propriety and were often reluctant to share personal details, so be evasive and difficult. ' },
             { role: 'user', content: prompt }
           ],
           max_tokens: 150,
@@ -208,61 +217,58 @@ Responses:
     }
   };
 
-  return (
-  <div className="symptoms-root">
-    <div className="symptoms-popup">
-      <div className="symptoms-popup-content">
-        {/* NPC Info Section */}
-        {npc ? (
-          <>
-            <div className="npc-info">
-              {/* NPC Portrait and Astrology Symbol */}
-              <div className="npc-portrait-container">
-                <img src={getImage(npc.image)} alt={npc.name} />  {/* Using getImage function */}
-                <div 
-                  className="astrology-symbol" 
-                  data-sign-name={npc.astrologicalSign}  // Pass the astrological sign name to the CSS
-                >
-                  {astrologySymbols[npc.astrologicalSign]}
+return (
+    <div className="symptoms-root">
+      <div className="symptoms-popup">
+        <div className="symptoms-popup-content">
+          {npc ? (
+            <>
+              <div className="npc-info">
+                {/* NPC Name */}
+              
+
+                {/* NPC Portrait and Astrology Symbol */}
+                <div className="npc-portrait-container">
+                  <img src={getImage(npc.image)} alt={npc.name} />
+                  <div 
+                    className="astrology-symbol" 
+                    data-sign-name={npc.astrologicalSign}
+                  >
+                    {astrologySymbols[npc.astrologicalSign]}
+                  </div>
                 </div>
-              </div>
 
               {/* NPC Details */}
               <ul>
-                <li>
-                  <strong>
-                    <span onClick={handlePDFLinkClick}> {/* Trigger the PDF popup */}
-                      {npc.name}
-                    </span>
-                  </strong>
-                </li>
+                
+                  <div className="npc-name" onClick={handlePDFLinkClick}>
+                  {npc.name}
+                </div>
                 <li><strong>Age:</strong> {npc.age}</li>
                 <li><strong>Gender:</strong> {npc.gender}</li>
                 <li><strong>Occupation:</strong> {npc.occupation}</li>
                 <li><strong>Birthplace:</strong> {npc.birthplace || 'Unknown'}</li>
-                <li><strong>Current Residence:</strong> {npc.currentResidence || 'Unknown'}</li>
+                <li><strong>Residence:</strong> {npc.currentResidence || 'Unknown'}</li>
                 <li><strong>Casta:</strong> {renderCastaLink(npc.casta || 'Unknown')}</li>
-                <li>
-                  <strong>Astrological Sign: </strong>
-                  <span 
-                    className="astrology-sign" 
-                    onClick={handleAstrologyClick} 
-                    onMouseEnter={() => {
-                      setAstrologyImage(astrologyImages[npc.astrologicalSign] || ''); 
-                      setShowAstrologyImage(true);
-                    }} 
-                    onMouseLeave={() => setShowAstrologyImage(false)}
-                  >
-                    {npc.astrologicalSign}
-                  </span>
-                  {/* Display astrology image if hovered */}
-                  {showAstrologyImage && astrologyImage && (
-                    <div className="astrology-image-popup">
-                      <img src={astrologyImage} alt={npc.astrologicalSign} />
-                    </div>
-                  )}
-                </li>
+                 <li>
+                    <strong> Sign: </strong>
+                    <span 
+                      className="astrology-sign" 
+                      onMouseEnter={() => setIsAstrologyHovered(true)}
+                      onMouseLeave={() => setIsAstrologyHovered(false)}
+                    >
+                      {npc.astrologicalSign}
+                    </span>
+                    {/* Display astrology image if hovered */}
+                   
+                  </li>
               </ul>
+
+               {isAstrologyHovered && astrologyImages[npc.astrologicalSign] && (
+                      <div className="astrology-image-popup">
+                        <img src={astrologyImages[npc.astrologicalSign]} alt={npc.astrologicalSign} />
+                      </div>
+                    )}
 
               {/* Additional Questions Section */}
               <textarea
@@ -295,32 +301,40 @@ Responses:
             <div className="symptoms-chart">
               <div className="body-chart">
                 {npc.symptoms && npc.symptoms.length > 0 ? (
-                  <SymptomLocator symptoms={npc.symptoms} hoveredSymptom={hoveredSymptom} />
+                  <SymptomLocator 
+          symptoms={npc.symptoms} 
+          hoveredSymptom={hoveredSymptom} 
+          onDotHover={handleDotHover}
+        />
                 ) : (
                   <p>No symptoms available for this NPC.</p>
                 )}
               </div>
 
               {/* Symptom List */}
-              <div className="symptom-list">
-                {npc.symptoms && npc.symptoms.length > 0 ? (
-                  <ul>
-                    {npc.symptoms.map((symptom, index) => (
-                      <li 
-                        key={index}
-                        onMouseEnter={() => setHoveredSymptom(symptom.name)}
-                        onMouseLeave={() => setHoveredSymptom(null)}
-                      >
-                        <strong>{index + 1}.</strong> {symptom.name} ({symptom.location})<br/>
-                        <em>{symptom.quote}</em>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No symptoms to display.</p>
-                )}
-              </div>
-            </div>
+            <div className="symptom-list">
+        {npc.symptoms && npc.symptoms.length > 0 ? (
+          <ul>
+            {npc.symptoms.map((symptom, index) => (
+              <li 
+                key={index}
+                onMouseEnter={() => setHoveredSymptom(symptom.name)}
+                onMouseLeave={() => setHoveredSymptom(null)}
+                style={{
+                  backgroundColor: hoveredSymptom === symptom.name ? 'rgba(255, 255, 255, 0.4)' : 'transparent',
+                  transition: 'background-color 0.3s ease'
+                }}
+              >
+                <strong>{index + 1}.</strong> {symptom.name} ({symptom.location})<br/>
+                <em>{symptom.quote}</em>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No symptoms to display.</p>
+        )}
+      </div>
+    </div>
           </>
         ) : (
           <p>No NPC selected. If you want to check the symptoms of a character who is present, engage them in conversation first and see if they are willing to be your patient.</p>

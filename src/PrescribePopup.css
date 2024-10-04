@@ -41,6 +41,33 @@ body:not(.dark-mode) .prescribe-popup {
   }
 }
 
+@keyframes glow-red {
+  0% {
+    box-shadow: 
+      0 0 10px rgba(139, 0, 0, 0.4), /* Dark Red */
+      0 0 20px rgba(178, 34, 34, 0.4), /* Firebrick */
+      0 20px 52px rgba(0, 0, 0, 0.74); /* Keep original box shadow */
+  }
+  50% {
+    box-shadow: 
+      0 0 50px rgba(220, 20, 60, 0.8), /* Crimson */
+      0 0 80px rgba(255, 0, 0, 0.7),  /* Red */
+      0 0 100px rgba(178, 34, 34, 0.7), /* Firebrick */
+      0 20px 52px rgba(0, 0, 0, 0.74);  /* Keep original box shadow */
+  }
+  100% {
+    box-shadow: 
+      0 0 10px rgba(139, 0, 0, 0.4), /* Dark Red */
+      0 0 20px rgba(178, 34, 34, 0.4), /* Firebrick */
+      0 20px 52px rgba(0, 0, 0, 0.74); /* Keep original box shadow */
+  }
+}
+
+/* Apply the red glow animation */
+.prescribe-popup.poisoning {
+  animation: glow-red 4s infinite ease-in-out;
+}
+
 
 .prescribe-popup.loading {
   animation: glow-blue 4s infinite ease-in-out;

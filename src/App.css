@@ -284,14 +284,11 @@ font-size: 22px; /* Adjust the font size */
   justify-content: space-between; /* Push buttons to opposite ends */
   align-items: center; /* Vertically center buttons */
   margin-bottom: 25px; /* Add space below the button container */
-
-
 }
 
 .button-container button {
   margin: 0 10px; /* Ensure there's at least 20px gap on both sides */
   margin-top: 10px;
-
 }
 
 
@@ -303,6 +300,58 @@ font-size: 22px; /* Adjust the font size */
  overflow: visible;
 margin-left: 0px;
 }
+
+.quest-buttons-container
+{
+  position: relative;
+  padding: 2px;
+
+}
+
+.save-game-button {
+  background-color: teal; /* Green background */
+  border: none; /* Remove default border */
+  color: white; /* White text */
+  padding: 5px 8px; /* Add padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline on text */
+  display: inline-block; /* Keep the buttons inline */
+  
+  margin: 10px;
+  cursor: pointer; /* Add a pointer on hover */
+  border-radius: 8px; /* Add rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+    font-size: .75rem;
+    position: relative;
+  top: -10px; 
+}
+
+.load-game-button {
+  background-color:  saddlebrown ; /* Green background */
+  border: none; /* Remove default border */
+  color: white; /* White text */
+  padding: 5px 8px; /* Add padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline on text */
+  display: inline-block; /* Keep the buttons inline */
+ 
+  margin: 10px; /* Add some margin between buttons */
+  cursor: pointer; /* Add a pointer on hover */
+  border-radius: 8px; /* Add rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+    font-size: .75rem;
+     position: relative;
+  top: -10px; 
+}
+
+.save-game-button:hover {
+  background-color:  #009688; /* Darker green on hover */
+}
+
+ .load-game-button:hover {
+  background-color: firebrick; /* Darker green on hover */
+}
+
 
 .pdf-links {
   overflow: hidden;
@@ -331,15 +380,15 @@ margin-left: 0px;
 }
 
 .command-button.primary-sources-button {
-  margin: 8px 0;
-  padding: 9px;
-  margin-left: 5px;
+  margin: 7px 0;
+  padding: 8px;
+  margin-left: 2px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 2px;
+  margin-bottom: 5px;
   margin-top: 2px;
 }
 
@@ -349,11 +398,6 @@ margin-left: 0px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.pdf-links {
-  margin-top: 14px;
-  border-top: 1px solid #ccc;
-  padding-top: 8px; /* Slightly increased padding for spacing */
-}
 
 .pdf-link-button {
   background: linear-gradient(145deg, rgba(245, 245, 245, 0.7), rgba(224, 224, 224, 0.8)); /* 50% translucent background */
@@ -364,7 +408,7 @@ margin-left: 0px;
   margin-right: 10px;
   margin-bottom: 2px; /* Add margin to separate the buttons */
   border-radius: 6px; /* More rounded corners */
-  padding: 7px 13px; /* Increased padding for a more clickable feel */
+  padding: 7px 10px; /* Increased padding for a more clickable feel */
   font-size: 0.9em;
   font-weight: bold; /* Make the text bold for emphasis */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for a raised effect */
@@ -406,7 +450,7 @@ margin-left: 0px;
 }
 
 .command-button {
-  padding: 2px 8px;
+  padding: 2px 10px;
   border: none;
   cursor: pointer;
   font-weight: bold;
@@ -414,13 +458,71 @@ margin-left: 0px;
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
   border-radius: 8px;
-  margin: 2px 5px; /* Ensure there's space between the buttons */
+  margin: 1px 4px; /* Ensure there's space between the buttons */
   box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
-   margin-top: 5px;
-     transition: background-color 3s ease, color 3s ease;
-     font-size: .95rem;
+  margin-top: 5px;
+  transition: background-color 3s ease, color 3s ease;
+  font-size: .85rem;
+  
+  /* Enable text wrapping */
+  word-wrap: break-word;
+  hyphens: auto;
+  white-space: normal;
+  text-align: center; /* Ensure text is centered */
+  overflow: hidden;
+  width: auto; /* Ensure button resizes */
 }
+
+/* Handle hyphenation specifically */
+.command-button {
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  word-wrap: break-word;
+}
+
+.dream-button {
+  background: white;
+  color: #3b3b3b; /* Dark gray text */
+  padding: 5px 5px;
+  font-size: 1.0rem;
+  font-weight: bold;
+  border-radius: 8px; /* Adjusted border radius */
+  font-family: "MedievalSharp", cursive;
+  margin: 5px;
+  cursor: pointer;
+  border: 2px solid;
+  border-image: linear-gradient(45deg, #00b4db, #0083b0) 1; /* Blue gradient border */
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Slightly larger shadow */
+  transition: background-color 0.4s ease, color 0.4s ease;
+  text-shadow: none; /* Ensure no text shadow */
+}
+
+.dream-button:hover {
+  background-color: #eaeaea; /* Light gray hover */
+  color: #1c1c1c; /* Dark gray text on hover */
+  border-color: #4b0082; /* Indigo border on hover */
+  text-shadow: none; /* Override text shadow on hover as well */
+}
+
+.dream-link:hover {
+  color: #0b5394; /* Darker blue on hover */
+  text-decoration: underline solid; /* Solid underline on hover */
+}
+
+
+
+
+/* Bold and dotted underline for NPC or inventory items with PDFs */
+.dream-link {
+  font-weight: bold;
+  cursor: pointer;
+  color: #0083b0; /* Blue color for the text (optional, can be changed) */
+  display: inline-flex;
+  align-items: center;
+}
+
 
 
 /* General Hover Effect */
@@ -593,18 +695,27 @@ button:hover .emoji {
 }
 
 
-.view-counter-button {
-  background-color: #3b82f6; /* Blue */
-  float: right; /* Move the button to the right */
-  margin-right: 5px; /* Add some space from the right edge */
-  padding: 8px;
 
+
+.view-counter-button {
+    background: linear-gradient(45deg, #8e44ad, #c0392b, #d35400) ; /* Gradient from purple to pink */
+    color: #fff;
+     margin-right: 5px; /* Add some space from the right edge */
+  padding: 12px;
+    border: none;
+    border-radius: 12px; /* Slightly rounded corners for a gem-like appearance */
+    cursor: pointer;
+   float: right;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6); /* Subtle shadow for text */
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4), 0 0 15px rgba(231, 76, 60, 0.5) inset; /* Outer and inner glow in warm tones */
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions */
 }
 
 .view-counter-button:hover {
-  background-color: rgba(37, 99, 235, 0.85); /* Darker blue with transparency on hover */
+    background: linear-gradient(45deg, #9b59b6, #e91e63, #c0392b); /* Darker gradient on hover */
+    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.5), 0 0 20px rgba(192, 57, 43, 0.5) inset; /* Intensified glow on hover */
+    transform: translateY(-2px) scale(1.02); /* Slight lift and scale on hover */
 }
-
 
 
 .open-commonplace-book-button:hover {
@@ -1519,6 +1630,7 @@ padding: 3px;
   margin: 1px auto; /* Center the footer horizontally and add space from the bottom */
   margin-bottom:100px;
 }
+
 
 .footer p {
   font-size: 14px; /* Adjust the font size */

@@ -559,7 +559,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
   secret: "Arturo Hernandez is actually Licenciado Arturo Ramirez, a guild lawyer investigating Maria's practice. He fakes an illness to trap her into prescribing without proper authority."
 },
 {
-  type: "npc",
+  type: "patient",
   name: "Pablo the Goat",
   age: 5,
   gender: "Male",
@@ -1466,7 +1466,7 @@ treatment: "The author advised Pancho to shave his head and wear a cap lined wit
 },
   {
     type: "antagonist",
-    name: "Don Luis (Moneylender)",
+    name: "Don Luis the Moneylender",
     age: 60,
     birthplace: "Mexico City",
     currentResidence: "Mexico City, Plaza Mayor area",

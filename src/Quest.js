@@ -15,6 +15,8 @@ import confectionImage from './assets/confection.jpg';
 import confectionActiveImage from './assets/confection-active.jpg';
 import decoctImage from './assets/decoct.jpg';
 import decoctActiveImage from './assets/decoct-active.jpg';
+import generateImageAndCaption from './ImageAndCaptionSelector';
+
 
 
 
@@ -28,7 +30,7 @@ const quests = [
     completed: false,
     npc: 'Joao the Kitten', // Placeholder NPC for interaction
     classification: 'Prologue',
-    trigger: (turnNumber) => turnNumber === 1,  
+    trigger: (turnNumber) => turnNumber === 0,  
     stages: [
       {
         type: 'banner',
@@ -84,10 +86,18 @@ const quests = [
     completed: false, 
     npc: 'Antonius Philalethes',
     classification: 'Helper',
-      trigger: (gameState) =>
-      gameState.time >= '6:00 PM' &&
-      gameState.inventory.some((item) => item.type === 'compound') &&
-      !gameState.activeQuests.includes(1),
+   trigger: (turnNumber, actions, currentTime, currentDate) => {
+        // Trigger if it's between 6:00 PM and 10:00 PM on August 22 and the quest hasn't been completed
+        if (!quests[0].completed && currentDate === 'August 22, 1680') {
+            const [time, meridiem] = currentTime.split(' '); // e.g., "6:00 PM"
+            const [hour, minute] = time.split(':').map(Number);
+            
+            if (meridiem === 'PM' && hour >= 6 && hour <= 10) {
+                return true;
+            }
+        }
+        return false;
+    },
     stages: [
       {
         type: 'banner',
@@ -182,7 +192,7 @@ const quests = [
   completed: false, 
   npc: 'Inquisitor Santiago Valdez',
   classification: 'Antagonist',
- trigger: (turnNumber, actions) => actions.includes('#startQuest2') || turnNumber === 20,
+ trigger: (turnNumber, actions) => actions.includes('#startQuest2') || turnNumber === 30,
   stages: [
     {
       type: 'banner',
@@ -216,8 +226,8 @@ const quests = [
   text: 'The Inquisitor has requested that you treat his "French pox," aka syphilis, a venereal disease. Needless to say, this would be a shameful revelation if it were made public. The stakes are high, as the Inquisitor is an extremely powerful man in the society of New Spain, and he has everything to lose if you were to reveal his secret. Then again... you have much to lose as well. What will you do?',
   buttons: [ 
     { text: 'Submit an excuse', action: 'submit_excuse' },
-    { text: 'Provide Treatment', action: 'provide_treatment' },
-    { text: 'Poison Him', action: 'provide_poison' }
+    { text: 'Provide Treatment', action: 'provide_treatment2' },
+    { text: 'Poison Him', action: 'provide_poison2' }
   ],
 },
 
@@ -344,25 +354,22 @@ const quests = [
   name: 'The Arrival of Don Luis',
   npc: 'Don Luis the Moneylender',
   classification: 'Main',
-  trigger: (gameState) => gameState.time > '6:00 PM',  // Trigger after 6:00 PM
+  trigger: (turnNumber, actions) => actions.includes('#startQuest5') || turnNumber === 20,
   stages: [
     {
       type: 'banner',
       image: 'quest5a', // Placeholder image of Don Luis arriving at Maria's door at dusk
-      text: [
-        "*A sharp knock echoes from the door just as the sun begins to dip below the horizon. The familiar silhouette of Don Luis stands in the fading light.*",
-        "*He walks in without waiting for an invitation, his cane tapping the floor ominously.*",
-        "Don Luis: *Maria, we need to talk. I've been patient... too patient.*",
-        "*His voice is colder than usual. There's a hint of something more dangerous in his tone this time.*"
-      ],
+      text: 
+      `A sharp knock echoes from the door just as the sun begins to dip below the horizon. The familiar silhouette of Don Luis stands in the fading light. He walks in without waiting for an invitation, his cane tapping the floor ominously. "Maria, we need to talk," he says. " I've been patient... too patient."
+      `,
       buttons: [
-        { text: 'Let him speak.', action: 'proceed' }
+        { text: 'Hear him out.', action: 'proceed' }
       ],
     },
     {
       type: 'dialogue',
       image: 'quest5b', // Placeholder image of Don Luis
-      text: `*Don Luis’s eyes narrow as he steps further into your shop, glancing briefly at the shelves, then turning back to you.*`,
+      text: `Don Luis’s eyes narrow as he steps further into your shop, glancing briefly at the shelves, then turning back to you as he casually knocks two of your medicine jars to the floor. He seems to be deciding what his next course of action should be. Will you offer to pay him, ask for more time, or perhaps try subterfuge?`,
       npcResponses: [
         "Don Luis: *It's no longer 100 reales you owe, Maria. It's 110 now. The interest accumulates.*",
         "Don Luis: *What's more...* he pauses, watching you closely, *I may have mentioned your background to an old friend of mine.*",
@@ -378,7 +385,7 @@ const quests = [
     {
       type: 'dialogue',
       image: 'quest5c', // Placeholder image of Don Luis, leaning in closer
-      text: `*Don Luis leans in, his breath hot against your face.*`,
+      text: `Don Luis leans in. "Well? You have 110 reales, or not?`,
       npcResponses: [
         "Don Luis: *So tell me, Maria, what are you going to do to repay this debt?*"        
       ],
@@ -392,13 +399,19 @@ const quests = [
     {
       type: 'decision',
       image: 'quest5d', // Placeholder image of Maria deep in thought
-      text: `*Don Luis watches your face intently, waiting for your response. Whatever you choose now could determine your future.*`,
+      text: `*Don Luis watches your face intently, waiting for your response. You can see from the jaundiced tone of his skin that he is a sick man. You have heard that it is a liver complaint, and is serious. Whatever you choose now could determine your future.*`,
       buttons: [
-        { text: 'Agree to pay him soon.', action: 'end' },
-        { text: 'Make a secret plan to deal with Don Luis.', action: 'end' }
+        { text: 'Ask for more time.', action: 'endQuestWithDebt' },
+        { text: 'Pay him everything you have.', action: 'endQuestWithDebt' },
+        { text: 'Offer a miraculous cure in exchange for relief from debt.', action: 'provide_treatment5' },
+        { text: 'Pretend to offer a cure... but secretly poison him.', action: 'provide_poison5' }
       ],
     },
-  ]
+  ],
+  endQuestWithDebt: (currentWealth, setWealth) => {
+    setWealth(0);  // Remove all wealth
+    return "Maria has lost all her wealth. She now has 0 silver coins.";
+  },
 },
 
   {
@@ -586,6 +599,10 @@ const Quest = ({
   openPrescribePopup,
   setCurrentPatient,
   addJournalEntry,
+  setIsEmoji,
+  setNpcCaption,
+  setNpcInfo,
+  setNpcImage,
   unlockMethod
 }) => {
   const { gameState, advanceQuestStage, completeQuest, updateInventory, addCompoundToInventory
@@ -665,12 +682,36 @@ const [currentStage, setCurrentStage] = useState(0);
   };
 
   //  function that handles the outcome after PrescribePopup
-  const handleSummaryContinue = () => {
+  const handleSummaryContinue = async () => {
   setIsSummaryOpen(false); // Close the summary popup
   setHistoryOutput(simulatedOutput); // Display the simulated output in the main history box
 
+  // Step 1: Generate the image and caption for the NPC at this stage
+  try {
+    const { npcImage, caption, description } = await generateImageAndCaption(simulatedOutput, process.env.REACT_APP_OPENAI_API_KEY);
 
+    // Step 2: Check if the result is an emoji
+    const isEmoji = npcImage && [...npcImage].some(char => char.match(/\p{Emoji}/u));
 
+    // Step 3: Set the image, caption, and description for the NPC
+    if (isEmoji) {
+      setNpcImage(npcImage);
+      setIsEmoji(true);
+    } else {
+      // npcImage is now the key for imageMap
+      setNpcImage(imageMap[npcImage]?.src || imageMap['default'].src);
+      setIsEmoji(false);
+    }
+    setNpcCaption(caption);
+    setNpcInfo(description);
+  } catch (error) {
+    console.error("Error generating image and caption:", error);
+    // Handle the error (you might want to set default NPC image/caption here)
+console.log("Simulated Output:", simulatedOutput);
+
+  }
+
+  // Step 4: Continue the regular logic for turn processing
   setTurnNumber(prev => prev + 1);
   toggleInventory(false);  // Close the inventory
   setSelectedItem(null);  // Reset the selected item
@@ -741,14 +782,21 @@ const [currentStage, setCurrentStage] = useState(0);
         case 'submit_excuse':
           setCurrentStage(activeQuest.stages.findIndex(s => s.type === 'dialogue' && s.text.includes('submit an excuse')));
           break;
-        case 'provide_treatment':
+        case 'provide_treatment2':
           openPrescribePopup('treatment', { name: 'Inquisitor Santiago Valdez', type: 'npc' });
           markQuestAsCompleted();
           break;
-        case 'provide_poison':
+        case 'provide_poison2':
           openPrescribePopup('poison', { name: 'Inquisitor Santiago Valdez', type: 'npc' });
           markQuestAsCompleted();
           break;
+         case 'provide_treatment5':
+          openPrescribePopup('treatment', { name: 'Don Luis', type: 'npc' });
+          markQuestAsCompleted();
+          break;
+        case 'provide_poison5':
+          openPrescribePopup('poison', { name: 'Don Luis', type: 'npc' });
+          markQuestAsCompleted();
         default:
           console.error('Unknown action type:', buttonAction);
       }
@@ -882,6 +930,7 @@ const handleSuccess = () => {
       setCurrentStage(0);
       setDialogueHistory([]);
       setAnimatedText([]); // Reset animated text when a new quest starts
+
     }
   }, [activeQuest]);
 

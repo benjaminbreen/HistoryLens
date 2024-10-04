@@ -60,10 +60,11 @@ import rainy from './assets/rainy.jpg';
 import background2 from './assets/background2.jpg';
 import NewItemPopup from './NewItemPopup';
 import Buy from './Buy';
+import GameIntro from './GameIntro';
 
 const PDFPopup = lazy(() => import('./PDFPopup'));
 
-function App() {const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceTime, refreshInventory, lastAddedItem, clearLastAddedItem, unlockMethod, unlockedMethods } = useGameState();
+function App() {const { gameState, updateInventory, updateLocation, addCompoundToInventory, generateNewItemDetails, startQuest, advanceTime, refreshInventory, lastAddedItem, clearLastAddedItem, unlockMethod, setGameState, unlockedMethods } = useGameState();
   const [showEndGamePopup, setShowEndGamePopup] = useState(false);
   const [gameOver, setGameOver] = useState(false); 
   const [showIncorporatePopup, setShowIncorporatePopup] = useState(false);
@@ -121,10 +122,25 @@ const [location, setLocation] = useState('Mexico City');
   const [showNewItemPopup, setShowNewItemPopup] = useState(false);
   const [newItemDetails, setNewItemDetails] = useState(null);
 const [isBuyOpen, setIsBuyOpen] = useState(false);
+const [isGameIntroOpen, setIsGameIntroOpen] = useState(true);
+const [showDreamButton, setShowDreamButton] = useState(turnNumber === 1);
 
 
 
-  // Function to trigger the notification popup
+
+
+const handleViewDreamClick = () => {
+  setActiveQuest(quests[0]); // Trigger the dream quest
+  setShowDreamButton(false); // Hide the button after it's clicked
+};
+
+// useEffect to hide the dream button after turn 2
+useEffect(() => {
+  if (turnNumber > 2) {
+    setShowDreamButton(false);
+  }
+}, [turnNumber]);
+
   const triggerNotificationPopup = (popupData) => {
     setNotificationPopup(popupData);
   };
@@ -326,10 +342,10 @@ useEffect(() => {
 // Initial description of Maria and NPC image
 useEffect(() => {
   const initialDescription = `
-    __You are Maria de Lima, an apothecary of limited means but considerable talent.__ Dawn light bathes your shop on the Calle de la Amargura in Mexico City. The year is 1680.    
-    &nbsp;  
-    Typically, the shelves lining your walls carry neat rows of medicines in jars. But not today — thanks to the thugs hired by Don Luis, the moneylender, who have destroyed all your most valuable cures. As you grind cacao in a *molcajete* to make hot chocolate, you ponder what to do about your debts, which now top 100 *reales*. For now, your next move is to feed some scraps of dried fish to a friendly street kitten who you've named João.  
-    &nbsp;  
+    __You are Maria de Lima, an apothecary of limited means but considerable talent.__ Dawn light bathes your shop on the Calle de la Amargura in Mexico City. The year is 1680, and you have just awoken from a strange dream, only to find that your shop has been ransacked by the hired thugs of a local moneylender, Don Luis, who has warned you to pay him 100 reales by the following day... or else.    
+    &nbsp;     
+    Typically, the shelves lining your walls carry neat rows of medicines in jars. But not today — thanks to Don Luis, your most valuable medicinal drugs have been stolen or destroyed. As you grind cacao in a *molcajete* to make hot chocolate, you ponder what to do about your debts, which now top 100 *reales*. For now, your next move is to feed some scraps of dried fish to a friendly street kitten who you've named João.   
+    &nbsp;    
     Meanwhile, the street outside comes to life. Servants hurry past with baskets of fresh produce. A group of Dominican friars makes their way towards the nearby church, casting disapproving glances at a boisterous group of students. A patrol of soldiers carrying pikes is a reminder of troubling rumors – whispers of unrest in the northern provinces.  
     &nbsp;  
     __Just as you begin to sort through your supply of aloe leaves, a sharp *knock* at the door announces the day's first visitor. Will you see who is there, or ignore them?__
@@ -827,8 +843,8 @@ The simulation is based on brief MUD-like descriptions and commands and maintain
 
 ### Command System:
 
-- Key commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**.
-- Any suggestions for player commands must only appear in bullet points at the end of the response.
+- Available specific commands are: **#symptoms, #prescribe, #diagnose, #sleep, #forage,** and **#buy**, though the user can input anything else they wish too.
+- Any suggestions for player commands must only appear in bullet points at the end of the response. ONLY use # to denote the specific commands listed above as using a hashtag with those terms triggers special "command buttons." You can suggest other things to do but don't use hashtag. 
 - Default to suggesting 2–3 appropriate commands each turn. For new patients ALWAYS suggest #symptoms, #prescribe, and #diagnose.
 - the inventory summary is provided to you for context. don't share it with human user unless they ask about their inventory.
 
@@ -1051,6 +1067,79 @@ useEffect(() => {
 }, [turnNumber, quests, startedQuests, startQuest, setActiveQuest]);
 
 
+const saveGameState = () => {
+  const stateToSave = {
+    gameState, 
+    currentWealth,
+    turnNumber,
+    journal,
+    location,
+    compounds,
+    userActions,
+    activeQuest: activeQuest ? activeQuest.id : null, // Save only the quest ID to simplify
+    conversationHistory,
+    historyOutput,
+    customJournalEntry,
+    npcImage,
+    npcCaption,
+    npcInfo,
+    isDarkMode,
+    mariaStatus,
+    // Add any other variables you want to save
+  };
+  
+  localStorage.setItem('gameState', JSON.stringify(stateToSave));
+  alert('Game saved successfully! Your current game has been saved to the local storage of your web browser, which means you can access this page again and click the load game button to return to it.');
+}
+
+// Helper function to load the game state from localStorage
+const loadGameState = () => {
+  const savedState = localStorage.getItem('gameState');
+  
+  if (savedState) {
+    const {
+      gameState, 
+      currentWealth,
+      turnNumber,
+      journal,
+      location,
+      compounds,
+      userActions,
+      activeQuest,
+      conversationHistory,
+      historyOutput,
+      customJournalEntry,
+      npcImage,
+      npcCaption,
+      npcInfo,
+      isDarkMode,
+      mariaStatus,
+      // Load other variables as needed
+    } = JSON.parse(savedState);
+    
+    // Restore the state into your component
+    setGameState(gameState);
+    setCurrentWealth(currentWealth);
+    setTurnNumber(turnNumber);
+    setJournal(journal);
+    setLocation(location);
+    setCompounds(compounds);
+    setUserActions(userActions);
+    setActiveQuest(quests.find(q => q.id === activeQuest)); // Find the quest by ID
+    setConversationHistory(conversationHistory);
+    setHistoryOutput(historyOutput);
+    setCustomJournalEntry(customJournalEntry);
+    setNpcImage(npcImage);
+    setNpcCaption(npcCaption);
+    setNpcInfo(npcInfo);
+    setIsDarkMode(isDarkMode);
+    setMariaStatus(mariaStatus);
+    alert('Game loaded successfully!');
+  } else {
+    alert('No saved game found.');
+  }
+};
+
 
  // JSX 
      return (
@@ -1117,6 +1206,11 @@ useEffect(() => {
 
 
 
+{isGameIntroOpen && (
+  <GameIntro onClose={() => setIsGameIntroOpen(false)} />
+)}
+
+
 
     <div className="container">
               <NavMobile setIsDarkMode={setIsDarkMode} setIsAboutOpen={setIsAboutOpen} />
@@ -1174,7 +1268,12 @@ useEffect(() => {
       
     />
   ) : (
-    <HistoryOutput historyOutput={historyOutput} isLoading={isLoading} />
+   <HistoryOutput 
+  historyOutput={historyOutput} 
+  isLoading={isLoading} 
+  setActiveQuest={setActiveQuest}  // Pass setActiveQuest as prop
+  quests={quests}                  // Pass quests as prop
+/>
   )}
 </div>
 
@@ -1186,6 +1285,8 @@ useEffect(() => {
             </div>
           )}
 
+
+
   {/* Command buttons*/}
   <div className="bottom-buttons">
 
@@ -1196,6 +1297,15 @@ useEffect(() => {
     {showPdfButtons ? '📄 Hide sources' : '📄 Show all sources'}
   </button>
     <div className="command-buttons">
+
+      {showDreamButton && (
+    <button
+      className="command-button dream-button"
+      onClick={handleViewDreamClick}
+    >
+      View Maria's dream & Don Luis's warning
+    </button>
+  )}
  
       {commandsDetected.prescribe && (
         <button
@@ -1426,6 +1536,11 @@ useEffect(() => {
     setCurrentPatient={setCurrentPatient}
       unlockMethod={unlockMethod}
       addJournalEntry={addJournalEntry} 
+ setNpcImage={setNpcImage}
+  setNpcCaption={setNpcCaption}
+  setNpcInfo={setNpcInfo}
+  setIsEmoji={setIsEmoji}
+   npcImage={npcImage}
     />
     )}
 
@@ -1446,6 +1561,10 @@ useEffect(() => {
 
         <footer className="footer">
 
+
+ 
+
+
   
                 <p style={{ fontSize: '15px', color: 'black', textAlign: 'center', marginTop: '10px' }}>
                      Made in Santa Cruz by <a 
@@ -1465,6 +1584,10 @@ useEffect(() => {
    
 
       <div className="quest-buttons-container" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+    <button onClick={saveGameState} className="save-game-button">
+    Save Game
+  </button>
+
   <button
     style={{
       width: '20px',
@@ -1481,6 +1604,8 @@ useEffect(() => {
       textAlign: 'center',
       lineHeight: '20px'
     }}
+
+
     onClick={() => setActiveQuest(quests[0])}
   >
     0
@@ -1626,6 +1751,10 @@ useEffect(() => {
     7
   </button>
 
+   <button onClick={loadGameState} className="load-game-button">
+    Load Game
+  </button>
+
   <Helper />
 </div>
 
@@ -1653,6 +1782,7 @@ useEffect(() => {
        />
        )}
 
+    
 
     
         {showMixingPopup && (
@@ -1709,6 +1839,11 @@ useEffect(() => {
   currentWealth={currentWealth}
   prescriptionType={currentPrescriptionType} 
   advanceTime={advanceTime}
+  imageMap={imageMap} 
+   npcImage={npcImage}
+    setNpcImage={setNpcImage}
+  setNpcCaption={setNpcCaption}
+  setNpcInfo={setNpcInfo}
 
 />
 

@@ -1089,8 +1089,8 @@ nightfiredisaster: {
     src: require('./assets/street_night.jpg'),
     tags: ['outdoor', 'street', 'night']
   },
-  santiagovaldez: {
-    src: require('./assets/santiagovaldez.jpg'),
+  inquisitorsantiagovaldez: {
+    src: require('./assets/inquisitorsantiagovaldez.jpg'),
     tags: ['antagonist', 'Inquisitor', 'Santiago Valdez', 'man', 'questNPC']
   },
 

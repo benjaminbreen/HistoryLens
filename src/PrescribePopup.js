@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 import './PrescribePopup.css';
+import imageMap from './imageMap';
 
 import oralImage from './assets/oral.jpg';
 import inhaledImage from './assets/inhaled.jpg';
@@ -24,7 +25,11 @@ function PrescribePopup({
   prescriptionType, 
   handlePrescriptionOutcome, 
   onPrescriptionComplete,
-   advanceTime
+   advanceTime,
+   setNpcInfo,
+   setNpcImage,
+   setNpcCaption
+
 }) {
   const { inventory = [] } = gameState;
   const [selectedItem, setSelectedItem] = useState(null);
@@ -36,10 +41,15 @@ function PrescribePopup({
   const [prescriptionPrompt, setPrescriptionPrompt] = useState('');
    const [selectedRoute, setSelectedRoute] = useState('');
    const [basePrice, setBasePrice] = useState(0); 
+     const [isEmoji, setIsEmoji] = useState(false);
 
    const handleRouteSelect = (route) => {
     setSelectedRoute(route);
   };
+
+  const normalizeImageKey = (key) => {
+  return key.toLowerCase().replace(/[_\s]+/g, ''); // Remove underscores and spaces, convert to lowercase
+};
 
   
   const routeImages = {
@@ -133,13 +143,34 @@ const [{ isOver }, drop] = useDrop({
       Remember that this treatment is taking place in the personal residence of Valdez, not Maria's shop, and under extremely tense circumstances as the revelation of his syphilis would be catastrophic for him. There is notable tension and Maria wonders when the other shoe will drop - is her life at risk?
     `;
   } else if (prescriptionType === 'poison') {
-    // Special poison prompt for the Inquisitor
+    // Poison prompt for the Inquisitor
     prescriptionPrompt = `
       Maria has administered ${amount} drachms of ${item.name} to Inquisitor Santiago Valdez via the ${route} route, treating his secret illness (syphilis). He has brought her to his residence under threat of violence if she fails or reveals his secret.
       This is an attempt to poison him rather than cure his illness. Consider the dosage and potential lethality of the poison.
       Using your extensive knowledge of early modern poisons and their effects, determine if the dose is sufficient to kill without causing suspicion.
       Begin with a customized "headline" in h5 markdown font, either "Maria's poison was successful. The Inquisitor has died." or "Maria's poison failed. The Inquisitor survived."
       Describe the sensory characteristics of the poison, the Inquisitor's reaction, and the aftermath in 2-3 paragraphs. If the poison is successful, Maria slips away by darting into a servant's door and making her way to the street. If the poison fails, she is imprisoned by the Inquisitor, who is enraged. Ensure historical accuracy regarding the type and effects of the poison.
+    `;
+  }
+} else if (npcName === 'Don Luis the Moneylender') {
+  if (prescriptionType === 'treatment') {
+    // Special treatment prompt for Don Luis
+    prescriptionPrompt = `
+      Maria has administered ${amount} drachms of ${item.name} to Don Luis via the ${route} route, attempting to treat his debt-related stress and physical ailments.
+      This is a medical treatment rather than poison. Consider the appropriate dosage and the likely effects of the medicine.
+      Begin with a customized "headline" in h5 markdown font, either "Maria's treatment was successful. Don Luis's condition improved." or "Maria's treatment failed. Don Luis's condition worsened."
+      Describe the sensory characteristics of the treatment, Don Luis's reaction, and the aftermath in 2-3 paragraphs. If the treatment is successful, Don Luis agrees to reduce or eliminate your debt in gratitude (the amount he reduces is based on how well it succeeds). If it failed, he threatens further consequences.
+      Ensure historical accuracy regarding the type and effects of the treatment.
+    `;
+  } else if (prescriptionType === 'poison') {
+    // Special poison prompt for Don Luis
+    prescriptionPrompt = `
+      Maria has administered ${amount} drachms of ${item.name} to Don Luis via the ${route} route, intending to poison him rather than treat his ailments.
+      Consider the dosage and potential lethality of the poison.
+      Using your extensive knowledge of early modern poisons and their effects, determine if the dose is sufficient to kill without causing suspicion.
+      Begin with a customized "headline" in h5 markdown font, either "Maria's poison was successful. Don Luis has died." or "Maria's poison failed. Don Luis survived."
+      Describe the sensory characteristics of the poison, Don Luis's reaction, and the aftermath in 2-3 paragraphs. If the poison is successful, Maria slips away unnoticed. If it fails, Don Luis threatens her life or demands immediate repayment.
+      Ensure historical accuracy regarding the type and effects of the poison.
     `;
   }
 } else if (prescriptionType === 'treatment' || currentPatient.type === 'patient') {
@@ -310,6 +341,30 @@ setPrescriptionPrompt(prescriptionPrompt);
       // Handle inventory updates and journal entry
      updateInventory(item.name, -amount);
 
+         // Update NPC portrait based on the current patient details
+if (currentPatient) {
+  const npcImageKey = normalizeImageKey(currentPatient.name);
+
+  // Determine the appropriate image from the imageMap
+  let selectedImage = imageMap[npcImageKey]?.src;
+  if (!selectedImage) {
+    console.warn(`No matching image found for key: ${npcImageKey}. Falling back to default.`);
+    selectedImage = imageMap['default']?.src; // Use default NPC image or Maria's normal image as a last resort
+  }
+
+  console.log("Selected NPC Image Key:", npcImageKey);
+  console.log("Selected Image Path:", selectedImage);
+
+  // Set NPC image
+  setNpcImage(selectedImage);
+  setIsEmoji(false);  // Assuming the image is not an emoji here, change logic if emojis are possible
+
+  // Set NPC caption and description
+  const npcCaption = `The prescription of ${currentPatient.name}`;
+  setNpcCaption(npcCaption);
+  setNpcInfo(currentPatient.description || 'No additional information available.');
+}
+
     // Now make a second API call to generate a journal summary 
     const summaryPrompt = `
       Please summarize the following text with an overall summary of "Result: [emoji] [single word summing it up." Then add one sentence with a succinct, basic summary of what happened, but with vivid details for instance it should say exactly what the complications or impact was. 
@@ -404,7 +459,7 @@ const handleSummaryContinue = () => {
     {/* Add the darkened overlay */}
     <div className="popup-overlay" />
 
-    <div className={`prescribe-popup ${isLoading ? 'loading' : ''}`}>
+    <div className={`prescribe-popup ${isLoading ? 'loading' : ''} ${prescriptionType === 'poison' ? 'poisoning' : 'normal'}`}>
       <div className="prescribe-content">
         <h2>🧪 Prescribe a Medicine</h2>
         <div ref={drop} className={`prescription-area ${isOver ? 'drag-over' : ''}`}>
