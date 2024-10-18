@@ -14,8 +14,8 @@ ignaciodelacruz: {
     tags: ['specific patient', 'Alredo Jimenez', 'middle aged man', 'toymaker']
   },
 
-    pablogoat: {
-    src: require('./assets/pablogoat.jpg'),
+    pablothegoat: {
+    src: require('./assets/pablothegoat.jpg'),
     tags: ['specific patient', 'Pablo the Goat', 'goat', 'sick farm animal']
   },
  juandevargas: {

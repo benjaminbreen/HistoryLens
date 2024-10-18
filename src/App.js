@@ -124,6 +124,7 @@ const [location, setLocation] = useState('Mexico City');
 const [isBuyOpen, setIsBuyOpen] = useState(false);
 const [isGameIntroOpen, setIsGameIntroOpen] = useState(true);
 const [showDreamButton, setShowDreamButton] = useState(turnNumber === 1);
+const [summaryData, setSummaryData] = useState({ time: '', date: '', location: '' });
 
 
 
@@ -617,6 +618,8 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
    
     const { summary, summaryData, inventoryChanges } = await generateJournalEntry(narrativeText);
 
+     setSummaryData(summaryData);
+
     // Log journal entry with the generated summary
     setJournal(prevJournal => [...prevJournal, { content: summary, type: 'auto' }]);
 
@@ -664,7 +667,8 @@ const handleTurnEnd = useCallback(async (narrativeText) => {
   advanceTime,
   updateLocation,
   updateInventory,
-  generateNewItemDetails // Include this in your dependencies
+  generateNewItemDetails, // Include this in your dependencies
+  setSummaryData
 ]);
 
 
@@ -1047,25 +1051,22 @@ useEffect(() => {
   }
 }, [isDarkMode]);
 
-
-  //  useEffect to start quests based on triggers
-  useEffect(() => {
-    console.log('Checking for quests to start...');
-
-  // Find any available quests that should start, based on triggers and whether they have already started
-  const questToStart = quests.find(quest => 
-    !startedQuests.has(quest.id) && 
-    quest.trigger(turnNumber, userActions, gameState.location, gameState.time)
-  );
-
-  if (questToStart) {
-    console.log(`${questToStart.name} quest found, starting...`);
-    startQuest(questToStart);
-    setActiveQuest(questToStart);
-    markQuestAsStarted(questToStart.id); // Mark this quest as started
-  }
-}, [turnNumber, quests, startedQuests, startQuest, setActiveQuest]);
-
+// useEffect to start quests based on triggers
+useEffect(() => {
+  console.log("Checking for quests to start...", { turnNumber, gameState });
+  quests.forEach(quest => {
+    if (!startedQuests.has(quest.id)) {
+      const shouldTrigger = quest.trigger(turnNumber, userActions, gameState.time, gameState.date);
+      console.log(`Quest ${quest.id} trigger check:`, shouldTrigger);
+      if (shouldTrigger) {
+        console.log(`Starting quest ${quest.id}`);
+        startQuest(quest);
+        setActiveQuest(quest);
+        markQuestAsStarted(quest.id);
+      }
+    }
+  });
+}, [turnNumber, userActions, gameState.time, gameState.date, quests, startedQuests, startQuest, setActiveQuest, markQuestAsStarted]);
 
 const saveGameState = () => {
   const stateToSave = {
@@ -1541,6 +1542,7 @@ const loadGameState = () => {
   setNpcInfo={setNpcInfo}
   setIsEmoji={setIsEmoji}
    npcImage={npcImage}
+   summaryData={summaryData}
     />
     )}
 

@@ -6,6 +6,7 @@ const SymptomLocator = ({ symptoms, hoveredSymptom, onDotHover }) => {
       case 'head': return { top: '5%', left: '50%' };
          case 'eyes': return { top: '4%', left: '48%' };
       case 'chest': return { top: '25%', left: '50%' };
+      case 'stomach': return { top: '35%', left: '50%' };
       case 'abdomen': return { top: '40%', left: '50%' };
       case 'legs': return { top: '70%', left: '50%' };
           case 'extremities': return { top: '40%', left: '15%' };

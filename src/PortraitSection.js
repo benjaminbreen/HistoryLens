@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import apothecaryImage from './assets/apothecary.jpeg';
 import mariaCoelhoImage from './assets/mariacoelho.jpeg'; 
 import mariaDetermined from './assets/mariadetermined.jpg';
@@ -8,10 +8,9 @@ import mariaSad from './assets/mariasad.jpg';
 import mariaWorried from './assets/mariaworried.jpg';
 import mariaCurious from './assets/mariacurious.jpg';
 import './PortraitSection.css'; 
-import EntityList from './EntityList'; 
-
-// Lazy load the PDFPopup component
-const PDFPopup = React.lazy(() => import('./PDFPopup'));
+import EntityList from './EntityList';
+import { initialInventoryData } from './initialInventory'; // Assuming you have this file as in `HistoryOutput`
+import PDFPopup from './PDFPopup';  // Direct import since we're no longer lazy loading
 
 const statusMappings = {
   normal: ['rested', 'calm', 'neutral', 'normal', 'composed', 'serene'],
@@ -43,34 +42,46 @@ const getStatusImage = (status) => {
 function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isEmoji }) {
   const [showNpcPopup, setShowNpcPopup] = useState(false);
   const [showPcPopup, setShowPcPopup] = useState(false);
-  const [showPDFPopup, setShowPDFPopup] = useState(false); 
-  const [selectedPDF, setSelectedPDF] = useState(null); 
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
+  const [selectedPdfPath, setSelectedPdfPath] = useState('');
+  const [selectedCitation, setSelectedCitation] = useState('');
   const [fadeClass, setFadeClass] = useState('fade-in');
-  const [showSecretPopup, setShowSecretPopup] = useState(false); // New state for showing secret popup
-  const [npcSecret, setNpcSecret] = useState(null); // New state to store NPC secret
+  const [showSecretPopup, setShowSecretPopup] = useState(false);
+  const [npcSecret, setNpcSecret] = useState(null);
 
-  // Handle fade transitions on image update
-  useEffect(() => {
-    setFadeClass('fade-out');
-    const timeout = setTimeout(() => {
-      setFadeClass('fade-in');
-    }, 500); 
-    return () => clearTimeout(timeout);
-  }, [npcImage, npcInfo]);
+  // Process text to include PDF links like in HistoryOutput
+  const processTextWithPDFLinks = useMemo(() => {
+    const allItemsWithPdf = [
+      ...EntityList.filter(entity => entity.pdf),
+      ...initialInventoryData.filter(item => item.pdf)
+    ];
 
-  const handleNpcClick = () => setShowNpcPopup(true);
-  const handlePcClick = () => setShowPcPopup(true);
-  const closeNpcPopup = () => setShowNpcPopup(false);
-  const closePcPopup = () => setShowPcPopup(false);
+    const pattern = new RegExp(`\\b(${allItemsWithPdf.map(item => item.name).join('|')})\\b`, 'gi');
+    
+    return (text) => {
+      const mentionedItems = new Set();
+      const processedText = text.replace(pattern, (match) => {
+        const item = allItemsWithPdf.find(item => item.name.toLowerCase() === match.toLowerCase());
+        if (item) {
+          mentionedItems.add(item);
+          return `[${match} 📄](/pdfs/${item.pdf} "${item.citation || ''}")`;
+        }
+        return match;
+      });
+      return processedText;
+    };
+  }, []);
 
-  const handlePDFClick = (pdfPath) => {
-    setSelectedPDF(pdfPath);
-    setShowPDFPopup(true);
-  };
+  const handlePDFClick = useCallback((pdfPath, citation) => {
+    setSelectedPdfPath(pdfPath);
+    setSelectedCitation(citation);
+    setIsPdfOpen(true);
+  }, []);
 
   const closePDFPopup = () => {
-    setShowPDFPopup(false);
-    setSelectedPDF(null);
+    setIsPdfOpen(false);
+    setSelectedPdfPath('');
+    setSelectedCitation('');
   };
 
   // Handle showing the NPC secret
@@ -142,12 +153,10 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
 
   return (
     <div className="portrait-section">
-      <div className="npc-portrait-container" onClick={handleNpcClick}>
+      <div className="npc-portrait-container" onClick={() => setShowNpcPopup(true)}>
         <div className="npc-portrait-wrapper">
           {isEmoji ? (
-            <div 
-              className={`emoji-image ${fadeClass}`}
-            >
+            <div className={`emoji-image ${fadeClass}`}>
               {npcInfo} {/* Directly render emoji or text here */}
             </div>
           ) : (
@@ -161,11 +170,11 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
             />
           )}
           <p className="portrait-caption">
-            {npcCaption}{' '}
+            {npcCaption}
             {getNpcFromEntityList(npcCaption.split(',')[0])?.pdf && (
               <span 
                 className="pdf-name" 
-                onClick={() => handlePDFClick(getNpcFromEntityList(npcCaption.split(',')[0]).pdf)}
+                onClick={() => handlePDFClick(getNpcFromEntityList(npcCaption.split(',')[0]).pdf, getNpcFromEntityList(npcCaption.split(',')[0]).citation)}
               >
                 📄
               </span>
@@ -174,7 +183,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
         </div>
       </div>
 
-      <div className="pc-portrait-container" onClick={handlePcClick}>
+      <div className="pc-portrait-container" onClick={() => setShowPcPopup(true)}>
         <div>
           <img src={mariaPortrait} alt="Maria" className="pc-portrait-image" />
           <p className="portrait-caption">{pcCaption}</p>
@@ -192,7 +201,7 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           )}
           <p><strong>{npcCaption.split(' ').slice(2).join(' ')}</strong></p>
           <div className="popup-info">{getNpcInfo(npcCaption.split(',')[0])}</div>
-          <button onClick={closeNpcPopup} className="close-map-button">Close</button>
+          <button onClick={() => setShowNpcPopup(false)} className="close-map-button">Close</button>
         </div>
       )}
 
@@ -201,18 +210,17 @@ function PortraitSection({ npcImage, npcCaption, npcInfo, pcCaption, status, isE
           <img src={mariaPortrait} alt="Maria" className="popup-portrait-image" />
           <p><strong>Maria de Lima</strong></p>
           <div className="popup-info">{pcInfoContent}</div>
-          <button onClick={closePcPopup} className="close-map-button">Close</button>
+          <button onClick={() => setShowPcPopup(false)} className="close-map-button">Close</button>
         </div>
       )}
 
-      {showPDFPopup && (
-        <Suspense fallback={<div>Loading PDF...</div>}>
-          <PDFPopup 
-            isOpen={showPDFPopup}
-            onClose={closePDFPopup}
-            pdfPath={selectedPDF}  
-          />
-        </Suspense>
+      {isPdfOpen && (
+        <PDFPopup
+          isOpen={isPdfOpen}
+          onClose={closePDFPopup}
+          pdfPath={selectedPdfPath}
+          citation={selectedCitation}
+        />
       )}
 
       {showSecretPopup && (

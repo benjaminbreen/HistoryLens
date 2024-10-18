@@ -37,7 +37,6 @@ const quests = [
         image: 'quest0a', // Placeholder dream sequence image
          text: [
           "Strange...",
-          "...",
           "...I'm having the dream again.",
           "Always, the same dream.",
           "Cold Atlantic Ocean waters pulling me down into darkness...",
@@ -86,18 +85,20 @@ const quests = [
     completed: false, 
     npc: 'Antonius Philalethes',
     classification: 'Helper',
-   trigger: (turnNumber, actions, currentTime, currentDate) => {
-        // Trigger if it's between 6:00 PM and 10:00 PM on August 22 and the quest hasn't been completed
-        if (!quests[0].completed && currentDate === 'August 22, 1680') {
-            const [time, meridiem] = currentTime.split(' '); // e.g., "6:00 PM"
-            const [hour, minute] = time.split(':').map(Number);
-            
-            if (meridiem === 'PM' && hour >= 6 && hour <= 10) {
-                return true;
-            }
-        }
-        return false;
-    },
+trigger: (turnNumber, actions, currentTime, currentDate) => {
+  console.log("Checking Quest 1 trigger:", { turnNumber, actions, currentTime, currentDate });
+  if (!quests[0].completed && currentDate === 'August 22, 1680') {
+    const [time, meridiem] = currentTime.split(' ');
+    const [hour, minute] = time.split(':').map(Number);
+    
+    console.log("Time check:", { hour, meridiem });
+    if (meridiem === 'PM' && hour >= 6 && hour <= 10) {
+      console.log("Quest 1 trigger conditions met!");
+      return true;
+    }
+  }
+  return false;
+},
     stages: [
       {
         type: 'banner',
@@ -299,7 +300,7 @@ const quests = [
     completed: false, 
     npc: 'Licenciado Francisco Ramírez',
     classification: 'Antagonist',
-    trigger: (turnNumber, actions) => actions.includes('#startQuest4') || turnNumber === 30,
+    trigger: (turnNumber, actions) => actions.includes('#startQuest4') || turnNumber === 40,
     stages: [
       {
         type: 'banner',
@@ -354,7 +355,20 @@ const quests = [
   name: 'The Arrival of Don Luis',
   npc: 'Don Luis the Moneylender',
   classification: 'Main',
-  trigger: (turnNumber, actions) => actions.includes('#startQuest5') || turnNumber === 20,
+trigger: (turnNumber, actions, currentTime, currentDate) => {
+  console.log("Checking Quest 1 trigger:", { turnNumber, actions, currentTime, currentDate });
+  if (!quests[0].completed && currentDate === 'August 23, 1680') {
+    const [time, meridiem] = currentTime.split(' ');
+    const [hour, minute] = time.split(':').map(Number);
+    
+    console.log("Time check:", { hour, meridiem });
+    if (meridiem === 'PM' && hour >= 5 && hour <= 11) {
+      console.log("Quest 1 trigger conditions met!");
+      return true;
+    }
+  }
+  return false;
+},
   stages: [
     {
       type: 'banner',
@@ -603,7 +617,9 @@ const Quest = ({
   setNpcCaption,
   setNpcInfo,
   setNpcImage,
-  unlockMethod
+  unlockMethod,
+  summaryData
+
 }) => {
   const { gameState, advanceQuestStage, completeQuest, updateInventory, addCompoundToInventory
 } = useGameState();

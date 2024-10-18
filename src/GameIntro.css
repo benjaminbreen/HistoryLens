@@ -484,59 +484,131 @@ li {
   box-shadow: 0px -6px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow at the top of buttons */
 }
 /* Responsive Styles for Small Screens */
+/* Improved Responsive Styles for Small Screens */
+
 @media (max-width: 768px) {
+  /* Reduce padding to give more screen space for text */
   .game-intro-content {
-    padding: 30px;
+    padding: 15px;
     max-width: 95%;
   }
 
+  /* Adjust headline sizes for better visibility on smaller screens */
   .game-intro-content h2 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    padding-bottom: 5px;
   }
 
   .game-intro-content h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    margin: 10px 0;
   }
 
+  /* Make text easier to read by adjusting font sizes */
   .game-intro-content p {
-    font-size: 1.22rem;
-  }
-
-  .game-intro-content ul li {
     font-size: 1.1rem;
+    line-height: 1.4;
   }
 
-  .start-button {
+  /* Adjust list styling for improved spacing */
+  .game-intro-content ul li {
     font-size: 1rem;
-    padding: 12px 25px;
-    width: 100%;
+    line-height: 1.3;
+  }
+
+  /* Button improvements: full width for better tapping area */
+  .start-button,
+  .instruction-button {
+    font-size: 1rem;
+    padding: 10px 15px;
+    width: 90%;
+    margin: 10px auto; /* Center the buttons with some spacing */
+  }
+
+  /* Reduce padding for better screen use */
+  .content-wrapper {
+    padding: 15px;
+  }
+
+.image-container-left,
+.image-container-right {
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically if necessary */
+  width: 100%; /* Full-width container to adapt to various screen sizes */
+  margin: 20px 0; /* Spacing between the container and other elements */
+  float: none; /* Remove any previous floating behavior */
+}
+
+/* Styling for Images */
+.image-right,
+.image-left {
+  max-width: 300px; /* Adjust as necessary */
+  width: 100%; /* Ensure responsiveness */
+  height: auto; /* Maintain aspect ratio */
+  margin: 0; /* Remove margin for full centering */
+}
+
+
+  /* Button container adjustment for better responsiveness */
+  .splash-button-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px; /* Add more space to avoid being cut off */
+    height: 300px;
   }
 }
 
 @media (max-width: 480px) {
+  /* Reduce padding even further on very small screens */
   .game-intro-content {
-    padding: 20px;
+    padding: 10px;
   }
 
+  /* Further shrink header sizes for narrow screens */
   .game-intro-content h2 {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
   }
 
   .game-intro-content h3 {
-    font-size: 1.4rem;
-  }
-
-  .game-intro-content p {
     font-size: 1rem;
   }
 
+  /* Smaller font sizes for paragraphs and lists for improved readability */
+  .game-intro-content p,
   .game-intro-content ul li {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
-  .start-button {
-    font-size: 1rem;
-    padding: 10px 20px;
+  /* Button full width for easier interaction */
+  .start-button,
+  .instruction-button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    width: 100%;
+  }
+
+  /* Image size reduction for mobile */
+  .image-right,
+  .image-left {
+    max-width: 120px;
+    margin: 5px 0;
+  }
+
+  /* Adjust button container to stack and ensure visibility */
+  .splash-button-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0; /* Space above and below to avoid conflicts with navigation bars */
+  }
+
+  /* Ensure the close button is easily tappable */
+  .close-icon {
+    top: 10px;
+    right: 10px;
+    font-size: 2rem;
   }
 }
 
@@ -556,3 +628,4 @@ li {
     display: none;
   }
 }
+

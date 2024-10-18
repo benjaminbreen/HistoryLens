@@ -80,7 +80,7 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        temperature: 0.3,
+        temperature: 0.8,
         messages: [
           {
             role: 'system',
@@ -90,7 +90,7 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
 
               0. **Match only the available imageMap keys.** Do not invent keys or names for images that aren't present in the imageMap. Stick strictly to the provided keys or their close synonyms/tags. If a specific image key is not available, fall back to the closest relevant category (e.g., use "ship" or other related image keys depending on context - like "junkchineseship" or "shipinterior" etc, for any ship scene, regardless of its specific name).
 
-              1. If an NPC is mentioned in the narrative text, and their exact name appears, use their key from the imageMap. This should always be the preference if available. It's good to repeat the same NPC key if they reappear across turns as the primary figure in a turn. Do not vary the depiction of named NPCs - if you selected one image of them for a turn, be consistent with it. This is the highest priority rule. Ensure consistency: once you select an image for an NPC, **always** reuse the same image across turns unless the narrative introduces a significant change in appearance or setting. 
+              1. If an NPC is mentioned in the narrative text, and their exact name appears, use their key from the imageMap. This should always be the preference if available. It's good to repeat the same NPC key if they reappear across turns. Do not vary the depiction of named NPCs - if you selected one image of them for a turn, be consistent with it. This is the highest priority rule. Ensure consistency: once you select an image for an NPC, **always** reuse the same image across turns unless the narrative introduces a significant change in appearance or setting. 
               Do not introduce variety unless the narrative requires it. Remember that reappearing NPCs should look the same across turns for narrative coherence.
               2. If no FULL NPC name appears or you are uncertain about the match (i.e. if it is simply "Diego" and not "Diego Perez" (diegoperez), fall back to selecting a generic image based on the context. Prioritize "close ups" meaning if Maria is in a setting (like a market) and buys an item, pick an image that best represents the item (if available) in preference to a general image of the setting. Or if she meets a young man named Diego (but NOT Diego Perez) select an image that represents the TYPE OF PERSON represented, not their name. If she books passage on a ship, don't select an image key based on the name of the ship since this does not exist, instead pick one of the ship-related image keys. 
               However if a specific place is mentioned prominently in a turn AND has a corresponding image key, return the specific place, for instance "portalmercederes" instead of simply "market" for a turn that mentions Portal de Mercederes. 
@@ -109,6 +109,9 @@ const generateImageAndCaption = async (narrativeText, apiKey) => {
       2. Caption: [A brief but vivid description of the image. If an NPC is the focus, begin with their full name. No more than 6-7 words.]
       3. Description: [Give a historically accurate explanation of Maria's experience at that moment, focusing on any mentioned NPCs, objects, or surroundings. Always include sensory details: sights, sounds, smells, tactile sensations, and any other relevant emotions or proprioception. Maximum of three sentences. Do not include time or location unless they are clearly stated in the context. This should be written in a fragmentary way emphasizing intense specificity, i.e. instead of saying "It is a summer evening and Maria can hear crickets chirping from her window" you might say "Crickets chirping. Maria sitting alone at her window, evening breeze cool on her phase."]
       4. Reasoning: [Explain why you selected this specific key from the imageMap. Be clear and concise.]
+
+       REMEMBER: Ensure that when a named NPC appears in the narrative text, their corresponding image key from imageMap is used IF their name matches an imageMap entry (otherwise use the most appropriate non-named image to show an NPC). Prioritize exact matches for named NPCs over generic or descriptive matches.
+  If no named NPC is mentioned, use context-based images as before.
               `
           },
           { role: 'user', content: narrativeText },

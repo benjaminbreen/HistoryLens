@@ -169,7 +169,7 @@ Secret (do not reveal unless directly asked, but drop hints throughout): ${npc.s
 Answer the following questions from the healer in first person, honestly, in one or two sentences per question. You may take offense at an impertinent or personal question, or be evasive, and frequently will break off without fully answering, in mid-sentence, perhaps to cough or moan or make some other utterance, or perhaps just because you are embarrassed. 
 
 Be idiosyncratic and surprising in your responses, and keep them brief. Remember you are roleplaying as a real person who might not want to share some things. A person with secrets. You should reference real, specific details of your life in concrete and highly particular ways. Make the secret somewhat obvious if questioned. Keep in mind social class - wealthy or VIP characters will be extremely arrogant and look down on Maria, esepcially if her questions are not phrased respectfully. 
-If data is not available, invent it.
+If data is not available, invent it. Pablo the Goat ONLY responds in non-verbal sound effects, NEVER words. 
 Questions:
 ${additionalQuestions}
 
@@ -187,11 +187,11 @@ Responses:
           model: 'gpt-4o-mini', // Use the 'gpt-4o-mini' model as specified
           messages: [
             { role: 'system', content: 
-            'You are simulating the patient responding to the healer\'s questions. The year is 1680 and all your responses should ALWAYS be precisely hitorically accurate and true to the reality of life in the 1680s. This was a difficult and at times grim world and patients suffered from appalling ailments that left them wracked with torment. Your rsponses should reflect that. At the time, they also observed strict codes of social propriety and were often reluctant to share personal details, so be evasive and difficult. ' },
+            'You are simulating the patient responding to the healer\'s questions. The year is 1680 and all your responses should ALWAYS be precisely hitorically accurate and true to the reality of life in the 1680s. This was a difficult and at times grim world and patients suffered from appalling ailments that left them wracked with torment. Your rsponses should reflect that. At the time, they also observed strict codes of social propriety and were often reluctant to share personal details, so be evasive and difficult. If you are an animal (i.e., Pablo the Goat) rather than a human, respond ONLY in non-verbal sounds and utterances appropriate to which animal you are (such as goat bleats). NEVER use ANY words if you are a goat. ONLY bleats or other sounds.' },
             { role: 'user', content: prompt }
           ],
           max_tokens: 150,
-          temperature: 0.8,
+          temperature: 0.5,
         }),
       });
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { Tooltip } from 'react-tooltip';  // Correct named import
 import './WealthTracker.css';
 
 // Memoized WealthTracker component
@@ -7,8 +8,19 @@ const WealthTracker = React.memo(({ llmResponse, onStatusChange, onWealthChange 
   const [status, setStatus] = useState('rested');  // Default starting status
   const [reputationEmoji, setReputationEmoji] = useState('😐');  // Default reputation emoji
 
-  // Define the allowed reputation emojis
-  const allowedEmojis = ['😡', '😠', '😐', '😶', '🙂', '😌', '😏', '😃', '😇', '👑'];
+  // Define the reputation meanings
+  const reputationMeanings = {
+    '😡': 'Maria\'s reputation is abysmal',
+    '😠': 'Maria\'s reputation is very poor',
+    '😐': 'Maria\'s reputation is neutral',
+    '🙂': 'Maria\'s reputation is decent',
+    '😌': 'Maria\'s reputation is above average',
+    '😃': 'Maria\'s reputation is excellent',
+    '😇': 'Maria\'s reputation is outstanding',
+    '👑': 'Maria\'s reputation is legendary',
+  };
+
+  const allowedEmojis = Object.keys(reputationMeanings);
 
   // Memoize the parsing of wealth
   const parsedWealth = useMemo(() => {
@@ -50,6 +62,17 @@ const WealthTracker = React.memo(({ llmResponse, onStatusChange, onWealthChange 
     }
   }, [parsedWealth, parsedStatus, parsedEmoji, currentWealth, status, reputationEmoji, onWealthChange, onStatusChange]);
 
+  // Custom position override function
+  const overridePosition = (position, currentEvent, currentTarget, node) => {
+    const { left, top, width, height } = node.getBoundingClientRect();
+    const tooltipHeight = node.offsetHeight;
+    
+    return {
+      top: top - tooltipHeight - 10, // Move above the element
+      left: left + width / 2 - node.offsetWidth / 2, // Center horizontally
+    };
+  };
+
   return (
     <div className="wealth-tracker">
       <div className="wealth-box">
@@ -63,7 +86,22 @@ const WealthTracker = React.memo(({ llmResponse, onStatusChange, onWealthChange 
         </div>
         <div className="wealth-item">
           <span className="wealth-label">REPUTATION:</span>
-          <span className="wealth-value"><span className="emoji">{reputationEmoji}</span></span>
+          <span className="wealth-value">
+            <span
+              className="emoji"
+              data-tooltip-id="reputation-tooltip"  // Tooltip identifier
+              data-tooltip-content={reputationMeanings[reputationEmoji]}  // Tooltip content
+            >
+              {reputationEmoji}
+            </span>
+            <Tooltip
+              id="reputation-tooltip"
+              place="top"
+              effect="solid"
+              positionStrategy="fixed"
+              overridePosition={overridePosition}  // Use custom position logic
+            />
+          </span>
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ import mechoacan from './assets/mechoacan.jpg';
 import cochineal from './assets/cochineal.jpg';
 import dragonsblood from './assets/dragonsblood.jpg';
 import alum from './assets/alum.jpg';
+import crocusmetallorum from './assets/crocusmetallorum.jpg';
 
 
 const initialInventoryData = [
@@ -352,6 +353,22 @@ id: 16,
     citation: 'Pierre Pomet, *Complete History of Drugs*, London 1748, pg 191, url: https://www.google.com/books/edition/A_Complete_History_of_Drugs_Written_in_F/t2fHVm6UGJ4C?hl=en&gbpv=1&pg=PA50&printsec=frontcover',
     image: dragonsblood
 },
+{
+    id: 23, 
+    name: 'Crocus Metallorum',
+    latinName: 'Crocus Metallorum',
+    spanishName: 'Po de quintilio',
+    price: 1,
+    quantity: 2,
+    humoralQualities: 'Cold & Dry',
+    medicinalEffects: 'Powerful purgative used to evacuate humors from both above and below.',
+    description: 'A reddish alchemical powder made from antimony, commonly used as a purgative taken with wine or sugar. Toxic.',
+    emoji: '☄️',
+    pdf: 'crocusmetallorum.pdf',
+    citation: 'Nicolas Lémery, A Course of Chymistry (London, 1686), 173-75, url: https://www.google.com/books/edition/A_Course_of_Chymistry/Ibxc-ttw8_oC?hl=en&gbpv=1&pg=PA217&printsec=frontcover',
+    image: crocusmetallorum
+}
+
 ];
 
 // Define Mumia as a potential inventory item, but not part of initial inventory
